@@ -1,14 +1,20 @@
-"""Tracker execution supporting ByteTrack and BoT-SORT with unified observation output."""
+"""Tracker execution supporting ByteTrack and BoT-SORT for players while preserving pre-ByteTrack raw ball detections."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Iterator, List, Optional, Tuple
+import cv2
 import numpy as np
 import torch
 
 from src.config import DetectionConfig, TrackingConfig
-from src.detection.detector import COCO_BALL_CLASS_ID, COCO_PERSON_CLASS_ID, FootballDetector
+from src.detection.detector import (
+    COCO_BALL_CLASS_ID,
+    COCO_PERSON_CLASS_ID,
+    FootballDetector,
+    _nms_ball_detections,
+)
 from src.schemas import DetectionRecord
 
 
@@ -17,8 +23,9 @@ SUPPORTED_TRACKERS = ("bytetrack.yaml", "botsort.yaml")
 
 class MultiObjectTracker:
     """
-    Wraps Ultralytics multi-object tracking (`bytetrack.yaml` or `botsort.yaml`)
-    and yields per-frame `(frame_index, timestamp, frame_bgr, detections)`.
+    Wraps Ultralytics multi-object tracking (`bytetrack.yaml` or `botsort.yaml`) for players (`class 0`)
+    while capturing raw post-NMS football detections (`class 32`) BEFORE ByteTrack's two-frame IoU
+    activation filter (`is_activated`) discards fast-moving balls.
     """
 
     def __init__(
@@ -45,10 +52,9 @@ class MultiObjectTracker:
         fps_override: Optional[float] = None,
     ) -> Iterator[Tuple[int, float, np.ndarray, List[DetectionRecord]]]:
         """
-        Stream tracked detections over a video using a fresh YOLO tracker instance.
+        Stream tracked player detections and raw/recovered ball detections over a video.
         """
         from ultralytics import YOLO
-        import cv2
 
         vpath = Path(video_path)
         if not vpath.is_file():
@@ -63,7 +69,21 @@ class MultiObjectTracker:
         start_frame = max(0, int(self.trk_config.start_frame))
 
         model = YOLO(self.det_config.model_name)
-        min_conf = min(self.det_config.person_conf, self.det_config.ball_conf)
+        min_conf = min(self.det_config.person_conf, self.det_config.ball_conf, 0.14)
+
+        # Hook executed on `on_predict_postprocess_end` BEFORE `track.on_predict_postprocess_end`
+        # overwrites `predictor.results[0].boxes` and drops unactivated fast-moving ball boxes.
+        captured_raw_boxes: List[object] = []
+
+        def _capture_raw_postprocess_boxes(predictor: object) -> None:
+            captured_raw_boxes.clear()
+            results_list = getattr(predictor, "results", None)
+            if results_list and len(results_list) > 0 and results_list[0].boxes is not None:
+                captured_raw_boxes.append(results_list[0].boxes.cpu())
+
+        model.add_callback("on_predict_postprocess_end", _capture_raw_postprocess_boxes)
+
+        aux_detector = FootballDetector(config=self.det_config, device=self.device)
 
         try:
             if start_frame > 0:
@@ -96,16 +116,43 @@ class MultiObjectTracker:
                     device=self.device,
                     verbose=False,
                 )
-                boxes = results[0].boxes if results else None
-                detections = FootballDetector.parse_ultralytics_boxes(
-                    boxes,
+                tracked_boxes = results[0].boxes if results else None
+                tracked_records = FootballDetector.parse_ultralytics_boxes(
+                    tracked_boxes,
                     frame_number=actual_frame_number,
                     timestamp=timestamp,
                     person_conf=self.det_config.person_conf,
                     ball_conf=self.det_config.ball_conf,
                 )
+                player_records = [r for r in tracked_records if r.class_name == "player"]
+                ball_records = [r for r in tracked_records if r.class_name == "ball"]
+
+                # Recover any ball detections that were suppressed by ByteTrack's 2-frame IoU gate
+                if captured_raw_boxes:
+                    raw_parsed = FootballDetector.parse_ultralytics_boxes(
+                        captured_raw_boxes[0],
+                        frame_number=actual_frame_number,
+                        timestamp=timestamp,
+                        person_conf=self.det_config.person_conf,
+                        ball_conf=self.det_config.ball_conf,
+                    )
+                    raw_balls = [r for r in raw_parsed if r.class_name == "ball"]
+                    if raw_balls:
+                        ball_records = _nms_ball_detections(ball_records + raw_balls)
+
+                # If still no ball found and tiled ball search fallback is enabled, scan pitch tiles
+                if not ball_records and self.det_config.enable_tiled_ball_search:
+                    tiled_balls = aux_detector.detect_balls_tiled(
+                        frame_bgr,
+                        frame_number=actual_frame_number,
+                        timestamp=timestamp,
+                        conf_threshold=self.det_config.tile_conf_threshold,
+                        tile_imgsz=960,
+                    )
+                    if tiled_balls:
+                        ball_records = tiled_balls
+
                 yielded += 1
-                yield actual_frame_number, timestamp, frame_bgr, detections
+                yield actual_frame_number, timestamp, frame_bgr, (player_records + ball_records)
         finally:
             cap.release()
-
