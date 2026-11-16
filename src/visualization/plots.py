@@ -227,3 +227,140 @@ def save_detections_timeline_plot(
     plt.close(fig)
     return target
 
+
+def save_possession_timeline_chart(
+    timeline: Sequence[Any],
+    match_config: Any,
+    possession_summary: Dict[str, Any],
+    output_path: str | Path,
+) -> Path:
+    """
+    Render a two-panel possession analytics chart:
+    - Top panel: Cumulative attributed possession share (%) for Team A and Team B over time,
+      plus a pie/bar summary of total analysed time distribution across all 6 states.
+    - Bottom panel: Frame-by-frame possession state strip and ball tracking status strip.
+    """
+    target = Path(output_path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not timeline:
+        return target
+
+    times = [float(r.timestamp) for r in timeline]
+    share_a = [float(r.running_team_a_share_pct) for r in timeline]
+    share_b = [float(r.running_team_b_share_pct) for r in timeline]
+
+    team_a_name = match_config.to_display_label("Team_A")
+    team_b_name = match_config.to_display_label("Team_B")
+
+    state_order = [
+        "TEAM_A_CONTROL",
+        "TEAM_B_CONTROL",
+        "CONTESTED",
+        "LOOSE_BALL",
+        "UNKNOWN",
+        "OUT_OF_PLAY",
+    ]
+    state_labels = [
+        f"{team_a_name} Control",
+        f"{team_b_name} Control",
+        "Contested",
+        "Loose Ball",
+        "Unknown",
+        "Out of Play",
+    ]
+    state_to_idx = {st: idx for idx, st in enumerate(state_order)}
+    state_indices = [state_to_idx.get(r.possession_state, 4) for r in timeline]
+
+    fig, (ax1, ax2, ax3) = plt.subplots(
+        3, 1, figsize=(11, 8.5), gridspec_kw={"height_ratios": [2.2, 1.3, 1.3]}
+    )
+
+    # Panel 1: Attributed possession share curve
+    ax1.plot(times, share_a, label=f"{team_a_name} Attributed Share (%)", linewidth=2.2, color="#d62728")
+    ax1.plot(times, share_b, label=f"{team_b_name} Attributed Share (%)", linewidth=2.2, color="#1f77b4")
+    ax1.axhline(50.0, color="grey", linestyle="--", alpha=0.5)
+    ax1.set_ylim(0, 100)
+    ax1.set_ylabel("Attributed Share (%)")
+    scope_tag = possession_summary.get("segment_scope", "segment")
+    dur_s = possession_summary.get("analysed_duration_seconds", 0.0)
+    ax1.set_title(
+        f"{match_config.match_name} — Estimated Possession Timeline ({dur_s:.1f}s {scope_tag})",
+        fontsize=12,
+        fontweight="bold",
+    )
+    ax1.grid(alpha=0.25)
+    ax1.legend(loc="upper right")
+
+    # Panel 2: Discrete state timeline
+    ax2.step(times, state_indices, where="post", linewidth=1.8, color="#2ca02c")
+    ax2.set_yticks(range(len(state_labels)))
+    ax2.set_yticklabels(state_labels, fontsize=9)
+    ax2.set_xlabel("Video Timestamp (seconds)")
+    ax2.set_title("Frame-by-Frame Possession State Machine Output", fontsize=10.5, fontweight="bold")
+    ax2.grid(alpha=0.25)
+    ax2.invert_yaxis()
+
+    # Panel 3: Total analysed time distribution bar chart
+    dist_pct = possession_summary.get("total_analysed_time_distribution_pct", {})
+    vals = [float(dist_pct.get(st, 0.0)) for st in state_order]
+    bar_colors = ["#d62728", "#1f77b4", "#ff7f0e", "#2ca02c", "#7f7f7f", "#9467bd"]
+    bars = ax3.barh(state_labels, vals, color=bar_colors)
+    ax3.set_xlim(0, 105)
+    ax3.set_xlabel("Percentage of Total Analysed Segment Duration (%)")
+    ax3.set_title("Total Analysed Time Distribution (All 6 States)", fontsize=10.5, fontweight="bold")
+    ax3.invert_yaxis()
+    for bar, v in zip(bars, vals):
+        ax3.text(min(98.0, v + 1.2), bar.get_y() + bar.get_height() / 2.0, f"{v:.1f}%", va="center", fontsize=8.5)
+    ax3.grid(axis="x", alpha=0.25)
+
+    fig.tight_layout()
+    fig.savefig(str(target), dpi=160)
+    plt.close(fig)
+    return target
+
+
+def save_ball_detection_diagnostic_gallery(
+    diagnostic_items: Sequence[Dict[str, Any]],
+    output_path: str | Path,
+) -> Path:
+    """
+    Render a diagnostic gallery illustrating football detection successes and failure modes:
+    - High-confidence detections
+    - Low-confidence / high-res / tiled recoveries
+    - Rejected false positives (socks, torso logos, scoreboard)
+    - Missed / motion-blurred / occluded balls
+    """
+    target = Path(output_path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not diagnostic_items:
+        return target
+
+    items = list(diagnostic_items)[:12]
+    cols = min(4, len(items))
+    rows = math.ceil(len(items) / cols)
+    fig, axes = plt.subplots(rows, cols, figsize=(4.0 * cols, 3.4 * rows))
+    flat_axes = np.array(axes).flatten() if isinstance(axes, np.ndarray) else [axes]
+
+    for ax in flat_axes:
+        ax.axis("off")
+
+    for ax, item in zip(flat_axes, items):
+        img = item.get("crop_or_frame_bgr")
+        if img is not None and img.size > 0:
+            ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        cat = item.get("category", "Diagnostic")
+        fno = item.get("frame_number", 0)
+        note = item.get("note", "")
+        color = item.get("title_color", "navy")
+        ax.set_title(f"[{cat}] Frame {fno}\n{note}", fontsize=8.5, color=color, fontweight="bold")
+
+    fig.suptitle(
+        "Football Detection Failure-Mode & Recovery Diagnostic Gallery",
+        fontsize=12.5,
+        fontweight="bold",
+    )
+    fig.tight_layout()
+    fig.savefig(str(target), dpi=160)
+    plt.close(fig)
+    return target
+

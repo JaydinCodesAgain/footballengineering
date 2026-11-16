@@ -1,12 +1,11 @@
-"""End-to-end pipeline orchestration for dataset preparation, training, tracking, and reporting."""
+"""End-to-end pipeline orchestration for dataset preparation, training, tracking, possession, and reporting."""
 
 from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import cv2
-import torch
 
 from src.classification.classifier import TeamClassifier
 from src.classification.cropper import extract_torso_crop
@@ -14,7 +13,11 @@ from src.classification.dataset import JerseyCropDataset, assign_temporal_and_tr
 from src.classification.diagnostics import audit_dataset_labels
 from src.config import MatchConfig, load_match_config
 from src.detection.annotation_workflow import DetectionAnnotationStore
-from src.detection.detector import FootballDetector
+from src.detection.detector import (
+    FootballDetector,
+    _nms_ball_detections,
+    benchmark_ball_detection_strategies,
+)
 from src.evaluation.classification_eval import (
     evaluate_team_classifier,
     run_classification_benchmark,
@@ -24,9 +27,17 @@ from src.evaluation.detection_eval import (
     evaluate_legacy_manual_counts,
     run_confidence_threshold_sweep,
 )
+from src.evaluation.possession_eval import (
+    PossessionAnnotationStore,
+    evaluate_possession_predictions,
+)
 from src.evaluation.report import (
+    export_ball_trajectory_records,
+    export_player_ownership_records,
     export_possession_foundation_records,
+    export_possession_timeline_records,
     generate_consolidated_report,
+    generate_possession_report,
     write_csv_rows,
 )
 from src.evaluation.tracking_eval import compare_tracking_algorithms
@@ -35,14 +46,18 @@ from src.pipeline.legacy_migration import (
     migrate_chelsea_sunderland_legacy_dataset,
     migrate_norway_wales_legacy_dataset,
 )
+from src.possession.ball_tracker import filter_ball_candidates
+from src.possession.possession_engine import PossessionEngine
 from src.schemas import ClassificationPrediction, FrameObservationRecord, InternalLabel
 from src.tracking.stabilizer import TemporalTeamStabilizer
 from src.tracking.tracker import MultiObjectTracker
 from src.visualization.plots import (
+    save_ball_detection_diagnostic_gallery,
     save_confusion_matrix_plot,
     save_crop_reference_gallery,
     save_detections_timeline_plot,
     save_misclassification_gallery,
+    save_possession_timeline_chart,
     save_side_by_side_confusion_matrices,
     save_threshold_calibration_plot,
 )
@@ -56,9 +71,8 @@ def prepare_dataset_for_match(
 ) -> JerseyCropDataset:
     """
     Prepare or load the jersey crop dataset for a match.
-    For the two existing benchmark matches (`norway_wales` and `chelsea_sunderland`),
-    migrates the existing labelled samples with full metadata if not already present.
-    For any new match, extracts high-quality filtered crops across temporal splits.
+    Validates manifest integrity and deterministically regenerates missing crop PNGs
+    from the source video when needed.
     """
     root = base_dir or Path.cwd()
     dataset_dir = root / "data" / "crops" / match_config.match_id
@@ -82,6 +96,7 @@ def prepare_dataset_for_match(
     # Generic extraction pass for any new match
     ds = JerseyCropDataset(dataset_dir, match_config)
     if len(ds.records) > 0 and not force_rebuild:
+        ds.regenerate_missing_crops(video_path)
         return ds
 
     cap = cv2.VideoCapture(str(video_path))
@@ -127,6 +142,40 @@ def prepare_dataset_for_match(
     return ds
 
 
+def _build_ball_diagnostic_panel_crop(
+    frame_bgr: np.ndarray,
+    bbox: Optional[Tuple[int, int, int, int]],
+    box_color: Tuple[int, int, int] = (0, 255, 0),
+    label_text: str = "Ball",
+    pad: int = 110,
+) -> Any:
+    """Create a zoomed diagnostic patch around a ball detection or full-frame thumbnail if missed."""
+    fh, fw = frame_bgr.shape[:2]
+    canvas = frame_bgr.copy()
+    if bbox is not None:
+        x1, y1, x2, y2 = bbox
+        cv2.rectangle(canvas, (x1, y1), (x2, y2), box_color, 2)
+        cv2.putText(
+            canvas,
+            label_text,
+            (x1, max(18, y1 - 6)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.52,
+            box_color,
+            2,
+        )
+        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        cx0 = max(0, cx - pad)
+        cy0 = max(0, cy - pad)
+        cx1 = min(fw, cx + pad)
+        cy1 = min(fh, cy + pad)
+        patch = canvas[cy0:cy1, cx0:cx1]
+        if patch.size > 0:
+            return cv2.resize(patch, (320, 240), interpolation=cv2.INTER_AREA)
+
+    return cv2.resize(canvas, (320, 240), interpolation=cv2.INTER_AREA)
+
+
 def run_match_pipeline(
     config: MatchConfig | str | Path,
     base_dir: Optional[Path] = None,
@@ -134,18 +183,23 @@ def run_match_pipeline(
     max_tracking_frames: Optional[int] = 180,
     compare_trackers: bool = False,
     tracker_comparison_frames: int = 90,
+    enable_possession: Optional[bool] = None,
+    run_ball_strategy_benchmark: bool = True,
 ) -> Dict[str, Any]:
     """
     Execute the complete end-to-end Football AI pipeline for a configured match:
-    1. Dataset loading & automated label audit
+    1. Dataset integrity verification & automated label audit
     2. Feature & classifier benchmarking + Unknown threshold calibration
-    3. Video detection, tracking, jersey classification & temporal stabilization
-    4. Annotated video & possession-foundation telemetry export
-    5. Detection ground-truth / confidence-sweep evaluation
-    6. Consolidated JSON/CSV/Markdown analytics report generation
+    3. Video detection, player tracking, Kalman ball tracking, jersey classification & possession engine
+    4. Annotated video (with live possession scoreboard) & telemetry CSV exports
+    5. Detection ground-truth / confidence-sweep / ball-strategy benchmark evaluation
+    6. Consolidated JSON/CSV/Markdown analytics & possession report generation
     """
     root = base_dir or Path.cwd()
     match_cfg = load_match_config(config) if isinstance(config, (str, Path)) else config
+    if enable_possession is not None:
+        match_cfg.possession.enabled = bool(enable_possession)
+
     video_path = match_cfg.resolve_video_path(root)
 
     ts_tag = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -153,12 +207,11 @@ def run_match_pipeline(
     output_dir = root / "outputs" / exp_id
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Prepare / load dataset
+    # 1. Prepare / load dataset with integrity verification
     dataset = prepare_dataset_for_match(match_cfg, base_dir=root)
     train_samples = dataset.get_labelled_samples(split="train", exclude_unknown=True)
     val_samples = dataset.get_labelled_samples(split="val", exclude_unknown=False)
 
-    # Save reference galleries
     artifacts: Dict[str, str] = {}
     if train_samples:
         p_tr = save_crop_reference_gallery(
@@ -188,7 +241,7 @@ def run_match_pipeline(
         match_config=match_cfg,
     )
 
-    # Train and calibrate the active classifier
+    # Train and calibrate the active classifier strictly on VAL
     active_clf = TeamClassifier(match_id=match_cfg.match_id, config=match_cfg.classification)
     active_clf.fit(
         [img for _, img, _ in train_samples],
@@ -199,7 +252,8 @@ def run_match_pipeline(
         [lbl for _, _, lbl in val_samples],
     )
     clf_eval = evaluate_team_classifier(active_clf, val_samples, match_config=match_cfg)
-    #Also evaluate on held-out test split if present in dataset
+
+    # Evaluate on held-out test split if present in dataset (frozen threshold from VAL)
     test_samples = dataset.get_labelled_samples(split="test", exclude_unknown=False)
     if test_samples:
         test_eval = evaluate_team_classifier(active_clf, test_samples, match_config=match_cfg)
@@ -234,7 +288,6 @@ def run_match_pipeline(
     )
     artifacts["confusion_matrix"] = str(cm_path)
 
-    # Side-by-side comparison of legacy baseline vs legacy enhanced vs active model
     side_matrices = []
     for b_item in benchmark_results:
         if b_item["experiment_tag"] in (
@@ -272,12 +325,13 @@ def run_match_pipeline(
     )
     artifacts["misclassification_gallery"] = str(misc_path)
 
-    # 4. Run video tracking, classification, and temporal stabilization
+    # 4. Run video tracking, classification, temporal stabilization, and possession analytics
     cap = cv2.VideoCapture(str(video_path))
     fps = float(cap.get(cv2.CAP_PROP_FPS)) or 25.0
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     total_video_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    total_video_duration = total_video_frames / fps
     cap.release()
 
     output_fps = fps / float(max(1, match_cfg.detection.frame_stride))
@@ -295,25 +349,114 @@ def run_match_pipeline(
         detection_config=match_cfg.detection,
         tracking_config=match_cfg.tracking,
     )
+    aux_detector = FootballDetector(config=match_cfg.detection)
     stabilizer = TemporalTeamStabilizer(config=match_cfg.tracking)
+    possession_engine = (
+        PossessionEngine(
+            match_config=match_cfg,
+            fps=fps,
+            frame_stride=match_cfg.detection.frame_stride,
+            total_video_duration_seconds=total_video_duration,
+        )
+        if match_cfg.possession.enabled
+        else None
+    )
 
     people_per_frame: List[int] = []
     balls_per_frame: List[int] = []
     observation_records: List[FrameObservationRecord] = []
+    ball_diagnostic_items: List[Dict[str, Any]] = []
     processed_frames = 0
+    first_frame_seen: Optional[int] = None
+    last_frame_seen: Optional[int] = None
 
     try:
         for fno, ts, frame_bgr, detections in tracker.track_video(
             video_path, max_frames=max_tracking_frames, fps_override=fps
         ):
             processed_frames += 1
+            if first_frame_seen is None:
+                first_frame_seen = fno
+            last_frame_seen = fno
+
             player_dets = [d for d in detections if d.class_name == "player"]
             ball_dets = [d for d in detections if d.class_name == "ball"]
+            det_source = "full_or_tiled" if ball_dets else "none"
 
-            people_per_frame.append(len(player_dets))
-            balls_per_frame.append(len(ball_dets))
+            # If ball still missed on this frame and Kalman ROI search is available, try ROI crop search
+            if not ball_dets and possession_engine is not None:
+                roi_box = possession_engine.get_predicted_ball_roi((height, width))
+                if roi_box is not None:
+                    roi_balls = aux_detector.detect_ball_in_roi(
+                        frame_bgr,
+                        roi_box,
+                        frame_number=fno,
+                        timestamp=ts,
+                        conf_threshold=match_cfg.detection.roi_conf_threshold,
+                    )
+                    if roi_balls:
+                        ball_dets = _nms_ball_detections(roi_balls)
+                        det_source = "kalman_roi_recovery"
 
-            primary_ball = max(ball_dets, key=lambda b: b.confidence) if ball_dets else None
+            # Collect diagnostic gallery examples across failure & recovery modes
+            if len(ball_diagnostic_items) < 12:
+                filtered_check = filter_ball_candidates(
+                    ball_dets,
+                    player_dets,
+                    (height, width),
+                    min_size=match_cfg.detection.min_ball_box_size_px,
+                    max_size=match_cfg.detection.max_ball_box_size_px,
+                )
+                if len(ball_dets) > len(filtered_check):
+                    rejected_b = [b for b in ball_dets if b not in filtered_check][0]
+                    ball_diagnostic_items.append(
+                        {
+                            "category": "Rejected False Positive",
+                            "frame_number": fno,
+                            "note": f"conf={rejected_b.confidence:.2f} filtered (size/torso/overlay)",
+                            "title_color": "darkred",
+                            "crop_or_frame_bgr": _build_ball_diagnostic_panel_crop(
+                                frame_bgr, rejected_b.bbox, (0, 0, 255), f"FP {rejected_b.confidence:.2f}"
+                            ),
+                        }
+                    )
+                elif filtered_check:
+                    top_b = max(filtered_check, key=lambda b: b.confidence)
+                    if top_b.confidence < 0.30 and sum(1 for x in ball_diagnostic_items if x["category"] == "Low-Conf Recovery") < 4:
+                        ball_diagnostic_items.append(
+                            {
+                                "category": "Low-Conf Recovery",
+                                "frame_number": fno,
+                                "note": f"conf={top_b.confidence:.2f} ({det_source})",
+                                "title_color": "darkorange",
+                                "crop_or_frame_bgr": _build_ball_diagnostic_panel_crop(
+                                    frame_bgr, top_b.bbox, (0, 180, 255), f"LowConf {top_b.confidence:.2f}"
+                                ),
+                            }
+                        )
+                    elif top_b.confidence >= 0.35 and sum(1 for x in ball_diagnostic_items if x["category"] == "High-Conf Hit") < 4:
+                        ball_diagnostic_items.append(
+                            {
+                                "category": "High-Conf Hit",
+                                "frame_number": fno,
+                                "note": f"conf={top_b.confidence:.2f} ({det_source})",
+                                "title_color": "darkgreen",
+                                "crop_or_frame_bgr": _build_ball_diagnostic_panel_crop(
+                                    frame_bgr, top_b.bbox, (0, 220, 0), f"Ball {top_b.confidence:.2f}"
+                                ),
+                            }
+                        )
+                elif sum(1 for x in ball_diagnostic_items if x["category"] == "Missed / Occluded") < 3:
+                    ball_diagnostic_items.append(
+                        {
+                            "category": "Missed / Occluded",
+                            "frame_number": fno,
+                            "note": "No ball above threshold (blur/occlusion)",
+                            "title_color": "dimgray",
+                            "crop_or_frame_bgr": _build_ball_diagnostic_panel_crop(frame_bgr, None),
+                        }
+                    )
+
             all_p_bboxes = [d.bbox for d in player_dets]
             frame_obs: List[FrameObservationRecord] = []
 
@@ -343,6 +486,7 @@ def run_match_pipeline(
                 )
                 disp_name = match_cfg.to_display_label(stable_lbl)
 
+                primary_raw_ball = max(ball_dets, key=lambda b: b.confidence) if ball_dets else None
                 obs_rec = FrameObservationRecord(
                     match_id=match_cfg.match_id,
                     frame_number=fno,
@@ -357,19 +501,51 @@ def run_match_pipeline(
                     classification_distance=pred.nearest_distance,
                     track_team_confidence=trk_conf,
                     is_team_locked=is_locked,
-                    ball_bbox=primary_ball.bbox if primary_ball else None,
-                    ball_detection_confidence=primary_ball.confidence if primary_ball else None,
+                    ball_bbox=primary_raw_ball.bbox if primary_raw_ball else None,
+                    ball_detection_confidence=primary_raw_ball.confidence if primary_raw_ball else None,
                 )
                 frame_obs.append(obs_rec)
                 observation_records.append(obs_rec)
 
-            annotated_frame = annotate_match_frame(frame_bgr, frame_obs, ball_dets, match_cfg)
+            ball_traj_rec = None
+            poss_frame_rec = None
+            if possession_engine is not None:
+                ball_traj_rec, poss_frame_rec, _ = possession_engine.step_frame(
+                    frame_number=fno,
+                    timestamp=ts,
+                    player_observations=frame_obs,
+                    raw_ball_detections=ball_dets,
+                    player_detections=player_dets,
+                    frame_bgr=frame_bgr,
+                    frame_shape=(height, width),
+                    detection_source=det_source,
+                )
+                people_per_frame.append(len(player_dets))
+                balls_per_frame.append(1 if ball_traj_rec.is_observed else 0)
+            else:
+                people_per_frame.append(len(player_dets))
+                balls_per_frame.append(len(ball_dets))
+
+            annotated_frame = annotate_match_frame(
+                frame_bgr,
+                frame_obs,
+                ball_dets,
+                match_cfg,
+                ball_trajectory_rec=ball_traj_rec,
+                possession_rec=poss_frame_rec,
+            )
             writer.write(annotated_frame)
     finally:
         writer.release()
 
     finalized_video = finalize_mp4_video(raw_video_path, final_video_path)
     artifacts["annotated_video"] = str(finalized_video)
+
+    if ball_diagnostic_items:
+        b_diag_path = save_ball_detection_diagnostic_gallery(
+            ball_diagnostic_items, output_dir / "ball_detection_diagnostics.png"
+        )
+        artifacts["ball_detection_diagnostics"] = str(b_diag_path)
 
     timeline_path = save_detections_timeline_plot(
         people_per_frame,
@@ -383,6 +559,67 @@ def run_match_pipeline(
         output_dir / "frame_observations.csv", observation_records
     )
     artifacts["frame_observations_csv"] = str(obs_csv_path)
+
+    # Export Possession & Ball Trajectory outputs
+    possession_summary: Dict[str, Any] = {}
+    possession_validation: Dict[str, Any] = {}
+    if possession_engine is not None:
+        possession_summary = possession_engine.summarize()
+        b_csv = export_ball_trajectory_records(
+            output_dir / "ball_trajectory.csv", possession_engine.ball_trajectory
+        )
+        o_csv = export_player_ownership_records(
+            output_dir / "player_ownership.csv", possession_engine.player_proximities
+        )
+        t_csv = export_possession_timeline_records(
+            output_dir / "possession_timeline.csv", possession_engine.timeline
+        )
+        artifacts["ball_trajectory_csv"] = str(b_csv)
+        artifacts["player_ownership_csv"] = str(o_csv)
+        artifacts["possession_timeline_csv"] = str(t_csv)
+
+        p_chart = save_possession_timeline_chart(
+            possession_engine.timeline,
+            match_cfg,
+            possession_summary,
+            output_dir / "possession_timeline_chart.png",
+        )
+        artifacts["possession_timeline_chart"] = str(p_chart)
+
+        # Initialize / evaluate manual possession annotations
+        poss_ann_store = PossessionAnnotationStore(
+            root / "data" / "annotations" / match_cfg.match_id,
+            match_id=match_cfg.match_id,
+        )
+        if first_frame_seen is not None and last_frame_seen is not None and not poss_ann_store.intervals:
+            poss_ann_store.create_template_intervals(
+                start_frame=first_frame_seen,
+                end_frame=last_frame_seen,
+                fps=fps,
+                interval_frames=30,
+            )
+        verified_poss_ivs = poss_ann_store.get_verified_intervals()
+        possession_validation = evaluate_possession_predictions(
+            possession_engine.timeline,
+            verified_poss_ivs,
+            match_config=match_cfg,
+        )
+        if possession_validation.get("metrics_available"):
+            pcm_path = save_confusion_matrix_plot(
+                possession_validation["confusion_matrix"],
+                possession_validation["state_labels"],
+                f"{match_cfg.match_name} — Possession State Validation",
+                output_dir / "possession_confusion_matrix.png",
+            )
+            artifacts["possession_confusion_matrix"] = str(pcm_path)
+
+        poss_rep_files = generate_possession_report(
+            output_dir=output_dir,
+            possession_summary=possession_summary,
+            possession_validation=possession_validation,
+        )
+        for k, v in poss_rep_files.items():
+            artifacts[k] = str(v)
 
     tracking_summary = stabilizer.summarize_diagnostics(processed_frames=processed_frames)
     tracking_summary["tracker_config"] = match_cfg.tracking.tracker_config
@@ -398,14 +635,16 @@ def run_match_pipeline(
             max_frames=tracker_comparison_frames,
         )
 
-    # 6. Detection evaluation & confidence sweep on sampled frames
+    # 6. Detection evaluation, confidence sweep & ball strategy benchmark on sampled frames
     ann_store = DetectionAnnotationStore(
         root / "data" / "annotations" / match_cfg.match_id,
         match_id=match_cfg.match_id,
     )
-    sample_frame_ids = sorted(LEGACY_NORWAY_WALES_DETECTION_COUNTS.keys()) if match_cfg.match_id == "norway_wales" else [
-        int(f) for f in (total_video_frames * 0.55 + i * 50 for i in range(6)) if f < total_video_frames
-    ]
+    sample_frame_ids = (
+        sorted(LEGACY_NORWAY_WALES_DETECTION_COUNTS.keys())
+        if match_cfg.match_id == "norway_wales"
+        else [int(f) for f in (i * 40 for i in range(1, 12)) if f < total_video_frames]
+    )
     if not ann_store.frames:
         ann_store.export_frames_for_annotation(
             video_path=video_path,
@@ -413,9 +652,9 @@ def run_match_pipeline(
             legacy_count_records=LEGACY_NORWAY_WALES_DETECTION_COUNTS if match_cfg.match_id == "norway_wales" else None,
         )
 
-    detector = FootballDetector(config=match_cfg.detection)
     raw_sample_preds = {}
     pred_counts_at_default = {}
+    sample_frames_list: List[Tuple[int, float, Any]] = []
     cap_eval = cv2.VideoCapture(str(video_path))
     try:
         for fno in sample_frame_ids:
@@ -423,11 +662,12 @@ def run_match_pipeline(
             ok, frm = cap_eval.read()
             if not ok or frm is None:
                 continue
-            # Run with low threshold (0.15) to support full confidence sweep
-            raw_dets = detector.detect_frame(
+            ts_f = round(fno / fps, 3)
+            sample_frames_list.append((int(fno), ts_f, frm))
+            raw_dets = aux_detector.detect_frame(
                 frm,
                 frame_number=fno,
-                timestamp=round(fno / fps, 3),
+                timestamp=ts_f,
                 person_conf_override=0.15,
                 ball_conf_override=0.15,
             )
@@ -465,6 +705,14 @@ def run_match_pipeline(
     sweep_csv = write_csv_rows(output_dir / "detection_confidence_sweep.csv", conf_sweep)
     artifacts["detection_confidence_sweep_csv"] = str(sweep_csv)
 
+    ball_strategy_benchmark: List[Dict[str, Any]] = []
+    if run_ball_strategy_benchmark and sample_frames_list:
+        ball_strategy_benchmark = benchmark_ball_detection_strategies(
+            sample_frames_list[:6],
+            verified_annotations=verified_gt,
+            iou_threshold=match_cfg.detection.iou_threshold,
+        )
+
     legacy_count_eval = None
     if match_cfg.match_id == "norway_wales":
         legacy_count_eval = evaluate_legacy_manual_counts(
@@ -485,6 +733,7 @@ def run_match_pipeline(
         "iou_evaluation": iou_evaluation,
         "legacy_count_evaluation": legacy_count_eval,
         "confidence_sweep": conf_sweep,
+        "ball_strategy_benchmark": ball_strategy_benchmark,
     }
 
     report_files = generate_consolidated_report(
@@ -497,6 +746,9 @@ def run_match_pipeline(
         tracker_comparison=tracker_comparison,
         feature_benchmark=benchmark_results,
         label_audit=label_audit,
+        possession_summary=possession_summary,
+        possession_validation=possession_validation,
+        ball_detection_benchmark=ball_strategy_benchmark,
         artifacts_generated=artifacts,
     )
 
@@ -507,8 +759,10 @@ def run_match_pipeline(
         "classification_summary": clf_eval,
         "tracking_summary": tracking_summary,
         "tracker_comparison": tracker_comparison,
+        "possession_summary": possession_summary,
+        "possession_validation": possession_validation,
+        "ball_detection_benchmark": ball_strategy_benchmark,
         "label_audit": label_audit,
         "report_files": {k: str(v) for k, v in report_files.items()},
         "artifacts": artifacts,
     }
-

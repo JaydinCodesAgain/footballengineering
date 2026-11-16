@@ -15,9 +15,17 @@ class DetectionConfig:
     model_name: str = "yolo11n.pt"
     imgsz: int = 1088
     person_conf: float = 0.40
-    ball_conf: float = 0.25
+    ball_conf: float = 0.20
     frame_stride: int = 2
     iou_threshold: float = 0.50
+    enable_roi_ball_search: bool = True
+    roi_size_px: int = 640
+    roi_conf_threshold: float = 0.14
+    enable_tiled_ball_search: bool = True
+    tile_conf_threshold: float = 0.16
+    min_ball_box_size_px: int = 5
+    max_ball_box_size_px: int = 140
+    filter_false_positive_balls: bool = True
 
 
 @dataclass
@@ -74,6 +82,36 @@ class SplitConfig:
 
 
 @dataclass
+class BallTrackingConfig:
+    max_coast_frames: int = 5
+    max_jump_px_per_frame: float = 165.0
+    reacquire_confirm_frames: int = 2
+    velocity_damping: float = 0.85
+    interpolation_conf_decay: float = 0.78
+    camera_cut_hist_threshold: float = 0.52
+    process_noise_scale: float = 8.0
+    measurement_noise_scale: float = 12.0
+
+
+@dataclass
+class PossessionConfig:
+    enabled: bool = True
+    control_distance_threshold: float = 1.35
+    contested_distance_threshold: float = 1.15
+    contested_margin_threshold: float = 0.22
+    loose_ball_speed_threshold_px_s: float = 520.0
+    min_control_frames: int = 2
+    max_pass_retention_frames: int = 6
+    min_ownership_confidence: float = 0.28
+    exclude_referees: bool = True
+    attribute_unknown_goalkeepers: bool = False
+    pitch_y_min_frac: float = 0.08
+    pitch_y_max_frac: float = 0.96
+    pitch_x_min_frac: float = 0.02
+    pitch_x_max_frac: float = 0.98
+
+
+@dataclass
 class MatchConfig:
     """Configuration for a specific football match and pipeline run."""
 
@@ -103,6 +141,8 @@ class MatchConfig:
     classification: ClassificationConfig = field(default_factory=ClassificationConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
     splits: SplitConfig = field(default_factory=SplitConfig)
+    ball_tracking: BallTrackingConfig = field(default_factory=BallTrackingConfig)
+    possession: PossessionConfig = field(default_factory=PossessionConfig)
 
     def resolve_video_path(self, base_dir: Optional[Path] = None) -> Path:
         """Resolve the video path across primary and fallback locations."""
@@ -173,6 +213,8 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
     cls_raw = raw.get("classification", {})
     trk_raw = raw.get("tracking", {})
     spl_raw = raw.get("splits", {})
+    btrk_raw = raw.get("ball_tracking", {})
+    poss_raw = raw.get("possession", {})
 
     colours_raw = raw.get("team_colours_bgr", {})
     colours_parsed: Dict[str, Tuple[int, int, int]] = {
@@ -206,5 +248,7 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
         classification=ClassificationConfig(**cls_raw),
         tracking=TrackingConfig(**trk_raw),
         splits=SplitConfig(**spl_raw),
+        ball_tracking=BallTrackingConfig(**btrk_raw),
+        possession=PossessionConfig(**poss_raw),
     )
 

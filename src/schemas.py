@@ -210,3 +210,115 @@ class FrameObservationRecord:
             data["ball_bbox"] = list(self.ball_bbox)
         return data
 
+
+class BallObservationMode(str, Enum):
+    """Provenance state for ball tracking coordinates."""
+
+    OBSERVED = "observed"
+    INTERPOLATED = "interpolated"
+    LOST = "lost"
+
+
+class PossessionState(str, Enum):
+    """Explicit ball-control states for the possession state machine."""
+
+    TEAM_A_CONTROL = "TEAM_A_CONTROL"
+    TEAM_B_CONTROL = "TEAM_B_CONTROL"
+    CONTESTED = "CONTESTED"
+    LOOSE_BALL = "LOOSE_BALL"
+    UNKNOWN = "UNKNOWN"
+    OUT_OF_PLAY = "OUT_OF_PLAY"
+
+    @classmethod
+    def all_states(cls) -> Tuple[str, ...]:
+        return (
+            cls.TEAM_A_CONTROL.value,
+            cls.TEAM_B_CONTROL.value,
+            cls.CONTESTED.value,
+            cls.LOOSE_BALL.value,
+            cls.UNKNOWN.value,
+            cls.OUT_OF_PLAY.value,
+        )
+
+
+@dataclass
+class BallTrajectoryRecord:
+    """Per-frame ball tracking state with explicit observation vs interpolation provenance."""
+
+    match_id: str
+    frame_number: int
+    timestamp: float
+    observation_mode: str
+    is_observed: bool
+    is_interpolated: bool
+    bbox: Optional[Tuple[int, int, int, int]]
+    center_x: Optional[float]
+    center_y: Optional[float]
+    velocity_x: float
+    velocity_y: float
+    speed_px_per_sec: float
+    confidence: float
+    uncertainty_radius_px: float
+    frames_since_observed: int
+    camera_cut_reset: bool = False
+    rejected_outliers_count: int = 0
+    detection_source: str = "none"
+
+    def to_dict(self) -> Dict[str, Any]:
+        data = asdict(self)
+        if self.bbox is not None:
+            data["bbox"] = list(self.bbox)
+        return data
+
+
+@dataclass
+class PlayerProximityRecord:
+    """Scale-normalized proximity and control evidence between a tracked player and the ball."""
+
+    match_id: str
+    frame_number: int
+    timestamp: float
+    player_id: Optional[int]
+    team_id: str
+    team_display_name: str
+    foot_x: float
+    foot_y: float
+    player_height_px: float
+    pixel_distance_to_ball: Optional[float]
+    normalized_distance_to_ball: Optional[float]
+    is_aerial_ball: bool
+    eligible_for_ownership: bool
+    control_score: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class PossessionFrameRecord:
+    """Per-frame ball-control state and cumulative team possession telemetry."""
+
+    match_id: str
+    frame_number: int
+    timestamp: float
+    dt_seconds: float
+    ball_observation_mode: str
+    ball_visibility: str
+    possession_state: str
+    raw_interaction_state: str
+    controlling_player_id: Optional[int]
+    controlling_team_id: Optional[str]
+    controlling_team_display: str
+    possession_confidence: float
+    closest_player_id: Optional[int]
+    closest_team_id: Optional[str]
+    closest_normalized_distance: Optional[float]
+    second_closest_team_id: Optional[str]
+    second_closest_normalized_distance: Optional[float]
+    running_team_a_share_pct: float
+    running_team_b_share_pct: float
+    camera_cut: bool = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+

@@ -1,4 +1,4 @@
-"""Consolidated analytics report generator (JSON, CSV, and Markdown)."""
+"""Consolidated analytics and possession report generator (JSON, CSV, and Markdown)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from src.schemas import FrameObservationRecord
+from src.schemas import (
+    BallTrajectoryRecord,
+    FrameObservationRecord,
+    PlayerProximityRecord,
+    PossessionFrameRecord,
+)
 
 
 def write_csv_rows(path: str | Path, rows: Sequence[Dict[str, Any]]) -> Path:
@@ -37,11 +42,154 @@ def export_possession_foundation_records(
     path: str | Path,
     records: Sequence[FrameObservationRecord],
 ) -> Path:
-    """
-    Export per-frame player/team/ball observation records to CSV for downstream possession analytics.
-    """
+    """Export per-frame player/team/ball observation records to CSV."""
     dict_rows = [r.to_dict() for r in records]
     return write_csv_rows(path, dict_rows)
+
+
+def export_ball_trajectory_records(
+    path: str | Path,
+    records: Sequence[BallTrajectoryRecord],
+) -> Path:
+    """Export per-frame Kalman ball trajectory records (`ball_trajectory.csv`)."""
+    return write_csv_rows(path, [r.to_dict() for r in records])
+
+
+def export_player_ownership_records(
+    path: str | Path,
+    records: Sequence[PlayerProximityRecord],
+) -> Path:
+    """Export per-player proximity and control evidence records (`player_ownership.csv`)."""
+    return write_csv_rows(path, [r.to_dict() for r in records])
+
+
+def export_possession_timeline_records(
+    path: str | Path,
+    records: Sequence[PossessionFrameRecord],
+) -> Path:
+    """Export per-frame possession state machine timeline (`possession_timeline.csv`)."""
+    return write_csv_rows(path, [r.to_dict() for r in records])
+
+
+def generate_possession_report(
+    output_dir: str | Path,
+    possession_summary: Dict[str, Any],
+    possession_validation: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Path]:
+    """
+    Generate `possession_summary.json` and `possession_report.md` in `output_dir`.
+    """
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+    timestamp_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    payload = {
+        "generated_at": timestamp_iso,
+        "summary": possession_summary,
+        "validation": possession_validation or {"metrics_available": False, "status": "not_evaluated"},
+    }
+    json_path = out_path / "possession_summary.json"
+    with json_path.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+
+    match_name = possession_summary.get("match_name", possession_summary.get("match_id", "Match"))
+    match_id = possession_summary.get("match_id", "")
+    attr = possession_summary.get("attributed_possession_share", {})
+    durs = possession_summary.get("durations_seconds", {})
+    dist = possession_summary.get("total_analysed_time_distribution_pct", {})
+    b_trk = possession_summary.get("ball_tracking", {})
+
+    team_a = attr.get("team_a_name", "Team A")
+    team_b = attr.get("team_b_name", "Team B")
+    share_a = attr.get("team_a_pct")
+    share_b = attr.get("team_b_pct")
+    share_a_str = f"{share_a:.2f}%" if share_a is not None else "N/A (0.0s attributed)"
+    share_b_str = f"{share_b:.2f}%" if share_b is not None else "N/A (0.0s attributed)"
+
+    md = [
+        f"# Team Possession Analytics Report — {match_name} (`{match_id}`)",
+        f"**Generated:** {timestamp_iso}",
+        "",
+        f"> **Segment Scope Notice (`{possession_summary.get('segment_scope')}`):** "
+        f"{possession_summary.get('scope_disclaimer')} "
+        f"Analysed **{possession_summary.get('analysed_duration_seconds', 0.0):.2f}s** "
+        f"of **{possession_summary.get('total_video_duration_seconds', 0.0):.2f}s** total video duration "
+        f"({possession_summary.get('frames_processed', 0)} frames at FPS={possession_summary.get('video_fps')}, "
+        f"stride={possession_summary.get('frame_stride')}).",
+        "",
+        "## 1. Attributed Possession Share",
+        "*Computed strictly over intervals where one team has verified ball control (`T_team / (T_Team_A + T_Team_B)`).*",
+        "",
+        "| Team | Controlled Time (s) | Attributed Possession Share |",
+        "|---|---:|---:|",
+        f"| **{team_a}** (`Team_A`) | {durs.get('team_a_controlled', 0.0):.2f}s | **{share_a_str}** |",
+        f"| **{team_b}** (`Team_B`) | {durs.get('team_b_controlled', 0.0):.2f}s | **{share_b_str}** |",
+        f"| **Total Confidently Attributed** | {durs.get('attributed_total', 0.0):.2f}s | **Coverage: {possession_summary.get('possession_coverage_pct', 0.0):.2f}%** |",
+        "",
+        "## 2. Total Analysed Time Distribution (All 6 States)",
+        "*Includes contested duels, loose/in-flight balls, unknown intervals, and out-of-play time without silently assigning them to either team.*",
+        "",
+        "| Possession State | Duration (s) | Frame Count | Share of Total Analysed Time (%) |",
+        "|---|---:|---:|---:|",
+    ]
+
+    f_counts = possession_summary.get("frame_counts_by_state", {})
+    state_dur_map = {
+        "TEAM_A_CONTROL": durs.get("team_a_controlled", 0.0),
+        "TEAM_B_CONTROL": durs.get("team_b_controlled", 0.0),
+        "CONTESTED": durs.get("contested", 0.0),
+        "LOOSE_BALL": durs.get("loose_ball", 0.0),
+        "UNKNOWN": durs.get("unknown", 0.0),
+        "OUT_OF_PLAY": durs.get("out_of_play", 0.0),
+    }
+    for st_name, sec_val in state_dur_map.items():
+        fc = f_counts.get(st_name, 0)
+        pct_v = dist.get(st_name, 0.0)
+        md.append(f"| `{st_name}` | {sec_val:.2f}s | {fc} | {pct_v:.2f}% |")
+
+    md.extend(
+        [
+            "",
+            "## 3. Ball Tracking Provenance Summary",
+            f"- **Observed Ball Frames (Direct Detector Hit):** {b_trk.get('observed_frames', 0)} "
+            f"({b_trk.get('observed_coverage_pct', 0.0):.2f}%)",
+            f"- **Interpolated Ball Frames (Kalman Coasting):** {b_trk.get('interpolated_frames', 0)}",
+            f"- **Lost Ball Frames:** {b_trk.get('lost_frames', 0)}",
+            f"- **Combined Tracked/Coasting Coverage:** {b_trk.get('tracked_or_interpolated_pct', 0.0):.2f}%",
+            f"- **Camera-Cut Resets Triggered:** {b_trk.get('camera_cut_resets', 0)}",
+            f"- **Outlier Ball Jumps Rejected:** {b_trk.get('rejected_outlier_detections', 0)}",
+            f"- **Possession State Transitions:** {possession_summary.get('state_transitions_count', 0)}",
+        ]
+    )
+
+    if possession_validation and possession_validation.get("metrics_available"):
+        md.extend(
+            [
+                "",
+                "## 4. Ground-Truth Possession Validation",
+                f"- **Evaluated Frames:** {possession_validation.get('evaluated_frames', 0)}",
+                f"- **State Classification Accuracy:** {possession_validation.get('state_accuracy', 0.0):.2%}",
+                f"- **Team Possession Share Error:** {possession_validation.get('team_possession_share_error_pct_points', 0.0):.2f} percentage points",
+                f"- **Transition Count Error:** {possession_validation.get('transition_count_error', 0)}",
+            ]
+        )
+    else:
+        msg = (
+            possession_validation.get("message")
+            if possession_validation
+            else "Manual ground-truth possession intervals pending."
+        )
+        md.extend(
+            [
+                "",
+                "## 4. Ground-Truth Possession Validation",
+                f"- **Status:** Pending manual interval verification ({msg})",
+            ]
+        )
+
+    md_path = out_path / "possession_report.md"
+    md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+    return {"possession_summary_json": json_path, "possession_report_md": md_path}
 
 
 def generate_consolidated_report(
@@ -54,6 +202,9 @@ def generate_consolidated_report(
     tracker_comparison: Optional[Dict[str, Dict[str, Any]]] = None,
     feature_benchmark: Optional[Sequence[Dict[str, Any]]] = None,
     label_audit: Optional[Dict[str, Any]] = None,
+    possession_summary: Optional[Dict[str, Any]] = None,
+    possession_validation: Optional[Dict[str, Any]] = None,
+    ball_detection_benchmark: Optional[Sequence[Dict[str, Any]]] = None,
     artifacts_generated: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Path]:
     """
@@ -72,6 +223,9 @@ def generate_consolidated_report(
         "tracking": tracking_summary,
         "tracker_comparison": tracker_comparison or {},
         "label_audit": label_audit or {},
+        "possession": possession_summary or {},
+        "possession_validation": possession_validation or {},
+        "ball_detection_benchmark": list(ball_detection_benchmark or []),
         "artifacts": artifacts_generated or {},
     }
 
@@ -107,6 +261,11 @@ def generate_consolidated_report(
             out_path / "classification_benchmark.csv", bench_rows
         )
 
+    if ball_detection_benchmark:
+        saved_files["ball_detection_benchmark_csv"] = write_csv_rows(
+            out_path / "ball_detection_benchmark.csv", list(ball_detection_benchmark)
+        )
+
     # Export tracker comparison CSV if present
     if tracker_comparison:
         trk_rows = list(tracker_comparison.values())
@@ -122,8 +281,8 @@ def generate_consolidated_report(
         "## 1. Detection Summary",
         f"- **Total Frames Processed:** {detection_summary.get('total_frames_processed', 0)}",
         f"- **Average Players / Frame:** {detection_summary.get('avg_players_per_frame', 0.0):.2f}",
-        f"- **Frames with Ball Detected:** {detection_summary.get('frames_with_ball', 0)} "
-        f"({detection_summary.get('ball_coverage_pct', 0.0):.1f}%)",
+        f"- **Frames with Ball Detected (Direct Observation):** {detection_summary.get('frames_with_ball', 0)} "
+        f"({detection_summary.get('ball_coverage_pct', 0.0):.1f}% coverage — distinct from ground-truth recall)",
     ]
 
     iou_eval = detection_summary.get("iou_evaluation", {})
@@ -153,7 +312,7 @@ def generate_consolidated_report(
             f"(threshold={classification_summary.get('unknown_threshold', 'N/A')})",
             f"- **Training Dataset Size:** {classification_summary.get('training_size', 0)} "
             f"(`{classification_summary.get('training_class_counts', {})}`)",
-            f"- **Held-Out Evaluation Accuracy:** {classification_summary.get('overall_accuracy', 0.0):.2%}",
+            f"- **Held-Out Validation Accuracy:** {classification_summary.get('overall_accuracy', 0.0):.2%}",
             f"- **Selective Accuracy (Non-Unknown):** {classification_summary.get('selective_accuracy', 0.0):.2%}",
             f"- **Macro F1 (All Classes):** {classification_summary.get('macro_f1', 0.0):.2%}",
             f"- **Macro F1 (Positive Classes):** {classification_summary.get('positive_macro_f1', 0.0):.2%}",
@@ -189,8 +348,24 @@ def generate_consolidated_report(
         ]
     )
 
+    if possession_summary:
+        attr = possession_summary.get("attributed_possession_share", {})
+        b_trk = possession_summary.get("ball_tracking", {})
+        md_lines.extend(
+            [
+                "",
+                "## 4. Team Possession Summary (Segment Estimate)",
+                f"- **Scope:** `{possession_summary.get('segment_scope')}` "
+                f"({possession_summary.get('analysed_duration_seconds', 0.0):.2f}s analysed)",
+                f"- **Attributed Possession Share ({attr.get('team_a_name')} vs {attr.get('team_b_name')}):** "
+                f"**{attr.get('team_a_pct')}%** vs **{attr.get('team_b_pct')}%**",
+                f"- **Possession Attribution Coverage:** {possession_summary.get('possession_coverage_pct', 0.0):.2f}%",
+                f"- **Ball Observed Coverage:** {b_trk.get('observed_coverage_pct', 0.0):.2f}% "
+                f"(+ {b_trk.get('interpolated_frames', 0)} Kalman-interpolated frames)",
+            ]
+        )
+
     md_file = out_path / "analytics_report.md"
     md_file.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
     saved_files["report_md"] = md_file
     return saved_files
-
