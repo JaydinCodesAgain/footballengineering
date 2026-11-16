@@ -1,0 +1,6489 @@
+{
+  "match_id": "norway_wales",
+  "match_name": "Norway vs Wales",
+  "total_crops": 180,
+  "labelled_crops": 147,
+  "verified_crops": 147,
+  "crops": [
+    {
+      "crop_id": "norway_wales_val_g032_f001824_x0626_y0205",
+      "match_id": "norway_wales",
+      "frame_number": 1824,
+      "timestamp": 72.96,
+      "tracking_id": null,
+      "bbox": [
+        626,
+        205,
+        842,
+        517
+      ],
+      "torso_bbox": [
+        680,
+        261,
+        788,
+        376
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g032_f001824_x0626_y0205.png",
+      "quality": {
+        "width": 108,
+        "height": 115,
+        "blur_score": 719.8848180756196,
+        "grass_ratio": 0.00249597423510467,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 32
+    },
+    {
+      "crop_id": "norway_wales_val_g033_f001824_x0005_y0242",
+      "match_id": "norway_wales",
+      "frame_number": 1824,
+      "timestamp": 72.96,
+      "tracking_id": null,
+      "bbox": [
+        5,
+        242,
+        124,
+        438
+      ],
+      "torso_bbox": [
+        34,
+        277,
+        94,
+        349
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g033_f001824_x0005_y0242.png",
+      "quality": {
+        "width": 60,
+        "height": 72,
+        "blur_score": 364.9016973165295,
+        "grass_ratio": 0.018287037037037036,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 33
+    },
+    {
+      "crop_id": "norway_wales_val_g034_f001824_x0322_y0226",
+      "match_id": "norway_wales",
+      "frame_number": 1824,
+      "timestamp": 72.96,
+      "tracking_id": null,
+      "bbox": [
+        322,
+        226,
+        473,
+        468
+      ],
+      "torso_bbox": [
+        359,
+        269,
+        435,
+        359
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g034_f001824_x0322_y0226.png",
+      "quality": {
+        "width": 76,
+        "height": 90,
+        "blur_score": 729.9285395292568,
+        "grass_ratio": 0.00847953216374269,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 34
+    },
+    {
+      "crop_id": "norway_wales_val_g035_f001840_x0536_y0264",
+      "match_id": "norway_wales",
+      "frame_number": 1840,
+      "timestamp": 73.6,
+      "tracking_id": null,
+      "bbox": [
+        536,
+        264,
+        785,
+        593
+      ],
+      "torso_bbox": [
+        598,
+        323,
+        722,
+        444
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g035_f001840_x0536_y0264.png",
+      "quality": {
+        "width": 124,
+        "height": 121,
+        "blur_score": 934.5639124865734,
+        "grass_ratio": 0.1141029058917622,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 35
+    },
+    {
+      "crop_id": "norway_wales_val_g036_f001840_x0387_y0205",
+      "match_id": "norway_wales",
+      "frame_number": 1840,
+      "timestamp": 73.6,
+      "tracking_id": null,
+      "bbox": [
+        387,
+        205,
+        560,
+        497
+      ],
+      "torso_bbox": [
+        430,
+        257,
+        516,
+        365
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g036_f001840_x0387_y0205.png",
+      "quality": {
+        "width": 86,
+        "height": 108,
+        "blur_score": 246.94385946950896,
+        "grass_ratio": 0.015503875968992248,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 36
+    },
+    {
+      "crop_id": "norway_wales_val_g037_f001840_x0111_y0213",
+      "match_id": "norway_wales",
+      "frame_number": 1840,
+      "timestamp": 73.6,
+      "tracking_id": null,
+      "bbox": [
+        111,
+        213,
+        217,
+        479
+      ],
+      "torso_bbox": [
+        137,
+        260,
+        190,
+        359
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g037_f001840_x0111_y0213.png",
+      "quality": {
+        "width": 53,
+        "height": 99,
+        "blur_score": 738.0743330547748,
+        "grass_ratio": 0.010291595197255575,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 37
+    },
+    {
+      "crop_id": "norway_wales_val_g038_f001856_x0178_y0187",
+      "match_id": "norway_wales",
+      "frame_number": 1856,
+      "timestamp": 74.24,
+      "tracking_id": null,
+      "bbox": [
+        178,
+        187,
+        366,
+        515
+      ],
+      "torso_bbox": [
+        225,
+        246,
+        319,
+        367
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g038_f001856_x0178_y0187.png",
+      "quality": {
+        "width": 94,
+        "height": 121,
+        "blur_score": 304.19875490573867,
+        "grass_ratio": 0.04914717777387023,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 38
+    },
+    {
+      "crop_id": "norway_wales_val_g039_f001872_x0111_y0275",
+      "match_id": "norway_wales",
+      "frame_number": 1872,
+      "timestamp": 74.88,
+      "tracking_id": null,
+      "bbox": [
+        111,
+        275,
+        138,
+        316
+      ],
+      "torso_bbox": [
+        117,
+        282,
+        131,
+        297
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g039_f001872_x0111_y0275.png",
+      "quality": {
+        "width": 14,
+        "height": 15,
+        "blur_score": 890.9155555555556,
+        "grass_ratio": 0.1761904761904762,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 39
+    },
+    {
+      "crop_id": "norway_wales_val_g040_f001872_x0173_y0430",
+      "match_id": "norway_wales",
+      "frame_number": 1872,
+      "timestamp": 74.88,
+      "tracking_id": null,
+      "bbox": [
+        173,
+        430,
+        199,
+        497
+      ],
+      "torso_bbox": [
+        179,
+        442,
+        192,
+        466
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g040_f001872_x0173_y0430.png",
+      "quality": {
+        "width": 13,
+        "height": 24,
+        "blur_score": 1840.772312623274,
+        "grass_ratio": 0.2564102564102564,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 40
+    },
+    {
+      "crop_id": "norway_wales_val_g041_f001872_x1050_y0372",
+      "match_id": "norway_wales",
+      "frame_number": 1872,
+      "timestamp": 74.88,
+      "tracking_id": null,
+      "bbox": [
+        1050,
+        372,
+        1107,
+        424
+      ],
+      "torso_bbox": [
+        1064,
+        381,
+        1092,
+        400
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g041_f001872_x1050_y0372.png",
+      "quality": {
+        "width": 28,
+        "height": 19,
+        "blur_score": 764.7895408163265,
+        "grass_ratio": 0.6240601503759399,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 41
+    },
+    {
+      "crop_id": "norway_wales_val_g042_f001888_x0019_y0382",
+      "match_id": "norway_wales",
+      "frame_number": 1888,
+      "timestamp": 75.52,
+      "tracking_id": null,
+      "bbox": [
+        19,
+        382,
+        56,
+        439
+      ],
+      "torso_bbox": [
+        28,
+        392,
+        46,
+        413
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g042_f001888_x0019_y0382.png",
+      "quality": {
+        "width": 18,
+        "height": 21,
+        "blur_score": 1210.252743484225,
+        "grass_ratio": 0.42857142857142855,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 42
+    },
+    {
+      "crop_id": "norway_wales_val_g043_f001888_x0843_y0357",
+      "match_id": "norway_wales",
+      "frame_number": 1888,
+      "timestamp": 75.52,
+      "tracking_id": null,
+      "bbox": [
+        843,
+        357,
+        882,
+        412
+      ],
+      "torso_bbox": [
+        852,
+        366,
+        872,
+        387
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g043_f001888_x0843_y0357.png",
+      "quality": {
+        "width": 20,
+        "height": 21,
+        "blur_score": 2486.745912698412,
+        "grass_ratio": 0.2857142857142857,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 43
+    },
+    {
+      "crop_id": "norway_wales_val_g044_f001888_x1159_y0355",
+      "match_id": "norway_wales",
+      "frame_number": 1888,
+      "timestamp": 75.52,
+      "tracking_id": null,
+      "bbox": [
+        1159,
+        355,
+        1187,
+        418
+      ],
+      "torso_bbox": [
+        1166,
+        366,
+        1180,
+        389
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g044_f001888_x1159_y0355.png",
+      "quality": {
+        "width": 14,
+        "height": 23,
+        "blur_score": 542.4291597546392,
+        "grass_ratio": 0.453416149068323,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 44
+    },
+    {
+      "crop_id": "norway_wales_val_g045_f001904_x0726_y0325",
+      "match_id": "norway_wales",
+      "frame_number": 1904,
+      "timestamp": 76.16,
+      "tracking_id": null,
+      "bbox": [
+        726,
+        325,
+        754,
+        365
+      ],
+      "torso_bbox": [
+        733,
+        332,
+        747,
+        347
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g045_f001904_x0726_y0325.png",
+      "quality": {
+        "width": 14,
+        "height": 15,
+        "blur_score": 989.5376190476193,
+        "grass_ratio": 0.15714285714285714,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 45
+    },
+    {
+      "crop_id": "norway_wales_val_g046_f001904_x0336_y0392",
+      "match_id": "norway_wales",
+      "frame_number": 1904,
+      "timestamp": 76.16,
+      "tracking_id": null,
+      "bbox": [
+        336,
+        392,
+        371,
+        457
+      ],
+      "torso_bbox": [
+        344,
+        403,
+        362,
+        427
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g046_f001904_x0336_y0392.png",
+      "quality": {
+        "width": 18,
+        "height": 24,
+        "blur_score": 520.0843567815501,
+        "grass_ratio": 0.5763888888888888,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 46
+    },
+    {
+      "crop_id": "norway_wales_val_g047_f001904_x0590_y0414",
+      "match_id": "norway_wales",
+      "frame_number": 1904,
+      "timestamp": 76.16,
+      "tracking_id": null,
+      "bbox": [
+        590,
+        414,
+        625,
+        478
+      ],
+      "torso_bbox": [
+        598,
+        425,
+        616,
+        449
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g047_f001904_x0590_y0414.png",
+      "quality": {
+        "width": 18,
+        "height": 24,
+        "blur_score": 1425.7360628858023,
+        "grass_ratio": 0.16203703703703703,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 47
+    },
+    {
+      "crop_id": "norway_wales_val_g048_f001920_x0580_y0561",
+      "match_id": "norway_wales",
+      "frame_number": 1920,
+      "timestamp": 76.8,
+      "tracking_id": null,
+      "bbox": [
+        580,
+        561,
+        623,
+        655
+      ],
+      "torso_bbox": [
+        590,
+        577,
+        612,
+        612
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g048_f001920_x0580_y0561.png",
+      "quality": {
+        "width": 22,
+        "height": 35,
+        "blur_score": 698.7035739585091,
+        "grass_ratio": 0.16233766233766234,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 48
+    },
+    {
+      "crop_id": "norway_wales_val_g049_f001920_x0369_y0387",
+      "match_id": "norway_wales",
+      "frame_number": 1920,
+      "timestamp": 76.8,
+      "tracking_id": null,
+      "bbox": [
+        369,
+        387,
+        412,
+        454
+      ],
+      "torso_bbox": [
+        379,
+        399,
+        401,
+        423
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g049_f001920_x0369_y0387.png",
+      "quality": {
+        "width": 22,
+        "height": 24,
+        "blur_score": 1778.66391184573,
+        "grass_ratio": 0.2689393939393939,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 49
+    },
+    {
+      "crop_id": "norway_wales_val_g050_f001920_x0544_y0392",
+      "match_id": "norway_wales",
+      "frame_number": 1920,
+      "timestamp": 76.8,
+      "tracking_id": null,
+      "bbox": [
+        544,
+        392,
+        582,
+        475
+      ],
+      "torso_bbox": [
+        553,
+        406,
+        572,
+        437
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g050_f001920_x0544_y0392.png",
+      "quality": {
+        "width": 19,
+        "height": 31,
+        "blur_score": 477.20252737654965,
+        "grass_ratio": 0.21561969439728354,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 50
+    },
+    {
+      "crop_id": "norway_wales_val_g051_f001936_x1058_y0429",
+      "match_id": "norway_wales",
+      "frame_number": 1936,
+      "timestamp": 77.44,
+      "tracking_id": null,
+      "bbox": [
+        1058,
+        429,
+        1086,
+        494
+      ],
+      "torso_bbox": [
+        1065,
+        440,
+        1079,
+        464
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g051_f001936_x1058_y0429.png",
+      "quality": {
+        "width": 14,
+        "height": 24,
+        "blur_score": 1233.1289593962586,
+        "grass_ratio": 0.020833333333333332,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 51
+    },
+    {
+      "crop_id": "norway_wales_val_g052_f001936_x0795_y0402",
+      "match_id": "norway_wales",
+      "frame_number": 1936,
+      "timestamp": 77.44,
+      "tracking_id": null,
+      "bbox": [
+        795,
+        402,
+        844,
+        479
+      ],
+      "torso_bbox": [
+        807,
+        415,
+        831,
+        444
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g052_f001936_x0795_y0402.png",
+      "quality": {
+        "width": 24,
+        "height": 29,
+        "blur_score": 683.5378435064077,
+        "grass_ratio": 0.25862068965517243,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 52
+    },
+    {
+      "crop_id": "norway_wales_val_g053_f001936_x0808_y0278",
+      "match_id": "norway_wales",
+      "frame_number": 1936,
+      "timestamp": 77.44,
+      "tracking_id": null,
+      "bbox": [
+        808,
+        278,
+        838,
+        328
+      ],
+      "torso_bbox": [
+        815,
+        287,
+        830,
+        305
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g053_f001936_x0808_y0278.png",
+      "quality": {
+        "width": 15,
+        "height": 18,
+        "blur_score": 1162.0102743484224,
+        "grass_ratio": 0.003703703703703704,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 53
+    },
+    {
+      "crop_id": "norway_wales_val_g054_f001952_x0463_y0399",
+      "match_id": "norway_wales",
+      "frame_number": 1952,
+      "timestamp": 78.08,
+      "tracking_id": null,
+      "bbox": [
+        463,
+        399,
+        494,
+        462
+      ],
+      "torso_bbox": [
+        470,
+        410,
+        486,
+        433
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g054_f001952_x0463_y0399.png",
+      "quality": {
+        "width": 16,
+        "height": 23,
+        "blur_score": 6208.697306238186,
+        "grass_ratio": 0.02717391304347826,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 54
+    },
+    {
+      "crop_id": "norway_wales_val_g055_f001952_x0682_y0620",
+      "match_id": "norway_wales",
+      "frame_number": 1952,
+      "timestamp": 78.08,
+      "tracking_id": null,
+      "bbox": [
+        682,
+        620,
+        722,
+        708
+      ],
+      "torso_bbox": [
+        692,
+        635,
+        712,
+        668
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g055_f001952_x0682_y0620.png",
+      "quality": {
+        "width": 20,
+        "height": 33,
+        "blur_score": 1888.601230486685,
+        "grass_ratio": 0.03636363636363636,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 55
+    },
+    {
+      "crop_id": "norway_wales_val_g056_f001952_x0854_y0282",
+      "match_id": "norway_wales",
+      "frame_number": 1952,
+      "timestamp": 78.08,
+      "tracking_id": null,
+      "bbox": [
+        854,
+        282,
+        885,
+        330
+      ],
+      "torso_bbox": [
+        861,
+        290,
+        877,
+        308
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g056_f001952_x0854_y0282.png",
+      "quality": {
+        "width": 16,
+        "height": 18,
+        "blur_score": 2228.2646484375,
+        "grass_ratio": 0.3472222222222222,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 56
+    },
+    {
+      "crop_id": "norway_wales_val_g057_f001968_x1079_y0334",
+      "match_id": "norway_wales",
+      "frame_number": 1968,
+      "timestamp": 78.72,
+      "tracking_id": null,
+      "bbox": [
+        1079,
+        334,
+        1114,
+        409
+      ],
+      "torso_bbox": [
+        1087,
+        347,
+        1105,
+        375
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g057_f001968_x1079_y0334.png",
+      "quality": {
+        "width": 18,
+        "height": 28,
+        "blur_score": 2911.8316169060217,
+        "grass_ratio": 0.07738095238095238,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 57
+    },
+    {
+      "crop_id": "norway_wales_val_g058_f001968_x0383_y0276",
+      "match_id": "norway_wales",
+      "frame_number": 1968,
+      "timestamp": 78.72,
+      "tracking_id": null,
+      "bbox": [
+        383,
+        276,
+        405,
+        344
+      ],
+      "torso_bbox": [
+        388,
+        288,
+        399,
+        313
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g058_f001968_x0383_y0276.png",
+      "quality": {
+        "width": 11,
+        "height": 25,
+        "blur_score": 2007.4074181818182,
+        "grass_ratio": 0.11636363636363636,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 58
+    },
+    {
+      "crop_id": "norway_wales_val_g059_f001968_x0736_y0350",
+      "match_id": "norway_wales",
+      "frame_number": 1968,
+      "timestamp": 78.72,
+      "tracking_id": null,
+      "bbox": [
+        736,
+        350,
+        760,
+        432
+      ],
+      "torso_bbox": [
+        742,
+        364,
+        754,
+        395
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g059_f001968_x0736_y0350.png",
+      "quality": {
+        "width": 12,
+        "height": 31,
+        "blur_score": 1465.5723421782864,
+        "grass_ratio": 0.5725806451612904,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 59
+    },
+    {
+      "crop_id": "norway_wales_val_g060_f001984_x1241_y0420",
+      "match_id": "norway_wales",
+      "frame_number": 1984,
+      "timestamp": 79.36,
+      "tracking_id": null,
+      "bbox": [
+        1241,
+        420,
+        1279,
+        512
+      ],
+      "torso_bbox": [
+        1250,
+        436,
+        1269,
+        470
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g060_f001984_x1241_y0420.png",
+      "quality": {
+        "width": 19,
+        "height": 34,
+        "blur_score": 1256.664448523421,
+        "grass_ratio": 0.413312693498452,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 60
+    },
+    {
+      "crop_id": "norway_wales_val_g061_f001984_x0134_y0436",
+      "match_id": "norway_wales",
+      "frame_number": 1984,
+      "timestamp": 79.36,
+      "tracking_id": null,
+      "bbox": [
+        134,
+        436,
+        180,
+        522
+      ],
+      "torso_bbox": [
+        145,
+        451,
+        168,
+        483
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g061_f001984_x0134_y0436.png",
+      "quality": {
+        "width": 23,
+        "height": 32,
+        "blur_score": 3147.5956385131144,
+        "grass_ratio": 0.10054347826086957,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 61
+    },
+    {
+      "crop_id": "norway_wales_val_g062_f001984_x0684_y0317",
+      "match_id": "norway_wales",
+      "frame_number": 1984,
+      "timestamp": 79.36,
+      "tracking_id": null,
+      "bbox": [
+        684,
+        317,
+        725,
+        388
+      ],
+      "torso_bbox": [
+        694,
+        329,
+        714,
+        356
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g062_f001984_x0684_y0317.png",
+      "quality": {
+        "width": 20,
+        "height": 27,
+        "blur_score": 2197.047115912208,
+        "grass_ratio": 0.32407407407407407,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 62
+    },
+    {
+      "crop_id": "norway_wales_val_g063_f002000_x0786_y0361",
+      "match_id": "norway_wales",
+      "frame_number": 2000,
+      "timestamp": 80.0,
+      "tracking_id": null,
+      "bbox": [
+        786,
+        361,
+        828,
+        435
+      ],
+      "torso_bbox": [
+        796,
+        374,
+        817,
+        401
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g063_f002000_x0786_y0361.png",
+      "quality": {
+        "width": 21,
+        "height": 27,
+        "blur_score": 1916.862150804538,
+        "grass_ratio": 0.7336860670194003,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 63
+    },
+    {
+      "crop_id": "norway_wales_val_g064_f002000_x0365_y0357",
+      "match_id": "norway_wales",
+      "frame_number": 2000,
+      "timestamp": 80.0,
+      "tracking_id": null,
+      "bbox": [
+        365,
+        357,
+        401,
+        430
+      ],
+      "torso_bbox": [
+        374,
+        370,
+        392,
+        397
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g064_f002000_x0365_y0357.png",
+      "quality": {
+        "width": 18,
+        "height": 27,
+        "blur_score": 4307.498132906569,
+        "grass_ratio": 0.15843621399176955,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 64
+    },
+    {
+      "crop_id": "norway_wales_val_g065_f002000_x1080_y0345",
+      "match_id": "norway_wales",
+      "frame_number": 2000,
+      "timestamp": 80.0,
+      "tracking_id": null,
+      "bbox": [
+        1080,
+        345,
+        1117,
+        426
+      ],
+      "torso_bbox": [
+        1089,
+        359,
+        1107,
+        389
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g065_f002000_x1080_y0345.png",
+      "quality": {
+        "width": 18,
+        "height": 30,
+        "blur_score": 3887.2729080932786,
+        "grass_ratio": 0.014814814814814815,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 65
+    },
+    {
+      "crop_id": "norway_wales_val_g066_f002016_x0853_y0258",
+      "match_id": "norway_wales",
+      "frame_number": 2016,
+      "timestamp": 80.64,
+      "tracking_id": null,
+      "bbox": [
+        853,
+        258,
+        887,
+        306
+      ],
+      "torso_bbox": [
+        861,
+        266,
+        878,
+        284
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g066_f002016_x0853_y0258.png",
+      "quality": {
+        "width": 17,
+        "height": 18,
+        "blur_score": 1641.4737600922722,
+        "grass_ratio": 0.21568627450980393,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 66
+    },
+    {
+      "crop_id": "norway_wales_val_g067_f002016_x0169_y0410",
+      "match_id": "norway_wales",
+      "frame_number": 2016,
+      "timestamp": 80.64,
+      "tracking_id": null,
+      "bbox": [
+        169,
+        410,
+        209,
+        492
+      ],
+      "torso_bbox": [
+        179,
+        424,
+        199,
+        455
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g067_f002016_x0169_y0410.png",
+      "quality": {
+        "width": 20,
+        "height": 31,
+        "blur_score": 1611.884732049948,
+        "grass_ratio": 0.09838709677419355,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 67
+    },
+    {
+      "crop_id": "norway_wales_val_g068_f002016_x0394_y0337",
+      "match_id": "norway_wales",
+      "frame_number": 2016,
+      "timestamp": 80.64,
+      "tracking_id": null,
+      "bbox": [
+        394,
+        337,
+        431,
+        414
+      ],
+      "torso_bbox": [
+        403,
+        350,
+        421,
+        379
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g068_f002016_x0394_y0337.png",
+      "quality": {
+        "width": 18,
+        "height": 29,
+        "blur_score": 1710.022654541184,
+        "grass_ratio": 0.14367816091954022,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 68
+    },
+    {
+      "crop_id": "norway_wales_val_g069_f002032_x0657_y0333",
+      "match_id": "norway_wales",
+      "frame_number": 2032,
+      "timestamp": 81.28,
+      "tracking_id": null,
+      "bbox": [
+        657,
+        333,
+        690,
+        397
+      ],
+      "torso_bbox": [
+        665,
+        344,
+        681,
+        368
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g069_f002032_x0657_y0333.png",
+      "quality": {
+        "width": 16,
+        "height": 24,
+        "blur_score": 2163.246249728733,
+        "grass_ratio": 0.03125,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 69
+    },
+    {
+      "crop_id": "norway_wales_val_g070_f002032_x0957_y0365",
+      "match_id": "norway_wales",
+      "frame_number": 2032,
+      "timestamp": 81.28,
+      "tracking_id": null,
+      "bbox": [
+        957,
+        365,
+        989,
+        443
+      ],
+      "torso_bbox": [
+        965,
+        379,
+        981,
+        407
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g070_f002032_x0957_y0365.png",
+      "quality": {
+        "width": 16,
+        "height": 28,
+        "blur_score": 1672.2926448899873,
+        "grass_ratio": 0.6205357142857143,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 70
+    },
+    {
+      "crop_id": "norway_wales_val_g071_f002032_x0829_y0279",
+      "match_id": "norway_wales",
+      "frame_number": 2032,
+      "timestamp": 81.28,
+      "tracking_id": null,
+      "bbox": [
+        829,
+        279,
+        861,
+        341
+      ],
+      "torso_bbox": [
+        837,
+        290,
+        853,
+        313
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g071_f002032_x0829_y0279.png",
+      "quality": {
+        "width": 16,
+        "height": 23,
+        "blur_score": 2506.2388646030245,
+        "grass_ratio": 0.14402173913043478,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 71
+    },
+    {
+      "crop_id": "norway_wales_val_g072_f002048_x1079_y0380",
+      "match_id": "norway_wales",
+      "frame_number": 2048,
+      "timestamp": 81.92,
+      "tracking_id": null,
+      "bbox": [
+        1079,
+        380,
+        1132,
+        458
+      ],
+      "torso_bbox": [
+        1092,
+        394,
+        1118,
+        422
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g072_f002048_x1079_y0380.png",
+      "quality": {
+        "width": 26,
+        "height": 28,
+        "blur_score": 920.7660835044076,
+        "grass_ratio": 0.7032967032967034,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 72
+    },
+    {
+      "crop_id": "norway_wales_val_g073_f002048_x0558_y0333",
+      "match_id": "norway_wales",
+      "frame_number": 2048,
+      "timestamp": 81.92,
+      "tracking_id": null,
+      "bbox": [
+        558,
+        333,
+        585,
+        400
+      ],
+      "torso_bbox": [
+        564,
+        345,
+        578,
+        369
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g073_f002048_x0558_y0333.png",
+      "quality": {
+        "width": 14,
+        "height": 24,
+        "blur_score": 2760.6130952380954,
+        "grass_ratio": 0.05357142857142857,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 73
+    },
+    {
+      "crop_id": "norway_wales_val_g074_f002048_x0469_y0348",
+      "match_id": "norway_wales",
+      "frame_number": 2048,
+      "timestamp": 81.92,
+      "tracking_id": null,
+      "bbox": [
+        469,
+        348,
+        511,
+        416
+      ],
+      "torso_bbox": [
+        479,
+        360,
+        500,
+        385
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g074_f002048_x0469_y0348.png",
+      "quality": {
+        "width": 21,
+        "height": 25,
+        "blur_score": 1755.2425360544216,
+        "grass_ratio": 0.08571428571428572,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 74
+    },
+    {
+      "crop_id": "norway_wales_val_g075_f002064_x0678_y0356",
+      "match_id": "norway_wales",
+      "frame_number": 2064,
+      "timestamp": 82.56,
+      "tracking_id": null,
+      "bbox": [
+        678,
+        356,
+        709,
+        424
+      ],
+      "torso_bbox": [
+        685,
+        368,
+        701,
+        393
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g075_f002064_x0678_y0356.png",
+      "quality": {
+        "width": 16,
+        "height": 25,
+        "blur_score": 3078.7595999999994,
+        "grass_ratio": 0.155,
+        "occlusion_ratio": 0.1875,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 75
+    },
+    {
+      "crop_id": "norway_wales_val_g076_f002064_x0883_y0326",
+      "match_id": "norway_wales",
+      "frame_number": 2064,
+      "timestamp": 82.56,
+      "tracking_id": null,
+      "bbox": [
+        883,
+        326,
+        926,
+        394
+      ],
+      "torso_bbox": [
+        893,
+        338,
+        915,
+        363
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g076_f002064_x0883_y0326.png",
+      "quality": {
+        "width": 22,
+        "height": 25,
+        "blur_score": 550.8247966942149,
+        "grass_ratio": 0.4527272727272727,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 76
+    },
+    {
+      "crop_id": "norway_wales_val_g077_f002064_x0710_y0346",
+      "match_id": "norway_wales",
+      "frame_number": 2064,
+      "timestamp": 82.56,
+      "tracking_id": null,
+      "bbox": [
+        710,
+        346,
+        764,
+        418
+      ],
+      "torso_bbox": [
+        723,
+        358,
+        750,
+        385
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g077_f002064_x0710_y0346.png",
+      "quality": {
+        "width": 27,
+        "height": 27,
+        "blur_score": 1597.5108506870943,
+        "grass_ratio": 0.4567901234567901,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 77
+    },
+    {
+      "crop_id": "norway_wales_val_g078_f002080_x1012_y0370",
+      "match_id": "norway_wales",
+      "frame_number": 2080,
+      "timestamp": 83.2,
+      "tracking_id": null,
+      "bbox": [
+        1012,
+        370,
+        1050,
+        452
+      ],
+      "torso_bbox": [
+        1021,
+        384,
+        1040,
+        415
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g078_f002080_x1012_y0370.png",
+      "quality": {
+        "width": 19,
+        "height": 31,
+        "blur_score": 1326.0665511744749,
+        "grass_ratio": 0.5042444821731749,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 78
+    },
+    {
+      "crop_id": "norway_wales_val_g079_f002080_x0620_y0368",
+      "match_id": "norway_wales",
+      "frame_number": 2080,
+      "timestamp": 83.2,
+      "tracking_id": null,
+      "bbox": [
+        620,
+        368,
+        668,
+        426
+      ],
+      "torso_bbox": [
+        632,
+        378,
+        656,
+        399
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "test",
+      "image_path": "images/norway_wales_val_g079_f002080_x0620_y0368.png",
+      "quality": {
+        "width": 24,
+        "height": 21,
+        "blur_score": 703.5065507684556,
+        "grass_ratio": 0.9920634920634921,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 79
+    },
+    {
+      "crop_id": "norway_wales_train_g000_f000000_x0001_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 0,
+      "timestamp": 0.0,
+      "tracking_id": null,
+      "bbox": [
+        1,
+        1,
+        736,
+        698
+      ],
+      "torso_bbox": [
+        184,
+        126,
+        552,
+        384
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g000_f000000_x0001_y0001.png",
+      "quality": {
+        "width": 368,
+        "height": 258,
+        "blur_score": 47.004329772321256,
+        "grass_ratio": 0.00579288843950118,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 0
+    },
+    {
+      "crop_id": "norway_wales_train_g001_f000000_x0975_y0022",
+      "match_id": "norway_wales",
+      "frame_number": 0,
+      "timestamp": 0.0,
+      "tracking_id": null,
+      "bbox": [
+        975,
+        22,
+        1279,
+        707
+      ],
+      "torso_bbox": [
+        1051,
+        145,
+        1203,
+        398
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g001_f000000_x0975_y0022.png",
+      "quality": {
+        "width": 152,
+        "height": 253,
+        "blur_score": 70.66965228030281,
+        "grass_ratio": 0.0009621385479509049,
+        "occlusion_ratio": 0.2565789473684211,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 1
+    },
+    {
+      "crop_id": "norway_wales_train_g002_f000000_x0655_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 0,
+      "timestamp": 0.0,
+      "tracking_id": null,
+      "bbox": [
+        655,
+        1,
+        1090,
+        700
+      ],
+      "torso_bbox": [
+        763,
+        126,
+        981,
+        385
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g002_f000000_x0655_y0001.png",
+      "quality": {
+        "width": 218,
+        "height": 259,
+        "blur_score": 45.9260774749539,
+        "grass_ratio": 0.0006375969678721972,
+        "occlusion_ratio": 0.027522935779816515,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 2
+    },
+    {
+      "crop_id": "norway_wales_train_g003_f000016_x0906_y0146",
+      "match_id": "norway_wales",
+      "frame_number": 16,
+      "timestamp": 0.64,
+      "tracking_id": null,
+      "bbox": [
+        906,
+        146,
+        1156,
+        716
+      ],
+      "torso_bbox": [
+        968,
+        248,
+        1093,
+        459
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g003_f000016_x0906_y0146.png",
+      "quality": {
+        "width": 125,
+        "height": 211,
+        "blur_score": 108.66226530401384,
+        "grass_ratio": 0.0034123222748815166,
+        "occlusion_ratio": 0.24,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 3
+    },
+    {
+      "crop_id": "norway_wales_train_g004_f000016_x1063_y0159",
+      "match_id": "norway_wales",
+      "frame_number": 16,
+      "timestamp": 0.64,
+      "tracking_id": null,
+      "bbox": [
+        1063,
+        159,
+        1279,
+        715
+      ],
+      "torso_bbox": [
+        1117,
+        259,
+        1225,
+        464
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g004_f000016_x1063_y0159.png",
+      "quality": {
+        "width": 108,
+        "height": 205,
+        "blur_score": 61.88587547094982,
+        "grass_ratio": 0.0010388437217705511,
+        "occlusion_ratio": 0.3611111111111111,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 4
+    },
+    {
+      "crop_id": "norway_wales_train_g005_f000016_x0742_y0222",
+      "match_id": "norway_wales",
+      "frame_number": 16,
+      "timestamp": 0.64,
+      "tracking_id": null,
+      "bbox": [
+        742,
+        222,
+        926,
+        714
+      ],
+      "torso_bbox": [
+        788,
+        310,
+        880,
+        492
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g005_f000016_x0742_y0222.png",
+      "quality": {
+        "width": 92,
+        "height": 182,
+        "blur_score": 447.65102823519993,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.04013377926421405,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 5
+    },
+    {
+      "crop_id": "norway_wales_train_g006_f000032_x1051_y0194",
+      "match_id": "norway_wales",
+      "frame_number": 32,
+      "timestamp": 1.28,
+      "tracking_id": null,
+      "bbox": [
+        1051,
+        194,
+        1279,
+        716
+      ],
+      "torso_bbox": [
+        1108,
+        287,
+        1222,
+        481
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g006_f000032_x1051_y0194.png",
+      "quality": {
+        "width": 114,
+        "height": 194,
+        "blur_score": 169.4340486490427,
+        "grass_ratio": 0.005742448905769579,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 6
+    },
+    {
+      "crop_id": "norway_wales_train_g007_f000032_x0602_y0026",
+      "match_id": "norway_wales",
+      "frame_number": 32,
+      "timestamp": 1.28,
+      "tracking_id": null,
+      "bbox": [
+        602,
+        26,
+        966,
+        712
+      ],
+      "torso_bbox": [
+        693,
+        149,
+        875,
+        403
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g007_f000032_x0602_y0026.png",
+      "quality": {
+        "width": 182,
+        "height": 254,
+        "blur_score": 230.79525517341096,
+        "grass_ratio": 0.008955611317816043,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 7
+    },
+    {
+      "crop_id": "norway_wales_train_g008_f000032_x0478_y0265",
+      "match_id": "norway_wales",
+      "frame_number": 32,
+      "timestamp": 1.28,
+      "tracking_id": null,
+      "bbox": [
+        478,
+        265,
+        577,
+        437
+      ],
+      "torso_bbox": [
+        502,
+        295,
+        552,
+        359
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g008_f000032_x0478_y0265.png",
+      "quality": {
+        "width": 50,
+        "height": 64,
+        "blur_score": 426.533355859375,
+        "grass_ratio": 0.3765625,
+        "occlusion_ratio": 0.42,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 8
+    },
+    {
+      "crop_id": "norway_wales_train_g009_f000048_x1193_y0387",
+      "match_id": "norway_wales",
+      "frame_number": 48,
+      "timestamp": 1.92,
+      "tracking_id": null,
+      "bbox": [
+        1193,
+        387,
+        1279,
+        642
+      ],
+      "torso_bbox": [
+        1214,
+        432,
+        1257,
+        527
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g009_f000048_x1193_y0387.png",
+      "quality": {
+        "width": 43,
+        "height": 95,
+        "blur_score": 14.693834115618385,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 9
+    },
+    {
+      "crop_id": "norway_wales_train_g010_f000048_x0268_y0173",
+      "match_id": "norway_wales",
+      "frame_number": 48,
+      "timestamp": 1.92,
+      "tracking_id": null,
+      "bbox": [
+        268,
+        173,
+        503,
+        716
+      ],
+      "torso_bbox": [
+        326,
+        270,
+        444,
+        471
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g010_f000048_x0268_y0173.png",
+      "quality": {
+        "width": 118,
+        "height": 201,
+        "blur_score": 177.92013472898856,
+        "grass_ratio": 0.013028079939286617,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 10
+    },
+    {
+      "crop_id": "norway_wales_train_g011_f000048_x0460_y0237",
+      "match_id": "norway_wales",
+      "frame_number": 48,
+      "timestamp": 1.92,
+      "tracking_id": null,
+      "bbox": [
+        460,
+        237,
+        578,
+        710
+      ],
+      "torso_bbox": [
+        489,
+        322,
+        548,
+        497
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g011_f000048_x0460_y0237.png",
+      "quality": {
+        "width": 59,
+        "height": 175,
+        "blur_score": 354.4595519795508,
+        "grass_ratio": 0.8242130750605327,
+        "occlusion_ratio": 0.23728813559322035,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 11
+    },
+    {
+      "crop_id": "norway_wales_train_g012_f000064_x0604_y0237",
+      "match_id": "norway_wales",
+      "frame_number": 64,
+      "timestamp": 2.56,
+      "tracking_id": null,
+      "bbox": [
+        604,
+        237,
+        756,
+        713
+      ],
+      "torso_bbox": [
+        642,
+        322,
+        718,
+        498
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g012_f000064_x0604_y0237.png",
+      "quality": {
+        "width": 76,
+        "height": 176,
+        "blur_score": 522.2977159188831,
+        "grass_ratio": 0.0026913875598086126,
+        "occlusion_ratio": 0.6578947368421053,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 12
+    },
+    {
+      "crop_id": "norway_wales_train_g013_f000064_x0668_y0228",
+      "match_id": "norway_wales",
+      "frame_number": 64,
+      "timestamp": 2.56,
+      "tracking_id": null,
+      "bbox": [
+        668,
+        228,
+        914,
+        715
+      ],
+      "torso_bbox": [
+        729,
+        315,
+        852,
+        495
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g013_f000064_x0668_y0228.png",
+      "quality": {
+        "width": 123,
+        "height": 180,
+        "blur_score": 165.30115631903084,
+        "grass_ratio": 0.002122854561878952,
+        "occlusion_ratio": 0.21951219512195122,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 13
+    },
+    {
+      "crop_id": "norway_wales_train_g014_f000064_x0412_y0192",
+      "match_id": "norway_wales",
+      "frame_number": 64,
+      "timestamp": 2.56,
+      "tracking_id": null,
+      "bbox": [
+        412,
+        192,
+        552,
+        679
+      ],
+      "torso_bbox": [
+        447,
+        279,
+        517,
+        459
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g014_f000064_x0412_y0192.png",
+      "quality": {
+        "width": 70,
+        "height": 180,
+        "blur_score": 224.1704760330058,
+        "grass_ratio": 0.9084126984126984,
+        "occlusion_ratio": 0.15714285714285714,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 14
+    },
+    {
+      "crop_id": "norway_wales_train_g015_f000080_x0838_y0098",
+      "match_id": "norway_wales",
+      "frame_number": 80,
+      "timestamp": 3.2,
+      "tracking_id": null,
+      "bbox": [
+        838,
+        98,
+        1043,
+        707
+      ],
+      "torso_bbox": [
+        889,
+        207,
+        991,
+        432
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g015_f000080_x0838_y0098.png",
+      "quality": {
+        "width": 102,
+        "height": 225,
+        "blur_score": 239.19787338013398,
+        "grass_ratio": 0.009498910675381264,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 15
+    },
+    {
+      "crop_id": "norway_wales_train_g016_f000080_x0305_y0397",
+      "match_id": "norway_wales",
+      "frame_number": 80,
+      "timestamp": 3.2,
+      "tracking_id": null,
+      "bbox": [
+        305,
+        397,
+        384,
+        685
+      ],
+      "torso_bbox": [
+        324,
+        448,
+        364,
+        555
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g016_f000080_x0305_y0397.png",
+      "quality": {
+        "width": 40,
+        "height": 107,
+        "blur_score": 396.6052011092673,
+        "grass_ratio": 0.012383177570093457,
+        "occlusion_ratio": 0.625,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 16
+    },
+    {
+      "crop_id": "norway_wales_train_g017_f000080_x0001_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 80,
+      "timestamp": 3.2,
+      "tracking_id": null,
+      "bbox": [
+        1,
+        1,
+        348,
+        708
+      ],
+      "torso_bbox": [
+        87,
+        128,
+        261,
+        389
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g017_f000080_x0001_y0001.png",
+      "quality": {
+        "width": 174,
+        "height": 261,
+        "blur_score": 27.60702725260492,
+        "grass_ratio": 0.01968555951909103,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 17
+    },
+    {
+      "crop_id": "norway_wales_train_g018_f000096_x0688_y0172",
+      "match_id": "norway_wales",
+      "frame_number": 96,
+      "timestamp": 3.84,
+      "tracking_id": null,
+      "bbox": [
+        688,
+        172,
+        873,
+        696
+      ],
+      "torso_bbox": [
+        734,
+        266,
+        826,
+        460
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g018_f000096_x0688_y0172.png",
+      "quality": {
+        "width": 92,
+        "height": 194,
+        "blur_score": 417.2894966799425,
+        "grass_ratio": 0.0052666965486329,
+        "occlusion_ratio": 0.1815329448677723,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 18
+    },
+    {
+      "crop_id": "norway_wales_train_g019_f000096_x0499_y0249",
+      "match_id": "norway_wales",
+      "frame_number": 96,
+      "timestamp": 3.84,
+      "tracking_id": null,
+      "bbox": [
+        499,
+        249,
+        604,
+        581
+      ],
+      "torso_bbox": [
+        525,
+        308,
+        577,
+        431
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g019_f000096_x0499_y0249.png",
+      "quality": {
+        "width": 52,
+        "height": 123,
+        "blur_score": 487.35856153842246,
+        "grass_ratio": 0.0050031269543464665,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 19
+    },
+    {
+      "crop_id": "norway_wales_train_g020_f000096_x0604_y0239",
+      "match_id": "norway_wales",
+      "frame_number": 96,
+      "timestamp": 3.84,
+      "tracking_id": null,
+      "bbox": [
+        604,
+        239,
+        721,
+        634
+      ],
+      "torso_bbox": [
+        633,
+        310,
+        691,
+        456
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g020_f000096_x0604_y0239.png",
+      "quality": {
+        "width": 58,
+        "height": 146,
+        "blur_score": 748.3737935073137,
+        "grass_ratio": 0.011572980632971186,
+        "occlusion_ratio": 0.05172413793103448,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 20
+    },
+    {
+      "crop_id": "norway_wales_train_g021_f000112_x0605_y0254",
+      "match_id": "norway_wales",
+      "frame_number": 112,
+      "timestamp": 4.48,
+      "tracking_id": null,
+      "bbox": [
+        605,
+        254,
+        685,
+        585
+      ],
+      "torso_bbox": [
+        625,
+        313,
+        665,
+        436
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g021_f000112_x0605_y0254.png",
+      "quality": {
+        "width": 40,
+        "height": 123,
+        "blur_score": 1109.4137193469496,
+        "grass_ratio": 0.004878048780487805,
+        "occlusion_ratio": 0.125,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 21
+    },
+    {
+      "crop_id": "norway_wales_train_g022_f000112_x0130_y0011",
+      "match_id": "norway_wales",
+      "frame_number": 112,
+      "timestamp": 4.48,
+      "tracking_id": null,
+      "bbox": [
+        130,
+        11,
+        465,
+        709
+      ],
+      "torso_bbox": [
+        213,
+        136,
+        381,
+        394
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g022_f000112_x0130_y0011.png",
+      "quality": {
+        "width": 168,
+        "height": 258,
+        "blur_score": 118.42228382900144,
+        "grass_ratio": 0.9004245108896272,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 22
+    },
+    {
+      "crop_id": "norway_wales_train_g023_f000112_x0747_y0114",
+      "match_id": "norway_wales",
+      "frame_number": 112,
+      "timestamp": 4.48,
+      "tracking_id": null,
+      "bbox": [
+        747,
+        114,
+        957,
+        713
+      ],
+      "torso_bbox": [
+        799,
+        221,
+        904,
+        443
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g023_f000112_x0747_y0114.png",
+      "quality": {
+        "width": 105,
+        "height": 222,
+        "blur_score": 331.1005760697266,
+        "grass_ratio": 0.008193908193908193,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 23
+    },
+    {
+      "crop_id": "norway_wales_train_g024_f000128_x0321_y0181",
+      "match_id": "norway_wales",
+      "frame_number": 128,
+      "timestamp": 5.12,
+      "tracking_id": null,
+      "bbox": [
+        321,
+        181,
+        472,
+        705
+      ],
+      "torso_bbox": [
+        358,
+        275,
+        434,
+        469
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g024_f000128_x0321_y0181.png",
+      "quality": {
+        "width": 76,
+        "height": 194,
+        "blur_score": 265.44112079287555,
+        "grass_ratio": 0.0731823114487249,
+        "occlusion_ratio": 0.013157894736842105,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 24
+    },
+    {
+      "crop_id": "norway_wales_train_g025_f000128_x0515_y0246",
+      "match_id": "norway_wales",
+      "frame_number": 128,
+      "timestamp": 5.12,
+      "tracking_id": null,
+      "bbox": [
+        515,
+        246,
+        600,
+        569
+      ],
+      "torso_bbox": [
+        536,
+        304,
+        578,
+        423
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g025_f000128_x0515_y0246.png",
+      "quality": {
+        "width": 42,
+        "height": 119,
+        "blur_score": 488.3815271206522,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.47619047619047616,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 25
+    },
+    {
+      "crop_id": "norway_wales_train_g026_f000128_x0433_y0199",
+      "match_id": "norway_wales",
+      "frame_number": 128,
+      "timestamp": 5.12,
+      "tracking_id": null,
+      "bbox": [
+        433,
+        199,
+        556,
+        616
+      ],
+      "torso_bbox": [
+        463,
+        274,
+        525,
+        428
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g026_f000128_x0433_y0199.png",
+      "quality": {
+        "width": 62,
+        "height": 154,
+        "blur_score": 418.84252353859904,
+        "grass_ratio": 0.019585253456221197,
+        "occlusion_ratio": 0.16129032258064516,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 26
+    },
+    {
+      "crop_id": "norway_wales_train_g027_f000256_x0237_y0160",
+      "match_id": "norway_wales",
+      "frame_number": 256,
+      "timestamp": 10.24,
+      "tracking_id": null,
+      "bbox": [
+        237,
+        160,
+        573,
+        715
+      ],
+      "torso_bbox": [
+        321,
+        259,
+        489,
+        465
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g027_f000256_x0237_y0160.png",
+      "quality": {
+        "width": 168,
+        "height": 206,
+        "blur_score": 743.7556387300262,
+        "grass_ratio": 0.0003178455848358761,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 27
+    },
+    {
+      "crop_id": "norway_wales_train_g028_f000256_x0508_y0187",
+      "match_id": "norway_wales",
+      "frame_number": 256,
+      "timestamp": 10.24,
+      "tracking_id": null,
+      "bbox": [
+        508,
+        187,
+        691,
+        716
+      ],
+      "torso_bbox": [
+        553,
+        282,
+        645,
+        477
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g028_f000256_x0508_y0187.png",
+      "quality": {
+        "width": 92,
+        "height": 195,
+        "blur_score": 794.3709371135546,
+        "grass_ratio": 0.05852842809364549,
+        "occlusion_ratio": 0.21739130434782608,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 28
+    },
+    {
+      "crop_id": "norway_wales_train_g029_f000256_x0662_y0102",
+      "match_id": "norway_wales",
+      "frame_number": 256,
+      "timestamp": 10.24,
+      "tracking_id": null,
+      "bbox": [
+        662,
+        102,
+        1014,
+        718
+      ],
+      "torso_bbox": [
+        750,
+        212,
+        926,
+        440
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g029_f000256_x0662_y0102.png",
+      "quality": {
+        "width": 176,
+        "height": 228,
+        "blur_score": 876.0319303879251,
+        "grass_ratio": 0.043560606060606064,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 29
+    },
+    {
+      "crop_id": "norway_wales_train_g030_f000272_x0099_y0177",
+      "match_id": "norway_wales",
+      "frame_number": 272,
+      "timestamp": 10.88,
+      "tracking_id": null,
+      "bbox": [
+        99,
+        177,
+        488,
+        710
+      ],
+      "torso_bbox": [
+        196,
+        272,
+        390,
+        470
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g030_f000272_x0099_y0177.png",
+      "quality": {
+        "width": 194,
+        "height": 198,
+        "blur_score": 582.6694965600333,
+        "grass_ratio": 0.0012235759658440072,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 30
+    },
+    {
+      "crop_id": "norway_wales_train_g031_f000272_x0484_y0174",
+      "match_id": "norway_wales",
+      "frame_number": 272,
+      "timestamp": 10.88,
+      "tracking_id": null,
+      "bbox": [
+        484,
+        174,
+        696,
+        716
+      ],
+      "torso_bbox": [
+        537,
+        271,
+        643,
+        472
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g031_f000272_x0484_y0174.png",
+      "quality": {
+        "width": 106,
+        "height": 201,
+        "blur_score": 768.1611961834126,
+        "grass_ratio": 0.042429362620857974,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 31
+    },
+    {
+      "crop_id": "norway_wales_train_g032_f000272_x0393_y0277",
+      "match_id": "norway_wales",
+      "frame_number": 272,
+      "timestamp": 10.88,
+      "tracking_id": null,
+      "bbox": [
+        393,
+        277,
+        444,
+        337
+      ],
+      "torso_bbox": [
+        405,
+        287,
+        431,
+        310
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g032_f000272_x0393_y0277.png",
+      "quality": {
+        "width": 26,
+        "height": 23,
+        "blur_score": 1042.1573388440845,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 32
+    },
+    {
+      "crop_id": "norway_wales_train_g033_f000288_x0359_y0274",
+      "match_id": "norway_wales",
+      "frame_number": 288,
+      "timestamp": 11.52,
+      "tracking_id": null,
+      "bbox": [
+        359,
+        274,
+        503,
+        716
+      ],
+      "torso_bbox": [
+        395,
+        353,
+        467,
+        517
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g033_f000288_x0359_y0274.png",
+      "quality": {
+        "width": 72,
+        "height": 164,
+        "blur_score": 460.4625016452834,
+        "grass_ratio": 0.11898712737127372,
+        "occlusion_ratio": 0.3055555555555556,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 33
+    },
+    {
+      "crop_id": "norway_wales_train_g034_f000288_x0725_y0337",
+      "match_id": "norway_wales",
+      "frame_number": 288,
+      "timestamp": 11.52,
+      "tracking_id": null,
+      "bbox": [
+        725,
+        337,
+        744,
+        382
+      ],
+      "torso_bbox": [
+        729,
+        345,
+        739,
+        361
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g034_f000288_x0725_y0337.png",
+      "quality": {
+        "width": 10,
+        "height": 16,
+        "blur_score": 4090.9605859375006,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 34
+    },
+    {
+      "crop_id": "norway_wales_train_g035_f000288_x0777_y0220",
+      "match_id": "norway_wales",
+      "frame_number": 288,
+      "timestamp": 11.52,
+      "tracking_id": null,
+      "bbox": [
+        777,
+        220,
+        879,
+        565
+      ],
+      "torso_bbox": [
+        802,
+        282,
+        853,
+        409
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g035_f000288_x0777_y0220.png",
+      "quality": {
+        "width": 51,
+        "height": 127,
+        "blur_score": 506.1450468706397,
+        "grass_ratio": 0.0523390458545623,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 35
+    },
+    {
+      "crop_id": "norway_wales_train_g036_f000432_x1244_y0315",
+      "match_id": "norway_wales",
+      "frame_number": 432,
+      "timestamp": 17.28,
+      "tracking_id": null,
+      "bbox": [
+        1244,
+        315,
+        1261,
+        367
+      ],
+      "torso_bbox": [
+        1248,
+        324,
+        1256,
+        343
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g036_f000432_x1244_y0315.png",
+      "quality": {
+        "width": 8,
+        "height": 19,
+        "blur_score": 4949.364092797784,
+        "grass_ratio": 0.9013157894736842,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 36
+    },
+    {
+      "crop_id": "norway_wales_train_g037_f000432_x0969_y0293",
+      "match_id": "norway_wales",
+      "frame_number": 432,
+      "timestamp": 17.28,
+      "tracking_id": null,
+      "bbox": [
+        969,
+        293,
+        988,
+        342
+      ],
+      "torso_bbox": [
+        973,
+        301,
+        983,
+        319
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g037_f000432_x0969_y0293.png",
+      "quality": {
+        "width": 10,
+        "height": 18,
+        "blur_score": 6353.483333333334,
+        "grass_ratio": 0.011111111111111112,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 37
+    },
+    {
+      "crop_id": "norway_wales_train_g038_f000432_x0578_y0601",
+      "match_id": "norway_wales",
+      "frame_number": 432,
+      "timestamp": 17.28,
+      "tracking_id": null,
+      "bbox": [
+        578,
+        601,
+        616,
+        701
+      ],
+      "torso_bbox": [
+        587,
+        619,
+        606,
+        656
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g038_f000432_x0578_y0601.png",
+      "quality": {
+        "width": 19,
+        "height": 37,
+        "blur_score": 1605.001669334229,
+        "grass_ratio": 0.14082503556187767,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 38
+    },
+    {
+      "crop_id": "norway_wales_train_g039_f000448_x0236_y0506",
+      "match_id": "norway_wales",
+      "frame_number": 448,
+      "timestamp": 17.92,
+      "tracking_id": null,
+      "bbox": [
+        236,
+        506,
+        263,
+        587
+      ],
+      "torso_bbox": [
+        242,
+        520,
+        256,
+        550
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g039_f000448_x0236_y0506.png",
+      "quality": {
+        "width": 14,
+        "height": 30,
+        "blur_score": 1304.9948752834466,
+        "grass_ratio": 0.4595238095238095,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 39
+    },
+    {
+      "crop_id": "norway_wales_train_g040_f000448_x0517_y0602",
+      "match_id": "norway_wales",
+      "frame_number": 448,
+      "timestamp": 17.92,
+      "tracking_id": null,
+      "bbox": [
+        517,
+        602,
+        559,
+        703
+      ],
+      "torso_bbox": [
+        527,
+        620,
+        548,
+        657
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g040_f000448_x0517_y0602.png",
+      "quality": {
+        "width": 21,
+        "height": 37,
+        "blur_score": 865.8249214465432,
+        "grass_ratio": 0.17117117117117117,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 40
+    },
+    {
+      "crop_id": "norway_wales_train_g041_f000448_x1226_y0312",
+      "match_id": "norway_wales",
+      "frame_number": 448,
+      "timestamp": 17.92,
+      "tracking_id": null,
+      "bbox": [
+        1226,
+        312,
+        1244,
+        367
+      ],
+      "torso_bbox": [
+        1230,
+        321,
+        1239,
+        342
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g041_f000448_x1226_y0312.png",
+      "quality": {
+        "width": 9,
+        "height": 21,
+        "blur_score": 2238.968002015621,
+        "grass_ratio": 0.7407407407407407,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 41
+    },
+    {
+      "crop_id": "norway_wales_train_g042_f000464_x0750_y0435",
+      "match_id": "norway_wales",
+      "frame_number": 464,
+      "timestamp": 18.56,
+      "tracking_id": null,
+      "bbox": [
+        750,
+        435,
+        788,
+        514
+      ],
+      "torso_bbox": [
+        759,
+        449,
+        778,
+        478
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g042_f000464_x0750_y0435.png",
+      "quality": {
+        "width": 19,
+        "height": 29,
+        "blur_score": 3026.810695616945,
+        "grass_ratio": 0.038112522686025406,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 42
+    },
+    {
+      "crop_id": "norway_wales_train_g043_f000464_x0127_y0607",
+      "match_id": "norway_wales",
+      "frame_number": 464,
+      "timestamp": 18.56,
+      "tracking_id": null,
+      "bbox": [
+        127,
+        607,
+        179,
+        713
+      ],
+      "torso_bbox": [
+        140,
+        626,
+        166,
+        665
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g043_f000464_x0127_y0607.png",
+      "quality": {
+        "width": 26,
+        "height": 39,
+        "blur_score": 580.6634270119704,
+        "grass_ratio": 0.22682445759368836,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 43
+    },
+    {
+      "crop_id": "norway_wales_train_g044_f000464_x0000_y0591",
+      "match_id": "norway_wales",
+      "frame_number": 464,
+      "timestamp": 18.56,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        591,
+        8,
+        674
+      ],
+      "torso_bbox": [
+        2,
+        605,
+        6,
+        636
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g044_f000464_x0000_y0591.png",
+      "quality": {
+        "width": 4,
+        "height": 31,
+        "blur_score": 120.77211238293447,
+        "grass_ratio": 1.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 44
+    },
+    {
+      "crop_id": "norway_wales_train_g045_f000480_x0490_y0407",
+      "match_id": "norway_wales",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        490,
+        407,
+        529,
+        485
+      ],
+      "torso_bbox": [
+        499,
+        421,
+        519,
+        449
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g045_f000480_x0490_y0407.png",
+      "quality": {
+        "width": 20,
+        "height": 28,
+        "blur_score": 1501.118163265306,
+        "grass_ratio": 0.3964285714285714,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 45
+    },
+    {
+      "crop_id": "norway_wales_train_g046_f000480_x1156_y0321",
+      "match_id": "norway_wales",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        1156,
+        321,
+        1191,
+        390
+      ],
+      "torso_bbox": [
+        1164,
+        333,
+        1182,
+        358
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g046_f000480_x1156_y0321.png",
+      "quality": {
+        "width": 18,
+        "height": 25,
+        "blur_score": 726.4822765432099,
+        "grass_ratio": 0.6533333333333333,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 46
+    },
+    {
+      "crop_id": "norway_wales_train_g047_f000480_x0653_y0281",
+      "match_id": "norway_wales",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        653,
+        281,
+        696,
+        351
+      ],
+      "torso_bbox": [
+        663,
+        293,
+        685,
+        319
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g047_f000480_x0653_y0281.png",
+      "quality": {
+        "width": 22,
+        "height": 26,
+        "blur_score": 1634.5350720084111,
+        "grass_ratio": 0.3741258741258741,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 47
+    },
+    {
+      "crop_id": "norway_wales_train_g048_f000496_x0482_y0300",
+      "match_id": "norway_wales",
+      "frame_number": 496,
+      "timestamp": 19.84,
+      "tracking_id": null,
+      "bbox": [
+        482,
+        300,
+        526,
+        382
+      ],
+      "torso_bbox": [
+        493,
+        314,
+        515,
+        345
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g048_f000496_x0482_y0300.png",
+      "quality": {
+        "width": 22,
+        "height": 31,
+        "blur_score": 3958.683974596022,
+        "grass_ratio": 0.1598240469208211,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 48
+    },
+    {
+      "crop_id": "norway_wales_train_g049_f000496_x0629_y0456",
+      "match_id": "norway_wales",
+      "frame_number": 496,
+      "timestamp": 19.84,
+      "tracking_id": null,
+      "bbox": [
+        629,
+        456,
+        690,
+        548
+      ],
+      "torso_bbox": [
+        644,
+        472,
+        674,
+        506
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g049_f000496_x0629_y0456.png",
+      "quality": {
+        "width": 30,
+        "height": 34,
+        "blur_score": 2616.3065542099193,
+        "grass_ratio": 0.2549019607843137,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 49
+    },
+    {
+      "crop_id": "norway_wales_train_g050_f000496_x0442_y0294",
+      "match_id": "norway_wales",
+      "frame_number": 496,
+      "timestamp": 19.84,
+      "tracking_id": null,
+      "bbox": [
+        442,
+        294,
+        474,
+        368
+      ],
+      "torso_bbox": [
+        450,
+        307,
+        466,
+        334
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g050_f000496_x0442_y0294.png",
+      "quality": {
+        "width": 16,
+        "height": 27,
+        "blur_score": 2081.409845464678,
+        "grass_ratio": 0.0625,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 50
+    },
+    {
+      "crop_id": "norway_wales_train_g051_f000512_x0551_y0404",
+      "match_id": "norway_wales",
+      "frame_number": 512,
+      "timestamp": 20.48,
+      "tracking_id": null,
+      "bbox": [
+        551,
+        404,
+        615,
+        488
+      ],
+      "torso_bbox": [
+        567,
+        419,
+        599,
+        450
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g051_f000512_x0551_y0404.png",
+      "quality": {
+        "width": 32,
+        "height": 31,
+        "blur_score": 1372.160110521267,
+        "grass_ratio": 0.5453629032258065,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 51
+    },
+    {
+      "crop_id": "norway_wales_train_g052_f000512_x0825_y0245",
+      "match_id": "norway_wales",
+      "frame_number": 512,
+      "timestamp": 20.48,
+      "tracking_id": null,
+      "bbox": [
+        825,
+        245,
+        852,
+        318
+      ],
+      "torso_bbox": [
+        831,
+        258,
+        845,
+        285
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g052_f000512_x0825_y0245.png",
+      "quality": {
+        "width": 14,
+        "height": 27,
+        "blur_score": 8464.28868872652,
+        "grass_ratio": 0.06878306878306878,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 52
+    },
+    {
+      "crop_id": "norway_wales_train_g053_f000512_x0694_y0246",
+      "match_id": "norway_wales",
+      "frame_number": 512,
+      "timestamp": 20.48,
+      "tracking_id": null,
+      "bbox": [
+        694,
+        246,
+        731,
+        321
+      ],
+      "torso_bbox": [
+        703,
+        259,
+        721,
+        287
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g053_f000512_x0694_y0246.png",
+      "quality": {
+        "width": 18,
+        "height": 28,
+        "blur_score": 5781.642794154699,
+        "grass_ratio": 0.10714285714285714,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 53
+    },
+    {
+      "crop_id": "norway_wales_train_g054_f000528_x0505_y0280",
+      "match_id": "norway_wales",
+      "frame_number": 528,
+      "timestamp": 21.12,
+      "tracking_id": null,
+      "bbox": [
+        505,
+        280,
+        545,
+        366
+      ],
+      "torso_bbox": [
+        515,
+        295,
+        535,
+        327
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g054_f000528_x0505_y0280.png",
+      "quality": {
+        "width": 20,
+        "height": 32,
+        "blur_score": 3761.0079687499992,
+        "grass_ratio": 0.353125,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 54
+    },
+    {
+      "crop_id": "norway_wales_train_g055_f000528_x0627_y0256",
+      "match_id": "norway_wales",
+      "frame_number": 528,
+      "timestamp": 21.12,
+      "tracking_id": null,
+      "bbox": [
+        627,
+        256,
+        673,
+        333
+      ],
+      "torso_bbox": [
+        638,
+        269,
+        661,
+        298
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g055_f000528_x0627_y0256.png",
+      "quality": {
+        "width": 23,
+        "height": 29,
+        "blur_score": 2239.4420675719107,
+        "grass_ratio": 0.37181409295352325,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 55
+    },
+    {
+      "crop_id": "norway_wales_train_g056_f000528_x1168_y0290",
+      "match_id": "norway_wales",
+      "frame_number": 528,
+      "timestamp": 21.12,
+      "tracking_id": null,
+      "bbox": [
+        1168,
+        290,
+        1211,
+        367
+      ],
+      "torso_bbox": [
+        1178,
+        303,
+        1200,
+        332
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g056_f000528_x1168_y0290.png",
+      "quality": {
+        "width": 22,
+        "height": 29,
+        "blur_score": 4887.278743821305,
+        "grass_ratio": 0.08150470219435736,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 56
+    },
+    {
+      "crop_id": "norway_wales_train_g057_f000544_x0976_y0286",
+      "match_id": "norway_wales",
+      "frame_number": 544,
+      "timestamp": 21.76,
+      "tracking_id": null,
+      "bbox": [
+        976,
+        286,
+        1027,
+        367
+      ],
+      "torso_bbox": [
+        988,
+        300,
+        1014,
+        330
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g057_f000544_x0976_y0286.png",
+      "quality": {
+        "width": 26,
+        "height": 30,
+        "blur_score": 1294.446842537804,
+        "grass_ratio": 0.8525641025641025,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 57
+    },
+    {
+      "crop_id": "norway_wales_train_g058_f000544_x0784_y0252",
+      "match_id": "norway_wales",
+      "frame_number": 544,
+      "timestamp": 21.76,
+      "tracking_id": null,
+      "bbox": [
+        784,
+        252,
+        830,
+        320
+      ],
+      "torso_bbox": [
+        795,
+        264,
+        818,
+        289
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g058_f000544_x0784_y0252.png",
+      "quality": {
+        "width": 23,
+        "height": 25,
+        "blur_score": 1683.863882041588,
+        "grass_ratio": 0.3234782608695652,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 58
+    },
+    {
+      "crop_id": "norway_wales_train_g059_f000544_x0368_y0289",
+      "match_id": "norway_wales",
+      "frame_number": 544,
+      "timestamp": 21.76,
+      "tracking_id": null,
+      "bbox": [
+        368,
+        289,
+        409,
+        358
+      ],
+      "torso_bbox": [
+        378,
+        301,
+        398,
+        326
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g059_f000544_x0368_y0289.png",
+      "quality": {
+        "width": 20,
+        "height": 25,
+        "blur_score": 3482.907916,
+        "grass_ratio": 0.046,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 59
+    },
+    {
+      "crop_id": "norway_wales_train_g060_f000560_x0696_y0310",
+      "match_id": "norway_wales",
+      "frame_number": 560,
+      "timestamp": 22.4,
+      "tracking_id": null,
+      "bbox": [
+        696,
+        310,
+        725,
+        392
+      ],
+      "torso_bbox": [
+        703,
+        324,
+        717,
+        355
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g060_f000560_x0696_y0310.png",
+      "quality": {
+        "width": 14,
+        "height": 31,
+        "blur_score": 3742.161677886555,
+        "grass_ratio": 0.052995391705069124,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 60
+    },
+    {
+      "crop_id": "norway_wales_train_g061_f000560_x0656_y0377",
+      "match_id": "norway_wales",
+      "frame_number": 560,
+      "timestamp": 22.4,
+      "tracking_id": null,
+      "bbox": [
+        656,
+        377,
+        708,
+        425
+      ],
+      "torso_bbox": [
+        669,
+        385,
+        695,
+        403
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g061_f000560_x0656_y0377.png",
+      "quality": {
+        "width": 26,
+        "height": 18,
+        "blur_score": 3612.685527613413,
+        "grass_ratio": 0.41452991452991456,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 61
+    },
+    {
+      "crop_id": "norway_wales_train_g062_f000560_x0739_y0281",
+      "match_id": "norway_wales",
+      "frame_number": 560,
+      "timestamp": 22.4,
+      "tracking_id": null,
+      "bbox": [
+        739,
+        281,
+        770,
+        349
+      ],
+      "torso_bbox": [
+        746,
+        293,
+        762,
+        318
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g062_f000560_x0739_y0281.png",
+      "quality": {
+        "width": 16,
+        "height": 25,
+        "blur_score": 3368.6327749999996,
+        "grass_ratio": 0.0925,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 62
+    },
+    {
+      "crop_id": "norway_wales_train_g063_f000576_x0650_y0388",
+      "match_id": "norway_wales",
+      "frame_number": 576,
+      "timestamp": 23.04,
+      "tracking_id": null,
+      "bbox": [
+        650,
+        388,
+        688,
+        443
+      ],
+      "torso_bbox": [
+        659,
+        397,
+        678,
+        418
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g063_f000576_x0650_y0388.png",
+      "quality": {
+        "width": 19,
+        "height": 21,
+        "blur_score": 3665.4846263528502,
+        "grass_ratio": 0.3483709273182957,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 63
+    },
+    {
+      "crop_id": "norway_wales_train_g064_f000576_x0453_y0288",
+      "match_id": "norway_wales",
+      "frame_number": 576,
+      "timestamp": 23.04,
+      "tracking_id": null,
+      "bbox": [
+        453,
+        288,
+        475,
+        339
+      ],
+      "torso_bbox": [
+        458,
+        297,
+        469,
+        316
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g064_f000576_x0453_y0288.png",
+      "quality": {
+        "width": 11,
+        "height": 19,
+        "blur_score": 1886.552734598567,
+        "grass_ratio": 0.11483253588516747,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 64
+    },
+    {
+      "crop_id": "norway_wales_train_g065_f000576_x0368_y0299",
+      "match_id": "norway_wales",
+      "frame_number": 576,
+      "timestamp": 23.04,
+      "tracking_id": null,
+      "bbox": [
+        368,
+        299,
+        391,
+        375
+      ],
+      "torso_bbox": [
+        373,
+        312,
+        385,
+        340
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g065_f000576_x0368_y0299.png",
+      "quality": {
+        "width": 12,
+        "height": 28,
+        "blur_score": 2054.1085512329932,
+        "grass_ratio": 0.047619047619047616,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 65
+    },
+    {
+      "crop_id": "norway_wales_train_g066_f000592_x0515_y0321",
+      "match_id": "norway_wales",
+      "frame_number": 592,
+      "timestamp": 23.68,
+      "tracking_id": null,
+      "bbox": [
+        515,
+        321,
+        544,
+        391
+      ],
+      "torso_bbox": [
+        522,
+        333,
+        536,
+        359
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g066_f000592_x0515_y0321.png",
+      "quality": {
+        "width": 14,
+        "height": 26,
+        "blur_score": 1936.2216142374107,
+        "grass_ratio": 0.02197802197802198,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 66
+    },
+    {
+      "crop_id": "norway_wales_train_g067_f000592_x0973_y0303",
+      "match_id": "norway_wales",
+      "frame_number": 592,
+      "timestamp": 23.68,
+      "tracking_id": null,
+      "bbox": [
+        973,
+        303,
+        1009,
+        386
+      ],
+      "torso_bbox": [
+        982,
+        317,
+        1000,
+        348
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g067_f000592_x0973_y0303.png",
+      "quality": {
+        "width": 18,
+        "height": 31,
+        "blur_score": 2098.9645334720776,
+        "grass_ratio": 0.13620071684587814,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 67
+    },
+    {
+      "crop_id": "norway_wales_train_g068_f000592_x1191_y0305",
+      "match_id": "norway_wales",
+      "frame_number": 592,
+      "timestamp": 23.68,
+      "tracking_id": null,
+      "bbox": [
+        1191,
+        305,
+        1223,
+        389
+      ],
+      "torso_bbox": [
+        1199,
+        320,
+        1215,
+        351
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g068_f000592_x1191_y0305.png",
+      "quality": {
+        "width": 16,
+        "height": 31,
+        "blur_score": 1378.8890763202394,
+        "grass_ratio": 0.8407258064516129,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 68
+    },
+    {
+      "crop_id": "norway_wales_train_g069_f000608_x1246_y0346",
+      "match_id": "norway_wales",
+      "frame_number": 608,
+      "timestamp": 24.32,
+      "tracking_id": null,
+      "bbox": [
+        1246,
+        346,
+        1279,
+        417
+      ],
+      "torso_bbox": [
+        1254,
+        358,
+        1270,
+        385
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g069_f000608_x1246_y0346.png",
+      "quality": {
+        "width": 16,
+        "height": 27,
+        "blur_score": 2899.009066358025,
+        "grass_ratio": 0.011574074074074073,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 69
+    },
+    {
+      "crop_id": "norway_wales_train_g070_f000608_x0238_y0522",
+      "match_id": "norway_wales",
+      "frame_number": 608,
+      "timestamp": 24.32,
+      "tracking_id": null,
+      "bbox": [
+        238,
+        522,
+        289,
+        633
+      ],
+      "torso_bbox": [
+        250,
+        541,
+        276,
+        583
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g070_f000608_x0238_y0522.png",
+      "quality": {
+        "width": 26,
+        "height": 42,
+        "blur_score": 933.6086716244683,
+        "grass_ratio": 0.27289377289377287,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 70
+    },
+    {
+      "crop_id": "norway_wales_train_g071_f000608_x1199_y0301",
+      "match_id": "norway_wales",
+      "frame_number": 608,
+      "timestamp": 24.32,
+      "tracking_id": null,
+      "bbox": [
+        1199,
+        301,
+        1226,
+        378
+      ],
+      "torso_bbox": [
+        1205,
+        314,
+        1219,
+        343
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g071_f000608_x1199_y0301.png",
+      "quality": {
+        "width": 14,
+        "height": 29,
+        "blur_score": 1434.4201812710817,
+        "grass_ratio": 0.7610837438423645,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 71
+    },
+    {
+      "crop_id": "norway_wales_train_g072_f000624_x0411_y0528",
+      "match_id": "norway_wales",
+      "frame_number": 624,
+      "timestamp": 24.96,
+      "tracking_id": null,
+      "bbox": [
+        411,
+        528,
+        447,
+        635
+      ],
+      "torso_bbox": [
+        420,
+        547,
+        438,
+        586
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g072_f000624_x0411_y0528.png",
+      "quality": {
+        "width": 18,
+        "height": 39,
+        "blur_score": 2298.389964367172,
+        "grass_ratio": 0.10968660968660969,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 72
+    },
+    {
+      "crop_id": "norway_wales_train_g073_f000624_x0500_y0314",
+      "match_id": "norway_wales",
+      "frame_number": 624,
+      "timestamp": 24.96,
+      "tracking_id": null,
+      "bbox": [
+        500,
+        314,
+        547,
+        380
+      ],
+      "torso_bbox": [
+        511,
+        325,
+        535,
+        350
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g073_f000624_x0500_y0314.png",
+      "quality": {
+        "width": 24,
+        "height": 25,
+        "blur_score": 2377.7449305555556,
+        "grass_ratio": 0.36,
+        "occlusion_ratio": 0.64,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 73
+    },
+    {
+      "crop_id": "norway_wales_train_g074_f000624_x0695_y0279",
+      "match_id": "norway_wales",
+      "frame_number": 624,
+      "timestamp": 24.96,
+      "tracking_id": null,
+      "bbox": [
+        695,
+        279,
+        724,
+        356
+      ],
+      "torso_bbox": [
+        702,
+        292,
+        716,
+        321
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g074_f000624_x0695_y0279.png",
+      "quality": {
+        "width": 14,
+        "height": 29,
+        "blur_score": 1917.768375840229,
+        "grass_ratio": 0.03201970443349754,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 74
+    },
+    {
+      "crop_id": "norway_wales_train_g075_f000640_x0177_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 640,
+      "timestamp": 25.6,
+      "tracking_id": null,
+      "bbox": [
+        177,
+        1,
+        502,
+        703
+      ],
+      "torso_bbox": [
+        258,
+        127,
+        420,
+        387
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g075_f000640_x0177_y0001.png",
+      "quality": {
+        "width": 162,
+        "height": 260,
+        "blur_score": 52.77981769403026,
+        "grass_ratio": 0.054605887939221276,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 75
+    },
+    {
+      "crop_id": "norway_wales_train_g076_f000640_x0425_y0051",
+      "match_id": "norway_wales",
+      "frame_number": 640,
+      "timestamp": 25.6,
+      "tracking_id": null,
+      "bbox": [
+        425,
+        51,
+        997,
+        709
+      ],
+      "torso_bbox": [
+        568,
+        169,
+        854,
+        412
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g076_f000640_x0425_y0051.png",
+      "quality": {
+        "width": 286,
+        "height": 243,
+        "blur_score": 342.64143793658315,
+        "grass_ratio": 0.09853520964632076,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 76
+    },
+    {
+      "crop_id": "norway_wales_train_g077_f000656_x0355_y0089",
+      "match_id": "norway_wales",
+      "frame_number": 656,
+      "timestamp": 26.24,
+      "tracking_id": null,
+      "bbox": [
+        355,
+        89,
+        1042,
+        714
+      ],
+      "torso_bbox": [
+        526,
+        201,
+        870,
+        432
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g077_f000656_x0355_y0089.png",
+      "quality": {
+        "width": 344,
+        "height": 231,
+        "blur_score": 93.08860496261603,
+        "grass_ratio": 0.09989429175475686,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 77
+    },
+    {
+      "crop_id": "norway_wales_train_g078_f000656_x0934_y0002",
+      "match_id": "norway_wales",
+      "frame_number": 656,
+      "timestamp": 26.24,
+      "tracking_id": null,
+      "bbox": [
+        934,
+        2,
+        1276,
+        555
+      ],
+      "torso_bbox": [
+        1019,
+        101,
+        1190,
+        306
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g078_f000656_x0934_y0002.png",
+      "quality": {
+        "width": 171,
+        "height": 205,
+        "blur_score": 30.003858785309173,
+        "grass_ratio": 0.009813150763086578,
+        "occlusion_ratio": 0.13450292397660818,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 78
+    },
+    {
+      "crop_id": "norway_wales_train_g079_f000672_x0537_y0020",
+      "match_id": "norway_wales",
+      "frame_number": 672,
+      "timestamp": 26.88,
+      "tracking_id": null,
+      "bbox": [
+        537,
+        20,
+        1127,
+        713
+      ],
+      "torso_bbox": [
+        684,
+        144,
+        979,
+        401
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g079_f000672_x0537_y0020.png",
+      "quality": {
+        "width": 295,
+        "height": 257,
+        "blur_score": 299.9525580992817,
+        "grass_ratio": 0.0930950339642551,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 79
+    },
+    {
+      "crop_id": "norway_wales_train_g080_f000688_x0673_y0170",
+      "match_id": "norway_wales",
+      "frame_number": 688,
+      "timestamp": 27.52,
+      "tracking_id": null,
+      "bbox": [
+        673,
+        170,
+        1141,
+        715
+      ],
+      "torso_bbox": [
+        790,
+        268,
+        1024,
+        469
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g080_f000688_x0673_y0170.png",
+      "quality": {
+        "width": 234,
+        "height": 201,
+        "blur_score": 13.903753662089962,
+        "grass_ratio": 0.37998043968193224,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 80
+    },
+    {
+      "crop_id": "norway_wales_train_g081_f000704_x0415_y0045",
+      "match_id": "norway_wales",
+      "frame_number": 704,
+      "timestamp": 28.16,
+      "tracking_id": null,
+      "bbox": [
+        415,
+        45,
+        939,
+        713
+      ],
+      "torso_bbox": [
+        546,
+        165,
+        808,
+        412
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g081_f000704_x0415_y0045.png",
+      "quality": {
+        "width": 262,
+        "height": 247,
+        "blur_score": 204.29686043478563,
+        "grass_ratio": 0.10388787588466174,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 81
+    },
+    {
+      "crop_id": "norway_wales_train_g082_f000720_x0923_y0375",
+      "match_id": "norway_wales",
+      "frame_number": 720,
+      "timestamp": 28.8,
+      "tracking_id": null,
+      "bbox": [
+        923,
+        375,
+        1017,
+        500
+      ],
+      "torso_bbox": [
+        946,
+        397,
+        993,
+        443
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g082_f000720_x0923_y0375.png",
+      "quality": {
+        "width": 47,
+        "height": 46,
+        "blur_score": 2258.807505128102,
+        "grass_ratio": 0.13552266419981499,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 82
+    },
+    {
+      "crop_id": "norway_wales_train_g083_f000720_x0904_y0353",
+      "match_id": "norway_wales",
+      "frame_number": 720,
+      "timestamp": 28.8,
+      "tracking_id": null,
+      "bbox": [
+        904,
+        353,
+        945,
+        471
+      ],
+      "torso_bbox": [
+        914,
+        374,
+        934,
+        417
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g083_f000720_x0904_y0353.png",
+      "quality": {
+        "width": 20,
+        "height": 43,
+        "blur_score": 5776.038933207138,
+        "grass_ratio": 0.009302325581395349,
+        "occlusion_ratio": 0.5372093023255814,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 83
+    },
+    {
+      "crop_id": "norway_wales_train_g084_f000720_x0111_y0390",
+      "match_id": "norway_wales",
+      "frame_number": 720,
+      "timestamp": 28.8,
+      "tracking_id": null,
+      "bbox": [
+        111,
+        390,
+        175,
+        499
+      ],
+      "torso_bbox": [
+        127,
+        409,
+        159,
+        449
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g084_f000720_x0111_y0390.png",
+      "quality": {
+        "width": 32,
+        "height": 40,
+        "blur_score": 1446.6978125,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 84
+    },
+    {
+      "crop_id": "norway_wales_train_g085_f000736_x0235_y0363",
+      "match_id": "norway_wales",
+      "frame_number": 736,
+      "timestamp": 29.44,
+      "tracking_id": null,
+      "bbox": [
+        235,
+        363,
+        304,
+        545
+      ],
+      "torso_bbox": [
+        252,
+        395,
+        286,
+        463
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g085_f000736_x0235_y0363.png",
+      "quality": {
+        "width": 34,
+        "height": 68,
+        "blur_score": 1137.2425929930796,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 85
+    },
+    {
+      "crop_id": "norway_wales_train_g086_f000736_x0344_y0382",
+      "match_id": "norway_wales",
+      "frame_number": 736,
+      "timestamp": 29.44,
+      "tracking_id": null,
+      "bbox": [
+        344,
+        382,
+        419,
+        516
+      ],
+      "torso_bbox": [
+        362,
+        406,
+        400,
+        455
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g086_f000736_x0344_y0382.png",
+      "quality": {
+        "width": 38,
+        "height": 49,
+        "blur_score": 1615.19004921772,
+        "grass_ratio": 0.05316863587540279,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 86
+    },
+    {
+      "crop_id": "norway_wales_train_g087_f000736_x0967_y0382",
+      "match_id": "norway_wales",
+      "frame_number": 736,
+      "timestamp": 29.44,
+      "tracking_id": null,
+      "bbox": [
+        967,
+        382,
+        1054,
+        537
+      ],
+      "torso_bbox": [
+        988,
+        409,
+        1032,
+        467
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g087_f000736_x0967_y0382.png",
+      "quality": {
+        "width": 44,
+        "height": 58,
+        "blur_score": 1159.5994431805898,
+        "grass_ratio": 0.03409090909090909,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 87
+    },
+    {
+      "crop_id": "norway_wales_train_g088_f000752_x0021_y0255",
+      "match_id": "norway_wales",
+      "frame_number": 752,
+      "timestamp": 30.08,
+      "tracking_id": null,
+      "bbox": [
+        21,
+        255,
+        78,
+        390
+      ],
+      "torso_bbox": [
+        35,
+        279,
+        63,
+        329
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g088_f000752_x0021_y0255.png",
+      "quality": {
+        "width": 28,
+        "height": 50,
+        "blur_score": 356.22794081632645,
+        "grass_ratio": 0.04,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 88
+    },
+    {
+      "crop_id": "norway_wales_train_g089_f000752_x0109_y0256",
+      "match_id": "norway_wales",
+      "frame_number": 752,
+      "timestamp": 30.08,
+      "tracking_id": null,
+      "bbox": [
+        109,
+        256,
+        174,
+        368
+      ],
+      "torso_bbox": [
+        125,
+        276,
+        157,
+        317
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g089_f000752_x0109_y0256.png",
+      "quality": {
+        "width": 32,
+        "height": 41,
+        "blur_score": 950.7897822863995,
+        "grass_ratio": 0.01753048780487805,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 89
+    },
+    {
+      "crop_id": "norway_wales_train_g090_f000752_x1042_y0266",
+      "match_id": "norway_wales",
+      "frame_number": 752,
+      "timestamp": 30.08,
+      "tracking_id": null,
+      "bbox": [
+        1042,
+        266,
+        1117,
+        402
+      ],
+      "torso_bbox": [
+        1060,
+        290,
+        1098,
+        340
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g090_f000752_x1042_y0266.png",
+      "quality": {
+        "width": 38,
+        "height": 50,
+        "blur_score": 683.6267531855956,
+        "grass_ratio": 0.04421052631578947,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 90
+    },
+    {
+      "crop_id": "norway_wales_train_g091_f000768_x0843_y0193",
+      "match_id": "norway_wales",
+      "frame_number": 768,
+      "timestamp": 30.72,
+      "tracking_id": null,
+      "bbox": [
+        843,
+        193,
+        944,
+        358
+      ],
+      "torso_bbox": [
+        868,
+        222,
+        918,
+        283
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g091_f000768_x0843_y0193.png",
+      "quality": {
+        "width": 50,
+        "height": 61,
+        "blur_score": 449.39030034936843,
+        "grass_ratio": 0.0022950819672131148,
+        "occlusion_ratio": 0.21311475409836064,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 91
+    },
+    {
+      "crop_id": "norway_wales_train_g092_f000768_x1152_y0306",
+      "match_id": "norway_wales",
+      "frame_number": 768,
+      "timestamp": 30.72,
+      "tracking_id": null,
+      "bbox": [
+        1152,
+        306,
+        1279,
+        622
+      ],
+      "torso_bbox": [
+        1183,
+        362,
+        1247,
+        479
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g092_f000768_x1152_y0306.png",
+      "quality": {
+        "width": 64,
+        "height": 117,
+        "blur_score": 412.2261567047161,
+        "grass_ratio": 0.010016025641025642,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 92
+    },
+    {
+      "crop_id": "norway_wales_train_g093_f000768_x0353_y0243",
+      "match_id": "norway_wales",
+      "frame_number": 768,
+      "timestamp": 30.72,
+      "tracking_id": null,
+      "bbox": [
+        353,
+        243,
+        574,
+        639
+      ],
+      "torso_bbox": [
+        408,
+        314,
+        518,
+        460
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g093_f000768_x0353_y0243.png",
+      "quality": {
+        "width": 110,
+        "height": 146,
+        "blur_score": 280.00548898588573,
+        "grass_ratio": 0.5705479452054795,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 93
+    },
+    {
+      "crop_id": "norway_wales_train_g094_f000784_x0175_y0259",
+      "match_id": "norway_wales",
+      "frame_number": 784,
+      "timestamp": 31.36,
+      "tracking_id": null,
+      "bbox": [
+        175,
+        259,
+        392,
+        613
+      ],
+      "torso_bbox": [
+        229,
+        322,
+        337,
+        453
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g094_f000784_x0175_y0259.png",
+      "quality": {
+        "width": 108,
+        "height": 131,
+        "blur_score": 257.10241982071034,
+        "grass_ratio": 0.8759541984732825,
+        "occlusion_ratio": 0.027777777777777776,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 94
+    },
+    {
+      "crop_id": "norway_wales_train_g095_f000784_x0614_y0179",
+      "match_id": "norway_wales",
+      "frame_number": 784,
+      "timestamp": 31.36,
+      "tracking_id": null,
+      "bbox": [
+        614,
+        179,
+        732,
+        340
+      ],
+      "torso_bbox": [
+        643,
+        207,
+        702,
+        267
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g095_f000784_x0614_y0179.png",
+      "quality": {
+        "width": 59,
+        "height": 60,
+        "blur_score": 498.253552539181,
+        "grass_ratio": 0.003389830508474576,
+        "occlusion_ratio": 0.34011299435028247,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 95
+    },
+    {
+      "crop_id": "norway_wales_train_g096_f000784_x0334_y0239",
+      "match_id": "norway_wales",
+      "frame_number": 784,
+      "timestamp": 31.36,
+      "tracking_id": null,
+      "bbox": [
+        334,
+        239,
+        686,
+        646
+      ],
+      "torso_bbox": [
+        422,
+        312,
+        598,
+        462
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g096_f000784_x0334_y0239.png",
+      "quality": {
+        "width": 176,
+        "height": 150,
+        "blur_score": 656.4641022024219,
+        "grass_ratio": 0.03875,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 96
+    },
+    {
+      "crop_id": "norway_wales_train_g097_f000800_x0000_y0159",
+      "match_id": "norway_wales",
+      "frame_number": 800,
+      "timestamp": 32.0,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        159,
+        184,
+        664
+      ],
+      "torso_bbox": [
+        46,
+        249,
+        138,
+        436
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g097_f000800_x0000_y0159.png",
+      "quality": {
+        "width": 92,
+        "height": 187,
+        "blur_score": 900.5859609430736,
+        "grass_ratio": 0.37915601023017903,
+        "occlusion_ratio": 0.18414322250639387,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 97
+    },
+    {
+      "crop_id": "norway_wales_train_g098_f000800_x0603_y0135",
+      "match_id": "norway_wales",
+      "frame_number": 800,
+      "timestamp": 32.0,
+      "tracking_id": null,
+      "bbox": [
+        603,
+        135,
+        890,
+        716
+      ],
+      "torso_bbox": [
+        674,
+        239,
+        818,
+        454
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g098_f000800_x0603_y0135.png",
+      "quality": {
+        "width": 144,
+        "height": 215,
+        "blur_score": 674.4318850519384,
+        "grass_ratio": 0.004198966408268734,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 98
+    },
+    {
+      "crop_id": "norway_wales_train_g099_f000800_x1081_y0130",
+      "match_id": "norway_wales",
+      "frame_number": 800,
+      "timestamp": 32.0,
+      "tracking_id": null,
+      "bbox": [
+        1081,
+        130,
+        1169,
+        303
+      ],
+      "torso_bbox": [
+        1103,
+        161,
+        1147,
+        225
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "train",
+      "image_path": "images/norway_wales_train_g099_f000800_x1081_y0130.png",
+      "quality": {
+        "width": 44,
+        "height": 64,
+        "blur_score": 104.20285816034993,
+        "grass_ratio": 0.009232954545454546,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 99
+    },
+    {
+      "crop_id": "norway_wales_val_g030_f001808_x0000_y0269",
+      "match_id": "norway_wales",
+      "frame_number": 1808,
+      "timestamp": 72.32,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        269,
+        207,
+        591
+      ],
+      "torso_bbox": [
+        51,
+        326,
+        155,
+        446
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "unassigned",
+      "image_path": "images/norway_wales_val_g030_f001808_x0000_y0269.png",
+      "quality": {
+        "width": 104,
+        "height": 120,
+        "blur_score": 279.26420095229287,
+        "grass_ratio": 0.5014423076923077,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 30
+    },
+    {
+      "crop_id": "norway_wales_val_g031_f001808_x0967_y0207",
+      "match_id": "norway_wales",
+      "frame_number": 1808,
+      "timestamp": 72.32,
+      "tracking_id": null,
+      "bbox": [
+        967,
+        207,
+        1136,
+        524
+      ],
+      "torso_bbox": [
+        1009,
+        264,
+        1093,
+        381
+      ],
+      "ground_truth_label": null,
+      "raw_label": null,
+      "is_labelled": false,
+      "label_verified": false,
+      "split": "unassigned",
+      "image_path": "images/norway_wales_val_g031_f001808_x0967_y0207.png",
+      "quality": {
+        "width": 84,
+        "height": 117,
+        "blur_score": 228.35734486650236,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.5833333333333334,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 31
+    },
+    {
+      "crop_id": "norway_wales_val_g000_f001632_x0485_y0417",
+      "match_id": "norway_wales",
+      "frame_number": 1632,
+      "timestamp": 65.28,
+      "tracking_id": null,
+      "bbox": [
+        485,
+        417,
+        525,
+        488
+      ],
+      "torso_bbox": [
+        495,
+        429,
+        515,
+        456
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g000_f001632_x0485_y0417.png",
+      "quality": {
+        "width": 20,
+        "height": 27,
+        "blur_score": 1548.8720987654322,
+        "grass_ratio": 0.07407407407407407,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 0
+    },
+    {
+      "crop_id": "norway_wales_val_g001_f001632_x0685_y0378",
+      "match_id": "norway_wales",
+      "frame_number": 1632,
+      "timestamp": 65.28,
+      "tracking_id": null,
+      "bbox": [
+        685,
+        378,
+        734,
+        488
+      ],
+      "torso_bbox": [
+        697,
+        397,
+        721,
+        438
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g001_f001632_x0685_y0378.png",
+      "quality": {
+        "width": 24,
+        "height": 41,
+        "blur_score": 1345.1125064032653,
+        "grass_ratio": 0.15548780487804878,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 1
+    },
+    {
+      "crop_id": "norway_wales_val_g002_f001632_x0358_y0348",
+      "match_id": "norway_wales",
+      "frame_number": 1632,
+      "timestamp": 65.28,
+      "tracking_id": null,
+      "bbox": [
+        358,
+        348,
+        405,
+        438
+      ],
+      "torso_bbox": [
+        369,
+        364,
+        393,
+        397
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g002_f001632_x0358_y0348.png",
+      "quality": {
+        "width": 24,
+        "height": 33,
+        "blur_score": 1098.251836547291,
+        "grass_ratio": 0.20454545454545456,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 2
+    },
+    {
+      "crop_id": "norway_wales_val_g003_f001664_x0000_y0000",
+      "match_id": "norway_wales",
+      "frame_number": 1664,
+      "timestamp": 66.56,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        0,
+        279,
+        701
+      ],
+      "torso_bbox": [
+        69,
+        126,
+        209,
+        385
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g003_f001664_x0000_y0000.png",
+      "quality": {
+        "width": 140,
+        "height": 259,
+        "blur_score": 6.527602325272919,
+        "grass_ratio": 0.7795918367346939,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 3
+    },
+    {
+      "crop_id": "norway_wales_val_g004_f001664_x1066_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 1664,
+      "timestamp": 66.56,
+      "tracking_id": null,
+      "bbox": [
+        1066,
+        1,
+        1268,
+        340
+      ],
+      "torso_bbox": [
+        1116,
+        62,
+        1217,
+        187
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g004_f001664_x1066_y0001.png",
+      "quality": {
+        "width": 101,
+        "height": 125,
+        "blur_score": 3.9999903758455053,
+        "grass_ratio": 0.9577029702970297,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 4
+    },
+    {
+      "crop_id": "norway_wales_val_g005_f001664_x0454_y0164",
+      "match_id": "norway_wales",
+      "frame_number": 1664,
+      "timestamp": 66.56,
+      "tracking_id": null,
+      "bbox": [
+        454,
+        164,
+        790,
+        716
+      ],
+      "torso_bbox": [
+        538,
+        263,
+        706,
+        467
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g005_f001664_x0454_y0164.png",
+      "quality": {
+        "width": 168,
+        "height": 204,
+        "blur_score": 147.21154838484276,
+        "grass_ratio": 0.13039799253034548,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 5
+    },
+    {
+      "crop_id": "norway_wales_val_g006_f001680_x0253_y0141",
+      "match_id": "norway_wales",
+      "frame_number": 1680,
+      "timestamp": 67.2,
+      "tracking_id": null,
+      "bbox": [
+        253,
+        141,
+        954,
+        716
+      ],
+      "torso_bbox": [
+        428,
+        244,
+        778,
+        457
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g006_f001680_x0253_y0141.png",
+      "quality": {
+        "width": 350,
+        "height": 213,
+        "blur_score": 44.181858946929964,
+        "grass_ratio": 0.3677531857813548,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 6
+    },
+    {
+      "crop_id": "norway_wales_val_g007_f001680_x0678_y0001",
+      "match_id": "norway_wales",
+      "frame_number": 1680,
+      "timestamp": 67.2,
+      "tracking_id": null,
+      "bbox": [
+        678,
+        1,
+        1007,
+        228
+      ],
+      "torso_bbox": [
+        760,
+        41,
+        924,
+        125
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g007_f001680_x0678_y0001.png",
+      "quality": {
+        "width": 164,
+        "height": 84,
+        "blur_score": 10.953163508115917,
+        "grass_ratio": 0.7474593495934959,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 7
+    },
+    {
+      "crop_id": "norway_wales_val_g008_f001696_x0189_y0050",
+      "match_id": "norway_wales",
+      "frame_number": 1696,
+      "timestamp": 67.84,
+      "tracking_id": null,
+      "bbox": [
+        189,
+        50,
+        620,
+        629
+      ],
+      "torso_bbox": [
+        296,
+        154,
+        512,
+        368
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g008_f001696_x0189_y0050.png",
+      "quality": {
+        "width": 216,
+        "height": 214,
+        "blur_score": 325.2600780912183,
+        "grass_ratio": 0.16629889235029421,
+        "occlusion_ratio": 0.6388888888888888,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 8
+    },
+    {
+      "crop_id": "norway_wales_val_g009_f001696_x0457_y0004",
+      "match_id": "norway_wales",
+      "frame_number": 1696,
+      "timestamp": 67.84,
+      "tracking_id": null,
+      "bbox": [
+        457,
+        4,
+        673,
+        562
+      ],
+      "torso_bbox": [
+        511,
+        104,
+        619,
+        310
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g009_f001696_x0457_y0004.png",
+      "quality": {
+        "width": 108,
+        "height": 206,
+        "blur_score": 240.92787541209478,
+        "grass_ratio": 0.031103919453434017,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 9
+    },
+    {
+      "crop_id": "norway_wales_val_g010_f001696_x0000_y0049",
+      "match_id": "norway_wales",
+      "frame_number": 1696,
+      "timestamp": 67.84,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        49,
+        434,
+        624
+      ],
+      "torso_bbox": [
+        108,
+        152,
+        325,
+        365
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g010_f001696_x0000_y0049.png",
+      "quality": {
+        "width": 217,
+        "height": 213,
+        "blur_score": 595.8238706934744,
+        "grass_ratio": 0.342009043508362,
+        "occlusion_ratio": 0.6267281105990783,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 10
+    },
+    {
+      "crop_id": "norway_wales_val_g011_f001712_x1008_y0100",
+      "match_id": "norway_wales",
+      "frame_number": 1712,
+      "timestamp": 68.48,
+      "tracking_id": null,
+      "bbox": [
+        1008,
+        100,
+        1156,
+        459
+      ],
+      "torso_bbox": [
+        1045,
+        164,
+        1119,
+        297
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g011_f001712_x1008_y0100.png",
+      "quality": {
+        "width": 74,
+        "height": 133,
+        "blur_score": 177.10236369880857,
+        "grass_ratio": 0.3989026620605568,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 11
+    },
+    {
+      "crop_id": "norway_wales_val_g012_f001712_x0000_y0090",
+      "match_id": "norway_wales",
+      "frame_number": 1712,
+      "timestamp": 68.48,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        90,
+        390,
+        610
+      ],
+      "torso_bbox": [
+        97,
+        183,
+        292,
+        376
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g012_f001712_x0000_y0090.png",
+      "quality": {
+        "width": 195,
+        "height": 193,
+        "blur_score": 756.2527585346222,
+        "grass_ratio": 0.07697621894513086,
+        "occlusion_ratio": 0.4564102564102564,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 12
+    },
+    {
+      "crop_id": "norway_wales_val_g013_f001712_x0203_y0107",
+      "match_id": "norway_wales",
+      "frame_number": 1712,
+      "timestamp": 68.48,
+      "tracking_id": null,
+      "bbox": [
+        203,
+        107,
+        626,
+        607
+      ],
+      "torso_bbox": [
+        308,
+        197,
+        520,
+        382
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g013_f001712_x0203_y0107.png",
+      "quality": {
+        "width": 212,
+        "height": 185,
+        "blur_score": 374.6409857051879,
+        "grass_ratio": 0.30308516063233043,
+        "occlusion_ratio": 0.3867924528301887,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 13
+    },
+    {
+      "crop_id": "norway_wales_val_g014_f001728_x0882_y0124",
+      "match_id": "norway_wales",
+      "frame_number": 1728,
+      "timestamp": 69.12,
+      "tracking_id": null,
+      "bbox": [
+        882,
+        124,
+        995,
+        443
+      ],
+      "torso_bbox": [
+        910,
+        181,
+        966,
+        299
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g014_f001728_x0882_y0124.png",
+      "quality": {
+        "width": 56,
+        "height": 118,
+        "blur_score": 410.3218524971932,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 14
+    },
+    {
+      "crop_id": "norway_wales_val_g015_f001728_x0001_y0045",
+      "match_id": "norway_wales",
+      "frame_number": 1728,
+      "timestamp": 69.12,
+      "tracking_id": null,
+      "bbox": [
+        1,
+        45,
+        179,
+        537
+      ],
+      "torso_bbox": [
+        45,
+        133,
+        134,
+        315
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g015_f001728_x0001_y0045.png",
+      "quality": {
+        "width": 89,
+        "height": 182,
+        "blur_score": 539.4668188576236,
+        "grass_ratio": 0.038461538461538464,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 15
+    },
+    {
+      "crop_id": "norway_wales_val_g016_f001728_x0141_y0189",
+      "match_id": "norway_wales",
+      "frame_number": 1728,
+      "timestamp": 69.12,
+      "tracking_id": null,
+      "bbox": [
+        141,
+        189,
+        460,
+        611
+      ],
+      "torso_bbox": [
+        220,
+        264,
+        380,
+        421
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g016_f001728_x0141_y0189.png",
+      "quality": {
+        "width": 160,
+        "height": 157,
+        "blur_score": 383.9330067253615,
+        "grass_ratio": 0.34796974522292995,
+        "occlusion_ratio": 0.30625,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 16
+    },
+    {
+      "crop_id": "norway_wales_val_g017_f001744_x0305_y0175",
+      "match_id": "norway_wales",
+      "frame_number": 1744,
+      "timestamp": 69.76,
+      "tracking_id": null,
+      "bbox": [
+        305,
+        175,
+        635,
+        619
+      ],
+      "torso_bbox": [
+        387,
+        254,
+        552,
+        419
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g017_f001744_x0305_y0175.png",
+      "quality": {
+        "width": 165,
+        "height": 165,
+        "blur_score": 227.89578810190557,
+        "grass_ratio": 0.45322314049586776,
+        "occlusion_ratio": 0.3878787878787879,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 17
+    },
+    {
+      "crop_id": "norway_wales_val_g018_f001744_x0573_y0120",
+      "match_id": "norway_wales",
+      "frame_number": 1744,
+      "timestamp": 69.76,
+      "tracking_id": null,
+      "bbox": [
+        573,
+        120,
+        708,
+        431
+      ],
+      "torso_bbox": [
+        606,
+        175,
+        674,
+        291
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g018_f001744_x0573_y0120.png",
+      "quality": {
+        "width": 68,
+        "height": 116,
+        "blur_score": 688.7655781344503,
+        "grass_ratio": 0.05400608519269777,
+        "occlusion_ratio": 0.4264705882352941,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 18
+    },
+    {
+      "crop_id": "norway_wales_val_g019_f001744_x0488_y0110",
+      "match_id": "norway_wales",
+      "frame_number": 1744,
+      "timestamp": 69.76,
+      "tracking_id": null,
+      "bbox": [
+        488,
+        110,
+        633,
+        429
+      ],
+      "torso_bbox": [
+        524,
+        167,
+        596,
+        285
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g019_f001744_x0488_y0110.png",
+      "quality": {
+        "width": 72,
+        "height": 118,
+        "blur_score": 361.0137688451373,
+        "grass_ratio": 0.3693502824858757,
+        "occlusion_ratio": 0.9322033898305084,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 19
+    },
+    {
+      "crop_id": "norway_wales_val_g020_f001760_x0115_y0071",
+      "match_id": "norway_wales",
+      "frame_number": 1760,
+      "timestamp": 70.4,
+      "tracking_id": null,
+      "bbox": [
+        115,
+        71,
+        205,
+        386
+      ],
+      "torso_bbox": [
+        137,
+        127,
+        182,
+        244
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g020_f001760_x0115_y0071.png",
+      "quality": {
+        "width": 45,
+        "height": 117,
+        "blur_score": 185.9373557032816,
+        "grass_ratio": 0.47768281101614435,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 20
+    },
+    {
+      "crop_id": "norway_wales_val_g021_f001760_x0000_y0026",
+      "match_id": "norway_wales",
+      "frame_number": 1760,
+      "timestamp": 70.4,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        26,
+        141,
+        571
+      ],
+      "torso_bbox": [
+        35,
+        124,
+        105,
+        325
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g021_f001760_x0000_y0026.png",
+      "quality": {
+        "width": 70,
+        "height": 201,
+        "blur_score": 268.95155355823175,
+        "grass_ratio": 0.003766879886282871,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 21
+    },
+    {
+      "crop_id": "norway_wales_val_g022_f001760_x0124_y0039",
+      "match_id": "norway_wales",
+      "frame_number": 1760,
+      "timestamp": 70.4,
+      "tracking_id": null,
+      "bbox": [
+        124,
+        39,
+        345,
+        591
+      ],
+      "torso_bbox": [
+        179,
+        138,
+        289,
+        342
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g022_f001760_x0124_y0039.png",
+      "quality": {
+        "width": 110,
+        "height": 204,
+        "blur_score": 299.7597881854087,
+        "grass_ratio": 0.14496434937611408,
+        "occlusion_ratio": 0.23636363636363636,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 22
+    },
+    {
+      "crop_id": "norway_wales_val_g023_f001776_x0990_y0138",
+      "match_id": "norway_wales",
+      "frame_number": 1776,
+      "timestamp": 71.04,
+      "tracking_id": null,
+      "bbox": [
+        990,
+        138,
+        1097,
+        385
+      ],
+      "torso_bbox": [
+        1016,
+        182,
+        1070,
+        273
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g023_f001776_x0990_y0138.png",
+      "quality": {
+        "width": 54,
+        "height": 91,
+        "blur_score": 465.30208147495495,
+        "grass_ratio": 0.002442002442002442,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 23
+    },
+    {
+      "crop_id": "norway_wales_val_g024_f001776_x0737_y0178",
+      "match_id": "norway_wales",
+      "frame_number": 1776,
+      "timestamp": 71.04,
+      "tracking_id": null,
+      "bbox": [
+        737,
+        178,
+        805,
+        349
+      ],
+      "torso_bbox": [
+        754,
+        208,
+        788,
+        272
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g024_f001776_x0737_y0178.png",
+      "quality": {
+        "width": 34,
+        "height": 64,
+        "blur_score": 315.69406138489404,
+        "grass_ratio": 0.0078125,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 24
+    },
+    {
+      "crop_id": "norway_wales_val_g025_f001776_x0447_y0290",
+      "match_id": "norway_wales",
+      "frame_number": 1776,
+      "timestamp": 71.04,
+      "tracking_id": null,
+      "bbox": [
+        447,
+        290,
+        732,
+        616
+      ],
+      "torso_bbox": [
+        518,
+        348,
+        660,
+        469
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g025_f001776_x0447_y0290.png",
+      "quality": {
+        "width": 142,
+        "height": 121,
+        "blur_score": 85.2840710002852,
+        "grass_ratio": 0.5053544406937492,
+        "occlusion_ratio": 0.5326504481434059,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 25
+    },
+    {
+      "crop_id": "norway_wales_val_g026_f001792_x1044_y0180",
+      "match_id": "norway_wales",
+      "frame_number": 1792,
+      "timestamp": 71.68,
+      "tracking_id": null,
+      "bbox": [
+        1044,
+        180,
+        1196,
+        445
+      ],
+      "torso_bbox": [
+        1082,
+        227,
+        1158,
+        325
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Wales",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g026_f001792_x1044_y0180.png",
+      "quality": {
+        "width": 76,
+        "height": 98,
+        "blur_score": 120.23807267444542,
+        "grass_ratio": 0.007787325456498389,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 26
+    },
+    {
+      "crop_id": "norway_wales_val_g027_f001792_x0000_y0114",
+      "match_id": "norway_wales",
+      "frame_number": 1792,
+      "timestamp": 71.68,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        114,
+        85,
+        423
+      ],
+      "torso_bbox": [
+        21,
+        169,
+        63,
+        283
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g027_f001792_x0000_y0114.png",
+      "quality": {
+        "width": 42,
+        "height": 114,
+        "blur_score": 688.5547300355456,
+        "grass_ratio": 0.014202172096908938,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 27
+    },
+    {
+      "crop_id": "norway_wales_val_g028_f001792_x0516_y0210",
+      "match_id": "norway_wales",
+      "frame_number": 1792,
+      "timestamp": 71.68,
+      "tracking_id": null,
+      "bbox": [
+        516,
+        210,
+        615,
+        409
+      ],
+      "torso_bbox": [
+        540,
+        245,
+        590,
+        319
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g028_f001792_x0516_y0210.png",
+      "quality": {
+        "width": 50,
+        "height": 74,
+        "blur_score": 297.2680061358656,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 28
+    },
+    {
+      "crop_id": "norway_wales_val_g029_f001808_x0730_y0237",
+      "match_id": "norway_wales",
+      "frame_number": 1808,
+      "timestamp": 72.32,
+      "tracking_id": null,
+      "bbox": [
+        730,
+        237,
+        830,
+        480
+      ],
+      "torso_bbox": [
+        755,
+        280,
+        805,
+        370
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Norway",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/norway_wales_val_g029_f001808_x0730_y0237.png",
+      "quality": {
+        "width": 50,
+        "height": 90,
+        "blur_score": 443.1595310617284,
+        "grass_ratio": 0.004888888888888889,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 29
+    }
+  ]
+}

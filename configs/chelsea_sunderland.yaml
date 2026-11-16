@@ -1,0 +1,75 @@
+match_id: chelsea_sunderland
+match_name: "Chelsea vs Sunderland"
+video_path: "data/raw/27.mp4"
+fallback_video_paths:
+  - "27.mp4"
+
+label_mapping:
+  Team_A: "Chelsea"
+  Team_B: "Sunderland"
+  Referee: "REF"
+  Unknown: "Unknown"
+
+label_aliases:
+  Chelsea: "Team_A"
+  Sunderland: "Team_B"
+  REF: "Referee"
+  Other: "Unknown"
+  Unknown: "Unknown"
+
+team_colours_bgr:
+  Team_A: [255, 0, 255]      # Magenta (BGR)
+  Team_B: [255, 255, 0]      # Cyan (BGR)
+  Referee: [0, 255, 255]     # Yellow (BGR)
+  Unknown: [160, 160, 160]   # Grey (BGR)
+
+detection:
+  model_name: "yolo11n.pt"
+  imgsz: 1088
+  person_conf: 0.40
+  ball_conf: 0.25
+  frame_stride: 2
+  iou_threshold: 0.50
+
+cropping:
+  min_player_height: 25
+  min_player_width: 10
+  min_crop_width: 8
+  min_crop_height: 10
+  left_frac: 0.20
+  right_frac: 0.80
+  top_frac: 0.20
+  bottom_frac: 0.55
+  min_blur_variance: 6.0
+  max_grass_ratio: 0.82
+  max_occlusion_ratio: 0.65
+
+classification:
+  feature_method: "spatial_embedding"
+  classifier_type: "knn"
+  n_neighbors: 3
+  metric: "cosine"
+  unknown_threshold: 0.35
+  auto_calibrate_threshold: true
+  min_margin: 0.02
+  balance_class_weights: true
+  random_state: 42
+
+tracking:
+  tracker_config: "bytetrack.yaml"
+  history_length: 9
+  min_votes: 3
+  min_agreement: 0.60
+  confidence_weighted: true
+  lock_confidence_threshold: 0.78
+  lock_min_observations: 6
+  reclassify_contradiction_streak: 5
+  max_missing_frames_before_reset: 30
+  max_spatial_jump_ratio: 3.5
+
+splits:
+  train_end_fraction: 0.50
+  val_start_fraction: 0.55
+  val_end_fraction: 0.80
+  test_start_fraction: 0.80
+

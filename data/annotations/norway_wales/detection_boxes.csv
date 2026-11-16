@@ -1,0 +1,12 @@
+frame_number,timestamp,class_name,x1,y1,x2,y2,verified,source
+1624,64.96,,,,,,False,unlabelled
+1744,69.76,,,,,,False,unlabelled
+1865,74.6,,,,,,False,unlabelled
+1986,79.44,,,,,,False,unlabelled
+2106,84.24,,,,,,False,unlabelled
+2227,89.08,,,,,,False,unlabelled
+2348,93.92,,,,,,False,unlabelled
+2469,98.76,,,,,,False,unlabelled
+2589,103.56,,,,,,False,unlabelled
+2710,108.4,,,,,,False,unlabelled
+2831,113.24,,,,,,False,unlabelled

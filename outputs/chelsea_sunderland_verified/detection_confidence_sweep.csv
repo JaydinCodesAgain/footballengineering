@@ -1,0 +1,7 @@
+confidence_threshold,total_frames,total_players_detected,avg_players_per_frame,total_balls_detected,frames_with_ball,ball_frame_coverage,player_precision,player_recall,player_f1,ball_precision,ball_recall,ball_f1
+0.15,6,30,5.0,5,4,0.6667,,,,,,
+0.2,6,24,4.0,4,4,0.6667,,,,,,
+0.25,6,16,2.67,1,1,0.1667,,,,,,
+0.3,6,13,2.17,1,1,0.1667,,,,,,
+0.4,6,11,1.83,1,1,0.1667,,,,,,
+0.5,6,11,1.83,1,1,0.1667,,,,,,

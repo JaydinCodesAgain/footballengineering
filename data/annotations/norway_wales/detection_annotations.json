@@ -1,0 +1,173 @@
+{
+  "match_id": "norway_wales",
+  "total_frames": 11,
+  "verified_manual_box_frames": 0,
+  "evaluation_ready": false,
+  "frames": [
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1624,
+      "timestamp": 64.96,
+      "image_rel_path": "frames/frame_001624.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 11,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1744,
+      "timestamp": 69.76,
+      "image_rel_path": "frames/frame_001744.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 4,
+        "person_fn": 0,
+        "ball_tp": 1,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1865,
+      "timestamp": 74.6,
+      "image_rel_path": "frames/frame_001865.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 6,
+        "person_fn": 0,
+        "ball_tp": 1,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1986,
+      "timestamp": 79.44,
+      "image_rel_path": "frames/frame_001986.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 16,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2106,
+      "timestamp": 84.24,
+      "image_rel_path": "frames/frame_002106.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 6,
+        "person_fn": 0,
+        "ball_tp": 1,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2227,
+      "timestamp": 89.08,
+      "image_rel_path": "frames/frame_002227.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 7,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 1
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2348,
+      "timestamp": 93.92,
+      "image_rel_path": "frames/frame_002348.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 10,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2469,
+      "timestamp": 98.76,
+      "image_rel_path": "frames/frame_002469.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 10,
+        "person_fn": 0,
+        "ball_tp": 1,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2589,
+      "timestamp": 103.56,
+      "image_rel_path": "frames/frame_002589.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 2,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2710,
+      "timestamp": 108.4,
+      "image_rel_path": "frames/frame_002710.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 2,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2831,
+      "timestamp": 113.24,
+      "image_rel_path": "frames/frame_002831.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": {
+        "person_tp": 3,
+        "person_fn": 0,
+        "ball_tp": 0,
+        "ball_fn": 0
+      }
+    }
+  ]
+}

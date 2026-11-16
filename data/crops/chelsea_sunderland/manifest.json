@@ -1,0 +1,2889 @@
+{
+  "match_id": "chelsea_sunderland",
+  "match_name": "Chelsea vs Sunderland",
+  "total_crops": 80,
+  "labelled_crops": 80,
+  "verified_crops": 80,
+  "crops": [
+    {
+      "crop_id": "chelsea_sunderland_train_g007_f000420_x0937_y0537",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 420,
+      "timestamp": 16.8,
+      "tracking_id": null,
+      "bbox": [
+        937,
+        537,
+        978,
+        659
+      ],
+      "torso_bbox": [
+        945,
+        561,
+        969,
+        604
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g007_f000420_x0937_y0537.png",
+      "quality": {
+        "width": 24,
+        "height": 43,
+        "blur_score": 258.7915502373655,
+        "grass_ratio": 0.16569767441860464,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 7
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g010_f000390_x0523_y0323",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 390,
+      "timestamp": 15.6,
+      "tracking_id": null,
+      "bbox": [
+        523,
+        323,
+        561,
+        406
+      ],
+      "torso_bbox": [
+        530,
+        339,
+        553,
+        368
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g010_f000390_x0523_y0323.png",
+      "quality": {
+        "width": 23,
+        "height": 29,
+        "blur_score": 278.7357430729913,
+        "grass_ratio": 0.4947526236881559,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 10
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g011_f000090_x1077_y0290",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 90,
+      "timestamp": 3.6,
+      "tracking_id": null,
+      "bbox": [
+        1077,
+        290,
+        1110,
+        366
+      ],
+      "torso_bbox": [
+        1083,
+        305,
+        1103,
+        331
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g011_f000090_x1077_y0290.png",
+      "quality": {
+        "width": 20,
+        "height": 26,
+        "blur_score": 824.897322485207,
+        "grass_ratio": 0.4346153846153846,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 11
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g012_f000420_x0683_y0312",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 420,
+      "timestamp": 16.8,
+      "tracking_id": null,
+      "bbox": [
+        683,
+        312,
+        726,
+        376
+      ],
+      "torso_bbox": [
+        691,
+        324,
+        717,
+        347
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g012_f000420_x0683_y0312.png",
+      "quality": {
+        "width": 26,
+        "height": 23,
+        "blur_score": 986.477131128287,
+        "grass_ratio": 0.3177257525083612,
+        "occlusion_ratio": 0.19230769230769232,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 12
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g014_f000300_x0507_y0263",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 300,
+      "timestamp": 12.0,
+      "tracking_id": null,
+      "bbox": [
+        507,
+        263,
+        538,
+        344
+      ],
+      "torso_bbox": [
+        513,
+        279,
+        531,
+        307
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g014_f000300_x0507_y0263.png",
+      "quality": {
+        "width": 18,
+        "height": 28,
+        "blur_score": 373.28954081632656,
+        "grass_ratio": 1.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 14
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g016_f000480_x0728_y0230",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        728,
+        230,
+        753,
+        297
+      ],
+      "torso_bbox": [
+        733,
+        243,
+        748,
+        266
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g016_f000480_x0728_y0230.png",
+      "quality": {
+        "width": 15,
+        "height": 23,
+        "blur_score": 622.8287838689351,
+        "grass_ratio": 0.04057971014492753,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 16
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g017_f000270_x0968_y0206",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 270,
+      "timestamp": 10.8,
+      "tracking_id": null,
+      "bbox": [
+        968,
+        206,
+        1003,
+        267
+      ],
+      "torso_bbox": [
+        975,
+        218,
+        996,
+        239
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g017_f000270_x0968_y0206.png",
+      "quality": {
+        "width": 21,
+        "height": 21,
+        "blur_score": 225.23902077837937,
+        "grass_ratio": 0.3832199546485261,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 17
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g018_f000210_x0876_y0292",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 210,
+      "timestamp": 8.4,
+      "tracking_id": null,
+      "bbox": [
+        876,
+        292,
+        901,
+        359
+      ],
+      "torso_bbox": [
+        881,
+        305,
+        896,
+        328
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g018_f000210_x0876_y0292.png",
+      "quality": {
+        "width": 15,
+        "height": 23,
+        "blur_score": 620.2971308548624,
+        "grass_ratio": 0.17391304347826086,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 18
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g020_f000090_x1212_y0388",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 90,
+      "timestamp": 3.6,
+      "tracking_id": null,
+      "bbox": [
+        1212,
+        388,
+        1243,
+        470
+      ],
+      "torso_bbox": [
+        1218,
+        404,
+        1236,
+        433
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g020_f000090_x1212_y0388.png",
+      "quality": {
+        "width": 18,
+        "height": 29,
+        "blur_score": 2150.791154710001,
+        "grass_ratio": 0.019157088122605363,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 20
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g024_f000120_x1052_y0287",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 120,
+      "timestamp": 4.8,
+      "tracking_id": null,
+      "bbox": [
+        1052,
+        287,
+        1079,
+        362
+      ],
+      "torso_bbox": [
+        1057,
+        302,
+        1073,
+        328
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g024_f000120_x1052_y0287.png",
+      "quality": {
+        "width": 16,
+        "height": 26,
+        "blur_score": 1824.0933743990386,
+        "grass_ratio": 0.5456730769230769,
+        "occlusion_ratio": 0.375,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 24
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g025_f000480_x0807_y0330",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        807,
+        330,
+        833,
+        415
+      ],
+      "torso_bbox": [
+        812,
+        347,
+        827,
+        376
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g025_f000480_x0807_y0330.png",
+      "quality": {
+        "width": 15,
+        "height": 29,
+        "blur_score": 3165.2586603250097,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 25
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g028_f000450_x0216_y0338",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 450,
+      "timestamp": 18.0,
+      "tracking_id": null,
+      "bbox": [
+        216,
+        338,
+        261,
+        421
+      ],
+      "torso_bbox": [
+        225,
+        354,
+        252,
+        383
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g028_f000450_x0216_y0338.png",
+      "quality": {
+        "width": 27,
+        "height": 29,
+        "blur_score": 1315.4888246241574,
+        "grass_ratio": 0.4112388250319285,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 28
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g029_f000480_x0669_y0260",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 480,
+      "timestamp": 19.2,
+      "tracking_id": null,
+      "bbox": [
+        669,
+        260,
+        720,
+        323
+      ],
+      "torso_bbox": [
+        679,
+        272,
+        709,
+        294
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g029_f000480_x0669_y0260.png",
+      "quality": {
+        "width": 30,
+        "height": 22,
+        "blur_score": 648.2824494949494,
+        "grass_ratio": 0.753030303030303,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 29
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g034_f000450_x0792_y0345",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 450,
+      "timestamp": 18.0,
+      "tracking_id": null,
+      "bbox": [
+        792,
+        345,
+        831,
+        429
+      ],
+      "torso_bbox": [
+        799,
+        361,
+        823,
+        391
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g034_f000450_x0792_y0345.png",
+      "quality": {
+        "width": 24,
+        "height": 30,
+        "blur_score": 3292.567822145061,
+        "grass_ratio": 0.0763888888888889,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 34
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g037_f000240_x1160_y0190",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 240,
+      "timestamp": 9.6,
+      "tracking_id": null,
+      "bbox": [
+        1160,
+        190,
+        1190,
+        251
+      ],
+      "torso_bbox": [
+        1166,
+        202,
+        1184,
+        223
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g037_f000240_x1160_y0190.png",
+      "quality": {
+        "width": 18,
+        "height": 21,
+        "blur_score": 80.26738473167045,
+        "grass_ratio": 0.5502645502645502,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 37
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g039_f000120_x0861_y0358",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 120,
+      "timestamp": 4.8,
+      "tracking_id": null,
+      "bbox": [
+        861,
+        358,
+        898,
+        437
+      ],
+      "torso_bbox": [
+        868,
+        373,
+        890,
+        401
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g039_f000120_x0861_y0358.png",
+      "quality": {
+        "width": 22,
+        "height": 28,
+        "blur_score": 214.0398227989543,
+        "grass_ratio": 0.3262987012987013,
+        "occlusion_ratio": 0.3181818181818182,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 39
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g040_f000420_x0068_y0397",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 420,
+      "timestamp": 16.8,
+      "tracking_id": null,
+      "bbox": [
+        68,
+        397,
+        108,
+        494
+      ],
+      "torso_bbox": [
+        76,
+        416,
+        100,
+        450
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g040_f000420_x0068_y0397.png",
+      "quality": {
+        "width": 24,
+        "height": 34,
+        "blur_score": 187.46402825836216,
+        "grass_ratio": 0.45465686274509803,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 40
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g042_f000060_x0614_y0255",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 60,
+      "timestamp": 2.4,
+      "tracking_id": null,
+      "bbox": [
+        614,
+        255,
+        651,
+        302
+      ],
+      "torso_bbox": [
+        621,
+        264,
+        643,
+        280
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g042_f000060_x0614_y0255.png",
+      "quality": {
+        "width": 22,
+        "height": 16,
+        "blur_score": 410.7654958677686,
+        "grass_ratio": 0.2840909090909091,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 42
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g046_f000390_x0482_y0319",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 390,
+      "timestamp": 15.6,
+      "tracking_id": null,
+      "bbox": [
+        482,
+        319,
+        509,
+        405
+      ],
+      "torso_bbox": [
+        487,
+        336,
+        503,
+        366
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g046_f000390_x0482_y0319.png",
+      "quality": {
+        "width": 16,
+        "height": 30,
+        "blur_score": 706.0004817708334,
+        "grass_ratio": 0.020833333333333332,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 46
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g047_f000420_x1083_y0240",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 420,
+      "timestamp": 16.8,
+      "tracking_id": null,
+      "bbox": [
+        1083,
+        240,
+        1128,
+        288
+      ],
+      "torso_bbox": [
+        1092,
+        249,
+        1119,
+        266
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g047_f000420_x1083_y0240.png",
+      "quality": {
+        "width": 27,
+        "height": 17,
+        "blur_score": 127.87122711587662,
+        "grass_ratio": 0.037037037037037035,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 47
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g052_f000060_x0428_y0392",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 60,
+      "timestamp": 2.4,
+      "tracking_id": null,
+      "bbox": [
+        428,
+        392,
+        466,
+        473
+      ],
+      "torso_bbox": [
+        435,
+        408,
+        458,
+        436
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g052_f000060_x0428_y0392.png",
+      "quality": {
+        "width": 23,
+        "height": 28,
+        "blur_score": 1712.5722845376335,
+        "grass_ratio": 0.19409937888198758,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 52
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g053_f000420_x0840_y0323",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 420,
+      "timestamp": 16.8,
+      "tracking_id": null,
+      "bbox": [
+        840,
+        323,
+        877,
+        393
+      ],
+      "torso_bbox": [
+        847,
+        337,
+        869,
+        361
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g053_f000420_x0840_y0323.png",
+      "quality": {
+        "width": 22,
+        "height": 24,
+        "blur_score": 184.6263630624426,
+        "grass_ratio": 0.0625,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 53
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g054_f000390_x0815_y0218",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 390,
+      "timestamp": 15.6,
+      "tracking_id": null,
+      "bbox": [
+        815,
+        218,
+        850,
+        283
+      ],
+      "torso_bbox": [
+        822,
+        231,
+        843,
+        253
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g054_f000390_x0815_y0218.png",
+      "quality": {
+        "width": 21,
+        "height": 22,
+        "blur_score": 233.21861003354508,
+        "grass_ratio": 0.5064935064935064,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 54
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g055_f000060_x0763_y0408",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 60,
+      "timestamp": 2.4,
+      "tracking_id": null,
+      "bbox": [
+        763,
+        408,
+        795,
+        489
+      ],
+      "torso_bbox": [
+        769,
+        424,
+        788,
+        452
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g055_f000060_x0763_y0408.png",
+      "quality": {
+        "width": 19,
+        "height": 28,
+        "blur_score": 382.89216462208157,
+        "grass_ratio": 0.14097744360902256,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 55
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g056_f000060_x0683_y0236",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 60,
+      "timestamp": 2.4,
+      "tracking_id": null,
+      "bbox": [
+        683,
+        236,
+        724,
+        288
+      ],
+      "torso_bbox": [
+        691,
+        246,
+        715,
+        264
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g056_f000060_x0683_y0236.png",
+      "quality": {
+        "width": 24,
+        "height": 18,
+        "blur_score": 246.6597168638546,
+        "grass_ratio": 0.2800925925925926,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 56
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g057_f000450_x0436_y0237",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 450,
+      "timestamp": 18.0,
+      "tracking_id": null,
+      "bbox": [
+        436,
+        237,
+        464,
+        299
+      ],
+      "torso_bbox": [
+        441,
+        249,
+        458,
+        271
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g057_f000450_x0436_y0237.png",
+      "quality": {
+        "width": 17,
+        "height": 22,
+        "blur_score": 435.1392733564013,
+        "grass_ratio": 0.13101604278074866,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 57
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g060_f000240_x0493_y0269",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 240,
+      "timestamp": 9.6,
+      "tracking_id": null,
+      "bbox": [
+        493,
+        269,
+        530,
+        326
+      ],
+      "torso_bbox": [
+        500,
+        280,
+        522,
+        300
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g060_f000240_x0493_y0269.png",
+      "quality": {
+        "width": 22,
+        "height": 20,
+        "blur_score": 1447.7744628099174,
+        "grass_ratio": 0.3795454545454545,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 60
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g067_f000210_x0717_y0537",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 210,
+      "timestamp": 8.4,
+      "tracking_id": null,
+      "bbox": [
+        717,
+        537,
+        758,
+        617
+      ],
+      "torso_bbox": [
+        725,
+        553,
+        749,
+        581
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g067_f000210_x0717_y0537.png",
+      "quality": {
+        "width": 24,
+        "height": 28,
+        "blur_score": 2473.6486678004535,
+        "grass_ratio": 0.19940476190476192,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 67
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g068_f000240_x0450_y0180",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 240,
+      "timestamp": 9.6,
+      "tracking_id": null,
+      "bbox": [
+        450,
+        180,
+        478,
+        231
+      ],
+      "torso_bbox": [
+        455,
+        190,
+        472,
+        208
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g068_f000240_x0450_y0180.png",
+      "quality": {
+        "width": 17,
+        "height": 18,
+        "blur_score": 1307.0364496561153,
+        "grass_ratio": 0.37254901960784315,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 68
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g069_f000450_x0310_y0263",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 450,
+      "timestamp": 18.0,
+      "tracking_id": null,
+      "bbox": [
+        310,
+        263,
+        341,
+        335
+      ],
+      "torso_bbox": [
+        316,
+        277,
+        334,
+        302
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g069_f000450_x0310_y0263.png",
+      "quality": {
+        "width": 18,
+        "height": 25,
+        "blur_score": 363.7024246913581,
+        "grass_ratio": 0.18222222222222223,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 69
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g071_f000030_x1054_y0303",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 30,
+      "timestamp": 1.2,
+      "tracking_id": null,
+      "bbox": [
+        1054,
+        303,
+        1099,
+        371
+      ],
+      "torso_bbox": [
+        1063,
+        316,
+        1090,
+        340
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g071_f000030_x1054_y0303.png",
+      "quality": {
+        "width": 27,
+        "height": 24,
+        "blur_score": 333.19466354214296,
+        "grass_ratio": 0.5617283950617284,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 71
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g072_f000210_x0205_y0184",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 210,
+      "timestamp": 8.4,
+      "tracking_id": null,
+      "bbox": [
+        205,
+        184,
+        239,
+        252
+      ],
+      "torso_bbox": [
+        211,
+        197,
+        232,
+        221
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g072_f000210_x0205_y0184.png",
+      "quality": {
+        "width": 21,
+        "height": 24,
+        "blur_score": 603.3996598639455,
+        "grass_ratio": 0.9841269841269841,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 72
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g074_f000390_x0614_y0167",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 390,
+      "timestamp": 15.6,
+      "tracking_id": null,
+      "bbox": [
+        614,
+        167,
+        638,
+        209
+      ],
+      "torso_bbox": [
+        618,
+        175,
+        633,
+        190
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "train",
+      "image_path": "images/chelsea_sunderland_train_g074_f000390_x0614_y0167.png",
+      "quality": {
+        "width": 15,
+        "height": 15,
+        "blur_score": 1051.9509333333333,
+        "grass_ratio": 0.022222222222222223,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 74
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g000_f001110_x0360_y0195",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1110,
+      "timestamp": 44.4,
+      "tracking_id": null,
+      "bbox": [
+        360,
+        195,
+        386,
+        250
+      ],
+      "torso_bbox": [
+        365,
+        206,
+        380,
+        225
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g000_f001110_x0360_y0195.png",
+      "quality": {
+        "width": 15,
+        "height": 19,
+        "blur_score": 282.4582333025547,
+        "grass_ratio": 0.1824561403508772,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 0
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g001_f001080_x0361_y0239",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1080,
+      "timestamp": 43.2,
+      "tracking_id": null,
+      "bbox": [
+        361,
+        239,
+        395,
+        308
+      ],
+      "torso_bbox": [
+        367,
+        252,
+        388,
+        276
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g001_f001080_x0361_y0239.png",
+      "quality": {
+        "width": 21,
+        "height": 24,
+        "blur_score": 1988.952345521542,
+        "grass_ratio": 0.2361111111111111,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 1
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g002_f000510_x0658_y0252",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 510,
+      "timestamp": 20.4,
+      "tracking_id": null,
+      "bbox": [
+        658,
+        252,
+        697,
+        325
+      ],
+      "torso_bbox": [
+        665,
+        266,
+        689,
+        292
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g002_f000510_x0658_y0252.png",
+      "quality": {
+        "width": 24,
+        "height": 26,
+        "blur_score": 279.44039437458906,
+        "grass_ratio": 0.13141025641025642,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 2
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g003_f001050_x0407_y0272",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1050,
+      "timestamp": 42.0,
+      "tracking_id": null,
+      "bbox": [
+        407,
+        272,
+        435,
+        338
+      ],
+      "torso_bbox": [
+        412,
+        285,
+        429,
+        308
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g003_f001050_x0407_y0272.png",
+      "quality": {
+        "width": 17,
+        "height": 23,
+        "blur_score": 441.31544142175943,
+        "grass_ratio": 0.4578005115089514,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 3
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g004_f001230_x0331_y0244",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1230,
+      "timestamp": 49.2,
+      "tracking_id": null,
+      "bbox": [
+        331,
+        244,
+        355,
+        313
+      ],
+      "torso_bbox": [
+        335,
+        257,
+        350,
+        281
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g004_f001230_x0331_y0244.png",
+      "quality": {
+        "width": 15,
+        "height": 24,
+        "blur_score": 2022.0577469135803,
+        "grass_ratio": 0.18611111111111112,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 4
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g005_f000540_x0014_y0069",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 540,
+      "timestamp": 21.6,
+      "tracking_id": null,
+      "bbox": [
+        14,
+        69,
+        376,
+        690
+      ],
+      "torso_bbox": [
+        86,
+        193,
+        303,
+        410
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g005_f000540_x0014_y0069.png",
+      "quality": {
+        "width": 217,
+        "height": 217,
+        "blur_score": 28.884513446931624,
+        "grass_ratio": 0.027479878527893988,
+        "occlusion_ratio": 0.027649769585253458,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 5
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g006_f001050_x0761_y0172",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1050,
+      "timestamp": 42.0,
+      "tracking_id": null,
+      "bbox": [
+        761,
+        172,
+        787,
+        219
+      ],
+      "torso_bbox": [
+        766,
+        181,
+        781,
+        197
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g006_f001050_x0761_y0172.png",
+      "quality": {
+        "width": 15,
+        "height": 16,
+        "blur_score": 630.54859375,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 6
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g008_f001080_x0359_y0175",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1080,
+      "timestamp": 43.2,
+      "tracking_id": null,
+      "bbox": [
+        359,
+        175,
+        377,
+        233
+      ],
+      "torso_bbox": [
+        362,
+        186,
+        373,
+        206
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g008_f001080_x0359_y0175.png",
+      "quality": {
+        "width": 11,
+        "height": 20,
+        "blur_score": 1394.5729545454546,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 8
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g009_f001200_x0192_y0127",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1200,
+      "timestamp": 48.0,
+      "tracking_id": null,
+      "bbox": [
+        192,
+        127,
+        224,
+        173
+      ],
+      "torso_bbox": [
+        198,
+        136,
+        217,
+        152
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g009_f001200_x0192_y0127.png",
+      "quality": {
+        "width": 19,
+        "height": 16,
+        "blur_score": 390.6348576004155,
+        "grass_ratio": 0.8092105263157895,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 9
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g013_f000510_x0372_y0314",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 510,
+      "timestamp": 20.4,
+      "tracking_id": null,
+      "bbox": [
+        372,
+        314,
+        426,
+        393
+      ],
+      "torso_bbox": [
+        382,
+        329,
+        415,
+        357
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g013_f000510_x0372_y0314.png",
+      "quality": {
+        "width": 33,
+        "height": 28,
+        "blur_score": 142.79014050523787,
+        "grass_ratio": 0.6677489177489178,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 13
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g015_f001260_x0835_y0478",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1260,
+      "timestamp": 50.4,
+      "tracking_id": null,
+      "bbox": [
+        835,
+        478,
+        872,
+        551
+      ],
+      "torso_bbox": [
+        842,
+        492,
+        864,
+        518
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g015_f001260_x0835_y0478.png",
+      "quality": {
+        "width": 22,
+        "height": 26,
+        "blur_score": 1003.6862774463299,
+        "grass_ratio": 0.0979020979020979,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 15
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g019_f001050_x0495_y0188",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1050,
+      "timestamp": 42.0,
+      "tracking_id": null,
+      "bbox": [
+        495,
+        188,
+        524,
+        250
+      ],
+      "torso_bbox": [
+        500,
+        200,
+        518,
+        222
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g019_f001050_x0495_y0188.png",
+      "quality": {
+        "width": 18,
+        "height": 22,
+        "blur_score": 2122.032821905928,
+        "grass_ratio": 0.050505050505050504,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 19
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g021_f001080_x0537_y0272",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1080,
+      "timestamp": 43.2,
+      "tracking_id": null,
+      "bbox": [
+        537,
+        272,
+        567,
+        334
+      ],
+      "torso_bbox": [
+        543,
+        284,
+        561,
+        306
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g021_f001080_x0537_y0272.png",
+      "quality": {
+        "width": 18,
+        "height": 22,
+        "blur_score": 2150.05767268646,
+        "grass_ratio": 0.4621212121212121,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 21
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g022_f000630_x0402_y0206",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 630,
+      "timestamp": 25.2,
+      "tracking_id": null,
+      "bbox": [
+        402,
+        206,
+        427,
+        262
+      ],
+      "torso_bbox": [
+        407,
+        217,
+        422,
+        236
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g022_f000630_x0402_y0206.png",
+      "quality": {
+        "width": 15,
+        "height": 19,
+        "blur_score": 613.3376423514928,
+        "grass_ratio": 0.17543859649122806,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 22
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g023_f000780_x0001_y0003",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 780,
+      "timestamp": 31.2,
+      "tracking_id": null,
+      "bbox": [
+        1,
+        3,
+        295,
+        711
+      ],
+      "torso_bbox": [
+        59,
+        144,
+        236,
+        392
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g023_f000780_x0001_y0003.png",
+      "quality": {
+        "width": 177,
+        "height": 248,
+        "blur_score": 7.359756512124238,
+        "grass_ratio": 0.4577865864771278,
+        "occlusion_ratio": 0.043010752688172046,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 23
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g026_f001260_x0366_y0269",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1260,
+      "timestamp": 50.4,
+      "tracking_id": null,
+      "bbox": [
+        366,
+        269,
+        394,
+        337
+      ],
+      "torso_bbox": [
+        371,
+        282,
+        388,
+        306
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g026_f001260_x0366_y0269.png",
+      "quality": {
+        "width": 17,
+        "height": 24,
+        "blur_score": 1913.2349817377933,
+        "grass_ratio": 0.09803921568627451,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 26
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g027_f000630_x0472_y0280",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 630,
+      "timestamp": 25.2,
+      "tracking_id": null,
+      "bbox": [
+        472,
+        280,
+        511,
+        349
+      ],
+      "torso_bbox": [
+        479,
+        293,
+        503,
+        317
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g027_f000630_x0472_y0280.png",
+      "quality": {
+        "width": 24,
+        "height": 24,
+        "blur_score": 1230.6191647376545,
+        "grass_ratio": 0.1736111111111111,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 27
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g030_f000690_x0245_y0177",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 690,
+      "timestamp": 27.6,
+      "tracking_id": null,
+      "bbox": [
+        245,
+        177,
+        272,
+        227
+      ],
+      "torso_bbox": [
+        250,
+        187,
+        266,
+        204
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g030_f000690_x0245_y0177.png",
+      "quality": {
+        "width": 16,
+        "height": 17,
+        "blur_score": 258.5834234429065,
+        "grass_ratio": 0.23161764705882354,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 30
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g031_f001410_x0459_y0262",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1410,
+      "timestamp": 56.4,
+      "tracking_id": null,
+      "bbox": [
+        459,
+        262,
+        494,
+        327
+      ],
+      "torso_bbox": [
+        466,
+        275,
+        487,
+        297
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g031_f001410_x0459_y0262.png",
+      "quality": {
+        "width": 21,
+        "height": 22,
+        "blur_score": 363.2789490451828,
+        "grass_ratio": 0.4090909090909091,
+        "occlusion_ratio": 0.14285714285714285,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 31
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g032_f001380_x0592_y0289",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1380,
+      "timestamp": 55.2,
+      "tracking_id": null,
+      "bbox": [
+        592,
+        289,
+        644,
+        347
+      ],
+      "torso_bbox": [
+        602,
+        300,
+        633,
+        320
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g032_f001380_x0592_y0289.png",
+      "quality": {
+        "width": 31,
+        "height": 20,
+        "blur_score": 433.6659313215401,
+        "grass_ratio": 0.16451612903225807,
+        "occlusion_ratio": 0.03225806451612903,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 32
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g033_f000690_x1034_y0188",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 690,
+      "timestamp": 27.6,
+      "tracking_id": null,
+      "bbox": [
+        1034,
+        188,
+        1219,
+        361
+      ],
+      "torso_bbox": [
+        1071,
+        222,
+        1182,
+        283
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g033_f000690_x1034_y0188.png",
+      "quality": {
+        "width": 111,
+        "height": 61,
+        "blur_score": 240.61175841326485,
+        "grass_ratio": 0.19908433023187122,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 33
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g035_f000510_x0443_y0264",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 510,
+      "timestamp": 20.4,
+      "tracking_id": null,
+      "bbox": [
+        443,
+        264,
+        478,
+        336
+      ],
+      "torso_bbox": [
+        450,
+        278,
+        471,
+        303
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g035_f000510_x0443_y0264.png",
+      "quality": {
+        "width": 21,
+        "height": 25,
+        "blur_score": 4805.76,
+        "grass_ratio": 0.12,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 35
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g036_f001050_x0000_y0201",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1050,
+      "timestamp": 42.0,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        201,
+        19,
+        254
+      ],
+      "torso_bbox": [
+        3,
+        211,
+        15,
+        230
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g036_f001050_x0000_y0201.png",
+      "quality": {
+        "width": 12,
+        "height": 19,
+        "blur_score": 155.8266197291474,
+        "grass_ratio": 0.10087719298245613,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 36
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g038_f001020_x0654_y0246",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1020,
+      "timestamp": 40.8,
+      "tracking_id": null,
+      "bbox": [
+        654,
+        246,
+        689,
+        314
+      ],
+      "torso_bbox": [
+        661,
+        259,
+        682,
+        283
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g038_f001020_x0654_y0246.png",
+      "quality": {
+        "width": 21,
+        "height": 24,
+        "blur_score": 3547.666084026203,
+        "grass_ratio": 0.21825396825396826,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 38
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g041_f000510_x0809_y0259",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 510,
+      "timestamp": 20.4,
+      "tracking_id": null,
+      "bbox": [
+        809,
+        259,
+        835,
+        332
+      ],
+      "torso_bbox": [
+        814,
+        273,
+        829,
+        299
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g041_f000510_x0809_y0259.png",
+      "quality": {
+        "width": 15,
+        "height": 26,
+        "blur_score": 4271.492202498357,
+        "grass_ratio": 0.005128205128205128,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 41
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g043_f000900_x0416_y0564",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 900,
+      "timestamp": 36.0,
+      "tracking_id": null,
+      "bbox": [
+        416,
+        564,
+        612,
+        716
+      ],
+      "torso_bbox": [
+        455,
+        594,
+        572,
+        647
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g043_f000900_x0416_y0564.png",
+      "quality": {
+        "width": 117,
+        "height": 53,
+        "blur_score": 3.055186228813124,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 1.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 43
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g044_f001200_x0397_y0160",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1200,
+      "timestamp": 48.0,
+      "tracking_id": null,
+      "bbox": [
+        397,
+        160,
+        419,
+        209
+      ],
+      "torso_bbox": [
+        401,
+        169,
+        414,
+        186
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g044_f001200_x0397_y0160.png",
+      "quality": {
+        "width": 13,
+        "height": 17,
+        "blur_score": 1040.2818533609056,
+        "grass_ratio": 0.12669683257918551,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 44
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g045_f001140_x0167_y0217",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1140,
+      "timestamp": 45.6,
+      "tracking_id": null,
+      "bbox": [
+        167,
+        217,
+        195,
+        271
+      ],
+      "torso_bbox": [
+        172,
+        227,
+        189,
+        246
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g045_f001140_x0167_y0217.png",
+      "quality": {
+        "width": 17,
+        "height": 19,
+        "blur_score": 953.3577049526019,
+        "grass_ratio": 0.4458204334365325,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 45
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g048_f000330_x0995_y0238",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 330,
+      "timestamp": 13.2,
+      "tracking_id": null,
+      "bbox": [
+        995,
+        238,
+        1022,
+        312
+      ],
+      "torso_bbox": [
+        1000,
+        252,
+        1016,
+        278
+      ],
+      "ground_truth_label": "Referee",
+      "raw_label": "REF",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g048_f000330_x0995_y0238.png",
+      "quality": {
+        "width": 16,
+        "height": 26,
+        "blur_score": 309.24869984282543,
+        "grass_ratio": 0.09615384615384616,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 48
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g049_f000930_x0000_y0111",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 930,
+      "timestamp": 37.2,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        111,
+        335,
+        714
+      ],
+      "torso_bbox": [
+        67,
+        231,
+        268,
+        442
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g049_f000930_x0000_y0111.png",
+      "quality": {
+        "width": 201,
+        "height": 211,
+        "blur_score": 10.786022225079964,
+        "grass_ratio": 0.6228808563815991,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 49
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g050_f001020_x1035_y0653",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1020,
+      "timestamp": 40.8,
+      "tracking_id": null,
+      "bbox": [
+        1035,
+        653,
+        1089,
+        720
+      ],
+      "torso_bbox": [
+        1045,
+        666,
+        1078,
+        689
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g050_f001020_x1035_y0653.png",
+      "quality": {
+        "width": 33,
+        "height": 23,
+        "blur_score": 38.52670718180256,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 50
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g051_f001050_x0446_y0342",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1050,
+      "timestamp": 42.0,
+      "tracking_id": null,
+      "bbox": [
+        446,
+        342,
+        472,
+        418
+      ],
+      "torso_bbox": [
+        451,
+        357,
+        466,
+        383
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g051_f001050_x0446_y0342.png",
+      "quality": {
+        "width": 15,
+        "height": 26,
+        "blur_score": 488.4756147271532,
+        "grass_ratio": 0.02564102564102564,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 51
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g058_f001170_x0400_y0351",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1170,
+      "timestamp": 46.8,
+      "tracking_id": null,
+      "bbox": [
+        400,
+        351,
+        432,
+        451
+      ],
+      "torso_bbox": [
+        406,
+        371,
+        425,
+        406
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g058_f001170_x0400_y0351.png",
+      "quality": {
+        "width": 19,
+        "height": 35,
+        "blur_score": 3165.7452066255864,
+        "grass_ratio": 0.17293233082706766,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 58
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g059_f001080_x0529_y0339",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1080,
+      "timestamp": 43.2,
+      "tracking_id": null,
+      "bbox": [
+        529,
+        339,
+        571,
+        416
+      ],
+      "torso_bbox": [
+        537,
+        354,
+        562,
+        381
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g059_f001080_x0529_y0339.png",
+      "quality": {
+        "width": 25,
+        "height": 27,
+        "blur_score": 2132.2935879286697,
+        "grass_ratio": 0.362962962962963,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 59
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g061_f000720_x0415_y0199",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 720,
+      "timestamp": 28.8,
+      "tracking_id": null,
+      "bbox": [
+        415,
+        199,
+        443,
+        258
+      ],
+      "torso_bbox": [
+        420,
+        210,
+        437,
+        231
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g061_f000720_x0415_y0199.png",
+      "quality": {
+        "width": 17,
+        "height": 21,
+        "blur_score": 760.4524633382765,
+        "grass_ratio": 0.16246498599439776,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 61
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g062_f000900_x0000_y0100",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 900,
+      "timestamp": 36.0,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        100,
+        322,
+        711
+      ],
+      "torso_bbox": [
+        64,
+        222,
+        257,
+        436
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g062_f000900_x0000_y0100.png",
+      "quality": {
+        "width": 193,
+        "height": 214,
+        "blur_score": 17.03682615256717,
+        "grass_ratio": 0.018691588785046728,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 62
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g063_f001020_x0540_y0209",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1020,
+      "timestamp": 40.8,
+      "tracking_id": null,
+      "bbox": [
+        540,
+        209,
+        564,
+        270
+      ],
+      "torso_bbox": [
+        544,
+        221,
+        559,
+        242
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g063_f001020_x0540_y0209.png",
+      "quality": {
+        "width": 15,
+        "height": 21,
+        "blur_score": 1018.3113731418495,
+        "grass_ratio": 0.4,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 63
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g064_f001080_x0696_y0183",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1080,
+      "timestamp": 43.2,
+      "tracking_id": null,
+      "bbox": [
+        696,
+        183,
+        731,
+        231
+      ],
+      "torso_bbox": [
+        703,
+        192,
+        724,
+        209
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g064_f001080_x0696_y0183.png",
+      "quality": {
+        "width": 21,
+        "height": 17,
+        "blur_score": 360.9996626101421,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 64
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g065_f001380_x0573_y0287",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1380,
+      "timestamp": 55.2,
+      "tracking_id": null,
+      "bbox": [
+        573,
+        287,
+        603,
+        346
+      ],
+      "torso_bbox": [
+        579,
+        298,
+        597,
+        319
+      ],
+      "ground_truth_label": "Team_A",
+      "raw_label": "Chelsea",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g065_f001380_x0573_y0287.png",
+      "quality": {
+        "width": 18,
+        "height": 21,
+        "blur_score": 625.9579868984631,
+        "grass_ratio": 0.41798941798941797,
+        "occlusion_ratio": 0.2777777777777778,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 65
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g066_f000720_x0274_y0438",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 720,
+      "timestamp": 28.8,
+      "tracking_id": null,
+      "bbox": [
+        274,
+        438,
+        302,
+        517
+      ],
+      "torso_bbox": [
+        279,
+        453,
+        296,
+        481
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g066_f000720_x0274_y0438.png",
+      "quality": {
+        "width": 17,
+        "height": 28,
+        "blur_score": 991.7889802980014,
+        "grass_ratio": 0.04201680672268908,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 66
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g070_f000930_x0368_y0053",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 930,
+      "timestamp": 37.2,
+      "tracking_id": null,
+      "bbox": [
+        368,
+        53,
+        833,
+        716
+      ],
+      "torso_bbox": [
+        461,
+        185,
+        740,
+        417
+      ],
+      "ground_truth_label": "Unknown",
+      "raw_label": "Unknown",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g070_f000930_x0368_y0053.png",
+      "quality": {
+        "width": 279,
+        "height": 232,
+        "blur_score": 33.227227539549396,
+        "grass_ratio": 0.21341614139166976,
+        "occlusion_ratio": 0.07885304659498207,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 70
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g073_f000750_x0479_y0265",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 750,
+      "timestamp": 30.0,
+      "tracking_id": null,
+      "bbox": [
+        479,
+        265,
+        525,
+        337
+      ],
+      "torso_bbox": [
+        488,
+        279,
+        515,
+        304
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g073_f000750_x0479_y0265.png",
+      "quality": {
+        "width": 27,
+        "height": 25,
+        "blur_score": 1438.0108949245541,
+        "grass_ratio": 0.28444444444444444,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 73
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g075_f001170_x1124_y0293",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1170,
+      "timestamp": 46.8,
+      "tracking_id": null,
+      "bbox": [
+        1124,
+        293,
+        1172,
+        378
+      ],
+      "torso_bbox": [
+        1133,
+        310,
+        1162,
+        339
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g075_f001170_x1124_y0293.png",
+      "quality": {
+        "width": 29,
+        "height": 29,
+        "blur_score": 338.5604589972019,
+        "grass_ratio": 0.24851367419738407,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 75
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g076_f001350_x0448_y0358",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1350,
+      "timestamp": 54.0,
+      "tracking_id": null,
+      "bbox": [
+        448,
+        358,
+        513,
+        533
+      ],
+      "torso_bbox": [
+        461,
+        393,
+        500,
+        454
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g076_f001350_x0448_y0358.png",
+      "quality": {
+        "width": 39,
+        "height": 61,
+        "blur_score": 386.97526786593005,
+        "grass_ratio": 0.0,
+        "occlusion_ratio": 0.1794871794871795,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 76
+    },
+    {
+      "crop_id": "chelsea_sunderland_train_g077_f000840_x0000_y0025",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 840,
+      "timestamp": 33.6,
+      "tracking_id": null,
+      "bbox": [
+        0,
+        25,
+        330,
+        711
+      ],
+      "torso_bbox": [
+        66,
+        162,
+        264,
+        402
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_train_g077_f000840_x0000_y0025.png",
+      "quality": {
+        "width": 198,
+        "height": 240,
+        "blur_score": 88.6442231620179,
+        "grass_ratio": 0.43703703703703706,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": true,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 77
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g078_f001140_x0181_y0282",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1140,
+      "timestamp": 45.6,
+      "tracking_id": null,
+      "bbox": [
+        181,
+        282,
+        210,
+        354
+      ],
+      "torso_bbox": [
+        186,
+        296,
+        204,
+        321
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g078_f001140_x0181_y0282.png",
+      "quality": {
+        "width": 18,
+        "height": 25,
+        "blur_score": 2825.222622222222,
+        "grass_ratio": 0.013333333333333334,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 78
+    },
+    {
+      "crop_id": "chelsea_sunderland_val_g079_f001410_x0484_y0271",
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1410,
+      "timestamp": 56.4,
+      "tracking_id": null,
+      "bbox": [
+        484,
+        271,
+        547,
+        330
+      ],
+      "torso_bbox": [
+        496,
+        282,
+        534,
+        303
+      ],
+      "ground_truth_label": "Team_B",
+      "raw_label": "Sunderland",
+      "is_labelled": true,
+      "label_verified": true,
+      "split": "val",
+      "image_path": "images/chelsea_sunderland_val_g079_f001410_x0484_y0271.png",
+      "quality": {
+        "width": 38,
+        "height": 21,
+        "blur_score": 363.6565850717018,
+        "grass_ratio": 0.3483709273182957,
+        "occlusion_ratio": 0.0,
+        "edge_clipped": false,
+        "is_valid": true,
+        "rejection_reason": null
+      },
+      "legacy_gallery_index": 79
+    }
+  ]
+}

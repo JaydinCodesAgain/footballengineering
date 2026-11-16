@@ -1,0 +1,68 @@
+{
+  "match_id": "chelsea_sunderland",
+  "total_frames": 6,
+  "verified_manual_box_frames": 0,
+  "evaluation_ready": false,
+  "frames": [
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1611,
+      "timestamp": 64.44,
+      "image_rel_path": "frames/frame_001611.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1661,
+      "timestamp": 66.44,
+      "image_rel_path": "frames/frame_001661.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1711,
+      "timestamp": 68.44,
+      "image_rel_path": "frames/frame_001711.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1761,
+      "timestamp": 70.44,
+      "image_rel_path": "frames/frame_001761.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1811,
+      "timestamp": 72.44,
+      "image_rel_path": "frames/frame_001811.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "frame_number": 1861,
+      "timestamp": 74.44,
+      "image_rel_path": "frames/frame_001861.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "boxes": [],
+      "legacy_counts": null
+    }
+  ]
+}
