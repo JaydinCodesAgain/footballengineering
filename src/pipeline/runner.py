@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
+import time
 from typing import Any, Dict, List, Optional, Tuple
 import cv2
 
@@ -12,7 +13,10 @@ from src.classification.cropper import extract_torso_crop
 from src.classification.dataset import JerseyCropDataset, assign_temporal_and_track_splits
 from src.classification.diagnostics import audit_dataset_labels
 from src.config import MatchConfig, load_match_config
-from src.detection.annotation_workflow import DetectionAnnotationStore
+from src.detection.annotation_workflow import (
+    DetectionAnnotationStore,
+    sample_representative_frame_numbers,
+)
 from src.detection.detector import (
     FootballDetector,
     _nms_ball_detections,
@@ -62,7 +66,7 @@ from src.visualization.plots import (
     save_threshold_calibration_plot,
 )
 from src.visualization.video_annotator import annotate_match_frame, finalize_mp4_video
-
+import numpy as np
 
 def prepare_dataset_for_match(
     match_config: MatchConfig,
@@ -369,6 +373,7 @@ def run_match_pipeline(
     processed_frames = 0
     first_frame_seen: Optional[int] = None
     last_frame_seen: Optional[int] = None
+    t_track_start = time.perf_counter()
 
     try:
         for fno, ts, frame_bgr, detections in tracker.track_video(
@@ -538,6 +543,37 @@ def run_match_pipeline(
     finally:
         writer.release()
 
+    processing_wall_time_sec = round(time.perf_counter() - t_track_start, 2)
+    avg_proc_fps = round(processed_frames / max(0.01, processing_wall_time_sec), 2)
+
+    experiment_metadata: Dict[str, Any] = {
+        "experiment_id": exp_id,
+        "match_id": match_cfg.match_id,
+        "match_name": match_cfg.match_name,
+        "source_video_filename": video_path.name,
+        "source_video_path": str(video_path),
+        "video_resolution": f"{width}x{height}",
+        "video_fps": round(fps, 2),
+        "total_video_frames": total_video_frames,
+        "total_video_duration_seconds": round(total_video_duration, 2),
+        "start_frame": first_frame_seen if first_frame_seen is not None else match_cfg.tracking.start_frame,
+        "end_frame": last_frame_seen if last_frame_seen is not None else match_cfg.tracking.start_frame,
+        "frame_stride": match_cfg.detection.frame_stride,
+        "processed_frames": processed_frames,
+        "analysed_duration_seconds": round(processed_frames * (match_cfg.detection.frame_stride / fps), 2),
+        "model_weights": match_cfg.detection.model_name,
+        "imgsz": match_cfg.detection.imgsz,
+        "person_conf_threshold": match_cfg.detection.person_conf,
+        "ball_conf_threshold": match_cfg.detection.ball_conf,
+        "tile_conf_threshold": match_cfg.detection.tile_conf_threshold,
+        "roi_conf_threshold": match_cfg.detection.roi_conf_threshold,
+        "enable_tiled_ball_search": match_cfg.detection.enable_tiled_ball_search,
+        "enable_roi_ball_search": match_cfg.detection.enable_roi_ball_search,
+        "tracker_config": match_cfg.tracking.tracker_config,
+        "processing_wall_time_seconds": processing_wall_time_sec,
+        "average_processing_fps": avg_proc_fps,
+    }
+
     finalized_video = finalize_mp4_video(raw_video_path, final_video_path)
     artifacts["annotated_video"] = str(finalized_video)
 
@@ -565,6 +601,7 @@ def run_match_pipeline(
     possession_validation: Dict[str, Any] = {}
     if possession_engine is not None:
         possession_summary = possession_engine.summarize()
+        possession_summary["experiment_metadata"] = experiment_metadata
         b_csv = export_ball_trajectory_records(
             output_dir / "ball_trajectory.csv", possession_engine.ball_trajectory
         )
@@ -598,6 +635,8 @@ def run_match_pipeline(
                 fps=fps,
                 interval_frames=30,
             )
+        poss_html = poss_ann_store.generate_html_annotator(match_config=match_cfg, fps=fps)
+        artifacts["possession_annotator_html"] = str(poss_html)
         verified_poss_ivs = poss_ann_store.get_verified_intervals()
         possession_validation = evaluate_possession_predictions(
             possession_engine.timeline,
@@ -640,17 +679,30 @@ def run_match_pipeline(
         root / "data" / "annotations" / match_cfg.match_id,
         match_id=match_cfg.match_id,
     )
-    sample_frame_ids = (
+    legacy_fnos = (
         sorted(LEGACY_NORWAY_WALES_DETECTION_COUNTS.keys())
         if match_cfg.match_id == "norway_wales"
-        else [int(f) for f in (i * 40 for i in range(1, 12)) if f < total_video_frames]
+        else []
     )
-    if not ann_store.frames:
+    representative_frame_ids = sample_representative_frame_numbers(
+        total_frames=total_video_frames,
+        num_samples=45,
+        mandatory_frames=legacy_fnos,
+    )
+    if len(ann_store.frames) < len(representative_frame_ids):
         ann_store.export_frames_for_annotation(
             video_path=video_path,
-            frame_numbers=sample_frame_ids,
+            frame_numbers=representative_frame_ids,
             legacy_count_records=LEGACY_NORWAY_WALES_DETECTION_COUNTS if match_cfg.match_id == "norway_wales" else None,
         )
+    det_html = ann_store.generate_html_annotator()
+    artifacts["detection_annotator_html"] = str(det_html)
+
+    sample_frame_ids = (
+        legacy_fnos
+        if match_cfg.match_id == "norway_wales"
+        else representative_frame_ids[::4][:12]
+    )
 
     raw_sample_preds = {}
     pred_counts_at_default = {}
@@ -750,11 +802,13 @@ def run_match_pipeline(
         possession_validation=possession_validation,
         ball_detection_benchmark=ball_strategy_benchmark,
         artifacts_generated=artifacts,
+        experiment_metadata=experiment_metadata,
     )
 
     return {
         "experiment_id": exp_id,
         "output_dir": str(output_dir),
+        "experiment_metadata": experiment_metadata,
         "detection_summary": detection_summary,
         "classification_summary": clf_eval,
         "tracking_summary": tracking_summary,

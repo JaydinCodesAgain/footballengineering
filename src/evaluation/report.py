@@ -158,9 +158,35 @@ def generate_possession_report(
             f"- **Combined Tracked/Coasting Coverage:** {b_trk.get('tracked_or_interpolated_pct', 0.0):.2f}%",
             f"- **Camera-Cut Resets Triggered:** {b_trk.get('camera_cut_resets', 0)}",
             f"- **Outlier Ball Jumps Rejected:** {b_trk.get('rejected_outlier_detections', 0)}",
+            f"- **Static False-Track Associations Broken:** {b_trk.get('false_track_associations', 0)} "
+            f"(blacklisted static zones: {b_trk.get('blacklisted_static_zones_count', 0)})",
+            f"- **Ball Reacquisition Events:** {b_trk.get('reacquisition_events', 0)}",
+            f"- **Continuous Track Length (Mean / Max Frames):** "
+            f"{b_trk.get('mean_continuous_track_frames', 0.0)} / {b_trk.get('max_continuous_track_frames', 0)}",
             f"- **Possession State Transitions:** {possession_summary.get('state_transitions_count', 0)}",
         ]
     )
+
+    cam_segs = possession_summary.get("camera_segments", [])
+    if cam_segs:
+        md.extend(
+            [
+                "",
+                "### Continuous Camera Segments (Cut-Separated)",
+                f"- **Detected Camera Cuts:** {possession_summary.get('camera_cuts_count', 0)}",
+                f"- **Longest Continuous Shot:** {possession_summary.get('longest_continuous_segment_seconds', 0.0):.2f}s",
+                "",
+                "| Shot # | Frame Range | Timestamp Range | Duration (s) | Team A (s) | Team B (s) | Attributed Coverage |",
+                "|---:|---|---|---:|---:|---:|---:|",
+            ]
+        )
+        for seg in cam_segs:
+            md.append(
+                f"| {seg['segment_index']} | `{seg['start_frame']}–{seg['end_frame']}` | "
+                f"`{seg['start_timestamp']:.2f}s–{seg['end_timestamp']:.2f}s` | "
+                f"{seg['duration_seconds']:.2f}s | {seg['team_a_controlled_seconds']:.2f}s | "
+                f"{seg['team_b_controlled_seconds']:.2f}s | {seg['attributed_coverage_pct']:.1f}% |"
+            )
 
     if possession_validation and possession_validation.get("metrics_available"):
         md.extend(
@@ -169,11 +195,18 @@ def generate_possession_report(
                 "## 4. Ground-Truth Possession Validation",
                 f"- **Evaluated Frames:** {possession_validation.get('evaluated_frames', 0)}",
                 f"- **State Classification Accuracy:** {possession_validation.get('state_accuracy', 0.0):.2%}",
+                f"- **Macro F1:** {possession_validation.get('macro_f1', 0.0):.2%}",
                 f"- **Team Possession Share Error:** {possession_validation.get('team_possession_share_error_pct_points', 0.0):.2f} percentage points",
                 f"- **Transition Count Error:** {possession_validation.get('transition_count_error', 0)}",
+                f"- **Transition Timing Error:** {possession_validation.get('transition_timing_error_seconds', 0.0):.3f}s",
             ]
         )
     else:
+        blocker = (
+            possession_validation.get("validation_blocker", "missing_verified_manual_possession_annotations")
+            if possession_validation
+            else "missing_verified_manual_possession_annotations"
+        )
         msg = (
             possession_validation.get("message")
             if possession_validation
@@ -183,7 +216,8 @@ def generate_possession_report(
             [
                 "",
                 "## 4. Ground-Truth Possession Validation",
-                f"- **Status:** Pending manual interval verification ({msg})",
+                f"- **Status:** Pending manual interval verification (`validation_blocker={blocker}`)",
+                f"- **Details:** {msg}",
             ]
         )
 
@@ -206,6 +240,7 @@ def generate_consolidated_report(
     possession_validation: Optional[Dict[str, Any]] = None,
     ball_detection_benchmark: Optional[Sequence[Dict[str, Any]]] = None,
     artifacts_generated: Optional[Dict[str, str]] = None,
+    experiment_metadata: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Path]:
     """
     Produce consolidated JSON, CSV, and Markdown summary reports inside `output_dir`.
@@ -218,6 +253,7 @@ def generate_consolidated_report(
         "generated_at": timestamp_iso,
         "match_id": match_id,
         "match_name": match_name,
+        "experiment_metadata": experiment_metadata or {},
         "detection": detection_summary,
         "classification": classification_summary,
         "tracking": tracking_summary,

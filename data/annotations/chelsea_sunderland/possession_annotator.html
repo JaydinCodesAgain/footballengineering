@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Possession Interval Annotator — chelsea_sunderland</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+  button, select, input { background: #334155; color: #f8fafc; border: 1px solid #475569; padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+  button:hover { background: #475569; cursor: pointer; }
+  button.primary { background: #2563eb; border-color: #3b82f6; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #334155; text-align: left; }
+  th { background: #0f172a; color: #94a3b8; }
+  .error { color: #f87171; font-weight: 600; margin-left: 12px; }
+  .ok { color: #4ade80; font-weight: 600; margin-left: 12px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h2>Possession Interval Ground-Truth Annotator — chelsea_sunderland (Chelsea vs Sunderland)</h2>
+  <div>
+    <button onclick="addInterval()">+ Add Interval</button>
+    <button onclick="markAllVerified()">Mark Selected Verified</button>
+    <button class="primary" onclick="exportCSV()">Export possession_annotations.csv</button>
+    <button onclick="exportJSON()">Export possession_annotations.json</button>
+  </div>
+</div>
+<div class="controls">
+  <span>States: <b>TEAM_A_CONTROL</b> (Chelsea) | <b>TEAM_B_CONTROL</b> (Sunderland) | <b>CONTESTED</b> | <b>LOOSE_BALL</b> | <b>UNKNOWN</b> | <b>OUT_OF_PLAY</b></span>
+  <span id="validationMsg" class="ok">No overlapping intervals</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Start Frame</th>
+      <th>End Frame</th>
+      <th>Start (s)</th>
+      <th>End (s)</th>
+      <th>Possession State</th>
+      <th>Uncertain</th>
+      <th>Verified (Manual)</th>
+      <th>Notes</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+<script>
+const matchId = "chelsea_sunderland";
+const fps = 25.0;
+const states = ["", "TEAM_A_CONTROL", "TEAM_B_CONTROL", "CONTESTED", "LOOSE_BALL", "UNKNOWN", "OUT_OF_PLAY"];
+let intervals = [{"match_id": "chelsea_sunderland", "start_frame": 0, "end_frame": 29, "start_timestamp": 0.0, "end_timestamp": 1.16, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "chelsea_sunderland", "start_frame": 30, "end_frame": 59, "start_timestamp": 1.2, "end_timestamp": 2.36, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "chelsea_sunderland", "start_frame": 60, "end_frame": 88, "start_timestamp": 2.4, "end_timestamp": 3.52, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}];
+
+function checkOverlaps() {
+  const active = intervals.filter(iv => iv.state !== "").slice().sort((a, b) => a.start_frame - b.start_frame);
+  const msg = document.getElementById("validationMsg");
+  for (let i = 0; i < active.length - 1; i++) {
+    if (Number(active[i+1].start_frame) <= Number(active[i].end_frame)) {
+      msg.className = "error";
+      msg.textContent = `Overlap error: [${active[i].start_frame}, ${active[i].end_frame}] overlaps [${active[i+1].start_frame}, ${active[i+1].end_frame}]`;
+      return false;
+    }
+  }
+  msg.className = "ok";
+  msg.textContent = `Valid (${active.filter(x => x.verified).length} verified manual intervals)`;
+  return true;
+}
+
+function render() {
+  const tb = document.getElementById("tbody");
+  tb.innerHTML = "";
+  intervals.forEach((iv, i) => {
+    const tr = document.createElement("tr");
+    const opts = states.map(st => `<option value="${st}" ${iv.state===st?'selected':''}>${st || '-- Select State --'}</option>`).join("");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td><input type="number" value="${iv.start_frame}" style="width:80px" onchange="updateFrame(${i}, 'start_frame', this.value)"/></td>
+      <td><input type="number" value="${iv.end_frame}" style="width:80px" onchange="updateFrame(${i}, 'end_frame', this.value)"/></td>
+      <td>${Number(iv.start_timestamp).toFixed(2)}s</td>
+      <td>${Number(iv.end_timestamp).toFixed(2)}s</td>
+      <td><select onchange="updateState(${i}, this.value)">${opts}</select></td>
+      <td><input type="checkbox" ${iv.uncertain?'checked':''} onchange="intervals[${i}].uncertain=this.checked; render()"/></td>
+      <td><input type="checkbox" ${iv.verified?'checked':''} onchange="intervals[${i}].verified=this.checked; intervals[${i}].source='manual'; render()"/></td>
+      <td><input type="text" value="${iv.notes || ''}" style="width:200px" onchange="intervals[${i}].notes=this.value"/></td>
+      <td><button onclick="intervals.splice(${i},1); render()">X</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+  checkOverlaps();
+}
+
+function updateFrame(idx, field, val) {
+  const f = parseInt(val, 10) || 0;
+  intervals[idx][field] = f;
+  if (field === "start_frame") intervals[idx].start_timestamp = Number((f / fps).toFixed(3));
+  if (field === "end_frame") intervals[idx].end_timestamp = Number((f / fps).toFixed(3));
+  render();
+}
+
+function updateState(idx, val) {
+  intervals[idx].state = val;
+  if (val !== "") {
+    intervals[idx].verified = true;
+    intervals[idx].source = "manual";
+  }
+  render();
+}
+
+function addInterval() {
+  const lastEnd = intervals.length ? Number(intervals[intervals.length - 1].end_frame) + 1 : 0;
+  intervals.push({
+    match_id: matchId,
+    start_frame: lastEnd,
+    end_frame: lastEnd + 29,
+    start_timestamp: Number((lastEnd / fps).toFixed(3)),
+    end_timestamp: Number(((lastEnd + 29) / fps).toFixed(3)),
+    state: "",
+    uncertain: false,
+    verified: false,
+    source: "manual",
+    notes: ""
+  });
+  render();
+}
+
+function markAllVerified() {
+  intervals.forEach(iv => {
+    if (iv.state !== "") {
+      iv.verified = true;
+      iv.source = "manual";
+    }
+  });
+  render();
+}
+
+function exportCSV() {
+  if (!checkOverlaps()) { alert("Please resolve interval overlaps before exporting."); return; }
+  const rows = ["match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes"];
+  intervals.forEach(iv => {
+    rows.push(`${iv.match_id},${iv.start_frame},${iv.end_frame},${iv.start_timestamp},${iv.end_timestamp},${iv.state},${iv.uncertain},${iv.verified},${iv.source},"${(iv.notes||'').replace(/"/g,'""')}"`);
+  });
+  const blob = new Blob([rows.join("\n")], {type: "text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "possession_annotations.csv";
+  a.click();
+}
+
+function exportJSON() {
+  if (!checkOverlaps()) { alert("Please resolve interval overlaps before exporting."); return; }
+  const payload = {
+    match_id: matchId,
+    total_intervals: intervals.length,
+    verified_manual_intervals: intervals.filter(x => x.verified && x.source === "manual" && x.state !== "").length,
+    intervals: intervals
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "possession_annotations.json";
+  a.click();
+}
+
+render();
+</script>
+</body>
+</html>

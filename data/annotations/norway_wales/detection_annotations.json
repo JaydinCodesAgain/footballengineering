@@ -1,9 +1,263 @@
 {
   "match_id": "norway_wales",
-  "total_frames": 11,
+  "total_frames": 56,
   "verified_manual_box_frames": 0,
   "evaluation_ready": false,
+  "validation_blocker": "0/56 frames have verified manual bounding boxes (`verified=true, source=manual`).",
   "frames": [
+    {
+      "match_id": "norway_wales",
+      "frame_number": 354,
+      "timestamp": 14.16,
+      "image_rel_path": "frames/frame_000354.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 410,
+      "timestamp": 16.4,
+      "image_rel_path": "frames/frame_000410.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 466,
+      "timestamp": 18.64,
+      "image_rel_path": "frames/frame_000466.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 523,
+      "timestamp": 20.92,
+      "image_rel_path": "frames/frame_000523.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 579,
+      "timestamp": 23.16,
+      "image_rel_path": "frames/frame_000579.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 635,
+      "timestamp": 25.4,
+      "image_rel_path": "frames/frame_000635.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 692,
+      "timestamp": 27.68,
+      "image_rel_path": "frames/frame_000692.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 748,
+      "timestamp": 29.92,
+      "image_rel_path": "frames/frame_000748.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 804,
+      "timestamp": 32.16,
+      "image_rel_path": "frames/frame_000804.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 861,
+      "timestamp": 34.44,
+      "image_rel_path": "frames/frame_000861.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 917,
+      "timestamp": 36.68,
+      "image_rel_path": "frames/frame_000917.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 974,
+      "timestamp": 38.96,
+      "image_rel_path": "frames/frame_000974.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1030,
+      "timestamp": 41.2,
+      "image_rel_path": "frames/frame_001030.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1086,
+      "timestamp": 43.44,
+      "image_rel_path": "frames/frame_001086.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1143,
+      "timestamp": 45.72,
+      "image_rel_path": "frames/frame_001143.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1199,
+      "timestamp": 47.96,
+      "image_rel_path": "frames/frame_001199.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1255,
+      "timestamp": 50.2,
+      "image_rel_path": "frames/frame_001255.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1312,
+      "timestamp": 52.48,
+      "image_rel_path": "frames/frame_001312.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1368,
+      "timestamp": 54.72,
+      "image_rel_path": "frames/frame_001368.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1424,
+      "timestamp": 56.96,
+      "image_rel_path": "frames/frame_001424.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1481,
+      "timestamp": 59.24,
+      "image_rel_path": "frames/frame_001481.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1537,
+      "timestamp": 61.48,
+      "image_rel_path": "frames/frame_001537.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1594,
+      "timestamp": 63.76,
+      "image_rel_path": "frames/frame_001594.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
     {
       "match_id": "norway_wales",
       "frame_number": 1624,
@@ -11,6 +265,7 @@
       "image_rel_path": "frames/frame_001624.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 11,
@@ -21,11 +276,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 1650,
+      "timestamp": 66.0,
+      "image_rel_path": "frames/frame_001650.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1706,
+      "timestamp": 68.24,
+      "image_rel_path": "frames/frame_001706.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 1744,
       "timestamp": 69.76,
       "image_rel_path": "frames/frame_001744.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 4,
@@ -36,11 +314,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 1763,
+      "timestamp": 70.52,
+      "image_rel_path": "frames/frame_001763.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1819,
+      "timestamp": 72.76,
+      "image_rel_path": "frames/frame_001819.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 1865,
       "timestamp": 74.6,
       "image_rel_path": "frames/frame_001865.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 6,
@@ -51,11 +352,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 1875,
+      "timestamp": 75.0,
+      "image_rel_path": "frames/frame_001875.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "normal_possession",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 1932,
+      "timestamp": 77.28,
+      "image_rel_path": "frames/frame_001932.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 1986,
       "timestamp": 79.44,
       "image_rel_path": "frames/frame_001986.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 16,
@@ -66,11 +390,45 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 1988,
+      "timestamp": 79.52,
+      "image_rel_path": "frames/frame_001988.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "camera_pan_or_zoom",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2044,
+      "timestamp": 81.76,
+      "image_rel_path": "frames/frame_002044.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2101,
+      "timestamp": 84.04,
+      "image_rel_path": "frames/frame_002101.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2106,
       "timestamp": 84.24,
       "image_rel_path": "frames/frame_002106.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 6,
@@ -81,11 +439,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 2157,
+      "timestamp": 86.28,
+      "image_rel_path": "frames/frame_002157.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2214,
+      "timestamp": 88.56,
+      "image_rel_path": "frames/frame_002214.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2227,
       "timestamp": 89.08,
       "image_rel_path": "frames/frame_002227.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 7,
@@ -96,11 +477,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 2270,
+      "timestamp": 90.8,
+      "image_rel_path": "frames/frame_002270.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2326,
+      "timestamp": 93.04,
+      "image_rel_path": "frames/frame_002326.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2348,
       "timestamp": 93.92,
       "image_rel_path": "frames/frame_002348.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 10,
@@ -111,11 +515,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 2383,
+      "timestamp": 95.32,
+      "image_rel_path": "frames/frame_002383.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2439,
+      "timestamp": 97.56,
+      "image_rel_path": "frames/frame_002439.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2469,
       "timestamp": 98.76,
       "image_rel_path": "frames/frame_002469.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 10,
@@ -126,11 +553,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 2495,
+      "timestamp": 99.8,
+      "image_rel_path": "frames/frame_002495.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2552,
+      "timestamp": 102.08,
+      "image_rel_path": "frames/frame_002552.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2589,
       "timestamp": 103.56,
       "image_rel_path": "frames/frame_002589.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 2,
@@ -138,6 +588,28 @@
         "ball_tp": 0,
         "ball_fn": 0
       }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2608,
+      "timestamp": 104.32,
+      "image_rel_path": "frames/frame_002608.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2664,
+      "timestamp": 106.56,
+      "image_rel_path": "frames/frame_002664.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "crowded_box",
+      "boxes": [],
+      "legacy_counts": null
     },
     {
       "match_id": "norway_wales",
@@ -146,6 +618,7 @@
       "image_rel_path": "frames/frame_002710.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 2,
@@ -156,11 +629,34 @@
     },
     {
       "match_id": "norway_wales",
+      "frame_number": 2721,
+      "timestamp": 108.84,
+      "image_rel_path": "frames/frame_002721.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "partial_occlusion",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2777,
+      "timestamp": 111.08,
+      "image_rel_path": "frames/frame_002777.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "difficult_background",
+      "boxes": [],
+      "legacy_counts": null
+    },
+    {
+      "match_id": "norway_wales",
       "frame_number": 2831,
       "timestamp": 113.24,
       "image_rel_path": "frames/frame_002831.jpg",
       "verified": false,
       "source": "unlabelled",
+      "scene_tag": "general_play",
       "boxes": [],
       "legacy_counts": {
         "person_tp": 3,
@@ -168,6 +664,17 @@
         "ball_tp": 0,
         "ball_fn": 0
       }
+    },
+    {
+      "match_id": "norway_wales",
+      "frame_number": 2834,
+      "timestamp": 113.36,
+      "image_rel_path": "frames/frame_002834.jpg",
+      "verified": false,
+      "source": "unlabelled",
+      "scene_tag": "aerial_or_long_pass",
+      "boxes": [],
+      "legacy_counts": null
     }
   ]
 }

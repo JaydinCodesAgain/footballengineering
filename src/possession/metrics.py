@@ -33,7 +33,12 @@ def compute_possession_summary(
     interpolated_ball_seconds = 0.0
     lost_ball_seconds = 0.0
     transitions = 0
+    camera_cuts_count = 0
     prev_state: Optional[str] = None
+
+    # Partition records into continuous camera segments separated by camera cuts
+    raw_segments: list[list[PossessionFrameRecord]] = []
+    current_seg: list[PossessionFrameRecord] = []
 
     for rec in records:
         dt = max(0.0, float(rec.dt_seconds))
@@ -48,9 +53,49 @@ def compute_possession_summary(
         else:
             lost_ball_seconds += dt
 
-        if prev_state is not None and st != prev_state:
-            transitions += 1
-        prev_state = st
+        if rec.camera_cut and current_seg:
+            camera_cuts_count += 1
+            raw_segments.append(current_seg)
+            current_seg = [rec]
+            prev_state = st
+        else:
+            if prev_state is not None and st != prev_state:
+                transitions += 1
+            prev_state = st
+            current_seg.append(rec)
+
+    if current_seg:
+        raw_segments.append(current_seg)
+
+    camera_segments = []
+    for idx, seg in enumerate(raw_segments, start=1):
+        seg_dur = sum(max(0.0, float(r.dt_seconds)) for r in seg)
+        seg_a = sum(
+            max(0.0, float(r.dt_seconds))
+            for r in seg
+            if r.possession_state == PossessionState.TEAM_A_CONTROL.value
+        )
+        seg_b = sum(
+            max(0.0, float(r.dt_seconds))
+            for r in seg
+            if r.possession_state == PossessionState.TEAM_B_CONTROL.value
+        )
+        seg_attr = seg_a + seg_b
+        camera_segments.append(
+            {
+                "segment_index": idx,
+                "start_frame": int(seg[0].frame_number),
+                "end_frame": int(seg[-1].frame_number),
+                "start_timestamp": round(float(seg[0].timestamp), 2),
+                "end_timestamp": round(float(seg[-1].timestamp), 2),
+                "frames_count": len(seg),
+                "duration_seconds": round(seg_dur, 2),
+                "team_a_controlled_seconds": round(seg_a, 2),
+                "team_b_controlled_seconds": round(seg_b, 2),
+                "attributed_coverage_pct": round((seg_attr / seg_dur * 100.0) if seg_dur > 0 else 0.0, 2),
+            }
+        )
+    longest_continuous_sec = max((s["duration_seconds"] for s in camera_segments), default=0.0)
 
     total_analysed_seconds = sum(state_durations.values())
     team_a_sec = state_durations[PossessionState.TEAM_A_CONTROL.value]
@@ -129,5 +174,8 @@ def compute_possession_summary(
         },
         "total_analysed_time_distribution_pct": total_distribution_pct,
         "state_transitions_count": transitions,
+        "camera_cuts_count": camera_cuts_count,
+        "longest_continuous_segment_seconds": round(longest_continuous_sec, 2),
+        "camera_segments": camera_segments,
     }
 

@@ -13,6 +13,11 @@ from src.evaluation.possession_eval import (
     PossessionAnnotationStore,
     PossessionIntervalAnnotation,
     evaluate_possession_predictions,
+    validate_no_overlapping_intervals,
+)
+from src.detection.annotation_workflow import (
+    DetectionAnnotationStore,
+    sample_representative_frame_numbers,
 )
 from src.evaluation.report import (
     export_ball_trajectory_records,
@@ -152,12 +157,52 @@ def test_dataset_integrity_validation_and_deterministic_regeneration(tmp_path: P
     assert ds_fresh.records[rec.crop_id].ground_truth_label == InternalLabel.TEAM_A.value
     assert ds_fresh.records[rec.crop_id].label_verified is True
 
-    # Corrupt expected dimensions in manifest to simulate mismatched video -> must refuse & unverify label
+    # Regression test 1: Dimension-mismatched image file on disk (e.g. overwritten with 10x10 image)
+    # while manifest metadata and torso_bbox are valid -> must be included in to_recover and repaired!
+    cv2.imwrite(str(img_file), np.zeros((10, 10, 3), dtype=np.uint8))
+    mismatch_check = ds_fresh.validate_integrity()
+    assert mismatch_check["is_valid"] is False
+    assert rec.crop_id in mismatch_check["dimension_mismatch_ids"]
+
+    repair_mismatch = ds_fresh.regenerate_missing_crops(video_path)
+    assert repair_mismatch["regenerated_count"] == 1
+    assert ds_fresh.validate_integrity()["is_valid"] is True
+    assert ds_fresh.records[rec.crop_id].label_verified is True
+
+    # Regression test 2: Corrupted (0-byte undecodable) image file on disk -> repaired!
+    img_file.write_bytes(b"not_a_png")
+    corrupt_check = ds_fresh.validate_integrity()
+    assert corrupt_check["is_valid"] is False
+    assert rec.crop_id in corrupt_check["corrupted_crop_ids"]
+
+    repair_corrupt = ds_fresh.regenerate_missing_crops(video_path)
+    assert repair_corrupt["regenerated_count"] == 1
+    assert ds_fresh.validate_integrity()["is_valid"] is True
+
+    # Regression test 3: Partial regeneration when one record is valid and a second record has mismatched metadata
+    rec2 = ds_fresh.add_crop(
+        decoded_crop,
+        frame_number=2,
+        timestamp=0.08,
+        bbox=(90, 60, 158, 180),
+        torso_bbox=(100, 80, 148, 144),
+        quality=qm,
+        ground_truth_label="Wales",
+        label_verified=True,
+        split="val",
+        crop_id_override="test_match_bad_record",
+    )
     img_file.unlink()
-    ds_fresh.records[rec.crop_id].quality.width = 999
-    with pytest.raises(DatasetIntegrityError, match="Failed to verify exact crop identity"):
+    (tmp_path / "crops" / rec2.image_path).unlink()
+    ds_fresh.records[rec2.crop_id].quality.width = 999  # Force identity mismatch on rec2 only
+
+    with pytest.raises(DatasetIntegrityError, match="Failed to verify crop identity"):
         ds_fresh.regenerate_missing_crops(video_path)
-    assert ds_fresh.records[rec.crop_id].label_verified is False
+
+    # Verify rec1 was successfully regenerated and saved, while rec2 was marked unverified
+    assert img_file.is_file()
+    assert ds_fresh.records[rec.crop_id].label_verified is True
+    assert ds_fresh.records[rec2.crop_id].label_verified is False
 
 
 def test_kalman_ball_tracker_association_occlusion_outlier_rejection_and_camera_cut() -> None:
@@ -332,3 +377,108 @@ def test_possession_engine_aggregation_zero_detections_and_exports(tmp_path: Pat
     rep_files = generate_possession_report(tmp_path / "out", summary, val_res)
     assert rep_files["possession_summary_json"].is_file()
     assert rep_files["possession_report_md"].is_file()
+
+
+def test_static_isolated_false_positive_ball_rejection_and_blacklisting() -> None:
+    """
+    Regression test for Sprint 2 Chelsea vs Sunderland failure mode:
+    A stationary touchline object (cone/spare ball/logo) far from all players must be
+    detected as a static clutter lock, broken within 6 frames, and blacklisted.
+    """
+    tracker = KalmanBallTracker("chelsea_sunderland", BallTrackingConfig(max_coast_frames=3))
+    far_players = [
+        DetectionRecord(i, i * 0.08, 0, "player", (600, 300, 640, 400), 0.88, tracking_id=5)
+        for i in range(1, 9)
+    ]
+
+    last_rec = None
+    for i in range(1, 8):
+        static_fp = [DetectionRecord(i, i * 0.08, 32, "ball", (157, 313, 173, 325), 0.25)]
+        last_rec = tracker.step(
+            frame_number=i,
+            timestamp=i * 0.08,
+            ball_candidates=static_fp,
+            player_detections=far_players,
+        )
+
+    assert last_rec is not None
+    assert last_rec.observation_mode == BallObservationMode.LOST.value
+    summary = tracker.summarize()
+    assert summary["false_track_associations"] >= 1
+    assert summary["blacklisted_static_zones_count"] >= 1
+
+    # Subsequent candidate at the same static coordinate is rejected by filter_ball_candidates
+    filtered = filter_ball_candidates(
+        [DetectionRecord(9, 0.72, 32, "ball", (157, 313, 173, 325), 0.30)],
+        far_players,
+        frame_shape=(720, 1280),
+        blacklisted_zones=tracker.blacklisted_static_zones,
+    )
+    assert len(filtered) == 0
+
+
+def test_closeup_camera_cut_and_non_tactical_frame_rejection() -> None:
+    """
+    Regression test for Sprint 2 Norway vs Wales frame 1640 failure mode:
+    A cut from wide-angle play (player height ~100px) to a full-screen player close-up
+    (player height ~705px in 720p frame) must trigger a camera cut and classify ownership as UNKNOWN.
+    """
+    frm_wide = np.full((720, 1280, 3), (40, 160, 50), dtype=np.uint8)
+    # Same colour histogram but 6.7x jump in median player height -> camera cut detected
+    assert (
+        detect_camera_cut(
+            frm_wide,
+            frm_wide,
+            prev_median_player_h=105.0,
+            curr_median_player_h=705.0,
+        )
+        is True
+    )
+
+    # Close-up player observation occupying almost full frame height (705px of 720px)
+    closeup_obs = _make_player_obs(
+        1640, 65.6, 29, InternalLabel.TEAM_B.value, (248, 4, 1037, 709)
+    )
+    tracker = KalmanBallTracker("norway_wales")
+    ball_rec = tracker.step(
+        1640,
+        65.6,
+        [DetectionRecord(1640, 65.6, 32, "ball", (600, 680, 620, 700), 0.45)],
+    )
+    _, raw_info = evaluate_frame_ownership_candidates(
+        [closeup_obs],
+        ball_rec,
+        config=PossessionConfig(),
+        frame_shape=(720, 1280),
+    )
+    assert raw_info["raw_state"] == PossessionState.UNKNOWN.value
+    assert raw_info["controlling_team_id"] is None
+    assert raw_info["reason"] == "non_tactical_closeup_frame"
+
+
+def test_overlapping_possession_intervals_rejected_and_annotator_exports(tmp_path: Path) -> None:
+    """Verify overlapping possession intervals raise ValueError and HTML annotators generate cleanly."""
+    store = PossessionAnnotationStore(tmp_path / "poss_ann", "norway_wales")
+    overlapping = [
+        PossessionIntervalAnnotation("norway_wales", 0, 20, 0.0, 0.8, PossessionState.TEAM_A_CONTROL.value, False, True, "manual"),
+        PossessionIntervalAnnotation("norway_wales", 20, 40, 0.8, 1.6, PossessionState.TEAM_B_CONTROL.value, False, True, "manual"),
+    ]
+    with pytest.raises(ValueError, match="Overlapping possession interval"):
+        validate_no_overlapping_intervals(overlapping)
+
+    with pytest.raises(ValueError, match="Overlapping possession interval"):
+        store.set_manual_intervals(overlapping)
+
+    html_poss = store.generate_html_annotator(match_config=_make_match_config(), fps=25.0)
+    assert html_poss.is_file()
+    assert "Possession Interval Ground-Truth Annotator" in html_poss.read_text(encoding="utf-8")
+
+    sampled_fnos = sample_representative_frame_numbers(2953, num_samples=45, mandatory_frames=[400, 500])
+    assert len(sampled_fnos) >= 45
+    assert 400 in sampled_fnos and 500 in sampled_fnos
+
+    det_store = DetectionAnnotationStore(tmp_path / "det_ann", "norway_wales")
+    html_det = det_store.generate_html_annotator()
+    assert html_det.is_file()
+    assert "Detection Ground-Truth Annotator" in html_det.read_text(encoding="utf-8")
+
