@@ -10,8 +10,13 @@ from typing import Dict, List, Optional, Sequence, Tuple
 import cv2
 import numpy as np
 
+from src.classification.cropper import compute_blur_score, compute_grass_mask
 from src.config import MatchConfig, SplitConfig
 from src.schemas import CropQualityMetrics, InternalLabel, JerseyCropMetadata
+
+
+class DatasetIntegrityError(RuntimeError):
+    """Raised when a crop dataset manifest has missing, corrupted, or unverified images."""
 
 
 def make_crop_id(
@@ -100,11 +105,173 @@ class JerseyCropDataset:
         meta = self.records[crop_id]
         img_path = self.root_dir / meta.image_path
         if not img_path.is_file():
-            raise FileNotFoundError(f"Crop image file missing: {img_path}")
+            raise DatasetIntegrityError(
+                f"Crop image file missing for '{crop_id}' at '{img_path}'. "
+                "Run dataset.regenerate_missing_crops(video_path) with the original match video."
+            )
         img = cv2.imread(str(img_path), cv2.IMREAD_COLOR)
-        if img is None:
-            raise RuntimeError(f"Failed to decode crop image: {img_path}")
+        if img is None or img.size == 0:
+            raise DatasetIntegrityError(f"Failed to decode crop image for '{crop_id}': {img_path}")
         return img
+
+    def validate_integrity(self) -> Dict[str, object]:
+        """
+        Inspect all manifest records and verify that every referenced crop image exists on disk,
+        can be decoded, and matches the recorded dimensions in `quality`.
+        """
+        missing_ids: List[str] = []
+        corrupted_ids: List[str] = []
+        dimension_mismatch_ids: List[str] = []
+        present_count = 0
+
+        for cid, rec in sorted(self.records.items()):
+            img_path = self.root_dir / rec.image_path
+            if not img_path.is_file():
+                missing_ids.append(cid)
+                continue
+            img = cv2.imread(str(img_path), cv2.IMREAD_COLOR)
+            if img is None or img.size == 0:
+                corrupted_ids.append(cid)
+                continue
+            h, w = img.shape[:2]
+            if rec.quality.width > 0 and rec.quality.height > 0:
+                if w != rec.quality.width or h != rec.quality.height:
+                    dimension_mismatch_ids.append(cid)
+                    continue
+            present_count += 1
+
+        is_valid = (
+            len(self.records) > 0
+            and len(missing_ids) == 0
+            and len(corrupted_ids) == 0
+            and len(dimension_mismatch_ids) == 0
+        )
+        return {
+            "is_valid": is_valid,
+            "total_records": len(self.records),
+            "present_images": present_count,
+            "missing_count": len(missing_ids),
+            "missing_crop_ids": missing_ids,
+            "corrupted_crop_ids": corrupted_ids,
+            "dimension_mismatch_ids": dimension_mismatch_ids,
+        }
+
+    def regenerate_missing_crops(
+        self,
+        video_path: Optional[str | Path],
+        strict_verification: bool = True,
+    ) -> Dict[str, object]:
+        """
+        Deterministically regenerate missing crop images from the original match video using
+        the exact `frame_number` and `torso_bbox` coordinates recorded in `manifest.json`.
+
+        Safety guarantees:
+        - Never uses random sampling or live detector re-indexing.
+        - Verifies crop dimensions and appearance quality (`grass_ratio`, `blur_score`) against
+          the manifest record before preserving `ground_truth_label`.
+        - If the video is missing or crop identity cannot be verified, raises `DatasetIntegrityError`.
+        """
+        integrity = self.validate_integrity()
+        to_recover: List[str] = list(integrity["missing_crop_ids"]) + list(integrity["corrupted_crop_ids"])  # type: ignore[arg-type]
+        if not to_recover and not integrity["dimension_mismatch_ids"]:
+            return {
+                "regenerated_count": 0,
+                "status": "already_complete",
+                "integrity": integrity,
+            }
+
+        if video_path is None or not Path(video_path).is_file():
+            raise DatasetIntegrityError(
+                f"Dataset '{self.match_config.match_id}' at '{self.root_dir}' is missing "
+                f"{len(to_recover)} crop images (likely excluded by .gitignore on a fresh clone), "
+                f"and the source video was not found at '{video_path}'. "
+                f"Place the match video at '{self.match_config.video_path}' to regenerate crops."
+            )
+
+        cap = cv2.VideoCapture(str(video_path))
+        if not cap.isOpened():
+            raise DatasetIntegrityError(
+                f"Could not open source video '{video_path}' to regenerate missing crops."
+            )
+
+        by_frame: Dict[int, List[JerseyCropMetadata]] = {}
+        for cid in to_recover:
+            rec = self.records[cid]
+            by_frame.setdefault(rec.frame_number, []).append(rec)
+
+        regenerated_count = 0
+        unverified_ids: List[str] = []
+
+        try:
+            for fno in sorted(by_frame.keys()):
+                cap.set(cv2.CAP_PROP_POS_FRAMES, int(fno))
+                ok, frame = cap.read()
+                if not ok or frame is None:
+                    for rec in by_frame[fno]:
+                        rec.label_verified = False
+                        unverified_ids.append(rec.crop_id)
+                    continue
+
+                fh, fw = frame.shape[:2]
+                for rec in by_frame[fno]:
+                    left, top, right, bottom = rec.torso_bbox
+                    if left < 0 or top < 0 or right > fw or bottom > fh or right <= left or bottom <= top:
+                        rec.label_verified = False
+                        unverified_ids.append(rec.crop_id)
+                        continue
+
+                    crop = frame[top:bottom, left:right].copy()
+                    ch, cw = crop.shape[:2]
+
+                    # Verify dimensions match recorded metadata
+                    if rec.quality.width > 0 and rec.quality.height > 0:
+                        if cw != rec.quality.width or ch != rec.quality.height:
+                            rec.label_verified = False
+                            unverified_ids.append(rec.crop_id)
+                            continue
+
+                    # Verify appearance consistency (grass ratio & blur score)
+                    _, grass_r = compute_grass_mask(
+                        crop,
+                        self.match_config.cropping.grass_hsv_low,
+                        self.match_config.cropping.grass_hsv_high,
+                    )
+                    blur_s = compute_blur_score(crop)
+                    grass_diff = abs(grass_r - rec.quality.grass_ratio)
+                    blur_tol = max(35.0, 0.45 * max(1.0, rec.quality.blur_score))
+                    blur_diff = abs(blur_s - rec.quality.blur_score)
+
+                    if strict_verification and (grass_diff > 0.20 or blur_diff > blur_tol):
+                        rec.label_verified = False
+                        unverified_ids.append(rec.crop_id)
+                        continue
+
+                    abs_img_path = self.root_dir / rec.image_path
+                    abs_img_path.parent.mkdir(parents=True, exist_ok=True)
+                    cv2.imwrite(str(abs_img_path), crop)
+                    regenerated_count += 1
+        finally:
+            cap.release()
+
+        if unverified_ids:
+            self.save()
+            raise DatasetIntegrityError(
+                f"Failed to verify exact crop identity for {len(unverified_ids)} crops during "
+                f"regeneration: {unverified_ids[:5]}. Their labels have been marked unverified "
+                "(`label_verified=False`) and require manual reannotation."
+            )
+
+        post_integrity = self.validate_integrity()
+        if not post_integrity["is_valid"]:
+            raise DatasetIntegrityError(
+                f"Dataset integrity check still failing after regeneration: {post_integrity}"
+            )
+
+        return {
+            "regenerated_count": regenerated_count,
+            "status": "regenerated_and_verified",
+            "integrity": post_integrity,
+        }
 
     def update_label(
         self,

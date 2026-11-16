@@ -162,6 +162,7 @@ def migrate_norway_wales_legacy_dataset(
 
     ds = JerseyCropDataset(dataset_dir, match_config)
     if len(ds.records) > 0 and not force_rebuild:
+        ds.regenerate_missing_crops(video_path)
         return ds
 
     ds.records.clear()
@@ -315,6 +316,7 @@ def migrate_chelsea_sunderland_legacy_dataset(
 
     ds = JerseyCropDataset(dataset_dir, match_config)
     if len(ds.records) > 0 and not force_rebuild:
+        ds.regenerate_missing_crops(video_path)
         return ds
 
     ds.records.clear()
