@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Football AI — Detection Ground-Truth Annotator (chelsea_sunderland)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #141619; color: #f0f0f0; margin: 0; padding: 16px; }
+  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; background: #212529; padding: 10px 14px; border-radius: 6px; }
+  button, select { padding: 6px 12px; border-radius: 4px; border: 1px solid #495057; background: #343a40; color: #fff; cursor: pointer; font-weight: 600; }
+  button.primary { background: #198754; border-color: #198754; }
+  button.active-cls { outline: 2px solid #ffc107; }
+  #canvas-wrap { position: relative; display: inline-block; border: 2px solid #495057; overflow: auto; max-width: 100%; }
+  canvas { display: block; cursor: crosshair; }
+  .status { font-size: 14px; color: #adb5bd; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <strong>Match: chelsea_sunderland</strong>
+  <button onclick="prevFrame()">&#9664; Prev Frame</button>
+  <span id="frame-info">Frame 0/0</span>
+  <button onclick="nextFrame()">Next Frame &#9654;</button>
+  <button id="btn-ball" class="active-cls" onclick="setClass('ball')">Class: BALL (Key 1)</button>
+  <button id="btn-player" onclick="setClass('player')">Class: PLAYER (Key 2)</button>
+  <button onclick="undoBox()">Undo Last Box (Z)</button>
+  <button onclick="clearFrameBoxes()">Clear Frame</button>
+  <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
+  <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
+  <span class="status">Drag on image to draw box. Save CSV to data/annotations/chelsea_sunderland/detection_boxes.csv</span>
+</div>
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<script>
+const frames = [{"match_id": "chelsea_sunderland", "frame_number": 351, "timestamp": 14.04, "image_rel_path": "frames/frame_000351.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 406, "timestamp": 16.24, "image_rel_path": "frames/frame_000406.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 462, "timestamp": 18.48, "image_rel_path": "frames/frame_000462.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 518, "timestamp": 20.72, "image_rel_path": "frames/frame_000518.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 574, "timestamp": 22.96, "image_rel_path": "frames/frame_000574.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 630, "timestamp": 25.2, "image_rel_path": "frames/frame_000630.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 686, "timestamp": 27.44, "image_rel_path": "frames/frame_000686.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 742, "timestamp": 29.68, "image_rel_path": "frames/frame_000742.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 798, "timestamp": 31.92, "image_rel_path": "frames/frame_000798.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 854, "timestamp": 34.16, "image_rel_path": "frames/frame_000854.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 910, "timestamp": 36.4, "image_rel_path": "frames/frame_000910.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 966, "timestamp": 38.64, "image_rel_path": "frames/frame_000966.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1022, "timestamp": 40.88, "image_rel_path": "frames/frame_001022.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1078, "timestamp": 43.12, "image_rel_path": "frames/frame_001078.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1134, "timestamp": 45.36, "image_rel_path": "frames/frame_001134.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1189, "timestamp": 47.56, "image_rel_path": "frames/frame_001189.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1245, "timestamp": 49.8, "image_rel_path": "frames/frame_001245.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1301, "timestamp": 52.04, "image_rel_path": "frames/frame_001301.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1357, "timestamp": 54.28, "image_rel_path": "frames/frame_001357.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1413, "timestamp": 56.52, "image_rel_path": "frames/frame_001413.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1469, "timestamp": 58.76, "image_rel_path": "frames/frame_001469.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1525, "timestamp": 61.0, "image_rel_path": "frames/frame_001525.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1581, "timestamp": 63.24, "image_rel_path": "frames/frame_001581.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1611, "timestamp": 64.44, "image_rel_path": "frames/frame_001611.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1637, "timestamp": 65.48, "image_rel_path": "frames/frame_001637.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1661, "timestamp": 66.44, "image_rel_path": "frames/frame_001661.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1693, "timestamp": 67.72, "image_rel_path": "frames/frame_001693.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1711, "timestamp": 68.44, "image_rel_path": "frames/frame_001711.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1749, "timestamp": 69.96, "image_rel_path": "frames/frame_001749.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1761, "timestamp": 70.44, "image_rel_path": "frames/frame_001761.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1805, "timestamp": 72.2, "image_rel_path": "frames/frame_001805.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1811, "timestamp": 72.44, "image_rel_path": "frames/frame_001811.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1861, "timestamp": 74.44, "image_rel_path": "frames/frame_001861.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1917, "timestamp": 76.68, "image_rel_path": "frames/frame_001917.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 1973, "timestamp": 78.92, "image_rel_path": "frames/frame_001973.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2028, "timestamp": 81.12, "image_rel_path": "frames/frame_002028.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2084, "timestamp": 83.36, "image_rel_path": "frames/frame_002084.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2140, "timestamp": 85.6, "image_rel_path": "frames/frame_002140.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2196, "timestamp": 87.84, "image_rel_path": "frames/frame_002196.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2252, "timestamp": 90.08, "image_rel_path": "frames/frame_002252.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2308, "timestamp": 92.32, "image_rel_path": "frames/frame_002308.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2364, "timestamp": 94.56, "image_rel_path": "frames/frame_002364.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2420, "timestamp": 96.8, "image_rel_path": "frames/frame_002420.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2476, "timestamp": 99.04, "image_rel_path": "frames/frame_002476.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2532, "timestamp": 101.28, "image_rel_path": "frames/frame_002532.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2588, "timestamp": 103.52, "image_rel_path": "frames/frame_002588.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2644, "timestamp": 105.76, "image_rel_path": "frames/frame_002644.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2700, "timestamp": 108.0, "image_rel_path": "frames/frame_002700.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2756, "timestamp": 110.24, "image_rel_path": "frames/frame_002756.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "chelsea_sunderland", "frame_number": 2812, "timestamp": 112.48, "image_rel_path": "frames/frame_002812.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}];
+let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0;
+const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+const img = new Image();
+
+function loadFrame(i) {
+  if (!frames.length) return;
+  idx = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[idx];
+  document.getElementById('frame-info').textContent = `#${idx+1}/${frames.length} | Frame ${f.frame_number} (${f.timestamp}s) [${f.scene_tag}] | Boxes: ${f.boxes.length}`;
+  document.getElementById('chk-verified').checked = !!f.verified;
+  img.onload = () => { canvas.width = img.width; canvas.height = img.height; render(); };
+  img.src = f.image_rel_path;
+}
+
+function render(previewRect) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0);
+  const f = frames[idx];
+  for (const b of f.boxes) {
+    const [x1, y1, x2, y2] = b.bbox;
+    ctx.strokeStyle = b.class_name === 'ball' ? '#ffc107' : '#20c997';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(b.class_name.toUpperCase(), x1, Math.max(14, y1 - 4));
+  }
+  if (previewRect) {
+    ctx.strokeStyle = '#ff4d4d';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(previewRect[0], previewRect[1], previewRect[2] - previewRect[0], previewRect[3] - previewRect[1]);
+  }
+}
+
+canvas.addEventListener('mousedown', e => {
+  const r = canvas.getBoundingClientRect();
+  startX = Math.round(e.clientX - r.left);
+  startY = Math.round(e.clientY - r.top);
+  dragging = true;
+});
+canvas.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  render([Math.min(startX, cx), Math.min(startY, cy), Math.max(startX, cx), Math.max(startY, cy)]);
+});
+canvas.addEventListener('mouseup', e => {
+  if (!dragging) return;
+  dragging = false;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const x1 = Math.min(startX, cx), y1 = Math.min(startY, cy), x2 = Math.max(startX, cx), y2 = Math.max(startY, cy);
+  if (x2 - x1 >= 4 && y2 - y1 >= 4) {
+    frames[idx].boxes.push({ class_name: currentClass, bbox: [x1, y1, x2, y2] });
+    frames[idx].verified = true;
+    frames[idx].source = 'manual';
+    document.getElementById('chk-verified').checked = true;
+  }
+  loadFrame(idx);
+});
+
+function setClass(c) {
+  currentClass = c;
+  document.getElementById('btn-ball').className = c === 'ball' ? 'active-cls' : '';
+  document.getElementById('btn-player').className = c === 'player' ? 'active-cls' : '';
+}
+function undoBox() { frames[idx].boxes.pop(); loadFrame(idx); }
+function clearFrameBoxes() { frames[idx].boxes = []; loadFrame(idx); }
+function toggleVerified(v) { frames[idx].verified = v; if (v) frames[idx].source = 'manual'; }
+function prevFrame() { loadFrame(idx - 1); }
+function nextFrame() { loadFrame(idx + 1); }
+window.addEventListener('keydown', e => {
+  if (e.key === '1') setClass('ball');
+  if (e.key === '2') setClass('player');
+  if (e.key === 'z' || e.key === 'Z') undoBox();
+  if (e.key === 'ArrowLeft') prevFrame();
+  if (e.key === 'ArrowRight') nextFrame();
+});
+
+function exportCSV() {
+  const rows = ['frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source'];
+  for (const f of frames) {
+    const src = f.verified ? 'manual' : f.source;
+    if (!f.boxes.length) {
+      rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},,,,,,${f.verified},${src}`);
+    } else {
+      for (const b of f.boxes) {
+        rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},${b.class_name},${b.bbox[0]},${b.bbox[1]},${b.bbox[2]},${b.bbox[3]},${f.verified},${src}`);
+      }
+    }
+  }
+  const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'detection_boxes.csv';
+  a.click();
+}
+loadFrame(0);
+</script>
+</body>
+</html>

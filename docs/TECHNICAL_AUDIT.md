@@ -91,3 +91,32 @@ By extracting the exact crops from `Norway vs Wales _ HIGHLIGHTS _ UEFA Nations 
 | **Norway vs Wales (Val, n=30)** | **Audited + `spatial_embedding` (`t=0.350`)** | **93.33%** | **92.31%** | **90.00%** | **93.33%** | **86.67%** |
 | **Norway vs Wales (Test, n=48)** | **Audited + `foreground_masked` (Held-out Test)** | **87.50%** | **88.64%** | **77.83%** | **90.30%** | **91.67%** |
 | **Chelsea vs Sunderland (Val, n=47)** | **Audited + `spatial_embedding` (Calibrated `t=0.206`)** | **91.49%** | **100.00%** | **92.92%** | **97.22%** | **74.47%** |
+
+---
+
+## 6. Sprint 2.5 Empirical Diagnosis of Sprint 2 Ball Tracking & Possession Anomalies
+
+A frame-by-frame audit of the Sprint 2 telemetry (`outputs/norway_wales_sprint2/possession_timeline.csv`, `ball_trajectory.csv`, `frame_observations.csv` and `outputs/chelsea_sunderland_sprint2/`) established the exact root causes of the two Sprint 2 possession anomalies:
+
+### 6.1 Why Norway vs Wales (`frames 1620–1738`, `4.80s`) Reported Wales 100.0% / Norway 0.0%
+1. **Unflagged Wide-to-Closeup Broadcast Camera Cut at `frame 1640` (`65.60s`):**
+   - In `frames 1620–1638`, the broadcast camera showed wide-angle tactical play (`11` players visible, median player height `~105 px`), during which the ball tracker had locked onto a stationary pitch-side false positive at `bbox=[1209, 488, 1228, 506]` (`speed = 0.0 px/s`, `2.34` player heights from the nearest player), producing `LOOSE_BALL`.
+   - At `frame 1640`, the broadcast cut to a tight full-screen close-up of **Wales Player `#29` (`bbox=[248, 4, 1037, 709]`, height `705 px` out of `720 px`)**. Because the background remained green grass and yellow kit, global HSV histogram correlation stayed above `0.58`, so `detect_camera_cut()` did not fire.
+   - Inside that close-up (`frames 1640–1706`), YOLO detected an `82x82 px` patch near the bottom of the player's shorts/legs (`bbox=[582, 636, 665, 718]`) as `sports ball`. Because Player `#29`'s bounding box was `705 px` tall, the normalized distance `d_px / 705.0` was `0.036–0.289` (`< 0.70`), attributing `20 frames` (`1.60s`) of `TEAM_B_CONTROL` (Wales) during a non-tactical player close-up!
+
+### 6.2 Why Chelsea vs Sunderland (`frames 0–88`, `3.60s`) Had `8.89%` Attribution Coverage & `55.56%` Loose Ball
+1. **Stationary Touchline False Positive Lock (`frames 68–88`):**
+   - In `frames 0–46`, the ball was only intermittently detected (`frames 4, 16, 40–46`), with `TEAM_A_CONTROL` (Chelsea) confirmed for `4 frames` (`0.32s = 8.89%`).
+   - Starting at `frame 68` (`2.72s`), tiled low-confidence search (`c=0.18`) detected a stationary bright object near the left touchline (`bbox=[157, 313, 173, 325]`, `speed = 0.0–5.9 px/s`, `2.70` player heights away from all players). Because it never moved, the Kalman filter gated and locked onto `[157, 313, 173, 325]` for `11 consecutive frames` (`0.88s`), inflating `observed_coverage_pct` and `LOOSE_BALL` (`55.56%`).
+
+### 6.3 Sprint 2.5 Engineering Fixes Implemented
+1. **Player-Scale Relative Ball Box Filtering (`src/possession/ball_tracker.py`):**
+   - `filter_ball_candidates()` now bounds maximum ball box dimensions to `dynamic_max_size = min(max_size, max(26, round(0.38 * median_player_height)))`, rejecting oversized `82x82 px` false positives on player shorts/kits.
+2. **Wide-to-Closeup Camera Cut Detection & Non-Tactical Frame Rejection (`src/possession/ball_tracker.py`, `src/possession/ownership.py`):**
+   - `detect_camera_cut()` now triggers on abrupt player-height scale jumps (`scale_ratio > 2.25` or `< 0.44`) in addition to HSV correlation and joint correlation/L1 difference.
+   - `evaluate_frame_ownership_candidates()` explicitly classifies non-tactical close-up shots (`median_player_height > 0.44 * frame_height` or `max_player_area / frame_area > 0.18`) as `UNKNOWN` (`reason="non_tactical_closeup_frame"`).
+3. **Static Isolated Clutter Detection & Spatial Blacklisting (`KalmanBallTracker`):**
+   - Tracks `static_isolated_streak` whenever an observed ball candidate moves `< 2.5 px` while remaining `> 1.35` player heights away from all players. At `streak >= 6`, the tracker breaks the false track (`false_track_associations`), transitions to `LOST`, and blacklists the static coordinate (`blacklisted_static_zones`).
+4. **Cut-Separated Continuous Camera Segment Reporting (`src/possession/metrics.py`):**
+   - Partitions multi-shot highlight sequences at every detected camera cut into `camera_segments`, reporting per-shot start/end frames, duration, and team control without carrying state across cuts.
+

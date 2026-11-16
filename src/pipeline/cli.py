@@ -77,6 +77,18 @@ def main() -> None:
         default=None,
         help="Optional override for minimum control hysteresis frames.",
     )
+    parser.add_argument(
+        "--start-frame",
+        type=int,
+        default=None,
+        help="Optional override for starting video frame index.",
+    )
+    parser.add_argument(
+        "--frame-stride",
+        type=int,
+        default=None,
+        help="Optional override for frame sampling stride.",
+    )
 
     args = parser.parse_args()
     match_cfg = load_match_config(Path(args.config))
@@ -93,6 +105,10 @@ def main() -> None:
         match_cfg.possession.control_distance_threshold = float(args.control_distance)
     if args.min_control_frames is not None:
         match_cfg.possession.min_control_frames = int(args.min_control_frames)
+    if args.start_frame is not None:
+        match_cfg.tracking.start_frame = int(args.start_frame)
+    if args.frame_stride is not None:
+        match_cfg.detection.frame_stride = int(args.frame_stride)
 
     result = run_match_pipeline(
         config=match_cfg,

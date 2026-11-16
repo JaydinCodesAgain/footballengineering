@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Football AI — Detection Ground-Truth Annotator (norway_wales)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #141619; color: #f0f0f0; margin: 0; padding: 16px; }
+  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; background: #212529; padding: 10px 14px; border-radius: 6px; }
+  button, select { padding: 6px 12px; border-radius: 4px; border: 1px solid #495057; background: #343a40; color: #fff; cursor: pointer; font-weight: 600; }
+  button.primary { background: #198754; border-color: #198754; }
+  button.active-cls { outline: 2px solid #ffc107; }
+  #canvas-wrap { position: relative; display: inline-block; border: 2px solid #495057; overflow: auto; max-width: 100%; }
+  canvas { display: block; cursor: crosshair; }
+  .status { font-size: 14px; color: #adb5bd; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <strong>Match: norway_wales</strong>
+  <button onclick="prevFrame()">&#9664; Prev Frame</button>
+  <span id="frame-info">Frame 0/0</span>
+  <button onclick="nextFrame()">Next Frame &#9654;</button>
+  <button id="btn-ball" class="active-cls" onclick="setClass('ball')">Class: BALL (Key 1)</button>
+  <button id="btn-player" onclick="setClass('player')">Class: PLAYER (Key 2)</button>
+  <button onclick="undoBox()">Undo Last Box (Z)</button>
+  <button onclick="clearFrameBoxes()">Clear Frame</button>
+  <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
+  <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
+  <span class="status">Drag on image to draw box. Save CSV to data/annotations/norway_wales/detection_boxes.csv</span>
+</div>
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<script>
+const frames = [{"match_id": "norway_wales", "frame_number": 354, "timestamp": 14.16, "image_rel_path": "frames/frame_000354.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 410, "timestamp": 16.4, "image_rel_path": "frames/frame_000410.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 466, "timestamp": 18.64, "image_rel_path": "frames/frame_000466.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 523, "timestamp": 20.92, "image_rel_path": "frames/frame_000523.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 579, "timestamp": 23.16, "image_rel_path": "frames/frame_000579.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 635, "timestamp": 25.4, "image_rel_path": "frames/frame_000635.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 692, "timestamp": 27.68, "image_rel_path": "frames/frame_000692.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 748, "timestamp": 29.92, "image_rel_path": "frames/frame_000748.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 804, "timestamp": 32.16, "image_rel_path": "frames/frame_000804.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 861, "timestamp": 34.44, "image_rel_path": "frames/frame_000861.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 917, "timestamp": 36.68, "image_rel_path": "frames/frame_000917.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 974, "timestamp": 38.96, "image_rel_path": "frames/frame_000974.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1030, "timestamp": 41.2, "image_rel_path": "frames/frame_001030.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1086, "timestamp": 43.44, "image_rel_path": "frames/frame_001086.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1143, "timestamp": 45.72, "image_rel_path": "frames/frame_001143.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1199, "timestamp": 47.96, "image_rel_path": "frames/frame_001199.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1255, "timestamp": 50.2, "image_rel_path": "frames/frame_001255.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1312, "timestamp": 52.48, "image_rel_path": "frames/frame_001312.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1368, "timestamp": 54.72, "image_rel_path": "frames/frame_001368.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1424, "timestamp": 56.96, "image_rel_path": "frames/frame_001424.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1481, "timestamp": 59.24, "image_rel_path": "frames/frame_001481.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1537, "timestamp": 61.48, "image_rel_path": "frames/frame_001537.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1594, "timestamp": 63.76, "image_rel_path": "frames/frame_001594.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1624, "timestamp": 64.96, "image_rel_path": "frames/frame_001624.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 11, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 1650, "timestamp": 66.0, "image_rel_path": "frames/frame_001650.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1706, "timestamp": 68.24, "image_rel_path": "frames/frame_001706.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1744, "timestamp": 69.76, "image_rel_path": "frames/frame_001744.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 4, "person_fn": 0, "ball_tp": 1, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 1763, "timestamp": 70.52, "image_rel_path": "frames/frame_001763.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1819, "timestamp": 72.76, "image_rel_path": "frames/frame_001819.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1865, "timestamp": 74.6, "image_rel_path": "frames/frame_001865.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 6, "person_fn": 0, "ball_tp": 1, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 1875, "timestamp": 75.0, "image_rel_path": "frames/frame_001875.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1932, "timestamp": 77.28, "image_rel_path": "frames/frame_001932.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 1986, "timestamp": 79.44, "image_rel_path": "frames/frame_001986.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 16, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 1988, "timestamp": 79.52, "image_rel_path": "frames/frame_001988.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2044, "timestamp": 81.76, "image_rel_path": "frames/frame_002044.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2101, "timestamp": 84.04, "image_rel_path": "frames/frame_002101.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2106, "timestamp": 84.24, "image_rel_path": "frames/frame_002106.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 6, "person_fn": 0, "ball_tp": 1, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2157, "timestamp": 86.28, "image_rel_path": "frames/frame_002157.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2214, "timestamp": 88.56, "image_rel_path": "frames/frame_002214.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2227, "timestamp": 89.08, "image_rel_path": "frames/frame_002227.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 7, "person_fn": 0, "ball_tp": 0, "ball_fn": 1}}, {"match_id": "norway_wales", "frame_number": 2270, "timestamp": 90.8, "image_rel_path": "frames/frame_002270.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2326, "timestamp": 93.04, "image_rel_path": "frames/frame_002326.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2348, "timestamp": 93.92, "image_rel_path": "frames/frame_002348.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 10, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2383, "timestamp": 95.32, "image_rel_path": "frames/frame_002383.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2439, "timestamp": 97.56, "image_rel_path": "frames/frame_002439.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2469, "timestamp": 98.76, "image_rel_path": "frames/frame_002469.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 10, "person_fn": 0, "ball_tp": 1, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2495, "timestamp": 99.8, "image_rel_path": "frames/frame_002495.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2552, "timestamp": 102.08, "image_rel_path": "frames/frame_002552.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2589, "timestamp": 103.56, "image_rel_path": "frames/frame_002589.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 2, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2608, "timestamp": 104.32, "image_rel_path": "frames/frame_002608.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2664, "timestamp": 106.56, "image_rel_path": "frames/frame_002664.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2710, "timestamp": 108.4, "image_rel_path": "frames/frame_002710.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 2, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2721, "timestamp": 108.84, "image_rel_path": "frames/frame_002721.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2777, "timestamp": 111.08, "image_rel_path": "frames/frame_002777.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "norway_wales", "frame_number": 2831, "timestamp": 113.24, "image_rel_path": "frames/frame_002831.jpg", "verified": false, "source": "unlabelled", "scene_tag": "general_play", "boxes": [], "legacy_counts": {"person_tp": 3, "person_fn": 0, "ball_tp": 0, "ball_fn": 0}}, {"match_id": "norway_wales", "frame_number": 2834, "timestamp": 113.36, "image_rel_path": "frames/frame_002834.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}];
+let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0;
+const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+const img = new Image();
+
+function loadFrame(i) {
+  if (!frames.length) return;
+  idx = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[idx];
+  document.getElementById('frame-info').textContent = `#${idx+1}/${frames.length} | Frame ${f.frame_number} (${f.timestamp}s) [${f.scene_tag}] | Boxes: ${f.boxes.length}`;
+  document.getElementById('chk-verified').checked = !!f.verified;
+  img.onload = () => { canvas.width = img.width; canvas.height = img.height; render(); };
+  img.src = f.image_rel_path;
+}
+
+function render(previewRect) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0);
+  const f = frames[idx];
+  for (const b of f.boxes) {
+    const [x1, y1, x2, y2] = b.bbox;
+    ctx.strokeStyle = b.class_name === 'ball' ? '#ffc107' : '#20c997';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(b.class_name.toUpperCase(), x1, Math.max(14, y1 - 4));
+  }
+  if (previewRect) {
+    ctx.strokeStyle = '#ff4d4d';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(previewRect[0], previewRect[1], previewRect[2] - previewRect[0], previewRect[3] - previewRect[1]);
+  }
+}
+
+canvas.addEventListener('mousedown', e => {
+  const r = canvas.getBoundingClientRect();
+  startX = Math.round(e.clientX - r.left);
+  startY = Math.round(e.clientY - r.top);
+  dragging = true;
+});
+canvas.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  render([Math.min(startX, cx), Math.min(startY, cy), Math.max(startX, cx), Math.max(startY, cy)]);
+});
+canvas.addEventListener('mouseup', e => {
+  if (!dragging) return;
+  dragging = false;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const x1 = Math.min(startX, cx), y1 = Math.min(startY, cy), x2 = Math.max(startX, cx), y2 = Math.max(startY, cy);
+  if (x2 - x1 >= 4 && y2 - y1 >= 4) {
+    frames[idx].boxes.push({ class_name: currentClass, bbox: [x1, y1, x2, y2] });
+    frames[idx].verified = true;
+    frames[idx].source = 'manual';
+    document.getElementById('chk-verified').checked = true;
+  }
+  loadFrame(idx);
+});
+
+function setClass(c) {
+  currentClass = c;
+  document.getElementById('btn-ball').className = c === 'ball' ? 'active-cls' : '';
+  document.getElementById('btn-player').className = c === 'player' ? 'active-cls' : '';
+}
+function undoBox() { frames[idx].boxes.pop(); loadFrame(idx); }
+function clearFrameBoxes() { frames[idx].boxes = []; loadFrame(idx); }
+function toggleVerified(v) { frames[idx].verified = v; if (v) frames[idx].source = 'manual'; }
+function prevFrame() { loadFrame(idx - 1); }
+function nextFrame() { loadFrame(idx + 1); }
+window.addEventListener('keydown', e => {
+  if (e.key === '1') setClass('ball');
+  if (e.key === '2') setClass('player');
+  if (e.key === 'z' || e.key === 'Z') undoBox();
+  if (e.key === 'ArrowLeft') prevFrame();
+  if (e.key === 'ArrowRight') nextFrame();
+});
+
+function exportCSV() {
+  const rows = ['frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source'];
+  for (const f of frames) {
+    const src = f.verified ? 'manual' : f.source;
+    if (!f.boxes.length) {
+      rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},,,,,,${f.verified},${src}`);
+    } else {
+      for (const b of f.boxes) {
+        rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},${b.class_name},${b.bbox[0]},${b.bbox[1]},${b.bbox[2]},${b.bbox[3]},${f.verified},${src}`);
+      }
+    }
+  }
+  const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'detection_boxes.csv';
+  a.click();
+}
+loadFrame(0);
+</script>
+</body>
+</html>

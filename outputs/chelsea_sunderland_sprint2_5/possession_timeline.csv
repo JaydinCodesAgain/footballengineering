@@ -1,0 +1,376 @@
+match_id,frame_number,timestamp,dt_seconds,ball_observation_mode,ball_visibility,possession_state,raw_interaction_state,controlling_player_id,controlling_team_id,controlling_team_display,possession_confidence,closest_player_id,closest_team_id,closest_normalized_distance,second_closest_team_id,second_closest_normalized_distance,running_team_a_share_pct,running_team_b_share_pct,camera_cut
+chelsea_sunderland,180,7.2,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.2986,1,Team_B,0.7423,Team_A,1.6354,50.0,50.0,False
+chelsea_sunderland,184,7.36,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,0.4779,1,Team_B,0.7226,Team_A,1.8324,0.0,100.0,False
+chelsea_sunderland,188,7.52,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,0.9616,1,Team_B,0.7072,Team_A,1.7442,0.0,100.0,False
+chelsea_sunderland,192,7.68,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,1.0,1,Team_B,0.5717,Team_A,1.8231,0.0,100.0,False
+chelsea_sunderland,196,7.84,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,1.0,1,Team_B,0.6226,Team_A,1.6565,0.0,100.0,False
+chelsea_sunderland,200,8.0,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,1.0,1,Team_B,0.4167,Team_A,1.6781,0.0,100.0,False
+chelsea_sunderland,204,8.16,0.16,interpolated,interpolated,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,0.4357,1,Team_B,0.4324,Team_A,1.6577,0.0,100.0,False
+chelsea_sunderland,208,8.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,212,8.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,216,8.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,220,8.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,224,8.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,228,9.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,232,9.28,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,0.9762,1,Team_B,0.2583,Team_A,1.501,0.0,100.0,False
+chelsea_sunderland,236,9.44,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,1.0,1,Team_B,0.3544,Team_A,1.4295,0.0,100.0,False
+chelsea_sunderland,240,9.6,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,1.0,1,Team_B,0.4202,Team_A,1.3535,0.0,100.0,False
+chelsea_sunderland,244,9.76,0.16,interpolated,interpolated,TEAM_B_CONTROL,TEAM_B_CONTROL,1,Team_B,Sunderland,0.5527,1,Team_B,0.4554,Unknown,3.4419,0.0,100.0,False
+chelsea_sunderland,248,9.92,0.16,observed,visible,UNKNOWN,UNKNOWN,141,,UNKNOWN,0.0,141,Team_A,0.2392,Team_A,2.5753,0.0,100.0,False
+chelsea_sunderland,252,10.08,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,141,,UNKNOWN,0.0,141,Team_A,1.3056,Team_B,2.8611,0.0,100.0,False
+chelsea_sunderland,256,10.24,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7002,29,Team_A,1.5555,Team_A,2.8986,0.0,100.0,False
+chelsea_sunderland,260,10.4,0.16,observed,visible,UNKNOWN,UNKNOWN,29,,UNKNOWN,0.0,29,Team_A,1.3028,Team_B,2.4759,0.0,100.0,False
+chelsea_sunderland,264,10.56,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2594,163,Team_B,6.7345,Unknown,6.7602,0.0,100.0,False
+chelsea_sunderland,268,10.72,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4076,,,,,,0.0,100.0,False
+chelsea_sunderland,272,10.88,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1509,,,,,,0.0,100.0,False
+chelsea_sunderland,276,11.04,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3146,,,,,,0.0,100.0,False
+chelsea_sunderland,280,11.2,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2213,173,Team_B,8.8291,,,0.0,100.0,False
+chelsea_sunderland,284,11.36,0.16,observed,visible,UNKNOWN,UNKNOWN,259,,UNKNOWN,0.0,259,Unknown,0.6735,Team_A,6.3834,0.0,100.0,False
+chelsea_sunderland,288,11.52,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.4657,6,Team_B,0.414,Team_B,0.5242,0.0,100.0,False
+chelsea_sunderland,292,11.68,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,259,Team_B,Sunderland,0.4218,259,Team_B,0.9043,,,0.0,100.0,False
+chelsea_sunderland,296,11.84,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,259,,UNKNOWN,0.0,6,Team_A,0.7274,Team_B,1.2557,0.0,100.0,False
+chelsea_sunderland,300,12.0,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4983,305,Unknown,3.6181,Unknown,5.6027,0.0,100.0,False
+chelsea_sunderland,304,12.16,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5337,305,Unknown,3.5267,Unknown,6.0263,0.0,100.0,False
+chelsea_sunderland,308,12.32,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4035,334,Unknown,3.4078,Unknown,3.4608,0.0,100.0,False
+chelsea_sunderland,312,12.48,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4093,337,Unknown,3.3244,Unknown,3.342,0.0,100.0,False
+chelsea_sunderland,316,12.64,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3144,305,Unknown,3.1435,Unknown,3.5335,0.0,100.0,False
+chelsea_sunderland,320,12.8,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1164,334,Unknown,3.0406,,,0.0,100.0,False
+chelsea_sunderland,324,12.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,0.0,100.0,False
+chelsea_sunderland,328,13.12,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.8357,345,Team_A,2.2914,Team_B,2.777,0.0,100.0,False
+chelsea_sunderland,332,13.28,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.847,373,Team_B,1.6424,Team_A,2.0802,0.0,100.0,False
+chelsea_sunderland,336,13.44,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.8767,373,Team_B,1.5625,Team_A,1.9616,0.0,100.0,False
+chelsea_sunderland,340,13.6,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.387,390,Team_A,0.3878,Team_B,1.4617,0.0,100.0,False
+chelsea_sunderland,344,13.76,0.16,observed,visible,UNKNOWN,UNKNOWN,373,,UNKNOWN,0.0,373,Team_B,0.1799,Team_A,0.7052,0.0,100.0,False
+chelsea_sunderland,348,13.92,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.7,373,Team_B,0.2597,Team_A,1.0889,0.0,100.0,False
+chelsea_sunderland,352,14.08,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.778,390,Team_A,0.4061,Team_B,1.2718,0.0,100.0,False
+chelsea_sunderland,356,14.24,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.6532,390,Team_A,0.4329,Team_B,1.3482,0.0,100.0,False
+chelsea_sunderland,360,14.4,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,390,Team_A,Chelsea,0.9259,390,Team_A,0.4559,Team_B,1.5865,8.3,91.7,False
+chelsea_sunderland,364,14.56,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,390,Team_A,Chelsea,1.0,390,Team_A,0.3495,Team_B,1.5538,15.4,84.6,False
+chelsea_sunderland,368,14.72,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,390,Team_A,Chelsea,1.0,390,Team_A,0.3982,Team_B,1.6819,21.4,78.6,False
+chelsea_sunderland,372,14.88,0.16,interpolated,interpolated,TEAM_A_CONTROL,TEAM_A_CONTROL,390,Team_A,Chelsea,0.4883,390,Team_A,0.2843,Team_B,1.8766,26.7,73.3,False
+chelsea_sunderland,376,15.04,0.16,observed,visible,CONTESTED,TEAM_B_CONTROL,,,CONTESTED,0.3261,374,Team_B,1.2239,Team_A,2.3904,26.7,73.3,False
+chelsea_sunderland,380,15.2,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,374,Team_B,Sunderland,0.4534,374,Team_B,0.0364,Team_A,2.2534,25.0,75.0,False
+chelsea_sunderland,384,15.36,0.16,observed,visible,UNKNOWN,UNKNOWN,345,,UNKNOWN,0.0,345,Team_B,1.2212,Team_A,3.7716,25.0,75.0,False
+chelsea_sunderland,388,15.52,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.0916,345,Team_B,1.9093,Team_A,2.4687,25.0,75.0,False
+chelsea_sunderland,392,15.68,0.16,observed,visible,UNKNOWN,UNKNOWN,345,,UNKNOWN,0.0,345,Team_B,1.2692,Team_B,3.0506,25.0,75.0,False
+chelsea_sunderland,396,15.84,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.0561,537,Team_B,2.8794,Team_B,3.5867,25.0,75.0,False
+chelsea_sunderland,400,16.0,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,345,Team_B,Sunderland,0.5793,345,Team_B,1.086,Team_B,3.0101,23.5,76.5,False
+chelsea_sunderland,404,16.16,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,345,Team_B,Sunderland,0.6883,460,Unknown,1.0582,Team_B,1.1253,22.2,77.8,False
+chelsea_sunderland,408,16.32,0.16,observed,visible,CONTESTED,CONTESTED,,,CONTESTED,0.4203,609,Team_A,0.9286,Team_B,1.0417,22.2,77.8,False
+chelsea_sunderland,412,16.48,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.3277,345,Team_B,1.2211,Team_B,2.202,22.2,77.8,False
+chelsea_sunderland,416,16.64,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,345,Team_B,Sunderland,0.4482,345,Team_B,1.2439,Team_B,1.9791,21.1,78.9,False
+chelsea_sunderland,420,16.8,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,345,Team_B,Sunderland,0.6671,345,Team_B,1.1515,Team_B,1.9168,20.0,80.0,False
+chelsea_sunderland,424,16.96,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,345,Team_B,Sunderland,0.7408,679,Team_A,0.5839,Team_B,1.0579,19.0,81.0,False
+chelsea_sunderland,428,17.12,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,679,Team_B,Sunderland,0.6475,679,Team_B,0.5732,Team_B,0.7401,18.2,81.8,False
+chelsea_sunderland,432,17.28,0.16,interpolated,interpolated,TEAM_B_CONTROL,TEAM_B_CONTROL,679,Team_B,Sunderland,0.3493,679,Team_B,0.4039,Team_B,0.8365,17.4,82.6,False
+chelsea_sunderland,436,17.44,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3377,694,Team_A,0.2241,Team_B,0.6904,17.4,82.6,False
+chelsea_sunderland,440,17.6,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.125,713,Team_A,0.6322,Unknown,1.245,17.4,82.6,False
+chelsea_sunderland,444,17.76,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,698,Team_B,Sunderland,0.6997,698,Team_B,0.1964,Unknown,0.3938,16.7,83.3,False
+chelsea_sunderland,448,17.92,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,697,,UNKNOWN,0.0,697,Unknown,0.5172,Team_A,0.8569,16.7,83.3,False
+chelsea_sunderland,452,18.08,0.16,observed,visible,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.1565,,,,,,16.7,83.3,False
+chelsea_sunderland,456,18.24,0.16,interpolated,interpolated,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.0579,,,,,,16.7,83.3,False
+chelsea_sunderland,460,18.4,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,464,18.56,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,468,18.72,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,472,18.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,476,19.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,480,19.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,484,19.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,488,19.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,16.7,83.3,False
+chelsea_sunderland,492,19.68,0.16,observed,visible,UNKNOWN,UNKNOWN,775,,UNKNOWN,0.0,775,Unknown,0.2044,Team_B,0.9669,16.7,83.3,False
+chelsea_sunderland,496,19.84,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.3603,773,Team_B,0.7067,Team_B,1.0369,16.7,83.3,False
+chelsea_sunderland,500,20.0,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,773,Team_B,Sunderland,0.338,781,Team_B,0.1489,Team_B,0.8197,16.0,84.0,False
+chelsea_sunderland,504,20.16,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,773,Team_B,Sunderland,0.8075,781,Team_B,0.0905,Team_B,0.9655,15.4,84.6,False
+chelsea_sunderland,508,20.32,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.051,Team_B,1.0667,14.8,85.2,False
+chelsea_sunderland,512,20.48,0.16,interpolated,interpolated,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,0.6211,781,Team_B,0.0153,Team_B,1.1722,14.3,85.7,False
+chelsea_sunderland,516,20.64,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.2256,Team_B,1.6256,13.8,86.2,False
+chelsea_sunderland,520,20.8,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.4902,Unknown,1.4063,13.3,86.7,False
+chelsea_sunderland,524,20.96,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.5228,Unknown,1.3021,12.9,87.1,False
+chelsea_sunderland,528,21.12,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.4612,Unknown,1.3068,12.5,87.5,False
+chelsea_sunderland,532,21.28,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,781,Team_B,Sunderland,1.0,781,Team_B,0.4232,Unknown,1.2954,12.1,87.9,False
+chelsea_sunderland,536,21.44,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1686,,,,,,12.1,87.9,False
+chelsea_sunderland,540,21.6,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,True
+chelsea_sunderland,544,21.76,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,548,21.92,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,552,22.08,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,556,22.24,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,560,22.4,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,564,22.56,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,568,22.72,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,572,22.88,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,576,23.04,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,580,23.2,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,584,23.36,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,588,23.52,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,592,23.68,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,596,23.84,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,600,24.0,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,604,24.16,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,608,24.32,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,612,24.48,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,True
+chelsea_sunderland,616,24.64,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5908,,,,,,12.1,87.9,False
+chelsea_sunderland,620,24.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,True
+chelsea_sunderland,624,24.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,628,25.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,632,25.28,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,636,25.44,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,640,25.6,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,644,25.76,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,648,25.92,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,652,26.08,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2899,878,Team_B,1.9139,Unknown,2.4914,12.1,87.9,False
+chelsea_sunderland,656,26.24,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3903,878,Team_B,1.9325,Unknown,2.583,12.1,87.9,False
+chelsea_sunderland,660,26.4,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4126,878,Team_B,1.934,Unknown,2.5157,12.1,87.9,False
+chelsea_sunderland,664,26.56,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2177,877,Unknown,1.721,Team_B,6.4348,12.1,87.9,False
+chelsea_sunderland,668,26.72,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.165,877,Unknown,1.8127,Team_B,2.715,12.1,87.9,False
+chelsea_sunderland,672,26.88,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.0611,877,Unknown,1.8309,Team_B,2.7698,12.1,87.9,False
+chelsea_sunderland,676,27.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,680,27.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,684,27.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,688,27.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,692,27.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,696,27.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,700,28.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,704,28.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,708,28.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,712,28.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,716,28.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,720,28.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,724,28.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,728,29.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,732,29.28,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,736,29.44,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,12.1,87.9,False
+chelsea_sunderland,740,29.6,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.4936,919,Team_B,0.2952,Team_A,3.9279,12.1,87.9,False
+chelsea_sunderland,744,29.76,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,919,Team_B,Sunderland,0.7179,919,Team_B,0.3051,Team_A,3.9304,11.8,88.2,False
+chelsea_sunderland,748,29.92,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,919,Team_B,Sunderland,0.8766,919,Team_B,0.2902,Team_B,3.8826,11.4,88.6,False
+chelsea_sunderland,752,30.08,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,919,Team_B,Sunderland,0.8408,919,Team_B,0.296,Team_B,3.8824,11.1,88.9,False
+chelsea_sunderland,756,30.24,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,919,Team_B,Sunderland,0.8296,919,Team_B,0.3455,Unknown,3.9608,10.8,89.2,False
+chelsea_sunderland,760,30.4,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,919,Team_B,Sunderland,0.5619,919,Team_B,0.3778,Unknown,3.9518,10.5,89.5,False
+chelsea_sunderland,764,30.56,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.0576,952,Team_A,3.7283,Unknown,3.955,10.5,89.5,False
+chelsea_sunderland,768,30.72,0.16,observed,visible,UNKNOWN,UNKNOWN,882,,UNKNOWN,0.0,882,Team_B,0.2127,Team_B,0.7512,10.5,89.5,False
+chelsea_sunderland,772,30.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,True
+chelsea_sunderland,776,31.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,True
+chelsea_sunderland,780,31.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,784,31.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,788,31.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,792,31.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,796,31.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,800,32.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,804,32.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,808,32.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,812,32.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,816,32.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,820,32.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,824,32.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,828,33.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,832,33.28,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,836,33.44,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,840,33.6,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,844,33.76,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,848,33.92,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,852,34.08,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,856,34.24,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,860,34.4,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,864,34.56,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,868,34.72,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,872,34.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,876,35.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,880,35.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,884,35.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,888,35.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,892,35.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,896,35.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,900,36.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,904,36.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,908,36.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,912,36.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,916,36.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,920,36.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,924,36.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,928,37.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,932,37.28,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,936,37.44,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,940,37.6,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,944,37.76,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,948,37.92,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,952,38.08,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,956,38.24,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,960,38.4,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,964,38.56,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,968,38.72,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,972,38.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,976,39.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,980,39.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,984,39.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,988,39.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,992,39.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,996,39.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1000,40.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1004,40.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1008,40.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1012,40.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1016,40.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,10.5,89.5,False
+chelsea_sunderland,1020,40.8,0.16,observed,visible,UNKNOWN,TEAM_A_CONTROL,,,UNKNOWN,0.0,1054,Team_A,0.5372,Unknown,0.6385,10.5,89.5,True
+chelsea_sunderland,1024,40.96,0.16,observed,visible,UNKNOWN,UNKNOWN,1055,,UNKNOWN,0.0,1055,Unknown,0.5064,Unknown,2.301,10.5,89.5,False
+chelsea_sunderland,1028,41.12,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.3051,1055,Team_A,0.4289,Unknown,2.5234,10.5,89.5,False
+chelsea_sunderland,1032,41.28,0.16,observed,visible,UNKNOWN,UNKNOWN,1055,,UNKNOWN,0.0,1055,Unknown,0.5804,Unknown,2.4304,10.5,89.5,False
+chelsea_sunderland,1036,41.44,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.2621,1093,Team_A,0.3307,Unknown,0.6222,10.5,89.5,False
+chelsea_sunderland,1040,41.6,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1093,,UNKNOWN,0.0,1093,Team_A,0.3691,Unknown,0.5832,10.5,89.5,False
+chelsea_sunderland,1044,41.76,0.16,observed,visible,UNKNOWN,UNKNOWN,1053,,UNKNOWN,0.0,1053,Unknown,0.4816,Team_A,2.4182,10.5,89.5,False
+chelsea_sunderland,1048,41.92,0.16,observed,visible,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.4316,,,,,,10.5,89.5,False
+chelsea_sunderland,1052,42.08,0.16,observed,visible,UNKNOWN,UNKNOWN,1144,,UNKNOWN,0.0,1144,Unknown,1.1289,Unknown,2.5432,10.5,89.5,False
+chelsea_sunderland,1056,42.24,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4488,1088,Unknown,2.5263,Team_A,2.9891,10.5,89.5,False
+chelsea_sunderland,1060,42.4,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3684,1088,Team_A,2.3931,Team_A,3.2635,10.5,89.5,False
+chelsea_sunderland,1064,42.56,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2821,1088,Team_A,2.3879,Team_A,3.3779,10.5,89.5,False
+chelsea_sunderland,1068,42.72,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3002,1088,Team_A,2.3428,Team_A,3.4482,10.5,89.5,False
+chelsea_sunderland,1072,42.88,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2512,1088,Team_A,2.4199,Team_A,3.2718,10.5,89.5,False
+chelsea_sunderland,1076,43.04,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5261,1088,Team_A,2.3787,Team_A,2.9583,10.5,89.5,False
+chelsea_sunderland,1080,43.2,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2945,1088,Team_A,2.3636,Team_A,2.5749,10.5,89.5,False
+chelsea_sunderland,1084,43.36,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5833,1093,Team_A,0.9072,Team_B,2.381,10.5,89.5,False
+chelsea_sunderland,1088,43.52,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.5762,1093,Team_A,0.704,Team_B,2.1891,10.5,89.5,False
+chelsea_sunderland,1092,43.68,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,1093,Team_A,Chelsea,0.9096,1093,Team_A,0.5035,Team_B,1.9838,12.8,87.2,False
+chelsea_sunderland,1096,43.84,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,1093,Team_A,Chelsea,1.0,1093,Team_A,0.4015,Team_A,3.5949,15.0,85.0,False
+chelsea_sunderland,1100,44.0,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5383,1093,Team_A,2.212,Team_A,2.3348,15.0,85.0,False
+chelsea_sunderland,1104,44.16,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2893,1093,Team_A,2.3023,Team_A,2.3406,15.0,85.0,False
+chelsea_sunderland,1108,44.32,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3709,1093,Team_A,2.2826,Team_A,2.3591,15.0,85.0,False
+chelsea_sunderland,1112,44.48,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.269,1093,Team_A,2.7436,Team_B,5.5915,15.0,85.0,False
+chelsea_sunderland,1116,44.64,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3416,1266,Team_A,2.4217,Team_B,2.7047,15.0,85.0,False
+chelsea_sunderland,1120,44.8,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2841,1266,Team_A,2.3291,Unknown,2.7548,15.0,85.0,False
+chelsea_sunderland,1124,44.96,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4532,1266,Team_A,2.3402,Team_B,2.8632,15.0,85.0,False
+chelsea_sunderland,1128,45.12,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.207,1266,Team_A,2.3659,Team_B,3.1523,15.0,85.0,False
+chelsea_sunderland,1132,45.28,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3064,1266,Team_A,2.4648,Team_B,2.9848,15.0,85.0,False
+chelsea_sunderland,1136,45.44,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1134,1286,Team_B,3.231,Team_B,6.3408,15.0,85.0,False
+chelsea_sunderland,1140,45.6,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3489,1266,Team_A,3.0448,Team_B,3.1783,15.0,85.0,False
+chelsea_sunderland,1144,45.76,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2918,1286,Team_B,3.4092,Team_A,3.488,15.0,85.0,False
+chelsea_sunderland,1148,45.92,0.16,observed,visible,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.2146,,,,,,15.0,85.0,False
+chelsea_sunderland,1152,46.08,0.16,observed,visible,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.351,,,,,,15.0,85.0,False
+chelsea_sunderland,1156,46.24,0.16,interpolated,interpolated,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.1299,,,,,,15.0,85.0,False
+chelsea_sunderland,1160,46.4,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1164,46.56,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1168,46.72,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1172,46.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1176,47.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1180,47.2,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1184,47.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1188,47.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1192,47.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1196,47.84,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5395,1313,Team_B,1.9944,Unknown,3.5395,15.0,85.0,False
+chelsea_sunderland,1200,48.0,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6273,1343,Unknown,1.9885,Unknown,2.2235,15.0,85.0,False
+chelsea_sunderland,1204,48.16,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7042,1343,Unknown,1.6435,Unknown,2.227,15.0,85.0,False
+chelsea_sunderland,1208,48.32,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.3315,1379,Team_A,0.4863,Team_B,1.221,15.0,85.0,False
+chelsea_sunderland,1212,48.48,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1379,,UNKNOWN,0.0,1379,Unknown,0.4243,Team_B,0.9889,15.0,85.0,False
+chelsea_sunderland,1216,48.64,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4103,1379,Team_A,2.3188,Unknown,4.7564,15.0,85.0,False
+chelsea_sunderland,1220,48.8,0.16,observed,visible,UNKNOWN,UNKNOWN,1427,,UNKNOWN,0.0,1427,Unknown,1.2916,Unknown,2.2103,15.0,85.0,False
+chelsea_sunderland,1224,48.96,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1427,,UNKNOWN,0.0,1427,Unknown,0.7711,Unknown,1.6791,15.0,85.0,False
+chelsea_sunderland,1228,49.12,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.811,1427,Unknown,6.4586,Team_B,7.4357,15.0,85.0,False
+chelsea_sunderland,1232,49.28,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3002,1427,Team_B,9.1686,Team_B,9.6461,15.0,85.0,False
+chelsea_sunderland,1236,49.44,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7291,1335,Unknown,3.9241,Team_B,4.7174,15.0,85.0,False
+chelsea_sunderland,1240,49.6,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6999,1335,Unknown,4.2912,Team_B,4.5187,15.0,85.0,False
+chelsea_sunderland,1244,49.76,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4742,1511,Team_A,2.8483,Unknown,4.3828,15.0,85.0,False
+chelsea_sunderland,1248,49.92,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6564,1523,Team_B,2.1496,Team_A,2.7326,15.0,85.0,False
+chelsea_sunderland,1252,50.08,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7094,1523,Team_B,2.0343,Team_A,2.6975,15.0,85.0,False
+chelsea_sunderland,1256,50.24,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6568,1523,Team_B,1.899,Team_A,2.6717,15.0,85.0,False
+chelsea_sunderland,1260,50.4,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.69,1523,Team_B,1.8764,Team_A,2.5707,15.0,85.0,False
+chelsea_sunderland,1264,50.56,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6007,1523,Team_B,1.9737,Team_A,2.5905,15.0,85.0,False
+chelsea_sunderland,1268,50.72,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6718,1523,Team_B,1.9552,Team_A,2.6744,15.0,85.0,False
+chelsea_sunderland,1272,50.88,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4241,1523,Team_B,2.111,Team_A,2.7479,15.0,85.0,False
+chelsea_sunderland,1276,51.04,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3022,1523,Team_B,2.1122,Team_A,2.8192,15.0,85.0,False
+chelsea_sunderland,1280,51.2,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2508,1575,Unknown,1.9929,Team_B,2.6112,15.0,85.0,False
+chelsea_sunderland,1284,51.36,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,True
+chelsea_sunderland,1288,51.52,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1292,51.68,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1296,51.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1300,52.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1304,52.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1308,52.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1312,52.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1316,52.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,True
+chelsea_sunderland,1320,52.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1324,52.96,0.16,observed,visible,UNKNOWN,UNKNOWN,1645,,UNKNOWN,0.0,1645,Unknown,0.596,,,15.0,85.0,False
+chelsea_sunderland,1328,53.12,0.16,observed,visible,UNKNOWN,UNKNOWN,1645,,UNKNOWN,0.0,1645,Unknown,0.6416,Team_A,1.9152,15.0,85.0,False
+chelsea_sunderland,1332,53.28,0.16,observed,visible,UNKNOWN,UNKNOWN,1645,,UNKNOWN,0.0,1645,Unknown,0.621,Unknown,5.5622,15.0,85.0,False
+chelsea_sunderland,1336,53.44,0.16,interpolated,interpolated,OUT_OF_PLAY,OUT_OF_PLAY,,,OUT OF PLAY,0.0876,,,,,,15.0,85.0,False
+chelsea_sunderland,1340,53.6,0.16,observed,visible,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.5645,Unknown,3.3738,15.0,85.0,False
+chelsea_sunderland,1344,53.76,0.16,observed,visible,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.5324,Unknown,2.8965,15.0,85.0,False
+chelsea_sunderland,1348,53.92,0.16,observed,visible,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.5118,Unknown,3.2024,15.0,85.0,False
+chelsea_sunderland,1352,54.08,0.16,observed,visible,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.5408,Unknown,2.7128,15.0,85.0,False
+chelsea_sunderland,1356,54.24,0.16,observed,visible,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.5831,Unknown,2.8027,15.0,85.0,False
+chelsea_sunderland,1360,54.4,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1658,,UNKNOWN,0.0,1658,Unknown,0.7029,Unknown,3.5418,15.0,85.0,False
+chelsea_sunderland,1364,54.56,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.9019,1683,Unknown,1.3584,Unknown,1.4993,15.0,85.0,False
+chelsea_sunderland,1368,54.72,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3338,1679,Unknown,1.5357,,,15.0,85.0,False
+chelsea_sunderland,1372,54.88,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1376,55.04,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,15.0,85.0,False
+chelsea_sunderland,1380,55.2,0.16,observed,visible,UNKNOWN,LOOSE_BALL,,,UNKNOWN,0.0,1469,Team_B,1.4184,Team_A,2.3972,15.0,85.0,True
+chelsea_sunderland,1384,55.36,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.6996,1700,Team_B,1.6378,Team_A,2.0028,15.0,85.0,False
+chelsea_sunderland,1388,55.52,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5798,1580,Unknown,1.9083,,,15.0,85.0,False
+chelsea_sunderland,1392,55.68,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.8033,1580,Team_B,1.7599,Team_A,2.8654,15.0,85.0,False
+chelsea_sunderland,1396,55.84,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7463,1580,Team_B,1.759,,,15.0,85.0,False
+chelsea_sunderland,1400,56.0,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.881,1580,Team_B,1.6778,Unknown,2.0701,15.0,85.0,False
+chelsea_sunderland,1404,56.16,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.8373,1580,Team_B,1.6553,Team_A,1.9489,15.0,85.0,False
+chelsea_sunderland,1408,56.32,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.695,1580,Team_B,1.3667,Team_A,1.8889,15.0,85.0,False
+chelsea_sunderland,1412,56.48,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7884,1580,Team_B,1.5309,Unknown,2.2604,15.0,85.0,False
+chelsea_sunderland,1416,56.64,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.2981,1686,Team_B,0.8101,Team_A,3.7569,15.0,85.0,False
+chelsea_sunderland,1420,56.8,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1686,Team_B,Sunderland,0.4435,1686,Team_B,0.8233,Team_A,3.7887,14.6,85.4,False
+chelsea_sunderland,1424,56.96,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1686,Team_B,Sunderland,0.9008,1686,Team_B,0.8189,Team_A,1.1941,14.3,85.7,False
+chelsea_sunderland,1428,57.12,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1686,Team_B,Sunderland,0.9639,1686,Team_B,0.7027,Team_A,1.3572,14.0,86.0,False
+chelsea_sunderland,1432,57.28,0.16,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,1686,Team_B,Sunderland,1.0,1686,Team_B,0.6081,Team_A,1.2329,13.6,86.4,False
+chelsea_sunderland,1436,57.44,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2102,,,,,,13.6,86.4,False
+chelsea_sunderland,1440,57.6,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,True
+chelsea_sunderland,1444,57.76,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1448,57.92,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1452,58.08,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1456,58.24,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1460,58.4,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1464,58.56,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1468,58.72,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1472,58.88,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1476,59.04,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,13.6,86.4,False
+chelsea_sunderland,1480,59.2,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3435,,,,,,13.6,86.4,False
+chelsea_sunderland,1484,59.36,0.16,observed,visible,UNKNOWN,TEAM_A_CONTROL,,,UNKNOWN,0.0,1789,Team_A,1.1731,Team_A,1.3024,13.6,86.4,True
+chelsea_sunderland,1488,59.52,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3154,1787,Team_A,0.533,Team_B,0.9141,13.6,86.4,False
+chelsea_sunderland,1492,59.68,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1167,1785,Team_B,1.1285,Team_A,1.6905,13.6,86.4,False
+chelsea_sunderland,1496,59.84,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.4325,1787,Team_A,0.5451,Team_B,0.995,13.6,86.4,False
+chelsea_sunderland,1500,60.0,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2829,1787,Team_A,1.3185,Unknown,1.8476,13.6,86.4,False
+chelsea_sunderland,1504,60.16,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1047,1789,Team_A,0.563,Unknown,1.9152,13.6,86.4,False
+chelsea_sunderland,1508,60.32,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.5877,1828,Team_A,1.9941,Team_A,1.9979,13.6,86.4,False
+chelsea_sunderland,1512,60.48,0.16,observed,visible,UNKNOWN,UNKNOWN,1832,,UNKNOWN,0.0,1832,Unknown,0.5261,Unknown,1.7375,13.6,86.4,False
+chelsea_sunderland,1516,60.64,0.16,observed,visible,UNKNOWN,UNKNOWN,1832,,UNKNOWN,0.0,1832,Unknown,0.3832,Team_A,2.0439,13.6,86.4,False
+chelsea_sunderland,1520,60.8,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.3568,1832,Team_A,0.9993,Team_A,1.9396,13.6,86.4,False
+chelsea_sunderland,1524,60.96,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3529,1852,Team_A,1.8585,Team_B,2.1612,13.6,86.4,False
+chelsea_sunderland,1528,61.12,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7921,1852,Team_A,1.7008,Team_B,2.1339,13.6,86.4,False
+chelsea_sunderland,1532,61.28,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.7728,1852,Team_A,1.374,Unknown,1.9224,13.6,86.4,False
+chelsea_sunderland,1536,61.44,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.5159,1852,Team_A,0.8588,Team_B,2.0078,13.6,86.4,False
+chelsea_sunderland,1540,61.6,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,1852,Team_A,Chelsea,0.574,1852,Team_A,0.5326,Unknown,3.814,15.6,84.4,False
+chelsea_sunderland,1544,61.76,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.2346,1852,Team_A,1.41,Unknown,3.9245,15.6,84.4,False
+chelsea_sunderland,1548,61.92,0.16,observed,visible,TEAM_A_CONTROL,TEAM_A_CONTROL,1852,Team_A,Chelsea,0.2823,1852,Team_A,1.1681,Team_B,1.9882,17.4,82.6,False
+chelsea_sunderland,1552,62.08,0.16,observed,visible,UNKNOWN,UNKNOWN,1785,,UNKNOWN,0.0,1785,Team_B,0.1949,Team_B,0.7213,17.4,82.6,False
+chelsea_sunderland,1556,62.24,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1007,1779,Team_B,0.9634,Team_B,1.1252,17.4,82.6,False
+chelsea_sunderland,1560,62.4,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.3592,1779,Team_B,0.0756,Team_B,0.4972,17.4,82.6,False
+chelsea_sunderland,1564,62.56,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1779,,UNKNOWN,0.0,1779,Team_B,0.2972,Team_A,0.7898,17.4,82.6,False
+chelsea_sunderland,1568,62.72,0.16,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.7,1785,Team_A,0.1105,Team_B,0.4387,17.4,82.6,False
+chelsea_sunderland,1572,62.88,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1785,,UNKNOWN,0.0,1785,Team_A,0.2471,Unknown,0.6747,17.4,82.6,False
+chelsea_sunderland,1576,63.04,0.16,observed,visible,UNKNOWN,UNKNOWN,1935,,UNKNOWN,0.0,1935,Team_A,1.1612,Unknown,1.1696,17.4,82.6,False
+chelsea_sunderland,1580,63.2,0.16,observed,visible,UNKNOWN,UNKNOWN,1874,,UNKNOWN,0.0,1874,Unknown,0.9928,Team_A,1.2484,17.4,82.6,False
+chelsea_sunderland,1584,63.36,0.16,observed,visible,LOOSE_BALL,TEAM_A_CONTROL,,,LOOSE BALL,0.287,1935,Team_A,1.2861,Team_B,1.3207,17.4,82.6,False
+chelsea_sunderland,1588,63.52,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,1874,,UNKNOWN,0.0,1874,Unknown,0.5495,Team_B,1.0444,17.4,82.6,False
+chelsea_sunderland,1592,63.68,0.16,observed,visible,UNKNOWN,UNKNOWN,1946,,UNKNOWN,0.0,1946,Unknown,0.8733,Team_A,5.2817,17.4,82.6,False
+chelsea_sunderland,1596,63.84,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,True
+chelsea_sunderland,1600,64.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1604,64.16,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1608,64.32,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1612,64.48,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1616,64.64,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1620,64.8,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1624,64.96,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1628,65.12,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1632,65.28,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,True
+chelsea_sunderland,1636,65.44,0.16,observed,visible,UNKNOWN,LOOSE_BALL,,,UNKNOWN,0.0,,,,,,17.4,82.6,True
+chelsea_sunderland,1640,65.6,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.0858,,,,,,17.4,82.6,False
+chelsea_sunderland,1644,65.76,0.16,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1872,1975,Team_A,1.7848,,,17.4,82.6,False
+chelsea_sunderland,1648,65.92,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1652,66.08,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1656,66.24,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1660,66.4,0.16,interpolated,interpolated,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.1068,,,,,,17.4,82.6,False
+chelsea_sunderland,1664,66.56,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1668,66.72,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1672,66.88,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False
+chelsea_sunderland,1676,67.04,0.16,observed,visible,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,17.4,82.6,False

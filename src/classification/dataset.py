@@ -162,18 +162,25 @@ class JerseyCropDataset:
         strict_verification: bool = True,
     ) -> Dict[str, object]:
         """
-        Deterministically regenerate missing crop images from the original match video using
-        the exact `frame_number` and `torso_bbox` coordinates recorded in `manifest.json`.
+        Deterministically regenerate missing, corrupted, or dimension-mismatched crop images
+        from the original match video using the exact `frame_number` and `torso_bbox` coordinates
+        recorded in `manifest.json`.
 
         Safety guarantees:
         - Never uses random sampling or live detector re-indexing.
-        - Verifies crop dimensions and appearance quality (`grass_ratio`, `blur_score`) against
-          the manifest record before preserving `ground_truth_label`.
-        - If the video is missing or crop identity cannot be verified, raises `DatasetIntegrityError`.
+        - Verifies regenerated crop dimensions (`width`, `height`) and appearance consistency
+          (`grass_ratio`, `blur_score`) against the manifest record before preserving `ground_truth_label`.
+        - Preserves any crops that were already valid or successfully repaired in a partial run.
+        - If the video is missing or crop identity cannot be verified, raises `DatasetIntegrityError`
+          with detailed counts and marks unverified records (`label_verified=False`).
         """
         integrity = self.validate_integrity()
-        to_recover: List[str] = list(integrity["missing_crop_ids"]) + list(integrity["corrupted_crop_ids"])  # type: ignore[arg-type]
-        if not to_recover and not integrity["dimension_mismatch_ids"]:
+        missing_ids: List[str] = list(integrity["missing_crop_ids"])  # type: ignore[arg-type]
+        corrupted_ids: List[str] = list(integrity["corrupted_crop_ids"])  # type: ignore[arg-type]
+        mismatch_ids: List[str] = list(integrity["dimension_mismatch_ids"])  # type: ignore[arg-type]
+
+        to_recover: List[str] = sorted(set(missing_ids + corrupted_ids + mismatch_ids))
+        if not to_recover:
             return {
                 "regenerated_count": 0,
                 "status": "already_complete",
@@ -182,16 +189,17 @@ class JerseyCropDataset:
 
         if video_path is None or not Path(video_path).is_file():
             raise DatasetIntegrityError(
-                f"Dataset '{self.match_config.match_id}' at '{self.root_dir}' is missing "
-                f"{len(to_recover)} crop images (likely excluded by .gitignore on a fresh clone), "
-                f"and the source video was not found at '{video_path}'. "
-                f"Place the match video at '{self.match_config.video_path}' to regenerate crops."
+                f"Dataset '{self.match_config.match_id}' at '{self.root_dir}' requires repair for "
+                f"{len(to_recover)} crops (missing={len(missing_ids)}, corrupted={len(corrupted_ids)}, "
+                f"dimension_mismatch={len(mismatch_ids)}), and the source video was not found at "
+                f"'{video_path}'. Place the match video at '{self.match_config.video_path}' to regenerate crops."
             )
 
         cap = cv2.VideoCapture(str(video_path))
         if not cap.isOpened():
             raise DatasetIntegrityError(
-                f"Could not open source video '{video_path}' to regenerate missing crops."
+                f"Could not open source video '{video_path}' to regenerate {len(to_recover)} crops "
+                f"for dataset '{self.match_config.match_id}'."
             )
 
         by_frame: Dict[int, List[JerseyCropMetadata]] = {}
@@ -200,7 +208,7 @@ class JerseyCropDataset:
             by_frame.setdefault(rec.frame_number, []).append(rec)
 
         regenerated_count = 0
-        unverified_ids: List[str] = []
+        failure_reasons: Dict[str, str] = {}
 
         try:
             for fno in sorted(by_frame.keys()):
@@ -209,7 +217,7 @@ class JerseyCropDataset:
                 if not ok or frame is None:
                     for rec in by_frame[fno]:
                         rec.label_verified = False
-                        unverified_ids.append(rec.crop_id)
+                        failure_reasons[rec.crop_id] = f"frame_{fno}_unreadable_from_video"
                     continue
 
                 fh, fw = frame.shape[:2]
@@ -217,17 +225,21 @@ class JerseyCropDataset:
                     left, top, right, bottom = rec.torso_bbox
                     if left < 0 or top < 0 or right > fw or bottom > fh or right <= left or bottom <= top:
                         rec.label_verified = False
-                        unverified_ids.append(rec.crop_id)
+                        failure_reasons[rec.crop_id] = (
+                            f"torso_bbox_{rec.torso_bbox}_outside_frame_bounds_({fw}x{fh})"
+                        )
                         continue
 
                     crop = frame[top:bottom, left:right].copy()
                     ch, cw = crop.shape[:2]
 
-                    # Verify dimensions match recorded metadata
+                    # Verify regenerated dimensions match recorded metadata
                     if rec.quality.width > 0 and rec.quality.height > 0:
                         if cw != rec.quality.width or ch != rec.quality.height:
                             rec.label_verified = False
-                            unverified_ids.append(rec.crop_id)
+                            failure_reasons[rec.crop_id] = (
+                                f"regenerated_size_({cw}x{ch})_!=_manifest_size_({rec.quality.width}x{rec.quality.height})"
+                            )
                             continue
 
                     # Verify appearance consistency (grass ratio & blur score)
@@ -243,7 +255,9 @@ class JerseyCropDataset:
 
                     if strict_verification and (grass_diff > 0.20 or blur_diff > blur_tol):
                         rec.label_verified = False
-                        unverified_ids.append(rec.crop_id)
+                        failure_reasons[rec.crop_id] = (
+                            f"appearance_mismatch(grass_diff={grass_diff:.3f},blur_diff={blur_diff:.1f}>{blur_tol:.1f})"
+                        )
                         continue
 
                     abs_img_path = self.root_dir / rec.image_path
@@ -253,18 +267,21 @@ class JerseyCropDataset:
         finally:
             cap.release()
 
-        if unverified_ids:
+        if failure_reasons:
             self.save()
+            sample_details = ", ".join(f"{k}: {v}" for k, v in list(failure_reasons.items())[:5])
             raise DatasetIntegrityError(
-                f"Failed to verify exact crop identity for {len(unverified_ids)} crops during "
-                f"regeneration: {unverified_ids[:5]}. Their labels have been marked unverified "
+                f"Failed to verify crop identity for {len(failure_reasons)}/{len(to_recover)} crops "
+                f"during regeneration ({regenerated_count} succeeded and were saved). "
+                f"Details: [{sample_details}]. Affected labels have been marked unverified "
                 "(`label_verified=False`) and require manual reannotation."
             )
 
         post_integrity = self.validate_integrity()
         if not post_integrity["is_valid"]:
             raise DatasetIntegrityError(
-                f"Dataset integrity check still failing after regeneration: {post_integrity}"
+                f"Dataset integrity check still failing after regenerating {regenerated_count} crops: "
+                f"{post_integrity}"
             )
 
         return {

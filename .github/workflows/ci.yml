@@ -1,0 +1,38 @@
+name: Football AI Engineering CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feat/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  unit-tests:
+    name: Offline Unit & Integration Tests (CPU)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install CPU PyTorch and project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install opencv-python-headless numpy scikit-learn scipy matplotlib PyYAML joblib pytest
+
+      - name: Run automated offline test suite
+        run: |
+          python -m pytest -v
+

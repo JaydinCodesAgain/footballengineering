@@ -81,8 +81,10 @@ class PossessionEngine:
         if frame_shape is None and frame_bgr is not None:
             frame_shape = (int(frame_bgr.shape[0]), int(frame_bgr.shape[1]))
 
-        if self.match_config.detection.filter_false_positive_balls and frame_shape is not None:
-            p_dets = list(player_detections) if player_detections is not None else [
+        p_dets = (
+            list(player_detections)
+            if player_detections is not None
+            else [
                 DetectionRecord(
                     frame_number=o.frame_number,
                     timestamp=o.timestamp,
@@ -94,12 +96,16 @@ class PossessionEngine:
                 )
                 for o in player_observations
             ]
+        )
+
+        if self.match_config.detection.filter_false_positive_balls and frame_shape is not None:
             filtered_balls = filter_ball_candidates(
                 raw_ball_detections,
                 p_dets,
                 frame_shape=frame_shape,
                 min_size=self.match_config.detection.min_ball_box_size_px,
                 max_size=self.match_config.detection.max_ball_box_size_px,
+                blacklisted_zones=self.ball_tracker.blacklisted_static_zones,
             )
         else:
             filtered_balls = list(raw_ball_detections)
@@ -110,16 +116,19 @@ class PossessionEngine:
             ball_candidates=filtered_balls,
             frame_bgr=frame_bgr,
             detection_source=detection_source if filtered_balls else "none",
+            player_detections=p_dets,
         )
         self.ball_trajectory.append(ball_rec)
 
+        prev_pid = None if ball_rec.camera_cut_reset else self.state_machine.controlling_player_id
+        prev_tid = None if ball_rec.camera_cut_reset else self.state_machine.controlling_team_id
         proximities, raw_interaction = evaluate_frame_ownership_candidates(
             frame_observations=player_observations,
             ball_record=ball_rec,
             config=self.match_config.possession,
             frame_shape=frame_shape,
-            prev_controlling_player_id=self.state_machine.controlling_player_id,
-            prev_controlling_team_id=self.state_machine.controlling_team_id,
+            prev_controlling_player_id=prev_pid,
+            prev_controlling_team_id=prev_tid,
         )
         self.player_proximities.extend(proximities)
 

@@ -142,6 +142,53 @@ def evaluate_frame_ownership_candidates(
     assert ball_record.center_x is not None and ball_record.center_y is not None
     ball_center = (float(ball_record.center_x), float(ball_record.center_y))
 
+    # Reject non-tactical player close-up / celebration shots where a single player box dominates the screen
+    if frame_shape is not None and frame_observations:
+        fh, fw = frame_shape[:2]
+        frame_area = float(max(1, fh * fw))
+        p_heights = [float(o.player_bbox[3] - o.player_bbox[1]) for o in frame_observations]
+        max_p_area = max(
+            float((o.player_bbox[2] - o.player_bbox[0]) * (o.player_bbox[3] - o.player_bbox[1]))
+            for o in frame_observations
+        )
+        med_p_h = float(sum(sorted(p_heights)[len(p_heights) // 2 : len(p_heights) // 2 + 1]))
+        if (fh > 0 and med_p_h > 0.44 * fh) or (max_p_area / frame_area > 0.18):
+            for obs in frame_observations:
+                fx, fy, ph = compute_player_foot_position(obs.player_bbox)
+                px_d, norm_d, aerial = compute_normalized_ball_distance(obs.player_bbox, ball_center)
+                elig = obs.team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value)
+                proximities.append(
+                    PlayerProximityRecord(
+                        match_id=obs.match_id,
+                        frame_number=obs.frame_number,
+                        timestamp=obs.timestamp,
+                        player_id=obs.player_id,
+                        team_id=obs.team_id,
+                        team_display_name=obs.team_display_name,
+                        foot_x=round(fx, 2),
+                        foot_y=round(fy, 2),
+                        player_height_px=round(ph, 2),
+                        pixel_distance_to_ball=round(px_d, 2),
+                        normalized_distance_to_ball=round(norm_d, 4),
+                        is_aerial_ball=aerial,
+                        eligible_for_ownership=elig,
+                        control_score=0.0,
+                    )
+                )
+            return proximities, {
+                "raw_state": PossessionState.UNKNOWN.value,
+                "controlling_player_id": None,
+                "controlling_team_id": None,
+                "confidence": 0.0,
+                "reason": "non_tactical_closeup_frame",
+                "closest_player_id": None,
+                "closest_team_id": None,
+                "closest_norm_dist": None,
+                "second_closest_team_id": None,
+                "second_closest_norm_dist": None,
+                "note": "non_tactical_closeup_camera_shot",
+            }
+
     if frame_shape is not None and is_ball_out_of_play_bounds(ball_center, frame_shape, cfg):
         for obs in frame_observations:
             fx, fy, ph = compute_player_foot_position(obs.player_bbox)
@@ -192,9 +239,19 @@ def evaluate_frame_ownership_candidates(
         fx, fy, ph = compute_player_foot_position(obs.player_bbox)
         px_d, norm_d, aerial = compute_normalized_ball_distance(obs.player_bbox, ball_center)
 
-        if obs.team_id == InternalLabel.REFEREE.value and cfg.exclude_referees:
+        eff_team_id = obs.team_id
+        conf_mult = 1.0
+        if (
+            eff_team_id == InternalLabel.UNKNOWN.value
+            and obs.raw_team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value)
+            and float(obs.classification_confidence or 0.0) >= 0.65
+        ):
+            eff_team_id = obs.raw_team_id
+            conf_mult = 0.78
+
+        if eff_team_id == InternalLabel.REFEREE.value and cfg.exclude_referees:
             elig = False
-        elif obs.team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value):
+        elif eff_team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value):
             elig = True
         else:
             elig = False
@@ -207,7 +264,7 @@ def evaluate_frame_ownership_candidates(
             team_conf = max(
                 0.55,
                 float(obs.track_team_confidence or obs.classification_confidence or 0.65),
-            )
+            ) * conf_mult
             aerial_mult = 0.55 if aerial else 1.0
             c_score = dist_term * speed_factor * aerial_mult * min(1.0, team_conf) * ball_conf_factor
 
@@ -215,7 +272,7 @@ def evaluate_frame_ownership_candidates(
             if norm_d <= cfg.control_distance_threshold:
                 if prev_controlling_player_id is not None and obs.player_id == prev_controlling_player_id:
                     c_score = min(1.0, c_score + 0.14)
-                elif prev_controlling_team_id is not None and obs.team_id == prev_controlling_team_id:
+                elif prev_controlling_team_id is not None and eff_team_id == prev_controlling_team_id:
                     c_score = min(1.0, c_score + 0.06)
 
         proximities.append(
@@ -224,7 +281,7 @@ def evaluate_frame_ownership_candidates(
                 frame_number=obs.frame_number,
                 timestamp=obs.timestamp,
                 player_id=obs.player_id,
-                team_id=obs.team_id,
+                team_id=eff_team_id,
                 team_display_name=obs.team_display_name,
                 foot_x=round(fx, 2),
                 foot_y=round(fy, 2),
