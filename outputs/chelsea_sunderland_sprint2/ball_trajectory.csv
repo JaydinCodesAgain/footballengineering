@@ -1,0 +1,46 @@
+match_id,frame_number,timestamp,observation_mode,is_observed,is_interpolated,bbox,center_x,center_y,velocity_x,velocity_y,speed_px_per_sec,confidence,uncertainty_radius_px,frames_since_observed,camera_cut_reset,rejected_outliers_count,detection_source
+chelsea_sunderland,0,0.0,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,2,0.08,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,4,0.16,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,6,0.24,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,8,0.32,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,10,0.4,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,12,0.48,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,0,False,0,none
+chelsea_sunderland,14,0.56,observed,True,False,"[787, 376, 803, 391]",795.0,383.5,0.0,0.0,0.0,0.2423,8.49,0,False,0,full_frame
+chelsea_sunderland,16,0.64,interpolated,False,True,"[787, 376, 803, 391]",795.0,383.5,0.0,0.0,0.0,0.1474,22.8,2,False,1,kalman_interpolation
+chelsea_sunderland,18,0.72,observed,True,False,"[379, 471, 391, 482]",385.0,476.5,100.0,-12.5,100.78,0.8485,4.24,0,False,0,full_frame
+chelsea_sunderland,20,0.8,observed,True,False,"[385, 471, 398, 482]",391.7,476.36,84.42,-10.24,85.04,0.5569,4.55,0,False,0,full_frame
+chelsea_sunderland,22,0.88,observed,True,False,"[390, 471, 403, 482]",396.57,476.47,56.18,-1.1,56.19,0.5741,4.81,0,False,0,full_frame
+chelsea_sunderland,24,0.96,observed,True,False,"[394, 471, 408, 482]",401.0,476.5,47.25,0.05,47.25,0.7941,4.83,0,False,0,full_frame
+chelsea_sunderland,26,1.04,observed,True,False,"[399, 471, 412, 482]",405.48,476.5,46.0,0.04,46.0,0.5842,4.83,0,False,0,full_frame
+chelsea_sunderland,28,1.12,observed,True,False,"[404, 471, 417, 482]",410.46,476.5,50.0,0.01,50.0,0.2755,4.83,0,False,0,full_frame
+chelsea_sunderland,30,1.2,observed,True,False,"[409, 471, 423, 481]",415.95,476.01,55.02,-4.06,55.17,0.3175,4.83,0,False,0,full_frame
+chelsea_sunderland,32,1.28,interpolated,False,True,"[413, 471, 427, 481]",420.36,475.69,46.76,-3.45,46.89,0.1932,28.08,2,False,1,kalman_interpolation
+chelsea_sunderland,34,1.36,interpolated,False,True,"[417, 470, 431, 480]",424.1,475.41,39.75,-2.94,39.86,0.1175,54.07,4,False,1,kalman_interpolation
+chelsea_sunderland,36,1.44,observed,True,False,"[716, 390, 727, 399]",720.46,394.79,1164.5,-312.55,1205.72,0.2512,4.89,0,False,0,full_frame
+chelsea_sunderland,38,1.52,observed,True,False,"[712, 385, 723, 401]",719.99,392.4,170.51,-67.75,183.48,0.7062,4.84,0,False,0,full_frame
+chelsea_sunderland,40,1.6,interpolated,False,True,"[728, 379, 739, 395]",733.63,386.98,144.93,-57.59,155.96,0.4297,28.23,2,False,1,kalman_interpolation
+chelsea_sunderland,42,1.68,observed,True,False,"[530, 296, 542, 309]",537.69,303.14,-990.48,-474.1,1098.1,0.6695,4.88,0,False,0,full_frame
+chelsea_sunderland,44,1.76,observed,True,False,"[544, 277, 555, 287]",546.96,281.53,-84.03,-263.28,276.37,0.4932,4.83,0,False,0,full_frame
+chelsea_sunderland,46,1.84,observed,True,False,"[551, 262, 561, 273]",555.54,267.29,56.88,-166.57,176.01,0.4728,4.83,0,False,0,full_frame
+chelsea_sunderland,48,1.92,observed,True,False,"[558, 251, 569, 262]",563.4,256.43,76.09,-121.0,142.94,0.3534,4.83,0,False,0,full_frame
+chelsea_sunderland,50,2.0,interpolated,False,True,"[564, 241, 575, 252]",569.49,246.75,64.68,-102.85,121.5,0.215,28.08,2,False,1,kalman_interpolation
+chelsea_sunderland,52,2.08,observed,True,False,"[566, 239, 575, 248]",570.53,243.46,32.8,-60.87,69.14,0.2676,4.88,0,False,0,full_frame
+chelsea_sunderland,54,2.16,observed,True,False,"[568, 236, 577, 246]",572.52,240.93,22.4,-31.68,38.8,0.1791,4.83,0,False,0,full_frame
+chelsea_sunderland,56,2.24,interpolated,False,True,"[570, 233, 579, 243]",574.31,238.4,19.04,-26.93,32.98,0.109,28.16,2,False,1,kalman_interpolation
+chelsea_sunderland,58,2.32,observed,True,False,"[898, 358, 914, 371]",906.0,364.5,-150.0,0.0,150.0,0.3501,4.24,0,False,0,full_frame
+chelsea_sunderland,60,2.4,interpolated,False,True,"[886, 358, 902, 371]",894.0,364.5,-127.5,0.0,127.5,0.213,12.35,2,False,1,kalman_interpolation
+chelsea_sunderland,62,2.48,observed,True,False,"[677, 278, 689, 292]",688.79,287.29,-1447.26,-530.09,1541.28,0.322,4.83,0,False,0,full_frame
+chelsea_sunderland,64,2.56,observed,True,False,"[672, 280, 687, 293]",676.49,285.32,-349.29,-106.34,365.12,0.2928,4.83,0,False,0,full_frame
+chelsea_sunderland,66,2.64,interpolated,False,True,"[641, 270, 656, 283]",648.55,276.82,-296.89,-90.39,310.35,0.1781,28.14,2,False,1,kalman_interpolation
+chelsea_sunderland,68,2.72,observed,True,False,"[157, 312, 172, 324]",164.5,318.0,-25.0,18.75,31.25,0.322,4.24,0,False,0,full_frame
+chelsea_sunderland,70,2.8,observed,True,False,"[155, 312, 170, 325]",162.5,318.64,-21.25,15.55,26.33,0.2448,4.55,0,False,0,full_frame
+chelsea_sunderland,72,2.88,observed,True,False,"[151, 313, 168, 326]",159.55,319.51,-28.41,10.19,30.18,0.1416,4.81,0,False,0,full_frame
+chelsea_sunderland,74,2.96,observed,True,False,"[150, 314, 165, 326]",157.49,320.01,-22.3,5.99,23.09,0.2678,4.83,0,False,0,full_frame
+chelsea_sunderland,76,3.04,observed,True,False,"[150, 314, 165, 326]",157.45,320.01,-4.4,1.12,4.54,0.2874,4.83,0,False,0,full_frame
+chelsea_sunderland,78,3.12,observed,True,False,"[151, 312, 167, 326]",158.94,319.03,11.75,-8.02,14.23,0.2325,4.83,0,False,0,full_frame
+chelsea_sunderland,80,3.2,observed,True,False,"[154, 313, 169, 325]",161.45,318.98,23.13,-1.87,23.2,0.2564,4.83,0,False,0,full_frame
+chelsea_sunderland,82,3.28,observed,True,False,"[156, 313, 172, 325]",163.98,319.0,25.33,-0.23,25.33,0.2934,4.83,0,False,0,full_frame
+chelsea_sunderland,84,3.36,observed,True,False,"[157, 313, 173, 325]",165.03,319.0,13.35,-0.01,13.35,0.3437,4.83,0,False,0,full_frame
+chelsea_sunderland,86,3.44,observed,True,False,"[157, 313, 174, 325]",165.52,319.0,6.49,0.0,6.49,0.3915,4.83,0,False,0,full_frame
+chelsea_sunderland,88,3.52,observed,True,False,"[156, 313, 173, 325]",164.55,319.0,-6.98,0.0,6.98,0.3289,4.83,0,False,0,full_frame

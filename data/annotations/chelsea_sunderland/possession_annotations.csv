@@ -1,0 +1,4 @@
+match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes
+chelsea_sunderland,0,29,0.0,1.16,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+chelsea_sunderland,30,59,1.2,2.36,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+chelsea_sunderland,60,88,2.4,3.52,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"

@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-11-16T17:26:11Z",
+  "summary": {
+    "match_id": "chelsea_sunderland",
+    "match_name": "Chelsea vs Sunderland",
+    "segment_scope": "partial_video_or_highlight_segment",
+    "scope_disclaimer": "Statistics reflect ONLY the analysed video segment and must not be reported as full 90-minute match possession.",
+    "frames_processed": 45,
+    "video_fps": 25.0,
+    "frame_stride": 2,
+    "effective_dt_seconds": 0.08,
+    "analysed_duration_seconds": 3.6,
+    "total_video_duration_seconds": 61.3,
+    "analysed_video_fraction": 0.0587,
+    "durations_seconds": {
+      "team_a_controlled": 0.24,
+      "team_b_controlled": 0.08,
+      "attributed_total": 0.32,
+      "contested": 0.4,
+      "loose_ball": 2.0,
+      "unknown": 0.88,
+      "out_of_play": 0.0
+    },
+    "frame_counts_by_state": {
+      "TEAM_A_CONTROL": 3,
+      "TEAM_B_CONTROL": 1,
+      "CONTESTED": 5,
+      "LOOSE_BALL": 25,
+      "UNKNOWN": 11,
+      "OUT_OF_PLAY": 0
+    },
+    "ball_visibility_seconds": {
+      "observed": 2.4,
+      "interpolated": 0.64,
+      "lost": 0.56
+    },
+    "possession_coverage": 0.0889,
+    "possession_coverage_pct": 8.89,
+    "attributed_possession_share": {
+      "team_a_name": "Chelsea",
+      "team_b_name": "Sunderland",
+      "team_a_pct": 75.0,
+      "team_b_pct": 25.0,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    },
+    "total_analysed_time_distribution_pct": {
+      "TEAM_A_CONTROL": 6.67,
+      "TEAM_B_CONTROL": 2.22,
+      "CONTESTED": 11.11,
+      "LOOSE_BALL": 55.56,
+      "UNKNOWN": 24.44,
+      "OUT_OF_PLAY": 0.0
+    },
+    "state_transitions_count": 16,
+    "ball_tracking": {
+      "total_frames": 45,
+      "observed_frames": 30,
+      "interpolated_frames": 8,
+      "lost_frames": 7,
+      "observed_coverage_pct": 66.67,
+      "tracked_or_interpolated_pct": 84.44,
+      "camera_cut_resets": 0,
+      "rejected_outlier_detections": 8
+    }
+  },
+  "validation": {
+    "metrics_available": false,
+    "status": "not_evaluated"
+  }
+}

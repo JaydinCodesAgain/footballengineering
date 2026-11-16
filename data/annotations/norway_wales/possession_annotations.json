@@ -1,0 +1,56 @@
+{
+  "match_id": "norway_wales",
+  "total_intervals": 4,
+  "verified_manual_intervals": 0,
+  "evaluation_ready": false,
+  "intervals": [
+    {
+      "match_id": "norway_wales",
+      "start_frame": 1620,
+      "end_frame": 1649,
+      "start_timestamp": 64.8,
+      "end_timestamp": 65.96,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    },
+    {
+      "match_id": "norway_wales",
+      "start_frame": 1650,
+      "end_frame": 1679,
+      "start_timestamp": 66.0,
+      "end_timestamp": 67.16,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    },
+    {
+      "match_id": "norway_wales",
+      "start_frame": 1680,
+      "end_frame": 1709,
+      "start_timestamp": 67.2,
+      "end_timestamp": 68.36,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    },
+    {
+      "match_id": "norway_wales",
+      "start_frame": 1710,
+      "end_frame": 1738,
+      "start_timestamp": 68.4,
+      "end_timestamp": 69.52,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    }
+  ]
+}

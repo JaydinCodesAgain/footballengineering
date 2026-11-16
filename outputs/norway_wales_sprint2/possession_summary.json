@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-11-16T17:26:12Z",
+  "summary": {
+    "match_id": "norway_wales",
+    "match_name": "Norway vs Wales",
+    "segment_scope": "partial_video_or_highlight_segment",
+    "scope_disclaimer": "Statistics reflect ONLY the analysed video segment and must not be reported as full 90-minute match possession.",
+    "frames_processed": 58,
+    "video_fps": 25.0,
+    "frame_stride": 2,
+    "effective_dt_seconds": 0.08,
+    "analysed_duration_seconds": 4.8,
+    "total_video_duration_seconds": 118.0,
+    "analysed_video_fraction": 0.0407,
+    "durations_seconds": {
+      "team_a_controlled": 0.0,
+      "team_b_controlled": 1.6,
+      "attributed_total": 1.6,
+      "contested": 0.0,
+      "loose_ball": 0.88,
+      "unknown": 2.32,
+      "out_of_play": 0.0
+    },
+    "frame_counts_by_state": {
+      "TEAM_A_CONTROL": 0,
+      "TEAM_B_CONTROL": 20,
+      "CONTESTED": 0,
+      "LOOSE_BALL": 11,
+      "UNKNOWN": 27,
+      "OUT_OF_PLAY": 0
+    },
+    "ball_visibility_seconds": {
+      "observed": 2.88,
+      "interpolated": 0.32,
+      "lost": 1.6
+    },
+    "possession_coverage": 0.3333,
+    "possession_coverage_pct": 33.33,
+    "attributed_possession_share": {
+      "team_a_name": "Norway",
+      "team_b_name": "Wales",
+      "team_a_pct": 0.0,
+      "team_b_pct": 100.0,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    },
+    "total_analysed_time_distribution_pct": {
+      "TEAM_A_CONTROL": 0.0,
+      "TEAM_B_CONTROL": 33.33,
+      "CONTESTED": 0.0,
+      "LOOSE_BALL": 18.33,
+      "UNKNOWN": 48.33,
+      "OUT_OF_PLAY": 0.0
+    },
+    "state_transitions_count": 5,
+    "ball_tracking": {
+      "total_frames": 58,
+      "observed_frames": 36,
+      "interpolated_frames": 3,
+      "lost_frames": 19,
+      "observed_coverage_pct": 62.07,
+      "tracked_or_interpolated_pct": 67.24,
+      "camera_cut_resets": 0,
+      "rejected_outlier_detections": 0
+    }
+  },
+  "validation": {
+    "metrics_available": false,
+    "status": "not_evaluated"
+  }
+}

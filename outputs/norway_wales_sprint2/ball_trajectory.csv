@@ -1,0 +1,59 @@
+match_id,frame_number,timestamp,observation_mode,is_observed,is_interpolated,bbox,center_x,center_y,velocity_x,velocity_y,speed_px_per_sec,confidence,uncertainty_radius_px,frames_since_observed,camera_cut_reset,rejected_outliers_count,detection_source
+norway_wales,1620,64.8,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3495,8.49,0,False,0,full_frame
+norway_wales,1622,64.88,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3594,4.79,0,False,0,full_frame
+norway_wales,1624,64.96,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3303,4.83,0,False,0,full_frame
+norway_wales,1626,65.04,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3251,4.83,0,False,0,full_frame
+norway_wales,1628,65.12,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3398,4.83,0,False,0,full_frame
+norway_wales,1630,65.2,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.3486,4.83,0,False,0,full_frame
+norway_wales,1632,65.28,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.4221,4.83,0,False,0,full_frame
+norway_wales,1634,65.36,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.4053,4.83,0,False,0,full_frame
+norway_wales,1636,65.44,observed,True,False,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.435,4.83,0,False,0,full_frame
+norway_wales,1640,65.6,interpolated,False,True,"[1209, 488, 1228, 506]",1218.5,497.0,0.0,0.0,0.0,0.161,51.37,4,False,0,kalman_interpolation
+norway_wales,1642,65.68,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,6,False,0,none
+norway_wales,1644,65.76,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,8,False,0,none
+norway_wales,1646,65.84,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,10,False,0,none
+norway_wales,1650,66.0,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,14,False,0,none
+norway_wales,1652,66.08,observed,True,False,"[601, 664, 700, 719]",650.78,691.4,-861.81,295.11,910.93,0.283,4.9,0,False,0,full_frame
+norway_wales,1654,66.16,interpolated,False,True,"[532, 688, 631, 743]",581.84,715.01,-732.54,250.84,774.29,0.1722,33.33,2,False,0,kalman_interpolation
+norway_wales,1656,66.24,interpolated,False,True,"[474, 708, 573, 763]",523.23,735.08,-622.66,213.22,658.15,0.1048,63.76,4,False,0,kalman_interpolation
+norway_wales,1658,66.32,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,6,False,0,none
+norway_wales,1660,66.4,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,8,False,0,none
+norway_wales,1662,66.48,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,10,False,0,none
+norway_wales,1664,66.56,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,12,False,0,none
+norway_wales,1666,66.64,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,14,False,0,none
+norway_wales,1668,66.72,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,16,False,0,none
+norway_wales,1670,66.8,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,18,False,0,none
+norway_wales,1672,66.88,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,20,False,0,none
+norway_wales,1674,66.96,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,22,False,0,none
+norway_wales,1676,67.04,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,24,False,0,none
+norway_wales,1678,67.12,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,26,False,0,none
+norway_wales,1680,67.2,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,28,False,0,none
+norway_wales,1682,67.28,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,30,False,0,none
+norway_wales,1684,67.36,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,32,False,0,none
+norway_wales,1686,67.44,lost,False,False,,,,0.0,0.0,0.0,0.0,999.0,34,False,0,none
+norway_wales,1688,67.52,observed,True,False,"[751, 495, 876, 587]",813.44,541.03,246.81,-130.94,279.39,0.318,4.9,0,False,0,full_frame
+norway_wales,1690,67.6,observed,True,False,"[723, 509, 820, 608]",772.4,558.09,-375.09,153.67,405.35,0.8718,4.86,0,False,0,full_frame
+norway_wales,1692,67.68,observed,True,False,"[706, 528, 799, 623]",752.21,575.35,-236.3,172.38,292.49,0.8643,4.83,0,False,0,full_frame
+norway_wales,1694,67.76,observed,True,False,"[689, 548, 780, 641]",734.46,594.34,-191.15,190.07,269.56,0.9191,4.83,0,False,0,full_frame
+norway_wales,1696,67.84,observed,True,False,"[672, 574, 761, 665]",716.58,619.21,-184.21,242.47,304.5,0.9065,4.83,0,False,0,full_frame
+norway_wales,1698,67.92,observed,True,False,"[661, 601, 745, 686]",702.97,643.36,-147.16,245.9,286.58,0.9006,4.83,0,False,0,full_frame
+norway_wales,1700,68.0,observed,True,False,"[644, 596, 730, 683]",687.12,640.19,-159.17,17.75,160.16,0.9138,4.83,0,False,0,full_frame
+norway_wales,1702,68.08,observed,True,False,"[628, 585, 713, 671]",670.61,628.4,-166.92,-95.59,192.35,0.9267,4.83,0,False,0,full_frame
+norway_wales,1704,68.16,observed,True,False,"[612, 571, 696, 656]",654.1,613.71,-168.39,-140.23,219.14,0.9325,4.83,0,False,0,full_frame
+norway_wales,1706,68.24,observed,True,False,"[599, 560, 682, 643]",640.5,601.53,-144.15,-127.29,192.31,0.9285,4.83,0,False,0,full_frame
+norway_wales,1708,68.32,observed,True,False,"[589, 552, 672, 636]",630.45,593.92,-110.1,-86.62,140.09,0.9108,4.83,0,False,0,full_frame
+norway_wales,1710,68.4,observed,True,False,"[582, 548, 664, 630]",622.96,588.94,-82.59,-57.3,100.52,0.8324,4.83,0,False,0,full_frame
+norway_wales,1712,68.48,observed,True,False,"[574, 544, 658, 629]",616.01,586.44,-73.07,-31.28,79.48,0.9191,4.83,0,False,0,full_frame
+norway_wales,1714,68.56,observed,True,False,"[570, 547, 653, 630]",611.46,588.37,-51.26,10.53,52.33,0.9205,4.83,0,False,0,full_frame
+norway_wales,1716,68.64,observed,True,False,"[568, 553, 650, 635]",608.95,593.86,-30.24,47.91,56.65,0.927,4.83,0,False,0,full_frame
+norway_wales,1718,68.72,observed,True,False,"[566, 561, 648, 643]",606.99,601.87,-21.9,75.75,78.85,0.887,4.83,0,False,0,full_frame
+norway_wales,1720,68.8,observed,True,False,"[566, 572, 647, 654]",606.46,612.85,-8.33,105.58,105.91,0.9183,4.83,0,False,0,full_frame
+norway_wales,1722,68.88,observed,True,False,"[570, 585, 647, 663]",608.42,623.92,14.9,111.72,112.71,0.9231,4.83,0,False,0,full_frame
+norway_wales,1724,68.96,observed,True,False,"[570, 586, 649, 665]",609.5,625.72,11.75,35.15,37.06,0.9318,4.83,0,False,0,full_frame
+norway_wales,1726,69.04,observed,True,False,"[569, 579, 649, 659]",609.04,619.28,-1.75,-47.59,47.62,0.9369,4.83,0,False,0,full_frame
+norway_wales,1728,69.12,observed,True,False,"[569, 571, 648, 650]",608.51,610.65,-4.76,-80.89,81.03,0.9226,4.83,0,False,0,full_frame
+norway_wales,1730,69.2,observed,True,False,"[568, 564, 645, 641]",606.55,602.55,-17.31,-82.38,84.18,0.9313,4.83,0,False,0,full_frame
+norway_wales,1732,69.28,observed,True,False,"[566, 558, 644, 636]",605.0,596.97,-16.04,-61.56,63.62,0.9329,4.83,0,False,0,full_frame
+norway_wales,1734,69.36,observed,True,False,"[564, 556, 642, 633]",603.02,594.43,-19.5,-32.36,37.79,0.8047,4.83,0,False,0,full_frame
+norway_wales,1736,69.44,observed,True,False,"[559, 556, 636, 633]",597.62,594.42,-48.78,-5.87,49.13,0.9272,4.83,0,False,0,full_frame
+norway_wales,1738,69.52,observed,True,False,"[553, 559, 630, 636]",591.57,597.4,-59.47,23.85,64.07,0.8851,4.83,0,False,0,full_frame

@@ -1,28 +1,30 @@
-# Football AI Engineering — Broadcast Match Analytics Pipeline
+# Football AI Engineering — Detection, Classification, Tracking & Possession Pipeline
 
-An end-to-end computer vision and sports analytics pipeline for broadcast football footage using **Ultralytics YOLO11**, **OpenCV**, **Scikit-learn**, **ByteTrack**, and **BoT-SORT**.
+An end-to-end computer vision and sports analytics pipeline for broadcast football footage using **Ultralytics YOLO11**, **OpenCV**, **Scikit-learn**, **ByteTrack**, **BoT-SORT**, and a **2D Kalman Ball Tracker + Possession State Machine**.
+
+---
 
 ## Key Capabilities
 
 1. **Player & Football Detection (`src/detection/`)**
-   - Decoupled confidence thresholds (`person_conf` vs `ball_conf`) to improve small, fast-moving football recall without inflating player false positives.
-   - Ground-truth bounding-box annotation store (`DetectionAnnotationStore`) with strict manual-provenance enforcement (`verified=True, source="manual"`).
-   - One-to-one IoU matching (`greedy_confidence` and `hungarian`), Precision, Recall, F1, AP@0.50, mAP@0.50:0.95, and confidence-threshold sweep diagnostics.
+   - Pre-ByteTrack raw ball capture hook that prevents ByteTrack's two-frame IoU activation gate (`is_activated`) from discarding fast-moving $14 \times 14\text{ px}$ footballs.
+   - Multi-strategy football detection benchmark (`benchmark_ball_detection_strategies`) comparing full-frame YOLO11n (`imgsz=1088`), high-resolution (`imgsz=1280`), decoupled low-confidence with geometric/torso false-positive filtering, 2-tile horizontal pitch slicing (`detect_balls_tiled`), and Kalman ROI recovery (`detect_ball_in_roi`).
+   - Ground-truth bounding-box annotation store (`DetectionAnnotationStore`) with strict manual provenance enforcement (`verified=True, source="manual"`).
 
 2. **Match-Agnostic Jersey Classification (`src/classification/`)**
    - Generic internal labels (`Team_A`, `Team_B`, `Referee`, `Unknown`) mapped via YAML configurations (`configs/norway_wales.yaml`, `configs/chelsea_sunderland.yaml`) with cross-match safety guards.
-   - Torso extraction with automatic quality filtering: Laplacian variance blur rejection, HSV pitch-grass ratio filtering, and inter-player torso occlusion checks.
-   - Persistent dataset manifests (`manifest.json`, `manifest.csv`) with stable crop identifiers (`crop_id`), timestamps, bounding boxes, and leakage-free temporal/track splits.
-   - Six benchmarked feature extractors: `baseline_hsv`, `legacy_enhanced`, `hsv_lab`, `foreground_masked`, `dominant_colour`, and `spatial_embedding`.
-   - Automated Leave-One-Out (LOO) + centroid label auditing (`audit_dataset_labels`) and validation-calibrated Unknown distance rejection.
+   - **Fresh-Clone Dataset Integrity & Deterministic Regeneration (`validate_integrity`, `regenerate_missing_crops`):** Automatically detects missing gitignored crop PNGs and deterministically regenerates them by seeking to `frame_number` and slicing `torso_bbox` from the source video, verifying dimensions and appearance metrics (`grass_ratio`, `blur_score`) before preserving verified labels.
+   - Six benchmarked feature extractors (`baseline_hsv`, `legacy_enhanced`, `hsv_lab`, `foreground_masked`, `dominant_colour`, `spatial_embedding`) and validation-only Unknown threshold calibration.
 
-3. **Persistent Tracking & Temporal Stabilization (`src/tracking/`)**
-   - Supports both **ByteTrack** (`bytetrack.yaml`) and **BoT-SORT** (`botsort.yaml`) with apples-to-apples diagnostic comparison.
-   - `TemporalTeamStabilizer` with confidence-weighted voting, minimum evidence requirements, transient Unknown handling, soft track-level label locking, sustained-contradiction unlocking, and spatial-jump / missing-frame identity resets.
+3. **Persistent Player & Ball Tracking (`src/tracking/`, `src/possession/ball_tracker.py`)**
+   - Player tracking with **ByteTrack** (`bytetrack.yaml`) and **BoT-SORT** (`botsort.yaml`) plus `TemporalTeamStabilizer` (confidence-weighted voting, soft label locking, sustained-contradiction unlocking, and spatial-jump identity resets).
+   - Dedicated `KalmanBallTracker` (4D state `[x, y, vx, vy]`) with confidence-distance gating, implausible jump rejection, multi-frame re-acquisition for long passes, camera-cut detection resets, and explicit provenance (`observed` vs `interpolated` vs `lost`).
 
-4. **Possession Analytics Foundation & Reporting (`src/evaluation/`, `src/visualization/`)**
-   - Exports structured per-frame telemetry (`frame_observations.csv`) recording frame number, timestamp, player ID, internal/display team ID, player & ball bounding boxes, detection confidences, and classification uncertainty.
-   - Generates timestamped experiment directories under `outputs/` containing `analytics_report.json`, `analytics_report.md`, benchmark CSVs, confusion matrices, calibration curves, misclassification galleries, and annotated MP4 videos.
+4. **Ball-to-Player Ownership & Team Possession Analytics (`src/possession/`)**
+   - Scale-normalized foot-to-ball distance ($d_{\text{norm}} = d_{\text{px}} / \max(30, h_{\text{player}})$) accounting for broadcast perspective scale.
+   - Explicit 6-state `PossessionStateMachine`: `TEAM_A_CONTROL`, `TEAM_B_CONTROL`, `CONTESTED`, `LOOSE_BALL`, `UNKNOWN`, and `OUT_OF_PLAY`.
+   - Temporal hysteresis (`min_control_frames`), same-team pass continuity (`max_pass_retention_frames`), referee exclusion, and conservative goalkeeper/`Unknown` handling.
+   - Separates **Attributed Possession Share** ($\frac{T_A}{T_A + T_B}$) from **Total Analysed Time Distribution** across all 6 states, with live broadcast scoreboard overlays on the output MP4.
 
 ---
 
@@ -34,109 +36,76 @@ footballengineering/
 │   ├── chelsea_sunderland.yaml
 │   └── norway_wales.yaml
 ├── data/
-│   ├── raw/
-│   ├── crops/
 │   ├── annotations/
-│   └── splits/
+│   └── crops/
+├── docs/
+│   ├── EVALUATION_PROTOCOL.md
+│   └── TECHNICAL_AUDIT.md
+├── notebooks/
+│   └── football_engineering.ipynb
+├── outputs/
 ├── src/
 │   ├── config.py
 │   ├── schemas.py
-│   ├── detection/
-│   │   ├── detector.py
-│   │   └── annotation_workflow.py
 │   ├── classification/
-│   │   ├── cropper.py
-│   │   ├── dataset.py
-│   │   ├── features.py
-│   │   ├── classifier.py
-│   │   └── diagnostics.py
-│   ├── tracking/
-│   │   ├── tracker.py
-│   │   └── stabilizer.py
+│   ├── detection/
 │   ├── evaluation/
-│   │   ├── detection_eval.py
 │   │   ├── classification_eval.py
-│   │   ├── tracking_eval.py
-│   │   └── report.py
-│   ├── visualization/
-│   │   ├── video_annotator.py
-│   │   └── plots.py
-│   └── pipeline/
-│       ├── legacy_migration.py
-│       ├── runner.py
-│       └── cli.py
-├── notebooks/
-│   └── football_engineering.ipynb
+│   │   ├── detection_eval.py
+│   │   ├── possession_eval.py
+│   │   ├── report.py
+│   │   └── tracking_eval.py
+│   ├── pipeline/
+│   │   ├── cli.py
+│   │   ├── legacy_migration.py
+│   │   └── runner.py
+│   ├── possession/
+│   │   ├── ball_tracker.py
+│   │   ├── metrics.py
+│   │   ├── ownership.py
+│   │   ├── possession_engine.py
+│   │   └── state_machine.py
+│   ├── tracking/
+│   └── visualization/
 ├── tests/
-├── outputs/
-├── docs/
-│   └── TECHNICAL_AUDIT.md
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Installation & Quick Start
+## Fresh-Clone Setup & Reproducibility
 
-### 1. Install Dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-### 2. Run the Automated Unit Test Suite
-
-All unit tests use deterministic synthetic fixtures and run offline without requiring external video files or network access:
-
-```bash
-python -m pytest -v
-```
-
-### 3. Run the End-to-End Pipeline
-
-**Norway vs Wales:**
-
-```bash
-python -m src.pipeline.cli --config configs/norway_wales.yaml --max-frames 180 --compare-trackers
-```
-
-**Chelsea vs Sunderland:**
-
-```bash
-python -m src.pipeline.cli --config configs/chelsea_sunderland.yaml --max-frames 180 --compare-trackers
-```
-
----
-
-## How to Process a Completely New Match (Zero Code Changes)
-
-1. **Create a Match Config YAML:**
-   Copy `configs/norway_wales.yaml` to `configs/my_new_match.yaml` and update:
-   - `match_id: my_new_match`
-   - `match_name: "Home Team vs Away Team"`
-   - `video_path: "data/raw/my_new_match.mp4"`
-   - `label_mapping`: map `Team_A` and `Team_B` to your teams' display names and set `team_colours_bgr`.
-
-2. **Extract Candidate Jersey Crops:**
-   Run dataset preparation to automatically extract quality-filtered torso crops and assign leakage-free `train`, `val`, and `test` temporal splits:
-   ```python
-   from src.config import load_match_config
-   from src.pipeline.runner import prepare_dataset_for_match
-
-   cfg = load_match_config("configs/my_new_match.yaml")
-   ds = prepare_dataset_for_match(cfg)
-   print("Manifest exported to:", ds.manifest_csv_path)
-   ```
-
-3. **Label Crops via CSV (No Python Dictionaries):**
-   Open `data/crops/my_new_match/manifest.csv`, inspect the crop images in `data/crops/my_new_match/images/`, fill the `ground_truth_label` column (`Team_A`, `Team_B`, `Referee`, or `Unknown`), and import:
-   ```python
-   ds.import_labels_from_csv(ds.manifest_csv_path)
-   ```
-
-4. **Train, Evaluate, and Generate Annotated Video:**
+1. **Install Dependencies:**
    ```bash
-   python -m src.pipeline.cli --config configs/my_new_match.yaml --compare-trackers
+   python -m pip install -r requirements.txt
    ```
 
+2. **Place Match Videos:**
+   Because raw broadcast `.mp4` files and extracted crop PNGs (`data/crops/*/images/`) are excluded via `.gitignore`, place the match videos in the project root or `data/raw/`:
+   - `Norway vs Wales _ HIGHLIGHTS _ UEFA Nations League.mp4`
+   - `27.mp4` (Chelsea vs Sunderland)
+
+   On the first run after cloning, `JerseyCropDataset.regenerate_missing_crops` automatically validates `manifest.json`, slices the exact `torso_bbox` from each recorded `frame_number`, verifies crop dimensions and appearance consistency, and restores `data/crops/<match_id>/images/*.png` while preserving all manually verified labels.
+
+3. **Run the Offline Unit Test Suite:**
+   ```bash
+   python -m pytest -v
+   ```
+
+4. **Run the End-to-End Pipeline with Possession Analytics:**
+   ```bash
+   # Norway vs Wales
+   python -m src.pipeline.cli \
+     --config configs/norway_wales.yaml \
+     --max-frames 300 \
+     --enable-possession \
+     --compare-trackers
+
+   # Chelsea vs Sunderland
+   python -m src.pipeline.cli \
+     --config configs/chelsea_sunderland.yaml \
+     --max-frames 300 \
+     --enable-possession \
+     --compare-trackers
+   ```

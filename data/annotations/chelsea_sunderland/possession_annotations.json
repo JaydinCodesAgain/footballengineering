@@ -1,0 +1,44 @@
+{
+  "match_id": "chelsea_sunderland",
+  "total_intervals": 3,
+  "verified_manual_intervals": 0,
+  "evaluation_ready": false,
+  "intervals": [
+    {
+      "match_id": "chelsea_sunderland",
+      "start_frame": 0,
+      "end_frame": 29,
+      "start_timestamp": 0.0,
+      "end_timestamp": 1.16,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "start_frame": 30,
+      "end_frame": 59,
+      "start_timestamp": 1.2,
+      "end_timestamp": 2.36,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    },
+    {
+      "match_id": "chelsea_sunderland",
+      "start_frame": 60,
+      "end_frame": 88,
+      "start_timestamp": 2.4,
+      "end_timestamp": 3.52,
+      "state": "",
+      "uncertain": false,
+      "verified": false,
+      "source": "template",
+      "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+    }
+  ]
+}

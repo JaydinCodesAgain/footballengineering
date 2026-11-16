@@ -1,0 +1,59 @@
+match_id,frame_number,timestamp,dt_seconds,ball_observation_mode,ball_visibility,possession_state,raw_interaction_state,controlling_player_id,controlling_team_id,controlling_team_display,possession_confidence,closest_player_id,closest_team_id,closest_normalized_distance,second_closest_team_id,second_closest_normalized_distance,running_team_a_share_pct,running_team_b_share_pct,camera_cut
+norway_wales,1620,64.8,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3495,4,Unknown,3.2261,Unknown,4.2939,50.0,50.0,False
+norway_wales,1622,64.88,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3594,4,Unknown,3.3743,Unknown,4.5279,50.0,50.0,False
+norway_wales,1624,64.96,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3303,4,Team_B,3.5182,Unknown,4.6493,50.0,50.0,False
+norway_wales,1626,65.04,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3251,4,Team_B,3.5238,Unknown,4.5828,50.0,50.0,False
+norway_wales,1628,65.12,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3398,4,Team_B,3.3782,Unknown,4.47,50.0,50.0,False
+norway_wales,1630,65.2,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.3486,4,Team_B,3.3539,Team_B,4.4341,50.0,50.0,False
+norway_wales,1632,65.28,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4221,4,Team_B,3.622,Team_B,4.374,50.0,50.0,False
+norway_wales,1634,65.36,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.4053,4,Team_B,3.713,Team_B,4.4559,50.0,50.0,False
+norway_wales,1636,65.44,0.08,observed,visible,LOOSE_BALL,LOOSE_BALL,,,LOOSE BALL,0.435,4,Team_B,3.6818,Team_B,4.4564,50.0,50.0,False
+norway_wales,1640,65.6,0.16,interpolated,interpolated,UNKNOWN,UNKNOWN,30,,UNKNOWN,0.0,30,Unknown,0.9818,,,50.0,50.0,False
+norway_wales,1642,65.68,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1644,65.76,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1646,65.84,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1650,66.0,0.16,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1652,66.08,0.08,observed,visible,UNKNOWN,UNKNOWN,30,,UNKNOWN,0.0,30,Team_B,0.3182,,,50.0,50.0,False
+norway_wales,1654,66.16,0.08,interpolated,interpolated,UNKNOWN,UNKNOWN,30,,UNKNOWN,0.0,30,Team_B,0.2418,,,50.0,50.0,False
+norway_wales,1656,66.24,0.08,interpolated,interpolated,UNKNOWN,UNKNOWN,30,,UNKNOWN,0.0,30,Team_B,0.118,,,50.0,50.0,False
+norway_wales,1658,66.32,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1660,66.4,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1662,66.48,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1664,66.56,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1666,66.64,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1668,66.72,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1670,66.8,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1672,66.88,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1674,66.96,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1676,67.04,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1678,67.12,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1680,67.2,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1682,67.28,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1684,67.36,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1686,67.44,0.08,lost,missing,UNKNOWN,UNKNOWN,,,UNKNOWN,0.0,,,,,,50.0,50.0,False
+norway_wales,1688,67.52,0.08,observed,visible,UNKNOWN,UNKNOWN,43,,UNKNOWN,0.0,43,Unknown,0.038,Team_B,0.5843,50.0,50.0,False
+norway_wales,1690,67.6,0.08,observed,visible,UNKNOWN,UNKNOWN,43,,UNKNOWN,0.0,43,Unknown,0.042,Team_B,0.5746,50.0,50.0,False
+norway_wales,1692,67.68,0.08,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.6153,30,Team_B,0.5825,,,50.0,50.0,False
+norway_wales,1694,67.76,0.08,observed,visible,UNKNOWN,UNKNOWN,53,,UNKNOWN,0.0,53,Unknown,0.2104,Team_B,0.5865,50.0,50.0,False
+norway_wales,1696,67.84,0.08,observed,visible,UNKNOWN,UNKNOWN,53,,UNKNOWN,0.0,53,Unknown,0.284,Team_B,0.5566,50.0,50.0,False
+norway_wales,1698,67.92,0.08,observed,visible,LOOSE_BALL,TEAM_B_CONTROL,,,LOOSE BALL,0.6262,30,Team_B,0.5436,Unknown,0.8636,50.0,50.0,False
+norway_wales,1700,68.0,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,0.8928,30,Team_B,0.5483,Unknown,0.8489,0.0,100.0,False
+norway_wales,1702,68.08,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.5308,Unknown,0.8286,0.0,100.0,False
+norway_wales,1704,68.16,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.5274,Team_A,0.8286,0.0,100.0,False
+norway_wales,1706,68.24,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.5267,Team_A,0.8601,0.0,100.0,False
+norway_wales,1708,68.32,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.518,Team_A,0.8714,0.0,100.0,False
+norway_wales,1710,68.4,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.473,Team_A,0.8706,0.0,100.0,False
+norway_wales,1712,68.48,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.4258,Team_A,0.8283,0.0,100.0,False
+norway_wales,1714,68.56,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.4045,Team_A,0.7883,0.0,100.0,False
+norway_wales,1716,68.64,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.3958,Team_A,0.7822,0.0,100.0,False
+norway_wales,1718,68.72,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.397,Team_A,0.7824,0.0,100.0,False
+norway_wales,1720,68.8,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.4006,Team_A,0.8288,0.0,100.0,False
+norway_wales,1722,68.88,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.4112,Team_A,0.9013,0.0,100.0,False
+norway_wales,1724,68.96,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.4009,Unknown,0.7348,0.0,100.0,False
+norway_wales,1726,69.04,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.3491,Unknown,0.7327,0.0,100.0,False
+norway_wales,1728,69.12,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.3193,Unknown,0.7316,0.0,100.0,False
+norway_wales,1730,69.2,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.2633,Unknown,0.7704,0.0,100.0,False
+norway_wales,1732,69.28,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.2143,Unknown,0.7706,0.0,100.0,False
+norway_wales,1734,69.36,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.1846,Unknown,0.7453,0.0,100.0,False
+norway_wales,1736,69.44,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.2328,Unknown,0.7249,0.0,100.0,False
+norway_wales,1738,69.52,0.08,observed,visible,TEAM_B_CONTROL,TEAM_B_CONTROL,30,Team_B,Wales,1.0,30,Team_B,0.2335,Unknown,0.7121,0.0,100.0,False

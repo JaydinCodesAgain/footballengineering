@@ -1,0 +1,5 @@
+match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes
+norway_wales,1620,1649,64.8,65.96,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+norway_wales,1650,1679,66.0,67.16,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+norway_wales,1680,1709,67.2,68.36,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
+norway_wales,1710,1738,68.4,69.52,,False,False,template,"Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"
