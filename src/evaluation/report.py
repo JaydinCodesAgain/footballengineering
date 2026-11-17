@@ -38,6 +38,16 @@ def write_csv_rows(path: str | Path, rows: Sequence[Dict[str, Any]]) -> Path:
     return target
 
 
+def _format_percent(value: Any) -> str:
+    """Format a measured rate without turning unavailable evidence into 0%."""
+    if value is None:
+        return "Unavailable"
+    try:
+        return f"{float(value):.2%}"
+    except (TypeError, ValueError):
+        return "Unavailable"
+
+
 def export_possession_foundation_records(
     path: str | Path,
     records: Sequence[FrameObservationRecord],
@@ -348,12 +358,12 @@ def generate_consolidated_report(
             f"(threshold={classification_summary.get('unknown_threshold', 'N/A')})",
             f"- **Training Dataset Size:** {classification_summary.get('training_size', 0)} "
             f"(`{classification_summary.get('training_class_counts', {})}`)",
-            f"- **Held-Out Validation Accuracy:** {classification_summary.get('overall_accuracy', 0.0):.2%}",
-            f"- **Selective Accuracy (Non-Unknown):** {classification_summary.get('selective_accuracy', 0.0):.2%}",
-            f"- **Macro F1 (All Classes):** {classification_summary.get('macro_f1', 0.0):.2%}",
-            f"- **Macro F1 (Positive Classes):** {classification_summary.get('positive_macro_f1', 0.0):.2%}",
-            f"- **Classification Coverage:** {classification_summary.get('coverage', 0.0):.2%} "
-            f"(Unknown Rate: {classification_summary.get('unknown_rejection_rate', 0.0):.2%})",
+            f"- **Held-Out Validation Accuracy:** {_format_percent(classification_summary.get('overall_accuracy'))}",
+            f"- **Selective Accuracy (Non-Unknown):** {_format_percent(classification_summary.get('selective_accuracy'))}",
+            f"- **Macro F1 (All Classes):** {_format_percent(classification_summary.get('macro_f1'))}",
+            f"- **Macro F1 (Positive Classes):** {_format_percent(classification_summary.get('positive_macro_f1'))}",
+            f"- **Classification Coverage:** {_format_percent(classification_summary.get('coverage'))} "
+            f"(Unknown Rate: {_format_percent(classification_summary.get('unknown_rejection_rate'))})",
             "",
             "### Per-Class Metrics",
             "| Internal Label | Display Name | Precision | Recall | F1 | Support |",

@@ -133,3 +133,28 @@ def test_report_and_possession_foundation_export(tmp_path: Path) -> None:
     assert files["report_json"].is_file()
     assert files["report_md"].is_file()
 
+
+def test_report_marks_unavailable_unsupervised_metrics_without_formatting_failure(tmp_path: Path) -> None:
+    files = generate_consolidated_report(
+        output_dir=tmp_path,
+        match_id="unseen_match",
+        match_name="Unseen Match",
+        detection_summary={"metrics_available": False},
+        classification_summary={
+            "mode": "unsupervised_per_video_adaptation",
+            "feature_method": "spatial_embedding",
+            "classifier_type": "kmeans",
+            "overall_accuracy": None,
+            "selective_accuracy": None,
+            "macro_f1": None,
+            "positive_macro_f1": None,
+            "coverage": None,
+            "unknown_rejection_rate": None,
+            "per_class": {},
+        },
+        tracking_summary={},
+    )
+    report = files["report_md"].read_text(encoding="utf-8")
+    assert "Held-Out Validation Accuracy:** Unavailable" in report
+    assert "Classification Coverage:** Unavailable" in report
+
