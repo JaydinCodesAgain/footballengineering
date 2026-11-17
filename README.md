@@ -4,6 +4,52 @@ An end-to-end computer vision and sports analytics pipeline for broadcast footba
 
 ---
 
+## Vision: accessible grassroots football intelligence
+
+The long-term goal is a reliable local-first system that can analyse a **previously unseen grassroots match** from a fixed camera without manually training jersey labels for that match.
+
+```text
+Fixed tactical camera / recorded match
+    -> player and ball observations
+    -> automatic Team_A / Team_B visual discovery
+    -> stable anonymous player tracks
+    -> calibrated pitch positions in metres
+    -> confidence-aware possession and spatial analysis
+    -> coach-friendly post-match evidence
+```
+
+The project deliberately starts with post-match analysis rather than promising live tactical intelligence too early. A stable elevated camera, clear footage and measured accuracy are more valuable than a large dashboard full of unsupported statistics.
+
+### What “good” looks like
+
+- Upload an unfamiliar match video without a manually labelled crop gallery or hard-coded kit colours.
+- Discover two dominant playing-team appearances as `Team_A` and `Team_B`; do **not** pretend clustering can identify club names.
+- Keep officials, goalkeepers, substitutes, poor crops and ambiguous observations as `Unknown` unless there is sufficient evidence.
+- Track real players and the real ball, explicitly distinguishing `observed`, short `interpolated`, and `lost` ball states.
+- Estimate possession only over confidently attributed intervals and expose coverage alongside every statistic.
+- Convert fixed-camera player foot positions from pixels to pitch metres when a valid venue calibration is supplied.
+- Measure improvements against independently reviewed reference data; never use model outputs as their own ground truth.
+
+### Delivery plan
+
+| Phase | Outcome | Evidence required before moving on |
+|---|---|---|
+| 1. Recorded-match foundation | Unseen-match team discovery, anonymous track labels, ball tracking, annotated video, confidence-aware possession | Visual review plus a small independently labelled sample per match |
+| 2. Venue-calibrated analysis | Pitch-coordinate exports, distance/speed, territory, team width/depth and compactness for fixed cameras | Calibration reprojection checks and position-error measurements |
+| 3. Grassroots robustness | Models and thresholds validated across local pitches, lighting, kits, weather and camera placements | Match-held-out ball/team/possession evaluation |
+| 4. Near-live operation | Local/edge inference with an intentional delay and health telemetry | Stable end-to-end reliability at a real venue |
+| 5. Live intelligence | Low-latency sideline support and optional roster integration | Proven accuracy, privacy controls and operational monitoring |
+
+### Accuracy and privacy principles
+
+- Coverage is not recall. A frame containing *something* ball-like is not proof that the real ball was detected.
+- `Unknown` is a valid answer. Rejecting unreliable observations is preferable to fabricating possession or player identity.
+- The system maintains identities primarily within continuous camera segments. Cross-cut and cross-match re-identification are separate, harder problems.
+- Player names and face recognition are not requirements for the initial product. Anonymous per-match tracks deliver useful analysis with less risk.
+- Obtain appropriate consent and apply the applicable child-data, privacy and venue-recording requirements before recording grassroots matches.
+
+---
+
 ## Key Capabilities
 
 1. **Player & Football Detection (`src/detection/`)**
@@ -109,3 +155,33 @@ footballengineering/
      --enable-possession \
      --compare-trackers
    ```
+
+5. **Analyse an unfamiliar match with automatic team discovery:**
+   ```powershell
+   python -m src.pipeline.cli `
+     --video "data/raw/new_match.mp4" `
+     --auto-teams `
+     --enable-possession `
+     --max-frames 1500
+   ```
+
+   This mode adapts only from the supplied video: it collects quality-valid torso observations, aggregates appearance by player track, discovers two dominant visual groups and keeps ambiguous players as `Unknown`. It does not use a match crop manifest, team names or configured kit colours.
+
+   For a fixed grassroots camera, add a calibration file to export player positions in pitch metres:
+
+   ```powershell
+   --pitch-calibration "configs/venue_pitch_calibration.json"
+   ```
+
+   A calibration file contains matching image pixels and real pitch landmarks:
+
+   ```json
+   {
+     "pitch_length_m": 105.0,
+     "pitch_width_m": 68.0,
+     "image_points_px": [[120, 180], [1800, 220], [1900, 920], [40, 900]],
+     "pitch_points_m": [[0, 0], [105, 0], [105, 68], [0, 68]]
+   }
+   ```
+
+   Use a calibration only while the camera position and framing are unchanged. It is not valid across broadcast cuts, zooms or a moved tripod.
