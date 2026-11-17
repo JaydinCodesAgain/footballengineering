@@ -1,0 +1,5 @@
+{
+  "metrics_available": false,
+  "validation_blocker": "missing_verified_manual_detection_annotations",
+  "observed_coverage_pct": 54.0
+}
