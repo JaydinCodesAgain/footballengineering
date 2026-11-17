@@ -127,6 +127,15 @@ class TeamDiscoveryConfig:
 
 
 @dataclass
+class PitchConfig:
+    """Optional fixed-camera pitch calibration; coordinates are in metres."""
+
+    calibration_path: Optional[str] = None
+    pitch_length_m: float = 105.0
+    pitch_width_m: float = 68.0
+
+
+@dataclass
 class MatchConfig:
     """Configuration for a specific football match and pipeline run."""
 
@@ -159,6 +168,7 @@ class MatchConfig:
     ball_tracking: BallTrackingConfig = field(default_factory=BallTrackingConfig)
     possession: PossessionConfig = field(default_factory=PossessionConfig)
     team_discovery: TeamDiscoveryConfig = field(default_factory=TeamDiscoveryConfig)
+    pitch: PitchConfig = field(default_factory=PitchConfig)
 
     def resolve_video_path(self, base_dir: Optional[Path] = None) -> Path:
         """Resolve the video path across primary and fallback locations."""
@@ -232,6 +242,7 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
     btrk_raw = raw.get("ball_tracking", {})
     poss_raw = raw.get("possession", {})
     discovery_raw = raw.get("team_discovery", {})
+    pitch_raw = raw.get("pitch", {})
 
     colours_raw = raw.get("team_colours_bgr", {})
     colours_parsed: Dict[str, Tuple[int, int, int]] = {
@@ -268,5 +279,6 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
         ball_tracking=BallTrackingConfig(**btrk_raw),
         possession=PossessionConfig(**poss_raw),
         team_discovery=TeamDiscoveryConfig(**discovery_raw),
+        pitch=PitchConfig(**pitch_raw),
     )
 

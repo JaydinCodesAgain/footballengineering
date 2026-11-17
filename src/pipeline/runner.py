@@ -19,6 +19,7 @@ from src.classification.team_discovery import (
     collect_track_appearances,
 )
 from src.config import MatchConfig, load_match_config
+from src.geometry.pitch import load_pitch_calibration
 from src.detection.annotation_workflow import (
     DetectionAnnotationStore,
     sample_representative_frame_numbers,
@@ -285,6 +286,15 @@ def _run_auto_team_pipeline(
     final_video = finalize_mp4_video(output_dir / f"{match_cfg.match_id}_raw.mp4", output_dir / "annotated_match.mp4")
     artifacts["annotated_video"] = str(final_video)
     artifacts["frame_observations_csv"] = str(export_possession_foundation_records(output_dir / "frame_observations.csv", observations))
+    if match_cfg.pitch.calibration_path:
+        calibration = load_pitch_calibration(match_cfg.pitch.calibration_path)
+        pitch_rows = []
+        for observation in observations:
+            x1, _, x2, y2 = observation.player_bbox
+            position = calibration.project_pixel((x1 + x2) / 2.0, y2)
+            if position is not None:
+                pitch_rows.append({"frame_number": observation.frame_number, "timestamp": observation.timestamp, "tracking_id": observation.player_id, "team_id": observation.team_id, "pitch_x_m": position[0], "pitch_y_m": position[1]})
+        artifacts["pitch_positions_csv"] = str(write_csv_rows(output_dir / "pitch_positions.csv", pitch_rows))
     artifacts["ball_tracking_diagnostics_csv"] = str(export_ball_trajectory_records(output_dir / "ball_tracking_diagnostics.csv", engine.ball_trajectory))
     summary = engine.summarize()
     possession_files = generate_possession_report(output_dir, summary, {"metrics_available": False, "validation_blocker": "missing_verified_manual_possession_annotations"})

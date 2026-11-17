@@ -24,6 +24,7 @@ def main() -> None:
     parser.add_argument("--video", type=str, default=None, help="Video path for a new, label-free match.")
     parser.add_argument("--auto-teams", action="store_true", help="Discover two visual teams from this video; no crop manifest or kit colours are used.")
     parser.add_argument("--team-clustering", choices=("kmeans", "gmm", "agglomerative", "dbscan"), default="kmeans")
+    parser.add_argument("--pitch-calibration", type=str, default=None, help="JSON file mapping fixed-camera pixels to pitch metres.")
     parser.add_argument(
         "--experiment-name",
         type=str,
@@ -127,6 +128,8 @@ def main() -> None:
         match_cfg.tracking.start_frame = int(args.start_frame)
     if args.frame_stride is not None:
         match_cfg.detection.frame_stride = int(args.frame_stride)
+    if args.pitch_calibration:
+        match_cfg.pitch.calibration_path = args.pitch_calibration
 
     result = run_match_pipeline(
         config=match_cfg,
