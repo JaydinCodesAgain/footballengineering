@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
+import json
 import time
 from typing import Any, Dict, List, Optional, Tuple
 import cv2
@@ -12,6 +13,11 @@ from src.classification.classifier import TeamClassifier
 from src.classification.cropper import extract_torso_crop
 from src.classification.dataset import JerseyCropDataset, assign_temporal_and_track_splits
 from src.classification.diagnostics import audit_dataset_labels
+from src.classification.team_discovery import (
+    AutomaticTeamDiscoverer,
+    TeamDiscoveryObservation,
+    collect_track_appearances,
+)
 from src.config import MatchConfig, load_match_config
 from src.detection.annotation_workflow import (
     DetectionAnnotationStore,
@@ -180,6 +186,118 @@ def _build_ball_diagnostic_panel_crop(
     return cv2.resize(canvas, (320, 240), interpolation=cv2.INTER_AREA)
 
 
+def discover_teams_from_video(
+    video_path: Path,
+    match_config: MatchConfig,
+    max_frames: Optional[int] = 300,
+) -> Tuple[AutomaticTeamDiscoverer, List[Tuple[Any, np.ndarray, str]], Dict[str, Any]]:
+    """Run a first tracking pass and fit per-video, unsupervised team appearances.
+
+    This pass is intentionally independent of any crop manifest or team-name
+    mapping.  Its output is a track-level model consumed by the normal tracking
+    and possession pass.
+    """
+    tracker = MultiObjectTracker(
+        detection_config=match_config.detection,
+        tracking_config=match_config.tracking,
+    )
+    observations: List[TeamDiscoveryObservation] = []
+    gallery_samples: List[Tuple[Any, np.ndarray, str]] = []
+    for fno, ts, frame_bgr, detections in tracker.track_video(video_path, max_frames=max_frames):
+        players = [d for d in detections if d.class_name == "player"]
+        player_boxes = [d.bbox for d in players]
+        for player in players:
+            crop, _, quality = extract_torso_crop(
+                frame_bgr, player.bbox, config=match_config.cropping, other_player_bboxes=player_boxes
+            )
+            if crop is None or not quality.is_valid:
+                continue
+            observations.append(
+                TeamDiscoveryObservation(
+                    tracking_id=player.tracking_id,
+                    frame_number=fno,
+                    timestamp=ts,
+                    crop_bgr=crop,
+                    blur_score=quality.blur_score,
+                    grass_ratio=quality.grass_ratio,
+                    occlusion_ratio=quality.occlusion_ratio,
+                )
+            )
+    appearances = collect_track_appearances(observations, match_config.team_discovery)
+    discoverer = AutomaticTeamDiscoverer(match_config.team_discovery).fit(appearances)
+    # Gallery uses a compact metadata-shaped object only for display; labels are
+    # discovered, never manually supplied to the fitting procedure.
+    from types import SimpleNamespace
+    by_track: Dict[int, TeamDiscoveryObservation] = {}
+    for item in observations:
+        if item.tracking_id is not None and item.tracking_id not in by_track:
+            by_track[item.tracking_id] = item
+    for appearance in appearances:
+        item = by_track.get(appearance.tracking_id)
+        if item is None:
+            continue
+        label, _ = discoverer.predict_track(appearance.tracking_id)
+        gallery_samples.append((SimpleNamespace(legacy_gallery_index=None, raw_label=None, frame_number=item.frame_number), item.crop_bgr, label))
+    return discoverer, gallery_samples, discoverer.report(appearances)
+
+
+def _run_auto_team_pipeline(
+    match_cfg: MatchConfig, video_path: Path, output_dir: Path, exp_id: str, max_frames: Optional[int]
+) -> Dict[str, Any]:
+    """Two-pass unattended inference: discover appearances, then estimate possession."""
+    discoverer, gallery, discovery = discover_teams_from_video(video_path, match_cfg, max_frames)
+    report_path = output_dir / "team_discovery_report.json"
+    report_path.write_text(json.dumps(discovery, indent=2), encoding="utf-8")
+    artifacts: Dict[str, str] = {"team_discovery_report": str(report_path)}
+    artifacts["team_cluster_gallery"] = str(save_crop_reference_gallery(gallery, f"{match_cfg.match_name} — Discovered Teams", output_dir / "team_cluster_gallery.png"))
+    artifacts["team_clustering_metrics_csv"] = str(write_csv_rows(output_dir / "team_clustering_metrics.csv", [
+        {"tracking_id": tid, "discovered_label": label, "cosine_distance": discoverer.track_distances_.get(tid)}
+        for tid, label in sorted(discoverer.track_labels_.items())
+    ]))
+    cap = cv2.VideoCapture(str(video_path))
+    fps = float(cap.get(cv2.CAP_PROP_FPS)) or 25.0
+    width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    cap.release()
+    writer = cv2.VideoWriter(str(output_dir / f"{match_cfg.match_id}_raw.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), fps / max(1, match_cfg.detection.frame_stride), (width, height))
+    tracker = MultiObjectTracker(match_cfg.detection, match_cfg.tracking)
+    stabilizer = TemporalTeamStabilizer(match_cfg.tracking)
+    engine = PossessionEngine(match_cfg, fps=fps, frame_stride=match_cfg.detection.frame_stride)
+    observations: List[FrameObservationRecord] = []
+    processed = 0
+    try:
+        for fno, ts, frame, detections in tracker.track_video(video_path, max_frames=max_frames, fps_override=fps):
+            players = [item for item in detections if item.class_name == "player"]
+            balls = [item for item in detections if item.class_name == "ball"]
+            boxes = [item.bbox for item in players]
+            frame_obs: List[FrameObservationRecord] = []
+            for player in players:
+                crop, _, _ = extract_torso_crop(frame, player.bbox, config=match_cfg.cropping, other_player_bboxes=boxes)
+                prediction = discoverer.predict_classification(crop)
+                label, stability, locked = stabilizer.update(player.tracking_id, fno, player.bbox, prediction)
+                raw_ball = max(balls, key=lambda item: item.confidence) if balls else None
+                record = FrameObservationRecord(match_cfg.match_id, fno, ts, player.tracking_id, label, match_cfg.to_display_label(label), prediction.predicted_label, player.bbox, player.confidence, prediction.confidence_score, prediction.nearest_distance, stability, locked, raw_ball.bbox if raw_ball else None, raw_ball.confidence if raw_ball else None)
+                frame_obs.append(record); observations.append(record)
+            ball_rec, poss_rec, _ = engine.step_frame(fno, ts, frame_obs, balls, players, frame, (height, width))
+            writer.write(annotate_match_frame(frame, frame_obs, balls, match_cfg, ball_rec, poss_rec))
+            processed += 1
+    finally:
+        writer.release()
+    final_video = finalize_mp4_video(output_dir / f"{match_cfg.match_id}_raw.mp4", output_dir / "annotated_match.mp4")
+    artifacts["annotated_video"] = str(final_video)
+    artifacts["frame_observations_csv"] = str(export_possession_foundation_records(output_dir / "frame_observations.csv", observations))
+    artifacts["ball_tracking_diagnostics_csv"] = str(export_ball_trajectory_records(output_dir / "ball_tracking_diagnostics.csv", engine.ball_trajectory))
+    summary = engine.summarize()
+    possession_files = generate_possession_report(output_dir, summary, {"metrics_available": False, "validation_blocker": "missing_verified_manual_possession_annotations"})
+    artifacts.update({key: str(value) for key, value in possession_files.items()})
+    ball_metrics = {"metrics_available": False, "validation_blocker": "missing_verified_manual_detection_annotations", "observed_coverage_pct": engine.ball_tracker.summarize()["observed_coverage_pct"]}
+    ball_metrics_path = output_dir / "ball_detection_metrics.json"; ball_metrics_path.write_text(json.dumps(ball_metrics, indent=2), encoding="utf-8"); artifacts["ball_detection_metrics"] = str(ball_metrics_path)
+    write_csv_rows(output_dir / "tracking_comparison.csv", [])
+    classification = {"mode": "unsupervised_per_video_adaptation", "metrics_available": False, "validation_blocker": "No independent labels supplied.", "team_discovery": discovery, "overall_accuracy": None, "macro_f1": None, "coverage": None, "per_class": {}}
+    tracking = stabilizer.summarize_diagnostics(processed)
+    report_files = generate_consolidated_report(output_dir, match_cfg.match_id, match_cfg.match_name, ball_metrics, classification, tracking, possession_summary=summary, artifacts_generated=artifacts)
+    return {"experiment_id": exp_id, "output_dir": str(output_dir), "classification_summary": classification, "detection_summary": ball_metrics, "tracking_summary": tracking, "possession_summary": summary, "report_files": {key: str(value) for key, value in report_files.items()}, "artifacts": artifacts}
+
+
 def run_match_pipeline(
     config: MatchConfig | str | Path,
     base_dir: Optional[Path] = None,
@@ -211,29 +329,70 @@ def run_match_pipeline(
     output_dir = root / "outputs" / exp_id
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Prepare / load dataset with integrity verification
-    dataset = prepare_dataset_for_match(match_cfg, base_dir=root)
-    train_samples = dataset.get_labelled_samples(split="train", exclude_unknown=True)
-    val_samples = dataset.get_labelled_samples(split="val", exclude_unknown=False)
+    if match_cfg.team_discovery.enabled:
+        return _run_auto_team_pipeline(match_cfg, video_path, output_dir, exp_id, max_tracking_frames)
 
     artifacts: Dict[str, str] = {}
-    if train_samples:
-        p_tr = save_crop_reference_gallery(
+    active_discoverer: Optional[AutomaticTeamDiscoverer] = None
+    # Label-free mode intentionally does not read the match crop manifest.  The
+    # first video pass supplies its own quality-gated, track-level adaptation set.
+    if match_cfg.team_discovery.enabled:
+        active_discoverer, discovery_gallery, discovery_report = discover_teams_from_video(
+            video_path, match_cfg, max_frames=max_tracking_frames
+        )
+        discovery_json = output_dir / "team_discovery_report.json"
+        import json
+        discovery_json.write_text(json.dumps(discovery_report, indent=2), encoding="utf-8")
+        artifacts["team_discovery_report"] = str(discovery_json)
+        gallery_path = save_crop_reference_gallery(
+            discovery_gallery,
+            f"{match_cfg.match_name} — Automatically Discovered Team Appearances",
+            output_dir / "team_cluster_gallery.png",
+        )
+        artifacts["team_cluster_gallery"] = str(gallery_path)
+        cluster_rows = [
+            {"tracking_id": tid, "discovered_label": label, "cosine_distance": active_discoverer.track_distances_.get(tid)}
+            for tid, label in sorted(active_discoverer.track_labels_.items())
+        ]
+        cluster_csv = write_csv_rows(output_dir / "team_clustering_metrics.csv", cluster_rows)
+        artifacts["team_clustering_metrics_csv"] = str(cluster_csv)
+        clf_eval: Dict[str, Any] = {
+            "mode": "unsupervised_per_video_adaptation",
+            "metrics_available": False,
+            "validation_blocker": "No independent labelled reference set was supplied for this video.",
+            "feature_method": match_cfg.team_discovery.feature_method,
+            "classifier_type": match_cfg.team_discovery.clustering_method,
+            "overall_accuracy": None,
+            "macro_f1": None,
+            "coverage": None,
+            "unknown_rejection_rate": None,
+            "per_class": {},
+            "confusion_matrix": [],
+            "labels_display": [],
+            "team_discovery": discovery_report,
+        }
+        benchmark_results: List[Dict[str, Any]] = []
+        label_audit: Dict[str, Any] = {"status": "not_applicable_in_auto_team_mode"}
+        active_clf = None
+    # Supervised mode remains available for the existing labelled workflows.
+    dataset = prepare_dataset_for_match(match_cfg, base_dir=root)
+    train_samples = dataset.get_labelled_samples(split="train", exclude_unknown=True, verified_only=True)
+    val_samples = dataset.get_labelled_samples(split="val", exclude_unknown=False, verified_only=True)
+    p_tr = save_crop_reference_gallery(
             train_samples,
             f"{match_cfg.match_name} — Training Set ({len(train_samples)} samples)",
             output_dir / "gallery_train_samples.png",
         )
-        artifacts["gallery_train"] = str(p_tr)
-    if val_samples:
-        p_val = save_crop_reference_gallery(
+    artifacts["gallery_train"] = str(p_tr)
+    p_val = save_crop_reference_gallery(
             val_samples,
             f"{match_cfg.match_name} — Validation Set ({len(val_samples)} samples)",
             output_dir / "gallery_val_samples.png",
         )
-        artifacts["gallery_val"] = str(p_val)
+    artifacts["gallery_val"] = str(p_val)
 
     # 2. Audit labels
-    all_labelled = dataset.get_labelled_samples(exclude_unknown=False)
+    all_labelled = dataset.get_labelled_samples(exclude_unknown=False, verified_only=True)
     label_audit = audit_dataset_labels(
         all_labelled, feature_method=match_cfg.classification.feature_method
     )

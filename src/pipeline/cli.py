@@ -5,8 +5,9 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 
-from src.config import load_match_config
+from src.config import MatchConfig, TeamDiscoveryConfig, load_match_config
 from src.pipeline.runner import run_match_pipeline
 
 
@@ -20,6 +21,9 @@ def main() -> None:
         default="configs/norway_wales.yaml",
         help="Path to the match YAML configuration file.",
     )
+    parser.add_argument("--video", type=str, default=None, help="Video path for a new, label-free match.")
+    parser.add_argument("--auto-teams", action="store_true", help="Discover two visual teams from this video; no crop manifest or kit colours are used.")
+    parser.add_argument("--team-clustering", choices=("kmeans", "gmm", "agglomerative", "dbscan"), default="kmeans")
     parser.add_argument(
         "--experiment-name",
         type=str,
@@ -91,7 +95,21 @@ def main() -> None:
     )
 
     args = parser.parse_args()
-    match_cfg = load_match_config(Path(args.config))
+    if args.auto_teams and args.video:
+        match_id = re.sub(r"[^a-z0-9]+", "_", Path(args.video).stem.lower()).strip("_") or "unseen_match"
+        match_cfg = MatchConfig(
+            match_id=match_id,
+            match_name=Path(args.video).stem,
+            video_path=args.video,
+            team_discovery=TeamDiscoveryConfig(enabled=True, clustering_method=args.team_clustering),
+        )
+    else:
+        match_cfg = load_match_config(Path(args.config))
+        if args.auto_teams:
+            match_cfg.team_discovery.enabled = True
+            match_cfg.team_discovery.clustering_method = args.team_clustering
+        if args.video:
+            match_cfg.video_path = args.video
 
     if args.enable_possession:
         match_cfg.possession.enabled = True

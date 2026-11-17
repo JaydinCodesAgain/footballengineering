@@ -112,6 +112,21 @@ class PossessionConfig:
 
 
 @dataclass
+class TeamDiscoveryConfig:
+    """Configuration for per-video, label-free team appearance discovery."""
+
+    enabled: bool = False
+    feature_method: str = "spatial_embedding"
+    clustering_method: str = "kmeans"
+    candidate_clusters: int = 3
+    min_track_observations: int = 3
+    min_cluster_tracks: int = 2
+    max_samples_per_track: int = 8
+    assignment_distance_multiplier: float = 1.35
+    random_state: int = 42
+
+
+@dataclass
 class MatchConfig:
     """Configuration for a specific football match and pipeline run."""
 
@@ -143,6 +158,7 @@ class MatchConfig:
     splits: SplitConfig = field(default_factory=SplitConfig)
     ball_tracking: BallTrackingConfig = field(default_factory=BallTrackingConfig)
     possession: PossessionConfig = field(default_factory=PossessionConfig)
+    team_discovery: TeamDiscoveryConfig = field(default_factory=TeamDiscoveryConfig)
 
     def resolve_video_path(self, base_dir: Optional[Path] = None) -> Path:
         """Resolve the video path across primary and fallback locations."""
@@ -215,6 +231,7 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
     spl_raw = raw.get("splits", {})
     btrk_raw = raw.get("ball_tracking", {})
     poss_raw = raw.get("possession", {})
+    discovery_raw = raw.get("team_discovery", {})
 
     colours_raw = raw.get("team_colours_bgr", {})
     colours_parsed: Dict[str, Tuple[int, int, int]] = {
@@ -250,5 +267,6 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
         splits=SplitConfig(**spl_raw),
         ball_tracking=BallTrackingConfig(**btrk_raw),
         possession=PossessionConfig(**poss_raw),
+        team_discovery=TeamDiscoveryConfig(**discovery_raw),
     )
 
