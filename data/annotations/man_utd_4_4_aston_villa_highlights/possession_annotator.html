@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Possession Interval Annotator — man_utd_4_4_aston_villa_highlights</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+  button, select, input { background: #334155; color: #f8fafc; border: 1px solid #475569; padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+  button:hover { background: #475569; cursor: pointer; }
+  button.primary { background: #2563eb; border-color: #3b82f6; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #334155; text-align: left; }
+  th { background: #0f172a; color: #94a3b8; }
+  .error { color: #f87171; font-weight: 600; margin-left: 12px; }
+  .ok { color: #4ade80; font-weight: 600; margin-left: 12px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h2>Possession Interval Ground-Truth Annotator — man_utd_4_4_aston_villa_highlights (TEAM_A vs TEAM_B)</h2>
+  <div>
+    <button onclick="addInterval()">+ Add Interval</button>
+    <button onclick="markAllVerified()">Mark Selected Verified</button>
+    <button class="primary" onclick="exportCSV()">Export possession_annotations.csv</button>
+    <button onclick="exportJSON()">Export possession_annotations.json</button>
+  </div>
+</div>
+<div class="controls">
+  <span>States: <b>TEAM_A_CONTROL</b> (TEAM_A) | <b>TEAM_B_CONTROL</b> (TEAM_B) | <b>CONTESTED</b> | <b>LOOSE_BALL</b> | <b>UNKNOWN</b> | <b>OUT_OF_PLAY</b></span>
+  <span id="validationMsg" class="ok">No overlapping intervals</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Start Frame</th>
+      <th>End Frame</th>
+      <th>Start (s)</th>
+      <th>End (s)</th>
+      <th>Possession State</th>
+      <th>Uncertain</th>
+      <th>Verified (Manual)</th>
+      <th>Notes</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+<script>
+const matchId = "man_utd_4_4_aston_villa_highlights";
+const fps = 25.0;
+const states = ["", "TEAM_A_CONTROL", "TEAM_B_CONTROL", "CONTESTED", "LOOSE_BALL", "UNKNOWN", "OUT_OF_PLAY"];
+let intervals = [{"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 0, "end_frame": 99, "start_timestamp": 0.0, "end_timestamp": 3.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 100, "end_frame": 199, "start_timestamp": 4.0, "end_timestamp": 7.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 200, "end_frame": 299, "start_timestamp": 8.0, "end_timestamp": 11.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 300, "end_frame": 399, "start_timestamp": 12.0, "end_timestamp": 15.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 400, "end_frame": 499, "start_timestamp": 16.0, "end_timestamp": 19.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 500, "end_frame": 599, "start_timestamp": 20.0, "end_timestamp": 23.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 600, "end_frame": 699, "start_timestamp": 24.0, "end_timestamp": 27.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 700, "end_frame": 799, "start_timestamp": 28.0, "end_timestamp": 31.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 800, "end_frame": 899, "start_timestamp": 32.0, "end_timestamp": 35.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 900, "end_frame": 999, "start_timestamp": 36.0, "end_timestamp": 39.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1000, "end_frame": 1099, "start_timestamp": 40.0, "end_timestamp": 43.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1100, "end_frame": 1199, "start_timestamp": 44.0, "end_timestamp": 47.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1200, "end_frame": 1299, "start_timestamp": 48.0, "end_timestamp": 51.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1300, "end_frame": 1399, "start_timestamp": 52.0, "end_timestamp": 55.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1400, "end_frame": 1499, "start_timestamp": 56.0, "end_timestamp": 59.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1500, "end_frame": 1599, "start_timestamp": 60.0, "end_timestamp": 63.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1600, "end_frame": 1699, "start_timestamp": 64.0, "end_timestamp": 67.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1700, "end_frame": 1799, "start_timestamp": 68.0, "end_timestamp": 71.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1800, "end_frame": 1899, "start_timestamp": 72.0, "end_timestamp": 75.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 1900, "end_frame": 1999, "start_timestamp": 76.0, "end_timestamp": 79.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2000, "end_frame": 2099, "start_timestamp": 80.0, "end_timestamp": 83.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2100, "end_frame": 2199, "start_timestamp": 84.0, "end_timestamp": 87.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2200, "end_frame": 2299, "start_timestamp": 88.0, "end_timestamp": 91.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2300, "end_frame": 2399, "start_timestamp": 92.0, "end_timestamp": 95.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2400, "end_frame": 2499, "start_timestamp": 96.0, "end_timestamp": 99.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2500, "end_frame": 2599, "start_timestamp": 100.0, "end_timestamp": 103.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2600, "end_frame": 2699, "start_timestamp": 104.0, "end_timestamp": 107.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2700, "end_frame": 2799, "start_timestamp": 108.0, "end_timestamp": 111.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2800, "end_frame": 2899, "start_timestamp": 112.0, "end_timestamp": 115.96, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}, {"match_id": "man_utd_4_4_aston_villa_highlights", "start_frame": 2900, "end_frame": 2998, "start_timestamp": 116.0, "end_timestamp": 119.92, "state": "", "uncertain": false, "verified": false, "source": "template", "notes": "Fill state with TEAM_A_CONTROL, TEAM_B_CONTROL, CONTESTED, LOOSE_BALL, UNKNOWN, or OUT_OF_PLAY; set verified=true and source=manual"}];
+
+function checkOverlaps() {
+  const active = intervals.filter(iv => iv.state !== "").slice().sort((a, b) => a.start_frame - b.start_frame);
+  const msg = document.getElementById("validationMsg");
+  for (let i = 0; i < active.length - 1; i++) {
+    if (Number(active[i+1].start_frame) <= Number(active[i].end_frame)) {
+      msg.className = "error";
+      msg.textContent = `Overlap error: [${active[i].start_frame}, ${active[i].end_frame}] overlaps [${active[i+1].start_frame}, ${active[i+1].end_frame}]`;
+      return false;
+    }
+  }
+  msg.className = "ok";
+  msg.textContent = `Valid (${active.filter(x => x.verified).length} verified manual intervals)`;
+  return true;
+}
+
+function render() {
+  const tb = document.getElementById("tbody");
+  tb.innerHTML = "";
+  intervals.forEach((iv, i) => {
+    const tr = document.createElement("tr");
+    const opts = states.map(st => `<option value="${st}" ${iv.state===st?'selected':''}>${st || '-- Select State --'}</option>`).join("");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td><input type="number" value="${iv.start_frame}" style="width:80px" onchange="updateFrame(${i}, 'start_frame', this.value)"/></td>
+      <td><input type="number" value="${iv.end_frame}" style="width:80px" onchange="updateFrame(${i}, 'end_frame', this.value)"/></td>
+      <td>${Number(iv.start_timestamp).toFixed(2)}s</td>
+      <td>${Number(iv.end_timestamp).toFixed(2)}s</td>
+      <td><select onchange="updateState(${i}, this.value)">${opts}</select></td>
+      <td><input type="checkbox" ${iv.uncertain?'checked':''} onchange="intervals[${i}].uncertain=this.checked; render()"/></td>
+      <td><input type="checkbox" ${iv.verified?'checked':''} onchange="intervals[${i}].verified=this.checked; intervals[${i}].source='manual'; render()"/></td>
+      <td><input type="text" value="${iv.notes || ''}" style="width:200px" onchange="intervals[${i}].notes=this.value"/></td>
+      <td><button onclick="intervals.splice(${i},1); render()">X</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+  checkOverlaps();
+}
+
+function updateFrame(idx, field, val) {
+  const f = parseInt(val, 10) || 0;
+  intervals[idx][field] = f;
+  if (field === "start_frame") intervals[idx].start_timestamp = Number((f / fps).toFixed(3));
+  if (field === "end_frame") intervals[idx].end_timestamp = Number((f / fps).toFixed(3));
+  render();
+}
+
+function updateState(idx, val) {
+  intervals[idx].state = val;
+  if (val !== "") {
+    intervals[idx].verified = true;
+    intervals[idx].source = "manual";
+  }
+  render();
+}
+
+function addInterval() {
+  const lastEnd = intervals.length ? Number(intervals[intervals.length - 1].end_frame) + 1 : 0;
+  intervals.push({
+    match_id: matchId,
+    start_frame: lastEnd,
+    end_frame: lastEnd + 29,
+    start_timestamp: Number((lastEnd / fps).toFixed(3)),
+    end_timestamp: Number(((lastEnd + 29) / fps).toFixed(3)),
+    state: "",
+    uncertain: false,
+    verified: false,
+    source: "manual",
+    notes: ""
+  });
+  render();
+}
+
+function markAllVerified() {
+  intervals.forEach(iv => {
+    if (iv.state !== "") {
+      iv.verified = true;
+      iv.source = "manual";
+    }
+  });
+  render();
+}
+
+function exportCSV() {
+  if (!checkOverlaps()) { alert("Please resolve interval overlaps before exporting."); return; }
+  const rows = ["match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes"];
+  intervals.forEach(iv => {
+    rows.push(`${iv.match_id},${iv.start_frame},${iv.end_frame},${iv.start_timestamp},${iv.end_timestamp},${iv.state},${iv.uncertain},${iv.verified},${iv.source},"${(iv.notes||'').replace(/"/g,'""')}"`);
+  });
+  const blob = new Blob([rows.join("\n")], {type: "text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "possession_annotations.csv";
+  a.click();
+}
+
+function exportJSON() {
+  if (!checkOverlaps()) { alert("Please resolve interval overlaps before exporting."); return; }
+  const payload = {
+    match_id: matchId,
+    total_intervals: intervals.length,
+    verified_manual_intervals: intervals.filter(x => x.verified && x.source === "manual" && x.state !== "").length,
+    intervals: intervals
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "possession_annotations.json";
+  a.click();
+}
+
+render();
+</script>
+</body>
+</html>

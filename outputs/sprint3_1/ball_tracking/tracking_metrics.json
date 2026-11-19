@@ -1,0 +1,120 @@
+{
+  "metrics_available_ground_truth_localisation": false,
+  "validation_blocker": "No manually verified per-frame ground-truth ball bounding boxes exist yet; provenance, continuity, crowd-FP reduction, jump reduction, and camera-cut wipe suppression are measured on identical 1,500-frame unseen footage.",
+  "unseen_man_utd_villa_1500f": {
+    "sprint3_baseline": {
+      "provenance": {
+        "total_frames": 1500,
+        "observed_frames": 810,
+        "interpolated_frames": 306,
+        "lost_frames": 384,
+        "observed_rate_pct": 54.0,
+        "interpolated_rate_pct": 20.4,
+        "lost_rate_pct": 25.6,
+        "active_rate_pct": 74.4,
+        "camera_cut_resets": 49,
+        "mean_continuous_track_frames": 14.68,
+        "max_continuous_track_frames": 94,
+        "large_observed_jumps_over_150px": 114,
+        "median_observed_step_px": 8.59,
+        "p95_observed_step_px": 396.19
+      },
+      "diagnostics": {
+        "pass1_vs_pass2_tracks_compared": 427,
+        "pass1_vs_pass2_agree": 362,
+        "pass1_vs_pass2_disagree": 65,
+        "pass1_vs_pass2_agreement_rate": 0.8478,
+        "observed_ball_frames": 810,
+        "top_band_y_lt_140_observed_balls": 52,
+        "high_speed_gt_1500_observed_balls": 36,
+        "kalman_roi_recovery_hits": 0,
+        "camera_cuts_detected": 49,
+        "consecutive_cut_double_fires": 16
+      }
+    },
+    "sprint3_1_improved": {
+      "provenance": {
+        "total_frames": 1500,
+        "observed_frames": 792,
+        "interpolated_frames": 229,
+        "lost_frames": 479,
+        "observed_rate_pct": 52.8,
+        "interpolated_rate_pct": 15.27,
+        "lost_rate_pct": 31.93,
+        "active_rate_pct": 68.07,
+        "camera_cut_resets": 32,
+        "mean_continuous_track_frames": 23.2,
+        "max_continuous_track_frames": 108,
+        "large_observed_jumps_over_150px": 81,
+        "median_observed_step_px": 8.48,
+        "p95_observed_step_px": 253.0
+      },
+      "tracker_summary": {
+        "total_frames": 1500,
+        "observed_frames": 792,
+        "interpolated_frames": 229,
+        "lost_frames": 479,
+        "observed_coverage_pct": 52.8,
+        "interpolated_coverage_pct": 15.27,
+        "lost_pct": 31.93,
+        "tracked_or_interpolated_pct": 68.07,
+        "camera_cut_resets": 32,
+        "rejected_outlier_detections": 582,
+        "false_track_associations": 0,
+        "blacklisted_static_zones_count": 0,
+        "reacquisition_events": 74,
+        "active_track_segments_count": 44,
+        "mean_continuous_track_frames": 23.2,
+        "max_continuous_track_frames": 108
+      },
+      "diagnostics": {
+        "pass1_vs_pass2_tracks_compared": 402,
+        "pass1_vs_pass2_agree": 365,
+        "pass1_vs_pass2_disagree": 37,
+        "pass1_vs_pass2_agreement_rate": 0.908,
+        "observed_ball_frames": 792,
+        "top_band_y_lt_140_observed_balls": 0,
+        "high_speed_gt_1500_observed_balls": 18,
+        "kalman_roi_recovery_hits": 10,
+        "camera_cuts_detected": 32,
+        "consecutive_cut_double_fires": 0
+      }
+    }
+  },
+  "continuous_shot_proxy_chelsea_sunderland": {
+    "provenance": {
+      "total_frames": 350,
+      "observed_frames": 207,
+      "interpolated_frames": 25,
+      "lost_frames": 118,
+      "observed_rate_pct": 59.14,
+      "interpolated_rate_pct": 7.14,
+      "lost_rate_pct": 33.71,
+      "active_rate_pct": 66.29,
+      "camera_cut_resets": 6,
+      "mean_continuous_track_frames": 33.14,
+      "max_continuous_track_frames": 135,
+      "large_observed_jumps_over_150px": 8,
+      "median_observed_step_px": 6.9,
+      "p95_observed_step_px": 79.06
+    },
+    "tracker_summary": {
+      "total_frames": 350,
+      "observed_frames": 207,
+      "interpolated_frames": 25,
+      "lost_frames": 118,
+      "observed_coverage_pct": 59.14,
+      "interpolated_coverage_pct": 7.14,
+      "lost_pct": 33.71,
+      "tracked_or_interpolated_pct": 66.29,
+      "camera_cut_resets": 6,
+      "rejected_outlier_detections": 167,
+      "false_track_associations": 0,
+      "blacklisted_static_zones_count": 0,
+      "reacquisition_events": 10,
+      "active_track_segments_count": 7,
+      "mean_continuous_track_frames": 33.14,
+      "max_continuous_track_frames": 135
+    }
+  }
+}
