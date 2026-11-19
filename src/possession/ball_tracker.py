@@ -1,4 +1,7 @@
-"""Persistent football tracking using a 2D constant-velocity Kalman filter with static-clutter suppression, outlier rejection, and camera-cut resets."""
+"""Persistent football tracking using a 2D constant-velocity Kalman filter with
+pitch-horizon crowd suppression, motion-aware gating, set-piece-safe static-clutter
+suppression, outlier rejection, and camera-cut resets.
+"""
 
 from __future__ import annotations
 
@@ -23,7 +26,7 @@ def detect_camera_cut(
     Detect a broadcast camera cut, replay wipe, or wide-to-closeup focal-length switch using:
     1. Global HSV colour histogram correlation (`corr < corr_threshold`),
     2. Downsampled spatial grayscale L1 difference (`mean_l1 > l1_diff_threshold`),
-    3. Abrupt player bounding-box scale jump (`ratio > 2.2` or `< 0.45`) when cutting between
+    3. Abrupt player bounding-box scale jump (`ratio > 2.25` or `< 0.44`) when cutting between
        a wide tactical camera and a player close-up on the same pitch.
     """
     if (
@@ -63,11 +66,120 @@ def detect_camera_cut(
     return bool(corr < 0.72 and l1_diff > max(38.0, l1_diff_threshold))
 
 
+def estimate_pitch_horizon_y(frame_bgr: Optional[np.ndarray]) -> Optional[int]:
+    """Estimate the upper pixel row (`y`) where the green football pitch begins.
+
+    Returns `None` if the frame is not a wide elevated pitch view (e.g., player close-up
+    or low-angle goalmouth view), ensuring legitimate low-angle balls are never suppressed.
+    """
+    if frame_bgr is None or frame_bgr.size == 0 or frame_bgr.ndim != 3:
+        return None
+    fh, fw = frame_bgr.shape[:2]
+    if fh < 60 or fw < 80:
+        return None
+
+    small = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
+    hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+    green = cv2.inRange(
+        hsv,
+        np.array([30, 35, 25], dtype=np.uint8),
+        np.array([95, 255, 255], dtype=np.uint8),
+    )
+    row_green_frac = np.mean(green > 0, axis=1)
+    overall_green = float(np.mean(row_green_frac))
+    green_rows_ratio = float(np.mean(row_green_frac >= 0.35))
+    if overall_green < 0.25 or green_rows_ratio < 0.25:
+        return None
+
+    # Find first sustained pitch band (3 consecutive rows >= 22% green)
+    for r in range(len(row_green_frac) - 2):
+        if (
+            row_green_frac[r] >= 0.22
+            and row_green_frac[r + 1] >= 0.25
+            and row_green_frac[r + 2] >= 0.25
+        ):
+            return int(round((r / 90.0) * fh))
+    return None
+
+
 def _compute_median_player_height(player_detections: Sequence[DetectionRecord]) -> Optional[float]:
     heights = [float(p.bbox[3] - p.bbox[1]) for p in player_detections if (p.bbox[3] - p.bbox[1]) > 15]
     if not heights:
         return None
     return float(np.median(heights))
+
+
+def _is_pure_turf_patch(frame_bgr: np.ndarray, bbox: Tuple[int, int, int, int]) -> bool:
+    """Detect pure uniform green-grass phantom detections (e.g. compression artifacts on turf)."""
+    fh, fw = frame_bgr.shape[:2]
+    x1 = max(0, min(fw - 1, int(bbox[0])))
+    y1 = max(0, min(fh - 1, int(bbox[1])))
+    x2 = max(x1 + 1, min(fw, int(bbox[2])))
+    y2 = max(y1 + 1, min(fh, int(bbox[3])))
+    patch = frame_bgr[y1:y2, x1:x2]
+    if patch.size == 0:
+        return False
+    hsv = cv2.cvtColor(patch, cv2.COLOR_BGR2HSV)
+    green = cv2.inRange(
+        hsv,
+        np.array([30, 35, 25], dtype=np.uint8),
+        np.array([95, 255, 255], dtype=np.uint8),
+    )
+    green_ratio = float(np.mean(green > 0))
+    gray_std = float(np.std(cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)))
+    return bool(green_ratio > 0.78 and gray_std < 18.0)
+
+
+def _local_surrounding_green_ratio(
+    frame_bgr: np.ndarray,
+    bbox: Tuple[int, int, int, int],
+) -> float:
+    """Measure pitch-green pixel fraction in a ring strictly surrounding (excluding) a candidate box."""
+    fh, fw = frame_bgr.shape[:2]
+    x1, y1, x2, y2 = bbox
+    pad = max(10, int(max(x2 - x1, y2 - y1) * 1.4))
+    rx1, ry1 = max(0, x1 - pad), max(0, y1 - pad)
+    rx2, ry2 = min(fw, x2 + pad), min(fh, y2 + pad)
+    ring = frame_bgr[ry1:ry2, rx1:rx2]
+    if ring.size == 0:
+        return 0.0
+    hsv = cv2.cvtColor(ring, cv2.COLOR_BGR2HSV)
+    # Strict pitch-green hue [36..92] excludes neon-yellow/gold [22..35]
+    green = cv2.inRange(
+        hsv,
+        np.array([36, 35, 25], dtype=np.uint8),
+        np.array([92, 255, 255], dtype=np.uint8),
+    )
+    # Exclude the candidate box interior so a greenish/yellowish object never counts as surrounding turf
+    ix1, iy1 = max(0, x1 - rx1), max(0, y1 - ry1)
+    ix2, iy2 = min(ring.shape[1], x2 - rx1), min(ring.shape[0], y2 - ry1)
+    valid = np.ones(ring.shape[:2], dtype=bool)
+    if ix2 > ix1 and iy2 > iy1:
+        valid[iy1:iy2, ix1:ix2] = False
+    n_valid = int(np.count_nonzero(valid))
+    if n_valid <= 0:
+        return 0.0
+    return float(np.count_nonzero((green > 0) & valid)) / float(n_valid)
+
+
+def _is_high_vis_steward_patch(frame_bgr: np.ndarray, bbox: Tuple[int, int, int, int]) -> bool:
+    """Detect neon-yellow/lime high-vis steward vests in the stands often mistaken for a ball."""
+    fh, fw = frame_bgr.shape[:2]
+    x1 = max(0, min(fw - 1, int(bbox[0])))
+    y1 = max(0, min(fh - 1, int(bbox[1])))
+    x2 = max(x1 + 1, min(fw, int(bbox[2])))
+    y2 = max(y1 + 1, min(fh, int(bbox[3])))
+    patch = frame_bgr[y1:y2, x1:x2]
+    if patch.size == 0:
+        return False
+    hsv = cv2.cvtColor(patch, cv2.COLOR_BGR2HSV)
+    # High-saturation neon yellow-green (H in 22..44, S >= 130, V >= 120)
+    hivis = cv2.inRange(
+        hsv,
+        np.array([22, 130, 120], dtype=np.uint8),
+        np.array([44, 255, 255], dtype=np.uint8),
+    )
+    return float(np.mean(hivis > 0)) >= 0.30
 
 
 def filter_ball_candidates(
@@ -76,15 +188,20 @@ def filter_ball_candidates(
     frame_shape: Tuple[int, int],
     min_size: int = 5,
     max_size: int = 140,
-    blacklisted_zones: Optional[Sequence[Tuple[float, float, float]]] = None,
+    blacklisted_zones: Optional[Sequence[Tuple[float, ...]]] = None,
+    frame_bgr: Optional[np.ndarray] = None,
+    predicted_pos: Optional[Tuple[float, float]] = None,
+    filter_crowd_horizon: bool = True,
 ) -> List[DetectionRecord]:
     """
     Filter false-positive ball detections caused by:
-    - Broadcast scoreboards / banners (`cy < 0.06 * fh`),
+    - Broadcast scoreboards / corner channel watermarks,
     - Extreme aspect ratios (`< 0.42` or `> 2.35`),
     - Boxes disproportionate to player scale (`size > 0.38 * median_player_height`, e.g. white shorts),
-    - Low-confidence triggers on white jerseys/badges inside upper player torsos,
-    - Previously identified static background clutter zones (`blacklisted_zones`).
+    - Low-confidence triggers on white jerseys/badges inside upper player torsos or centered white socks,
+    - Pure uniform pitch-green grass phantoms (`conf < 0.35`),
+    - Stadium crowd/steward detections sitting above the green pitch horizon without trajectory continuity,
+    - Active static background clutter zones (`blacklisted_zones`).
     """
     if not ball_detections:
         return []
@@ -95,6 +212,12 @@ def filter_ball_candidates(
     if med_ph is not None and med_ph > 25.0:
         # A football diameter (~22cm) is ~12%-25% of player height; allow up to 38% for motion blur
         dynamic_max_size = min(max_size, max(26, int(round(med_ph * 0.38))))
+
+    pitch_top_y = (
+        estimate_pitch_horizon_y(frame_bgr)
+        if (filter_crowd_horizon and frame_bgr is not None)
+        else None
+    )
 
     filtered: List[DetectionRecord] = []
 
@@ -116,21 +239,66 @@ def filter_ball_candidates(
         if cy < fh * 0.06 and b.confidence < 0.55:
             continue
 
+        # Exclude top-left / top-right corner scoreboard & circular team watermark zones
+        in_corner_overlay = (
+            cy < fh * 0.18 and (cx < fw * 0.27 or cx > fw * 0.85)
+        )
+        if in_corner_overlay and (pitch_top_y is None or cy < pitch_top_y) and b.confidence < 0.80:
+            continue
+
         # Exclude known static background clutter hot-spots
         if blacklisted_zones:
-            if any(math.hypot(cx - zx, cy - zy) <= zr for zx, zy, zr in blacklisted_zones):
+            if any(math.hypot(cx - z[0], cy - z[1]) <= z[2] for z in blacklisted_zones):
                 continue
 
-        # Check if low-confidence ball sits inside a player's upper chest/head (white badge/collar)
-        is_torso_logo_fp = False
+        near_predicted = (
+            predicted_pos is not None
+            and math.hypot(cx - predicted_pos[0], cy - predicted_pos[1]) <= 90.0
+        )
+
+        # Reject stadium crowd / high-vis steward detections above the green pitch horizon
+        if pitch_top_y is not None and frame_bgr is not None and cy < pitch_top_y - 0.025 * fh:
+            surrounding_green = _local_surrounding_green_ratio(frame_bgr, b.bbox)
+            if surrounding_green < 0.05:
+                if _is_high_vis_steward_patch(frame_bgr, b.bbox):
+                    continue
+                # Allow legitimate lofted aerial balls above the stands ONLY when connected
+                # to an active trajectory rising from the pitch
+                if not near_predicted:
+                    continue
+
+        # Reject pure green turf phantom detections at low confidence
+        if frame_bgr is not None and b.confidence < 0.35 and _is_pure_turf_patch(frame_bgr, b.bbox):
+            continue
+
+        # Reject oversized close-up player clothing patches (e.g. white shorts in full-screen close-ups)
+        if med_ph is not None and med_ph > 0.44 * fh and max(bw, bh) > 60:
+            if any(
+                p.bbox[0] <= cx <= p.bbox[2] and p.bbox[1] <= cy <= p.bbox[3]
+                for p in player_detections
+            ):
+                continue
+
+        # Check if low-confidence ball sits inside a player's upper chest/head (badge/collar)
+        # or centered on a player's lower-leg/white-sock without trajectory support
+        is_player_body_fp = False
         if b.confidence < 0.26:
             for p in player_detections:
                 px1, py1, px2, py2 = p.bbox
-                ph = py2 - py1
+                pw = max(1, px2 - px1)
+                ph = max(1, py2 - py1)
                 if px1 <= cx <= px2 and (py1 + 0.10 * ph) <= cy <= (py1 + 0.62 * ph):
-                    is_torso_logo_fp = True
+                    is_player_body_fp = True
                     break
-        if is_torso_logo_fp:
+                if (
+                    b.confidence < 0.24
+                    and not near_predicted
+                    and (px1 + 0.18 * pw) <= cx <= (px2 - 0.18 * pw)
+                    and (py1 + 0.65 * ph) <= cy <= (py1 + 0.88 * ph)
+                ):
+                    is_player_body_fp = True
+                    break
+        if is_player_body_fp:
             continue
 
         filtered.append(b)
@@ -143,15 +311,19 @@ class KalmanBallTracker:
     Dedicated single-ball tracker using a 4D constant-velocity Kalman filter `[x, y, vx, vy]`.
 
     Reliability features:
-    - Multi-candidate gating and player-proximity-aware confidence scoring.
-    - Static background clutter detection & blacklisting: if a tracked target remains stationary
-      (`< 3.5 px` movement) for `>= 4` consecutive observations while far from all players
-      (`> 2.2 * median_player_height`), it is flagged as a `false_track_association`, blacklisted,
-      and reset so the tracker does not stay locked onto a touchline cone, spare ball, or stadium logo.
+    - Multi-candidate Mahalanobis/motion-aware gating and player-proximity + velocity-direction scoring.
+    - Two-frame motion-consistent initialization confirmation for low-confidence detections
+      (`< init_high_conf_threshold`), preventing single-frame grass/sock/clutter phantoms from
+      hijacking a lost track while preserving immediate lock on high-confidence balls.
+    - Set-piece-safe static background clutter detection & time-bounded blacklisting:
+      zones expire after `static_zone_ttl_frames`, clear on broadcast camera cuts, and are
+      automatically released if a player approaches within `1.5 * median_player_height`
+      (protecting stationary free kicks, penalties, corners, and kickoffs).
     - Outlier jump rejection with multi-frame re-acquisition confirmation for fast long passes.
     - Short-gap coasting interpolation (`observation_mode='interpolated'`) strictly separated
       from genuine detector observations (`observation_mode='observed'`).
-    - Automatic reset across broadcast camera cuts (`camera_cut_reset=True`).
+    - Automatic reset across broadcast camera cuts with wipe-cooldown protection so multi-frame
+      replay wipes do not spawn artificial 1-frame shots.
     """
 
     def __init__(
@@ -161,13 +333,42 @@ class KalmanBallTracker:
     ) -> None:
         self.match_id = match_id
         self.config = config or BallTrackingConfig()
-        self.blacklisted_static_zones: List[Tuple[float, float, float]] = []
+        self._blacklisted_zone_entries: List[Tuple[float, float, float, int]] = []
         self.false_track_associations: int = 0
         self.reacquisition_events: int = 0
         self.history: List[BallTrajectoryRecord] = []
         self._prev_frame_small: Optional[np.ndarray] = None
         self._prev_median_player_h: Optional[float] = None
+        self._last_cut_frame: Optional[int] = None
         self._reset_kalman_state()
+
+    @property
+    def blacklisted_static_zones(self) -> List[Tuple[float, float, float]]:
+        """Expose active static clutter zones as `(cx, cy, radius)` tuples."""
+        return [(zx, zy, zr) for zx, zy, zr, _ in self._blacklisted_zone_entries]
+
+    def _prune_blacklisted_zones(
+        self,
+        frame_number: int,
+        player_detections: Optional[Sequence[DetectionRecord]],
+        med_ph: Optional[float],
+    ) -> None:
+        """Expire aged static zones and release any zone approached by a player (set-piece safety)."""
+        if not self._blacklisted_zone_entries:
+            return
+        ttl = max(20, int(self.config.static_zone_ttl_frames))
+        ref_h = med_ph if (med_ph and med_ph > 25.0) else 75.0
+        kept: List[Tuple[float, float, float, int]] = []
+        for zx, zy, zr, created_f in self._blacklisted_zone_entries:
+            if frame_number - created_f > ttl:
+                continue
+            # If a player approaches this spot (e.g. lining up a free kick / corner), release the zone
+            if player_detections:
+                min_p_d = self._min_distance_to_players(zx, zy, player_detections)
+                if min_p_d is not None and min_p_d <= 1.5 * ref_h:
+                    continue
+            kept.append((zx, zy, zr, created_f))
+        self._blacklisted_zone_entries = kept
 
     def _reset_kalman_state(self) -> None:
         self.is_initialized: bool = False
@@ -180,22 +381,31 @@ class KalmanBallTracker:
         self.frames_since_observed: int = 0
         self._reacquire_candidate_pos: Optional[Tuple[float, float]] = None
         self._reacquire_streak: int = 0
+        self._init_candidate_pos: Optional[Tuple[float, float]] = None
+        self._init_streak: int = 0
         self._static_anchor_pos: Optional[Tuple[float, float]] = None
         self._static_isolated_streak: int = 0
 
     def reset(self) -> None:
         """Full reset of tracker state and history."""
-        self.blacklisted_static_zones.clear()
+        self._blacklisted_zone_entries.clear()
         self.false_track_associations = 0
         self.reacquisition_events = 0
         self.history.clear()
         self._prev_frame_small = None
         self._prev_median_player_h = None
+        self._last_cut_frame = None
         self._reset_kalman_state()
 
     @property
     def is_tracking_active(self) -> bool:
         return self.is_initialized and self.frames_since_observed <= self.config.max_coast_frames
+
+    def get_predicted_position(self) -> Optional[Tuple[float, float]]:
+        """Return current predicted `(x, y)` ball position when tracker is active."""
+        if not self.is_tracking_active:
+            return None
+        return (float(self.state[0, 0]), float(self.state[1, 0]))
 
     def get_predicted_search_roi(
         self,
@@ -282,21 +492,112 @@ class KalmanBallTracker:
         max_gate: float,
         player_detections: Optional[Sequence[DetectionRecord]],
         med_ph: Optional[float],
+        prev_pos: Optional[Tuple[float, float]] = None,
+        pred_vel: Optional[Tuple[float, float]] = None,
     ) -> float:
         bx1, by1, bx2, by2 = cand.bbox
+        bw = max(1, bx2 - bx1)
+        bh = max(1, by2 - by1)
         cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
         score = float(cand.confidence)
 
         if pred_pos is not None and max_gate > 0:
             dist_pred = math.hypot(cx - pred_pos[0], cy - pred_pos[1])
-            score -= 0.35 * (dist_pred / max_gate)
+            score -= 0.42 * (dist_pred / max_gate)
 
-        # Penalize candidates that are very far from all players when confidence is weak
+            # Box size consistency against established ball size
+            last_diag = math.hypot(*self.last_observed_bbox_size)
+            curr_diag = math.hypot(bw, bh)
+            size_ratio = max(curr_diag, last_diag) / max(1.0, min(curr_diag, last_diag))
+            if size_ratio > 2.2:
+                score -= 0.14
+
+        # Motion-direction consistency during active fast ball flight
+        if prev_pos is not None and pred_vel is not None:
+            v_mag = math.hypot(pred_vel[0], pred_vel[1])
+            dx = cx - prev_pos[0]
+            dy = cy - prev_pos[1]
+            d_mag = math.hypot(dx, dy)
+            if v_mag > 160.0 and d_mag > 12.0:
+                cos_align = (dx * pred_vel[0] + dy * pred_vel[1]) / (d_mag * v_mag)
+                score += 0.12 * cos_align
+
+        # Penalize isolated weak candidates very far from all players
         if player_detections and med_ph and med_ph > 20.0:
             min_p_dist = self._min_distance_to_players(cx, cy, player_detections)
             if min_p_dist is not None and min_p_dist > 3.2 * med_ph:
                 score -= 0.18
         return score
+
+    def _try_initialize_from_candidates(
+        self,
+        active_candidates: Sequence[DetectionRecord],
+        dt: float,
+        player_detections: Optional[Sequence[DetectionRecord]],
+        med_ph: Optional[float],
+    ) -> Optional[DetectionRecord]:
+        """Initialize (or re-initialize from LOST) with confirmation for low-confidence detections."""
+        if not active_candidates:
+            self._init_candidate_pos = None
+            self._init_streak = 0
+            return None
+
+        best = max(
+            active_candidates,
+            key=lambda d: self._score_candidate(d, None, 0.0, player_detections, med_ph),
+        )
+        bx1, by1, bx2, by2 = best.bbox
+        cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+
+        high_conf = float(best.confidence) >= float(self.config.init_high_conf_threshold)
+        need_confirm = max(1, int(self.config.init_confirm_frames))
+
+        if high_conf or need_confirm <= 1:
+            vx_est, vy_est = 0.0, 0.0
+            if self._init_candidate_pos is not None:
+                d_prev = math.hypot(cx - self._init_candidate_pos[0], cy - self._init_candidate_pos[1])
+                if d_prev <= self.config.max_jump_px_per_frame * 1.4:
+                    vx_est = (cx - self._init_candidate_pos[0]) / max(1e-3, dt)
+                    vy_est = (cy - self._init_candidate_pos[1]) / max(1e-3, dt)
+            self._init_candidate_pos = None
+            self._init_streak = 0
+            self.state = np.array([[cx], [cy], [vx_est], [vy_est]], dtype=np.float64)
+            self.cov = np.diag([36.0, 36.0, 25000.0, 25000.0])
+            self.is_initialized = True
+            self.frames_since_observed = 0
+            self.last_observed_bbox_size = (max(6, bx2 - bx1), max(6, by2 - by1))
+            self.last_confidence = float(best.confidence)
+            self._static_anchor_pos = (cx, cy)
+            self._static_isolated_streak = 1
+            return best
+
+        # Low-confidence candidate requires consecutive spatially consistent confirmation
+        prev_init = self._init_candidate_pos
+        if (
+            prev_init is not None
+            and math.hypot(cx - prev_init[0], cy - prev_init[1]) <= self.config.max_jump_px_per_frame * 1.4
+        ):
+            self._init_streak += 1
+        else:
+            self._init_streak = 1
+        self._init_candidate_pos = (cx, cy)
+
+        if self._init_streak >= need_confirm:
+            vx_est = (cx - prev_init[0]) / max(1e-3, dt) if prev_init is not None else 0.0
+            vy_est = (cy - prev_init[1]) / max(1e-3, dt) if prev_init is not None else 0.0
+            self._init_candidate_pos = None
+            self._init_streak = 0
+            self.state = np.array([[cx], [cy], [vx_est], [vy_est]], dtype=np.float64)
+            self.cov = np.diag([36.0, 36.0, 25000.0, 25000.0])
+            self.is_initialized = True
+            self.frames_since_observed = 0
+            self.last_observed_bbox_size = (max(6, bx2 - bx1), max(6, by2 - by1))
+            self.last_confidence = float(best.confidence)
+            self._static_anchor_pos = (cx, cy)
+            self._static_isolated_streak = 1
+            return best
+
+        return None
 
     def step(
         self,
@@ -311,6 +612,7 @@ class KalmanBallTracker:
         Process a single video frame and return a `BallTrajectoryRecord` with explicit provenance.
         """
         med_ph = _compute_median_player_height(player_detections or [])
+        raw_cut = False
         camera_cut = False
 
         if frame_bgr is not None and frame_bgr.size > 0:
@@ -322,8 +624,7 @@ class KalmanBallTracker:
                 prev_median_player_h=self._prev_median_player_h,
                 curr_median_player_h=med_ph,
             ):
-                camera_cut = True
-                self._reset_kalman_state()
+                raw_cut = True
             self._prev_frame_small = small_curr
         elif (
             self._prev_median_player_h is not None
@@ -335,19 +636,30 @@ class KalmanBallTracker:
                 curr_median_player_h=med_ph,
             )
         ):
-            camera_cut = True
+            raw_cut = True
+
+        if raw_cut:
+            # Always reset tracker state and clear broadcast-specific static zones across cuts
             self._reset_kalman_state()
+            self._blacklisted_zone_entries.clear()
+            cooldown = max(0, int(self.config.camera_cut_cooldown_frames))
+            if self._last_cut_frame is None or (frame_number - self._last_cut_frame) > cooldown:
+                camera_cut = True
+                self._last_cut_frame = int(frame_number)
 
         if med_ph is not None:
             self._prev_median_player_h = med_ph
 
-        # Filter out any candidates sitting inside blacklisted static background zones
+        # Maintain time-bounded, set-piece-safe static clutter blacklist
+        self._prune_blacklisted_zones(frame_number, player_detections, med_ph)
+
+        # Filter out any candidates sitting inside active blacklisted static background zones
         active_candidates = [
             c
             for c in ball_candidates
             if not any(
                 math.hypot((c.bbox[0] + c.bbox[2]) / 2.0 - zx, (c.bbox[1] + c.bbox[3]) / 2.0 - zy) <= zr
-                for zx, zy, zr in self.blacklisted_static_zones
+                for zx, zy, zr, _ in self._blacklisted_zone_entries
             )
         ]
 
@@ -365,27 +677,25 @@ class KalmanBallTracker:
         rejected_outliers = 0
         chosen_det: Optional[DetectionRecord] = None
         was_lost = not self.is_tracking_active
+        did_fresh_init = False
 
-        if not self.is_initialized:
-            if active_candidates:
-                chosen_det = max(
-                    active_candidates,
-                    key=lambda d: self._score_candidate(d, None, 0.0, player_detections, med_ph),
-                )
-                bx1, by1, bx2, by2 = chosen_det.bbox
-                cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
-                self.state = np.array([[cx], [cy], [0.0], [0.0]], dtype=np.float64)
-                self.cov = np.diag([36.0, 36.0, 25000.0, 25000.0])
-                self.is_initialized = True
-                self.frames_since_observed = 0
-                self.last_observed_bbox_size = (max(6, bx2 - bx1), max(6, by2 - by1))
-                self.last_confidence = float(chosen_det.confidence)
-                self._static_anchor_pos = (cx, cy)
-                self._static_isolated_streak = 1
+        if not self.is_tracking_active:
+            chosen_det = self._try_initialize_from_candidates(
+                active_candidates, dt, player_detections, med_ph
+            )
+            if chosen_det is not None:
+                did_fresh_init = True
+                if was_lost and self.history:
+                    self.reacquisition_events += 1
         else:
+            prev_pos = (float(self.state[0, 0]), float(self.state[1, 0]))
+            pred_vel = (float(self.state[2, 0]), float(self.state[3, 0]))
             pred_x, pred_y = self._predict_kalman(dt)
-            gate_steps = max(1, min(1 + self.frames_since_observed // 2, 4))
-            max_gate = float(self.config.max_jump_px_per_frame) * gate_steps
+            gate_steps = max(1, min(1 + self.frames_since_observed // 2, 3))
+            max_gate = min(
+                float(self.config.max_jump_px_per_frame) * gate_steps,
+                float(self.config.max_jump_px_per_frame) * 2.4,
+            )
 
             in_gate: List[Tuple[float, DetectionRecord]] = []
             out_of_gate: List[Tuple[float, DetectionRecord]] = []
@@ -394,9 +704,15 @@ class KalmanBallTracker:
                 bx1, by1, bx2, by2 = cand.bbox
                 cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
                 dist = math.hypot(cx - pred_x, cy - pred_y)
-                if dist <= max_gate or not self.is_tracking_active:
+                if dist <= max_gate:
                     score = self._score_candidate(
-                        cand, (pred_x, pred_y), max_gate, player_detections, med_ph
+                        cand,
+                        (pred_x, pred_y),
+                        max_gate,
+                        player_detections,
+                        med_ph,
+                        prev_pos=prev_pos,
+                        pred_vel=pred_vel,
                     )
                     in_gate.append((score, cand))
                 else:
@@ -408,8 +724,6 @@ class KalmanBallTracker:
                 rejected_outliers = len(out_of_gate)
                 self._reacquire_candidate_pos = None
                 self._reacquire_streak = 0
-                if was_lost:
-                    self.reacquisition_events += 1
             elif out_of_gate:
                 best_out = max(
                     out_of_gate,
@@ -438,6 +752,7 @@ class KalmanBallTracker:
                     self._reacquire_candidate_pos = None
                     self._reacquire_streak = 0
                     self.reacquisition_events += 1
+                    did_fresh_init = True
                 else:
                     rejected_outliers = len(out_of_gate)
 
@@ -462,8 +777,8 @@ class KalmanBallTracker:
                         self._static_isolated_streak = 1 if is_isolated else 0
 
                     if self._static_isolated_streak >= 4:
-                        # Static background false positive confirmed -> blacklist zone and reset track
-                        self.blacklisted_static_zones.append((cx, cy, 24.0))
+                        # Static background false positive confirmed -> TTL-bounded blacklist & reset
+                        self._blacklisted_zone_entries.append((cx, cy, 24.0, int(frame_number)))
                         self.false_track_associations += 1
                         chosen_det = None
                         self._reset_kalman_state()
@@ -471,7 +786,8 @@ class KalmanBallTracker:
             if chosen_det is not None and self.is_initialized:
                 bx1, by1, bx2, by2 = chosen_det.bbox
                 cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
-                self._update_kalman(cx, cy)
+                if not did_fresh_init:
+                    self._update_kalman(cx, cy)
                 self.frames_since_observed = 0
                 self.last_observed_bbox_size = (max(6, bx2 - bx1), max(6, by2 - by1))
                 self.last_confidence = float(chosen_det.confidence)
@@ -584,7 +900,6 @@ class KalmanBallTracker:
         cuts = sum(1 for r in self.history if r.camera_cut_reset)
         outliers = sum(r.rejected_outliers_count for r in self.history)
 
-        # Compute continuous active track segment lengths
         segment_lengths: List[int] = []
         cur_len = 0
         for r in self.history:
@@ -616,7 +931,7 @@ class KalmanBallTracker:
             "camera_cut_resets": cuts,
             "rejected_outlier_detections": outliers,
             "false_track_associations": int(self.false_track_associations),
-            "blacklisted_static_zones_count": len(self.blacklisted_static_zones),
+            "blacklisted_static_zones_count": len(self._blacklisted_zone_entries),
             "reacquisition_events": int(self.reacquisition_events),
             "active_track_segments_count": len(segment_lengths),
             "mean_continuous_track_frames": round(mean_seg, 2),

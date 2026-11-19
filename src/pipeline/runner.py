@@ -13,10 +13,14 @@ from src.classification.classifier import TeamClassifier
 from src.classification.cropper import extract_torso_crop
 from src.classification.dataset import JerseyCropDataset, assign_temporal_and_track_splits
 from src.classification.diagnostics import audit_dataset_labels
+from src.classification.features import get_feature_extractor
 from src.classification.team_discovery import (
     AutomaticTeamDiscoverer,
     TeamDiscoveryObservation,
+    TrackAppearanceBuffer,
     collect_track_appearances,
+    filter_discovery_player_indices,
+    is_tactical_discovery_frame,
 )
 from src.config import MatchConfig, load_match_config
 from src.geometry.pitch import load_pitch_calibration
@@ -57,7 +61,7 @@ from src.pipeline.legacy_migration import (
     migrate_chelsea_sunderland_legacy_dataset,
     migrate_norway_wales_legacy_dataset,
 )
-from src.possession.ball_tracker import filter_ball_candidates
+from src.possession.ball_tracker import detect_camera_cut, filter_ball_candidates
 from src.possession.possession_engine import PossessionEngine
 from src.schemas import ClassificationPrediction, FrameObservationRecord, InternalLabel
 from src.tracking.stabilizer import TemporalTeamStabilizer
@@ -187,102 +191,345 @@ def _build_ball_diagnostic_panel_crop(
     return cv2.resize(canvas, (320, 240), interpolation=cv2.INTER_AREA)
 
 
-def discover_teams_from_video(
+def _discover_teams_with_frame_cache(
     video_path: Path,
     match_config: MatchConfig,
     max_frames: Optional[int] = 300,
-) -> Tuple[AutomaticTeamDiscoverer, List[Tuple[Any, np.ndarray, str]], Dict[str, Any]]:
-    """Run a first tracking pass and fit per-video, unsupervised team appearances.
-
-    This pass is intentionally independent of any crop manifest or team-name
-    mapping.  Its output is a track-level model consumed by the normal tracking
-    and possession pass.
+    fps_override: Optional[float] = None,
+) -> Tuple[
+    AutomaticTeamDiscoverer,
+    List[Tuple[Any, np.ndarray, str]],
+    Dict[str, Any],
+    List[Dict[str, Any]],
+]:
+    """Run one detection/tracking pass, cache lightweight per-frame tracks & features,
+    and fit per-video unsupervised team appearances on tactical, shot-segmented tracks.
     """
     tracker = MultiObjectTracker(
         detection_config=match_config.detection,
         tracking_config=match_config.tracking,
     )
-    observations: List[TeamDiscoveryObservation] = []
-    gallery_samples: List[Tuple[Any, np.ndarray, str]] = []
-    for fno, ts, frame_bgr, detections in tracker.track_video(video_path, max_frames=max_frames):
+    extractor = get_feature_extractor(match_config.team_discovery.feature_method)
+    tactical_observations: List[TeamDiscoveryObservation] = []
+    fallback_observations: List[TeamDiscoveryObservation] = []
+    cached_frames: List[Dict[str, Any]] = []
+
+    prev_small: Optional[np.ndarray] = None
+    prev_med_h: Optional[float] = None
+    last_cut_frame: Optional[int] = None
+    shot_id = 0
+    cooldown = max(0, int(match_config.ball_tracking.camera_cut_cooldown_frames))
+
+    for fno, ts, frame_bgr, detections in tracker.track_video(
+        video_path, max_frames=max_frames, fps_override=fps_override
+    ):
+        fh, fw = frame_bgr.shape[:2]
         players = [d for d in detections if d.class_name == "player"]
+        balls = [d for d in detections if d.class_name == "ball"]
         player_boxes = [d.bbox for d in players]
-        for player in players:
+        heights = [float(b[3] - b[1]) for b in player_boxes if (b[3] - b[1]) > 15]
+        med_h = float(np.median(heights)) if heights else None
+
+        small_curr = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
+        is_cut = False
+        if prev_small is not None and detect_camera_cut(
+            prev_small,
+            small_curr,
+            corr_threshold=match_config.ball_tracking.camera_cut_hist_threshold,
+            prev_median_player_h=prev_med_h,
+            curr_median_player_h=med_h,
+        ):
+            if last_cut_frame is None or (fno - last_cut_frame) > cooldown:
+                shot_id += 1
+                is_cut = True
+                last_cut_frame = fno
+        prev_small = small_curr
+        if med_h is not None:
+            prev_med_h = med_h
+
+        tactical = is_tactical_discovery_frame(player_boxes, (fh, fw))
+        valid_disc_indices = set(filter_discovery_player_indices(player_boxes, (fh, fw))) if tactical else set()
+
+        per_player_features: List[Optional[np.ndarray]] = []
+        per_player_weights: List[float] = []
+        for p_idx, player in enumerate(players):
             crop, _, quality = extract_torso_crop(
                 frame_bgr, player.bbox, config=match_config.cropping, other_player_bboxes=player_boxes
             )
             if crop is None or not quality.is_valid:
+                per_player_features.append(None)
+                per_player_weights.append(0.0)
                 continue
-            observations.append(
-                TeamDiscoveryObservation(
-                    tracking_id=player.tracking_id,
-                    frame_number=fno,
-                    timestamp=ts,
-                    crop_bgr=crop,
-                    blur_score=quality.blur_score,
-                    grass_ratio=quality.grass_ratio,
-                    occlusion_ratio=quality.occlusion_ratio,
-                )
+
+            feat = extractor(crop)
+            q_weight = (1.0 - quality.grass_ratio) * (1.0 - quality.occlusion_ratio)
+            per_player_features.append(feat)
+            per_player_weights.append(max(0.05, float(q_weight)))
+
+            obs = TeamDiscoveryObservation(
+                tracking_id=player.tracking_id,
+                frame_number=fno,
+                timestamp=ts,
+                crop_bgr=crop,
+                blur_score=quality.blur_score,
+                grass_ratio=quality.grass_ratio,
+                occlusion_ratio=quality.occlusion_ratio,
+                shot_id=shot_id,
+                bbox=player.bbox,
+                feature=feat,
             )
-    appearances = collect_track_appearances(observations, match_config.team_discovery)
+            fallback_observations.append(obs)
+            if tactical and p_idx in valid_disc_indices:
+                tactical_observations.append(obs)
+
+        cached_frames.append(
+            {
+                "frame_number": fno,
+                "timestamp": ts,
+                "shot_id": shot_id,
+                "camera_cut": is_cut,
+                "players": players,
+                "balls": balls,
+                "player_features": per_player_features,
+                "player_weights": per_player_weights,
+            }
+        )
+
+    appearances = collect_track_appearances(tactical_observations, match_config.team_discovery)
+    if len(appearances) < 4:
+        appearances = collect_track_appearances(fallback_observations, match_config.team_discovery)
     discoverer = AutomaticTeamDiscoverer(match_config.team_discovery).fit(appearances)
-    # Gallery uses a compact metadata-shaped object only for display; labels are
-    # discovered, never manually supplied to the fitting procedure.
+
     from types import SimpleNamespace
-    by_track: Dict[int, TeamDiscoveryObservation] = {}
-    for item in observations:
-        if item.tracking_id is not None and item.tracking_id not in by_track:
-            by_track[item.tracking_id] = item
+
+    gallery_samples: List[Tuple[Any, np.ndarray, str]] = []
+    source_obs = tactical_observations if len(tactical_observations) >= len(appearances) else fallback_observations
+    by_seg: Dict[Tuple[int, int], TeamDiscoveryObservation] = {}
+    for item in source_obs:
+        if item.tracking_id is not None:
+            seg_key = (int(item.shot_id), int(item.tracking_id))
+            prev_item = by_seg.get(seg_key)
+            if prev_item is None or item.blur_score > prev_item.blur_score:
+                by_seg[seg_key] = item
     for appearance in appearances:
-        item = by_track.get(appearance.tracking_id)
+        item = by_seg.get(appearance.segment_key)
         if item is None:
             continue
-        label, _ = discoverer.predict_track(appearance.tracking_id)
-        gallery_samples.append((SimpleNamespace(legacy_gallery_index=None, raw_label=None, frame_number=item.frame_number), item.crop_bgr, label))
-    return discoverer, gallery_samples, discoverer.report(appearances)
+        label, _ = discoverer.predict_track(appearance.tracking_id, shot_id=appearance.shot_id)
+        gallery_samples.append(
+            (
+                SimpleNamespace(legacy_gallery_index=None, raw_label=None, frame_number=item.frame_number),
+                item.crop_bgr,
+                label,
+            )
+        )
+    return discoverer, gallery_samples, discoverer.report(appearances), cached_frames
+
+
+def discover_teams_from_video(
+    video_path: Path,
+    match_config: MatchConfig,
+    max_frames: Optional[int] = 300,
+) -> Tuple[AutomaticTeamDiscoverer, List[Tuple[Any, np.ndarray, str]], Dict[str, Any]]:
+    """Run a tracking pass and fit per-video, unsupervised team appearances.
+
+    This pass is intentionally independent of any crop manifest or team-name
+    mapping.  Its output is a track-level model consumed by the tracking and
+    possession pass.
+    """
+    discoverer, gallery_samples, discovery_report, _ = _discover_teams_with_frame_cache(
+        video_path=video_path,
+        match_config=match_config,
+        max_frames=max_frames,
+    )
+    return discoverer, gallery_samples, discovery_report
 
 
 def _run_auto_team_pipeline(
     match_cfg: MatchConfig, video_path: Path, output_dir: Path, exp_id: str, max_frames: Optional[int]
 ) -> Dict[str, Any]:
-    """Two-pass unattended inference: discover appearances, then estimate possession."""
-    discoverer, gallery, discovery = discover_teams_from_video(video_path, match_cfg, max_frames)
-    report_path = output_dir / "team_discovery_report.json"
-    report_path.write_text(json.dumps(discovery, indent=2), encoding="utf-8")
-    artifacts: Dict[str, str] = {"team_discovery_report": str(report_path)}
-    artifacts["team_cluster_gallery"] = str(save_crop_reference_gallery(gallery, f"{match_cfg.match_name} — Discovered Teams", output_dir / "team_cluster_gallery.png"))
-    artifacts["team_clustering_metrics_csv"] = str(write_csv_rows(output_dir / "team_clustering_metrics.csv", [
-        {"tracking_id": tid, "discovered_label": label, "cosine_distance": discoverer.track_distances_.get(tid)}
-        for tid, label in sorted(discoverer.track_labels_.items())
-    ]))
+    """Unattended single-detection-pass inference: discover track appearances, then
+    classify tracks using verified track-level descriptors + temporal stabilization
+    and estimate confidence-aware possession with Kalman ROI ball recovery.
+    """
+    t_start = time.perf_counter()
     cap = cv2.VideoCapture(str(video_path))
     fps = float(cap.get(cv2.CAP_PROP_FPS)) or 25.0
     width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    total_video_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    total_video_duration = total_video_frames / max(1.0, fps)
     cap.release()
-    writer = cv2.VideoWriter(str(output_dir / f"{match_cfg.match_id}_raw.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), fps / max(1, match_cfg.detection.frame_stride), (width, height))
-    tracker = MultiObjectTracker(match_cfg.detection, match_cfg.tracking)
+
+    discoverer, gallery, discovery, cached_frames = _discover_teams_with_frame_cache(
+        video_path, match_cfg, max_frames=max_frames, fps_override=fps
+    )
+    report_path = output_dir / "team_discovery_report.json"
+    report_path.write_text(json.dumps(discovery, indent=2), encoding="utf-8")
+    artifacts: Dict[str, str] = {"team_discovery_report": str(report_path)}
+    artifacts["team_cluster_gallery"] = str(
+        save_crop_reference_gallery(
+            gallery,
+            f"{match_cfg.match_name} — Discovered Teams",
+            output_dir / "team_cluster_gallery.png",
+        )
+    )
+    artifacts["team_clustering_metrics_csv"] = str(
+        write_csv_rows(
+            output_dir / "team_clustering_metrics.csv",
+            [
+                {
+                    "shot_id": seg_key[0],
+                    "tracking_id": seg_key[1],
+                    "discovered_label": pred.predicted_label,
+                    "raw_nearest_label": pred.raw_nearest_label,
+                    "cosine_distance": pred.nearest_distance,
+                    "second_nearest_distance": pred.second_nearest_distance,
+                    "margin": pred.margin,
+                    "confidence_score": pred.confidence_score,
+                    "rejection_reason": pred.rejection_reason or "",
+                }
+                for seg_key, pred in sorted(discoverer.segment_predictions_.items())
+            ],
+        )
+    )
+
+    writer = cv2.VideoWriter(
+        str(output_dir / f"{match_cfg.match_id}_raw.mp4"),
+        cv2.VideoWriter_fourcc(*"mp4v"),
+        fps / max(1, match_cfg.detection.frame_stride),
+        (width, height),
+    )
+    aux_detector = FootballDetector(config=match_cfg.detection)
+    track_buffer = TrackAppearanceBuffer(
+        discoverer=discoverer,
+        max_buffer_samples=max(8, match_cfg.team_discovery.max_samples_per_track),
+        max_missing_frames=match_cfg.tracking.max_missing_frames_before_reset,
+        max_spatial_jump_ratio=match_cfg.tracking.max_spatial_jump_ratio,
+    )
     stabilizer = TemporalTeamStabilizer(match_cfg.tracking)
-    engine = PossessionEngine(match_cfg, fps=fps, frame_stride=match_cfg.detection.frame_stride)
+    engine = PossessionEngine(
+        match_cfg,
+        fps=fps,
+        frame_stride=match_cfg.detection.frame_stride,
+        total_video_duration_seconds=total_video_duration,
+    )
     observations: List[FrameObservationRecord] = []
     processed = 0
+
+    cap_read = cv2.VideoCapture(str(video_path))
+    current_pos = 0
     try:
-        for fno, ts, frame, detections in tracker.track_video(video_path, max_frames=max_frames, fps_override=fps):
-            players = [item for item in detections if item.class_name == "player"]
-            balls = [item for item in detections if item.class_name == "ball"]
-            boxes = [item.bbox for item in players]
+        for item in cached_frames:
+            fno = int(item["frame_number"])
+            ts = float(item["timestamp"])
+            shot_id = int(item["shot_id"])
+            is_cut = bool(item["camera_cut"])
+            players = item["players"]
+            balls = list(item["balls"])
+            per_player_features = item["player_features"]
+            per_player_weights = item["player_weights"]
+
+            # Read exact frame sequentially without slow random seeks whenever possible
+            if fno < current_pos or (fno - current_pos) > 30:
+                cap_read.set(cv2.CAP_PROP_POS_FRAMES, fno)
+                current_pos = fno
+            frame = None
+            while current_pos <= fno:
+                ok, frm = cap_read.read()
+                current_pos += 1
+                if not ok:
+                    break
+                if current_pos - 1 == fno:
+                    frame = frm
+            if frame is None:
+                continue
+
+            if is_cut:
+                track_buffer.on_camera_cut()
+                stabilizer.on_camera_cut()
+
+            # Check whether cached detections contain a plausible on-pitch ball; if not, run Kalman ROI recovery
+            det_source = "full_or_tiled" if balls else "none"
+            plausible_balls = (
+                filter_ball_candidates(
+                    balls,
+                    players,
+                    (height, width),
+                    min_size=match_cfg.detection.min_ball_box_size_px,
+                    max_size=match_cfg.detection.max_ball_box_size_px,
+                    blacklisted_zones=engine.ball_tracker.blacklisted_static_zones,
+                    frame_bgr=frame,
+                    predicted_pos=engine.ball_tracker.get_predicted_position(),
+                    filter_crowd_horizon=match_cfg.ball_tracking.filter_crowd_horizon,
+                )
+                if match_cfg.detection.filter_false_positive_balls and balls
+                else balls
+            )
+            if not plausible_balls and match_cfg.detection.enable_roi_ball_search:
+                roi_box = engine.get_predicted_ball_roi((height, width))
+                if roi_box is not None:
+                    roi_balls = aux_detector.detect_ball_in_roi(
+                        frame,
+                        roi_box,
+                        frame_number=fno,
+                        timestamp=ts,
+                        conf_threshold=match_cfg.detection.roi_conf_threshold,
+                    )
+                    if roi_balls:
+                        balls = _nms_ball_detections(roi_balls)
+                        det_source = "kalman_roi_recovery"
+
             frame_obs: List[FrameObservationRecord] = []
-            for player in players:
-                crop, _, _ = extract_torso_crop(frame, player.bbox, config=match_cfg.cropping, other_player_bboxes=boxes)
-                prediction = discoverer.predict_classification(crop)
+            for player, feat, q_weight in zip(players, per_player_features, per_player_weights):
+                # Always update online track buffer (keyed by shot_id + tracking_id)
+                buf_pred = track_buffer.classify_observation(
+                    player.tracking_id,
+                    fno,
+                    player.bbox,
+                    None,
+                    feature=feat,
+                    quality_weight=q_weight,
+                )
+                # When this exact verified track segment qualified in Pass 1, use its
+                # full-track aggregated descriptor classification; otherwise use online buffer.
+                seg_key = (shot_id, int(player.tracking_id)) if player.tracking_id is not None else None
+                if seg_key is not None and seg_key in discoverer.segment_predictions_:
+                    prediction = discoverer.segment_predictions_[seg_key]
+                else:
+                    prediction = buf_pred
+
                 label, stability, locked = stabilizer.update(player.tracking_id, fno, player.bbox, prediction)
-                raw_ball = max(balls, key=lambda item: item.confidence) if balls else None
-                record = FrameObservationRecord(match_cfg.match_id, fno, ts, player.tracking_id, label, match_cfg.to_display_label(label), prediction.predicted_label, player.bbox, player.confidence, prediction.confidence_score, prediction.nearest_distance, stability, locked, raw_ball.bbox if raw_ball else None, raw_ball.confidence if raw_ball else None)
-                frame_obs.append(record); observations.append(record)
-            ball_rec, poss_rec, _ = engine.step_frame(fno, ts, frame_obs, balls, players, frame, (height, width))
+                raw_ball = max(balls, key=lambda b: b.confidence) if balls else None
+                record = FrameObservationRecord(
+                    match_cfg.match_id,
+                    fno,
+                    ts,
+                    player.tracking_id,
+                    label,
+                    match_cfg.to_display_label(label),
+                    prediction.predicted_label,
+                    player.bbox,
+                    player.confidence,
+                    prediction.confidence_score,
+                    prediction.nearest_distance,
+                    stability,
+                    locked,
+                    raw_ball.bbox if raw_ball else None,
+                    raw_ball.confidence if raw_ball else None,
+                )
+                frame_obs.append(record)
+                observations.append(record)
+
+            ball_rec, poss_rec, _ = engine.step_frame(
+                fno, ts, frame_obs, balls, players, frame, (height, width), detection_source=det_source
+            )
             writer.write(annotate_match_frame(frame, frame_obs, balls, match_cfg, ball_rec, poss_rec))
             processed += 1
     finally:
+        cap_read.release()
         writer.release()
+
+    wall_time = round(time.perf_counter() - t_start, 2)
     final_video = finalize_mp4_video(output_dir / f"{match_cfg.match_id}_raw.mp4", output_dir / "annotated_match.mp4")
     artifacts["annotated_video"] = str(final_video)
     artifacts["frame_observations_csv"] = str(export_possession_foundation_records(output_dir / "frame_observations.csv", observations))
@@ -293,19 +540,94 @@ def _run_auto_team_pipeline(
             x1, _, x2, y2 = observation.player_bbox
             position = calibration.project_pixel((x1 + x2) / 2.0, y2)
             if position is not None:
-                pitch_rows.append({"frame_number": observation.frame_number, "timestamp": observation.timestamp, "tracking_id": observation.player_id, "team_id": observation.team_id, "pitch_x_m": position[0], "pitch_y_m": position[1]})
+                pitch_rows.append(
+                    {
+                        "frame_number": observation.frame_number,
+                        "timestamp": observation.timestamp,
+                        "tracking_id": observation.player_id,
+                        "team_id": observation.team_id,
+                        "pitch_x_m": position[0],
+                        "pitch_y_m": position[1],
+                    }
+                )
         artifacts["pitch_positions_csv"] = str(write_csv_rows(output_dir / "pitch_positions.csv", pitch_rows))
     artifacts["ball_tracking_diagnostics_csv"] = str(export_ball_trajectory_records(output_dir / "ball_tracking_diagnostics.csv", engine.ball_trajectory))
+    artifacts["possession_timeline_csv"] = str(export_possession_timeline_records(output_dir / "possession_timeline.csv", engine.timeline))
     summary = engine.summarize()
-    possession_files = generate_possession_report(output_dir, summary, {"metrics_available": False, "validation_blocker": "missing_verified_manual_possession_annotations"})
+    possession_files = generate_possession_report(
+        output_dir,
+        summary,
+        {"metrics_available": False, "validation_blocker": "missing_verified_manual_possession_annotations"},
+    )
     artifacts.update({key: str(value) for key, value in possession_files.items()})
-    ball_metrics = {"metrics_available": False, "validation_blocker": "missing_verified_manual_detection_annotations", "observed_coverage_pct": engine.ball_tracker.summarize()["observed_coverage_pct"]}
-    ball_metrics_path = output_dir / "ball_detection_metrics.json"; ball_metrics_path.write_text(json.dumps(ball_metrics, indent=2), encoding="utf-8"); artifacts["ball_detection_metrics"] = str(ball_metrics_path)
+    ball_summary = engine.ball_tracker.summarize()
+    ball_metrics = {
+        "metrics_available": False,
+        "validation_blocker": "missing_verified_manual_detection_annotations",
+        "total_frames_processed": processed,
+        "avg_players_per_frame": round(len(observations) / float(max(1, processed)), 2),
+        "frames_with_ball": ball_summary["observed_frames"],
+        "ball_coverage_pct": ball_summary["observed_coverage_pct"],
+        "observed_coverage_pct": ball_summary["observed_coverage_pct"],
+    }
+    ball_metrics_path = output_dir / "ball_detection_metrics.json"
+    ball_metrics_path.write_text(json.dumps(ball_metrics, indent=2), encoding="utf-8")
+    artifacts["ball_detection_metrics"] = str(ball_metrics_path)
     write_csv_rows(output_dir / "tracking_comparison.csv", [])
-    classification = {"mode": "unsupervised_per_video_adaptation", "metrics_available": False, "validation_blocker": "No independent labels supplied.", "team_discovery": discovery, "overall_accuracy": None, "macro_f1": None, "coverage": None, "per_class": {}}
+    classification = {
+        "mode": "unsupervised_per_video_adaptation",
+        "feature_method": match_cfg.team_discovery.feature_method,
+        "classifier_type": match_cfg.team_discovery.clustering_method,
+        "metrics_available": False,
+        "validation_blocker": "No independent labels supplied.",
+        "team_discovery": discovery,
+        "overall_accuracy": None,
+        "selective_accuracy": None,
+        "macro_f1": None,
+        "positive_macro_f1": None,
+        "coverage": None,
+        "unknown_rejection_rate": None,
+        "per_class": {},
+    }
     tracking = stabilizer.summarize_diagnostics(processed)
-    report_files = generate_consolidated_report(output_dir, match_cfg.match_id, match_cfg.match_name, ball_metrics, classification, tracking, possession_summary=summary, artifacts_generated=artifacts)
-    return {"experiment_id": exp_id, "output_dir": str(output_dir), "classification_summary": classification, "detection_summary": ball_metrics, "tracking_summary": tracking, "possession_summary": summary, "report_files": {key: str(value) for key, value in report_files.items()}, "artifacts": artifacts}
+    tracking["tracker_config"] = match_cfg.tracking.tracker_config
+    experiment_metadata = {
+        "experiment_id": exp_id,
+        "match_id": match_cfg.match_id,
+        "match_name": match_cfg.match_name,
+        "mode": "auto_teams_unsupervised",
+        "video_resolution": f"{width}x{height}",
+        "video_fps": round(fps, 2),
+        "frame_stride": match_cfg.detection.frame_stride,
+        "processed_frames": processed,
+        "tracker_config": match_cfg.tracking.tracker_config,
+        "feature_method": match_cfg.team_discovery.feature_method,
+        "clustering_method": match_cfg.team_discovery.clustering_method,
+        "processing_wall_time_seconds": wall_time,
+        "average_processing_fps": round(processed / max(0.01, wall_time), 2),
+    }
+    report_files = generate_consolidated_report(
+        output_dir,
+        match_cfg.match_id,
+        match_cfg.match_name,
+        ball_metrics,
+        classification,
+        tracking,
+        possession_summary=summary,
+        artifacts_generated=artifacts,
+        experiment_metadata=experiment_metadata,
+    )
+    return {
+        "experiment_id": exp_id,
+        "output_dir": str(output_dir),
+        "experiment_metadata": experiment_metadata,
+        "classification_summary": classification,
+        "detection_summary": ball_metrics,
+        "tracking_summary": tracking,
+        "possession_summary": summary,
+        "report_files": {key: str(value) for key, value in report_files.items()},
+        "artifacts": artifacts,
+    }
 
 
 def run_match_pipeline(
@@ -343,47 +665,6 @@ def run_match_pipeline(
         return _run_auto_team_pipeline(match_cfg, video_path, output_dir, exp_id, max_tracking_frames)
 
     artifacts: Dict[str, str] = {}
-    active_discoverer: Optional[AutomaticTeamDiscoverer] = None
-    # Label-free mode intentionally does not read the match crop manifest.  The
-    # first video pass supplies its own quality-gated, track-level adaptation set.
-    if match_cfg.team_discovery.enabled:
-        active_discoverer, discovery_gallery, discovery_report = discover_teams_from_video(
-            video_path, match_cfg, max_frames=max_tracking_frames
-        )
-        discovery_json = output_dir / "team_discovery_report.json"
-        import json
-        discovery_json.write_text(json.dumps(discovery_report, indent=2), encoding="utf-8")
-        artifacts["team_discovery_report"] = str(discovery_json)
-        gallery_path = save_crop_reference_gallery(
-            discovery_gallery,
-            f"{match_cfg.match_name} — Automatically Discovered Team Appearances",
-            output_dir / "team_cluster_gallery.png",
-        )
-        artifacts["team_cluster_gallery"] = str(gallery_path)
-        cluster_rows = [
-            {"tracking_id": tid, "discovered_label": label, "cosine_distance": active_discoverer.track_distances_.get(tid)}
-            for tid, label in sorted(active_discoverer.track_labels_.items())
-        ]
-        cluster_csv = write_csv_rows(output_dir / "team_clustering_metrics.csv", cluster_rows)
-        artifacts["team_clustering_metrics_csv"] = str(cluster_csv)
-        clf_eval: Dict[str, Any] = {
-            "mode": "unsupervised_per_video_adaptation",
-            "metrics_available": False,
-            "validation_blocker": "No independent labelled reference set was supplied for this video.",
-            "feature_method": match_cfg.team_discovery.feature_method,
-            "classifier_type": match_cfg.team_discovery.clustering_method,
-            "overall_accuracy": None,
-            "macro_f1": None,
-            "coverage": None,
-            "unknown_rejection_rate": None,
-            "per_class": {},
-            "confusion_matrix": [],
-            "labels_display": [],
-            "team_discovery": discovery_report,
-        }
-        benchmark_results: List[Dict[str, Any]] = []
-        label_audit: Dict[str, Any] = {"status": "not_applicable_in_auto_team_mode"}
-        active_clf = None
     # Supervised mode remains available for the existing labelled workflows.
     dataset = prepare_dataset_for_match(match_cfg, base_dir=root)
     train_samples = dataset.get_labelled_samples(split="train", exclude_unknown=True, verified_only=True)
@@ -557,8 +838,27 @@ def run_match_pipeline(
             ball_dets = [d for d in detections if d.class_name == "ball"]
             det_source = "full_or_tiled" if ball_dets else "none"
 
-            # If ball still missed on this frame and Kalman ROI search is available, try ROI crop search
-            if not ball_dets and possession_engine is not None:
+            # If no plausible ball found on this frame and Kalman ROI search is available, try ROI crop search
+            plausible_balls = (
+                filter_ball_candidates(
+                    ball_dets,
+                    player_dets,
+                    (height, width),
+                    min_size=match_cfg.detection.min_ball_box_size_px,
+                    max_size=match_cfg.detection.max_ball_box_size_px,
+                    blacklisted_zones=possession_engine.ball_tracker.blacklisted_static_zones
+                    if possession_engine is not None
+                    else None,
+                    frame_bgr=frame_bgr,
+                    predicted_pos=possession_engine.ball_tracker.get_predicted_position()
+                    if possession_engine is not None
+                    else None,
+                    filter_crowd_horizon=match_cfg.ball_tracking.filter_crowd_horizon,
+                )
+                if match_cfg.detection.filter_false_positive_balls and ball_dets
+                else ball_dets
+            )
+            if not plausible_balls and possession_engine is not None:
                 roi_box = possession_engine.get_predicted_ball_roi((height, width))
                 if roi_box is not None:
                     roi_balls = aux_detector.detect_ball_in_roi(

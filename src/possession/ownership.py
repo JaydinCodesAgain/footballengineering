@@ -228,11 +228,25 @@ def evaluate_frame_ownership_candidates(
     if ball_record.is_interpolated:
         ball_conf_factor *= 0.80
 
+    # Scale speed threshold by observed player height (perspective/zoom invariance)
+    p_heights_all = [
+        float(o.player_bbox[3] - o.player_bbox[1])
+        for o in frame_observations
+        if (o.player_bbox[3] - o.player_bbox[1]) > 15
+    ]
+    if p_heights_all:
+        s_sorted = sorted(p_heights_all)
+        med_ph_scale = float(s_sorted[len(s_sorted) // 2])
+        scale_mult = max(0.65, min(1.75, med_ph_scale / 80.0))
+    else:
+        scale_mult = 1.0
+    effective_speed_thresh = float(cfg.loose_ball_speed_threshold_px_s) * scale_mult
+
     speed = float(ball_record.speed_px_per_sec)
     speed_factor = (
         1.0
-        if speed <= cfg.loose_ball_speed_threshold_px_s * 0.65
-        else max(0.35, 1.0 - (speed / max(1.0, cfg.loose_ball_speed_threshold_px_s * 1.5)))
+        if speed <= effective_speed_thresh * 0.65
+        else max(0.35, 1.0 - (speed / max(1.0, effective_speed_thresh * 1.5)))
     )
 
     for obs in frame_observations:
@@ -241,10 +255,13 @@ def evaluate_frame_ownership_candidates(
 
         eff_team_id = obs.team_id
         conf_mult = 1.0
+        # Only fall back to raw team prediction for brand-new tracks still warming up
+        # (`track_team_confidence == 0.0`), never overriding a stabilizer disagreement/rejection.
         if (
             eff_team_id == InternalLabel.UNKNOWN.value
+            and float(obs.track_team_confidence or 0.0) <= 0.0
             and obs.raw_team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value)
-            and float(obs.classification_confidence or 0.0) >= 0.65
+            and float(obs.classification_confidence or 0.0) >= 0.72
         ):
             eff_team_id = obs.raw_team_id
             conf_mult = 0.78
@@ -262,8 +279,8 @@ def evaluate_frame_ownership_candidates(
             rel_d = norm_d / max(1e-4, cfg.control_distance_threshold)
             dist_term = max(0.22, 1.0 - 0.65 * (rel_d ** 2)) if rel_d <= 1.0 else max(0.0, 0.35 * (1.35 - rel_d))
             team_conf = max(
-                0.55,
-                float(obs.track_team_confidence or obs.classification_confidence or 0.65),
+                0.35,
+                float(obs.track_team_confidence or obs.classification_confidence or 0.55),
             ) * conf_mult
             aerial_mult = 0.55 if aerial else 1.0
             c_score = dist_term * speed_factor * aerial_mult * min(1.0, team_conf) * ball_conf_factor
@@ -368,7 +385,7 @@ def evaluate_frame_ownership_candidates(
         d_top = float(top_cand.normalized_distance_to_ball)
         if d_top <= cfg.control_distance_threshold:
             # High-speed ball in flight not directly at feet -> LOOSE_BALL
-            if speed > cfg.loose_ball_speed_threshold_px_s and d_top > 0.32:
+            if speed > effective_speed_thresh and d_top > 0.32:
                 raw_st = PossessionState.LOOSE_BALL.value
                 ctrl_pid = None
                 ctrl_tid = None
