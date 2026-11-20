@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Football AI — Detection Ground-Truth Annotator (man_utd_4_4_aston_villa_highlights)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #141619; color: #f0f0f0; margin: 0; padding: 16px; }
+  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; background: #212529; padding: 10px 14px; border-radius: 6px; }
+  button, select { padding: 6px 12px; border-radius: 4px; border: 1px solid #495057; background: #343a40; color: #fff; cursor: pointer; font-weight: 600; }
+  button.primary { background: #198754; border-color: #198754; }
+  button.active-cls { outline: 2px solid #ffc107; }
+  #canvas-wrap { position: relative; display: inline-block; border: 2px solid #495057; overflow: auto; max-width: 100%; }
+  canvas { display: block; cursor: crosshair; }
+  .status { font-size: 14px; color: #adb5bd; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <strong>Match: man_utd_4_4_aston_villa_highlights</strong>
+  <button onclick="prevFrame()">&#9664; Prev Frame</button>
+  <span id="frame-info">Frame 0/0</span>
+  <button onclick="nextFrame()">Next Frame &#9654;</button>
+  <button id="btn-ball" class="active-cls" onclick="setClass('ball')">Class: BALL (Key 1)</button>
+  <button id="btn-player" onclick="setClass('player')">Class: PLAYER (Key 2)</button>
+  <button onclick="undoBox()">Undo Last Box (Z)</button>
+  <button onclick="clearFrameBoxes()">Clear Frame</button>
+  <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
+  <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
+  <span class="status">Drag on image to draw box. Save CSV to data/annotations/man_utd_4_4_aston_villa_highlights/detection_boxes.csv</span>
+</div>
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<script>
+const frames = [{"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 420, "timestamp": 16.8, "image_rel_path": "frames/frame_000420.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 486, "timestamp": 19.44, "image_rel_path": "frames/frame_000486.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 553, "timestamp": 22.12, "image_rel_path": "frames/frame_000553.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 620, "timestamp": 24.8, "image_rel_path": "frames/frame_000620.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 687, "timestamp": 27.48, "image_rel_path": "frames/frame_000687.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 754, "timestamp": 30.16, "image_rel_path": "frames/frame_000754.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 821, "timestamp": 32.84, "image_rel_path": "frames/frame_000821.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 888, "timestamp": 35.52, "image_rel_path": "frames/frame_000888.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 954, "timestamp": 38.16, "image_rel_path": "frames/frame_000954.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1021, "timestamp": 40.84, "image_rel_path": "frames/frame_001021.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1088, "timestamp": 43.52, "image_rel_path": "frames/frame_001088.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1155, "timestamp": 46.2, "image_rel_path": "frames/frame_001155.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1222, "timestamp": 48.88, "image_rel_path": "frames/frame_001222.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1289, "timestamp": 51.56, "image_rel_path": "frames/frame_001289.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1356, "timestamp": 54.24, "image_rel_path": "frames/frame_001356.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1422, "timestamp": 56.88, "image_rel_path": "frames/frame_001422.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1489, "timestamp": 59.56, "image_rel_path": "frames/frame_001489.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1556, "timestamp": 62.24, "image_rel_path": "frames/frame_001556.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1623, "timestamp": 64.92, "image_rel_path": "frames/frame_001623.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1690, "timestamp": 67.6, "image_rel_path": "frames/frame_001690.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1757, "timestamp": 70.28, "image_rel_path": "frames/frame_001757.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1824, "timestamp": 72.96, "image_rel_path": "frames/frame_001824.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1891, "timestamp": 75.64, "image_rel_path": "frames/frame_001891.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 1957, "timestamp": 78.28, "image_rel_path": "frames/frame_001957.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2024, "timestamp": 80.96, "image_rel_path": "frames/frame_002024.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2091, "timestamp": 83.64, "image_rel_path": "frames/frame_002091.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2158, "timestamp": 86.32, "image_rel_path": "frames/frame_002158.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2225, "timestamp": 89.0, "image_rel_path": "frames/frame_002225.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2292, "timestamp": 91.68, "image_rel_path": "frames/frame_002292.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2359, "timestamp": 94.36, "image_rel_path": "frames/frame_002359.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2425, "timestamp": 97.0, "image_rel_path": "frames/frame_002425.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2492, "timestamp": 99.68, "image_rel_path": "frames/frame_002492.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2559, "timestamp": 102.36, "image_rel_path": "frames/frame_002559.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2626, "timestamp": 105.04, "image_rel_path": "frames/frame_002626.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2693, "timestamp": 107.72, "image_rel_path": "frames/frame_002693.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2760, "timestamp": 110.4, "image_rel_path": "frames/frame_002760.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2827, "timestamp": 113.08, "image_rel_path": "frames/frame_002827.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2893, "timestamp": 115.72, "image_rel_path": "frames/frame_002893.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 2960, "timestamp": 118.4, "image_rel_path": "frames/frame_002960.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3027, "timestamp": 121.08, "image_rel_path": "frames/frame_003027.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3094, "timestamp": 123.76, "image_rel_path": "frames/frame_003094.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3161, "timestamp": 126.44, "image_rel_path": "frames/frame_003161.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3228, "timestamp": 129.12, "image_rel_path": "frames/frame_003228.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3295, "timestamp": 131.8, "image_rel_path": "frames/frame_003295.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "man_utd_4_4_aston_villa_highlights", "frame_number": 3362, "timestamp": 134.48, "image_rel_path": "frames/frame_003362.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}];
+let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0;
+const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+const img = new Image();
+
+function loadFrame(i) {
+  if (!frames.length) return;
+  idx = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[idx];
+  document.getElementById('frame-info').textContent = `#${idx+1}/${frames.length} | Frame ${f.frame_number} (${f.timestamp}s) [${f.scene_tag}] | Boxes: ${f.boxes.length}`;
+  document.getElementById('chk-verified').checked = !!f.verified;
+  img.onload = () => { canvas.width = img.width; canvas.height = img.height; render(); };
+  img.src = f.image_rel_path;
+}
+
+function render(previewRect) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0);
+  const f = frames[idx];
+  for (const b of f.boxes) {
+    const [x1, y1, x2, y2] = b.bbox;
+    ctx.strokeStyle = b.class_name === 'ball' ? '#ffc107' : '#20c997';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(b.class_name.toUpperCase(), x1, Math.max(14, y1 - 4));
+  }
+  if (previewRect) {
+    ctx.strokeStyle = '#ff4d4d';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(previewRect[0], previewRect[1], previewRect[2] - previewRect[0], previewRect[3] - previewRect[1]);
+  }
+}
+
+canvas.addEventListener('mousedown', e => {
+  const r = canvas.getBoundingClientRect();
+  startX = Math.round(e.clientX - r.left);
+  startY = Math.round(e.clientY - r.top);
+  dragging = true;
+});
+canvas.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  render([Math.min(startX, cx), Math.min(startY, cy), Math.max(startX, cx), Math.max(startY, cy)]);
+});
+canvas.addEventListener('mouseup', e => {
+  if (!dragging) return;
+  dragging = false;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const x1 = Math.min(startX, cx), y1 = Math.min(startY, cy), x2 = Math.max(startX, cx), y2 = Math.max(startY, cy);
+  if (x2 - x1 >= 4 && y2 - y1 >= 4) {
+    frames[idx].boxes.push({ class_name: currentClass, bbox: [x1, y1, x2, y2] });
+    frames[idx].verified = true;
+    frames[idx].source = 'manual';
+    document.getElementById('chk-verified').checked = true;
+  }
+  loadFrame(idx);
+});
+
+function setClass(c) {
+  currentClass = c;
+  document.getElementById('btn-ball').className = c === 'ball' ? 'active-cls' : '';
+  document.getElementById('btn-player').className = c === 'player' ? 'active-cls' : '';
+}
+function undoBox() { frames[idx].boxes.pop(); loadFrame(idx); }
+function clearFrameBoxes() { frames[idx].boxes = []; loadFrame(idx); }
+function toggleVerified(v) { frames[idx].verified = v; if (v) frames[idx].source = 'manual'; }
+function prevFrame() { loadFrame(idx - 1); }
+function nextFrame() { loadFrame(idx + 1); }
+window.addEventListener('keydown', e => {
+  if (e.key === '1') setClass('ball');
+  if (e.key === '2') setClass('player');
+  if (e.key === 'z' || e.key === 'Z') undoBox();
+  if (e.key === 'ArrowLeft') prevFrame();
+  if (e.key === 'ArrowRight') nextFrame();
+});
+
+function exportCSV() {
+  const rows = ['frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source'];
+  for (const f of frames) {
+    const src = f.verified ? 'manual' : f.source;
+    if (!f.boxes.length) {
+      rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},,,,,,${f.verified},${src}`);
+    } else {
+      for (const b of f.boxes) {
+        rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},${b.class_name},${b.bbox[0]},${b.bbox[1]},${b.bbox[2]},${b.bbox[3]},${f.verified},${src}`);
+      }
+    }
+  }
+  const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'detection_boxes.csv';
+  a.click();
+}
+loadFrame(0);
+</script>
+</body>
+</html>

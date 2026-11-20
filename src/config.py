@@ -60,7 +60,7 @@ class ClassificationConfig:
 
 @dataclass
 class TrackingConfig:
-    tracker_config: str = "bytetrack.yaml"
+    tracker_config: str = "botsort.yaml"
     start_frame: int = 0
     history_length: int = 9
     min_votes: int = 3
@@ -71,6 +71,7 @@ class TrackingConfig:
     reclassify_contradiction_streak: int = 5
     max_missing_frames_before_reset: int = 30
     max_spatial_jump_ratio: float = 3.5
+    reset_on_camera_cut: bool = True
 
 
 @dataclass
@@ -89,8 +90,13 @@ class BallTrackingConfig:
     velocity_damping: float = 0.85
     interpolation_conf_decay: float = 0.78
     camera_cut_hist_threshold: float = 0.52
+    camera_cut_cooldown_frames: int = 6
     process_noise_scale: float = 8.0
     measurement_noise_scale: float = 12.0
+    init_confirm_frames: int = 2
+    init_high_conf_threshold: float = 0.45
+    static_zone_ttl_frames: int = 250
+    filter_crowd_horizon: bool = True
 
 
 @dataclass
@@ -116,13 +122,19 @@ class TeamDiscoveryConfig:
     """Configuration for per-video, label-free team appearance discovery."""
 
     enabled: bool = False
-    feature_method: str = "spatial_embedding"
+    feature_method: str = "hsv_lab"
     clustering_method: str = "kmeans"
     candidate_clusters: int = 3
+    auto_select_k: bool = True
+    max_candidate_clusters: int = 4
     min_track_observations: int = 3
     min_cluster_tracks: int = 2
     max_samples_per_track: int = 8
-    assignment_distance_multiplier: float = 1.35
+    assignment_distance_multiplier: float = 1.0
+    radius_mad_multiplier: float = 2.6
+    min_team_margin: float = 0.03
+    max_distance_ratio: float = 0.85
+    outlier_repulsion_ratio: float = 1.05
     random_state: int = 42
 
 

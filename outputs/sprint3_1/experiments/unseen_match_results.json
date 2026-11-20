@@ -1,0 +1,304 @@
+{
+  "generated_at": "2026-11-19T09:51:51Z",
+  "frozen_configuration": {
+    "detector_model": "yolo11n.pt",
+    "imgsz": 1088,
+    "frame_stride": 2,
+    "tracker_config": "botsort.yaml",
+    "reset_on_camera_cut": true,
+    "team_discovery_feature_method": "hsv_lab",
+    "team_discovery_clustering_method": "kmeans",
+    "auto_select_k": true,
+    "max_candidate_clusters": 4,
+    "radius_mad_multiplier": 2.6,
+    "min_team_margin": 0.03,
+    "max_distance_ratio": 0.85,
+    "outlier_repulsion_ratio": 1.05,
+    "ball_filter_crowd_horizon": true,
+    "ball_init_confirm_frames": 2,
+    "camera_cut_cooldown_frames": 6
+  },
+  "unseen_match_man_utd_villa_1500f": {
+    "video_path": "data\\Man Utd 4-4 Aston Villa _ Highlights.mp4",
+    "human_ground_truth_status": "pending_human_review",
+    "human_review_templates": {
+      "detection_annotations_json": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\detection_annotations.json",
+      "detection_annotator_html": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\detection_annotator.html",
+      "possession_annotations_json": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\possession_annotations.json",
+      "possession_annotator_html": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\possession_annotator.html"
+    },
+    "experiment_metadata": {
+      "experiment_id": "sprint3_1/man_utd_villa_run",
+      "match_id": "man_utd_4_4_aston_villa_highlights",
+      "match_name": "Man Utd 4-4 Aston Villa _ Highlights",
+      "mode": "auto_teams_unsupervised",
+      "video_resolution": "1280x720",
+      "video_fps": 25.0,
+      "frame_stride": 2,
+      "processed_frames": 1500,
+      "tracker_config": "botsort.yaml",
+      "feature_method": "hsv_lab",
+      "clustering_method": "kmeans",
+      "processing_wall_time_seconds": 1222.37,
+      "average_processing_fps": 1.23
+    },
+    "team_discovery_report": {
+      "mode": "unsupervised_per_video_adaptation",
+      "feature_method": "hsv_lab",
+      "clustering_method": "kmeans",
+      "candidate_clusters": 3,
+      "selected_k": 2,
+      "reliable_tracks": 402,
+      "team_cluster_ids": {
+        "Team_A": 1,
+        "Team_B": 0
+      },
+      "excluded_cluster_ids": [],
+      "retained_outlier_cluster_count": 0,
+      "inter_team_cosine_distance": 0.8751,
+      "silhouette_score": 0.6135,
+      "cluster_radii_cosine_distance": {
+        "1": 0.36,
+        "0": 0.338
+      },
+      "cluster_spreads_median_cosine": {
+        "1": 0.1536,
+        "0": 0.0967
+      },
+      "track_label_counts": {
+        "Team_B": 173,
+        "Team_A": 168,
+        "Unknown": 61
+      },
+      "team_name_note": "Team_A and Team_B are visual clusters, not inferred club or national-team names."
+    },
+    "tracking_summary": {
+      "processed_frames": 1500,
+      "distinct_tracking_ids": 681,
+      "short_tracks_under_5_obs": 255,
+      "short_track_fraction": 0.3744,
+      "mean_track_observations": 17.93,
+      "max_track_observations": 115,
+      "total_player_observations": 12210,
+      "known_team_observations": 9110,
+      "unknown_team_observations": 3100,
+      "stable_label_coverage": 0.7461,
+      "unknown_rate": 0.2539,
+      "raw_team_label_changes": 1,
+      "smoothed_team_label_changes": 0,
+      "label_change_reduction_ratio": 1.0,
+      "locked_tracks_count": 1,
+      "identity_resets_triggered": 524,
+      "note": "Descriptive tracking stability diagnostics. Does not represent formal ground-truth identity accuracy (IDF1/HOTA) unless evaluated against manual identity annotations.",
+      "tracker_config": "botsort.yaml"
+    },
+    "within_shot_player_tracking_sprint3_baseline": {
+      "total_observations": 12072,
+      "distinct_track_ids": 549,
+      "camera_cuts_count": 49,
+      "total_shots": 36,
+      "continuous_shots_analyzed": 33,
+      "min_shot_frames_threshold": 10,
+      "cross_cut_id_leaks": 30,
+      "within_shot_mean_ids_per_player_slot": 3.078,
+      "within_shot_short_track_fraction": 0.2939,
+      "within_shot_mean_track_lifetime": 20.98,
+      "within_shot_team_label_consistency": 0.974,
+      "formal_identity_metrics": {
+        "metrics_available": false,
+        "idf1": null,
+        "hota": null,
+        "validation_blocker": "missing_verified_manual_identity_annotations"
+      }
+    },
+    "within_shot_player_tracking_sprint3_1": {
+      "total_observations": 12210,
+      "distinct_track_ids": 681,
+      "camera_cuts_count": 32,
+      "total_shots": 33,
+      "continuous_shots_analyzed": 33,
+      "min_shot_frames_threshold": 10,
+      "cross_cut_id_leaks": 0,
+      "within_shot_mean_ids_per_player_slot": 3.764,
+      "within_shot_short_track_fraction": 0.3744,
+      "within_shot_mean_track_lifetime": 17.93,
+      "within_shot_team_label_consistency": 1.0,
+      "formal_identity_metrics": {
+        "metrics_available": false,
+        "idf1": null,
+        "hota": null,
+        "validation_blocker": "missing_verified_manual_identity_annotations"
+      }
+    },
+    "diagnostic_comparison": {
+      "sprint3_baseline": {
+        "pass1_vs_pass2_tracks_compared": 427,
+        "pass1_vs_pass2_agree": 362,
+        "pass1_vs_pass2_disagree": 65,
+        "pass1_vs_pass2_agreement_rate": 0.8478,
+        "observed_ball_frames": 810,
+        "top_band_y_lt_140_observed_balls": 52,
+        "high_speed_gt_1500_observed_balls": 36,
+        "kalman_roi_recovery_hits": 0,
+        "camera_cuts_detected": 49,
+        "consecutive_cut_double_fires": 16
+      },
+      "sprint3_1_improved": {
+        "pass1_vs_pass2_tracks_compared": 402,
+        "pass1_vs_pass2_agree": 365,
+        "pass1_vs_pass2_disagree": 37,
+        "pass1_vs_pass2_agreement_rate": 0.908,
+        "observed_ball_frames": 792,
+        "top_band_y_lt_140_observed_balls": 0,
+        "high_speed_gt_1500_observed_balls": 18,
+        "kalman_roi_recovery_hits": 10,
+        "camera_cuts_detected": 32,
+        "consecutive_cut_double_fires": 0
+      }
+    },
+    "possession_summary": {
+      "attributed_possession_share": {
+        "team_a_name": "Team A",
+        "team_b_name": "Team B",
+        "team_a_pct": 43.9,
+        "team_b_pct": 56.1,
+        "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+      },
+      "possession_coverage_pct": 19.13,
+      "total_analysed_time_distribution_pct": {
+        "TEAM_A_CONTROL": 8.4,
+        "TEAM_B_CONTROL": 10.73,
+        "CONTESTED": 3.87,
+        "LOOSE_BALL": 29.13,
+        "UNKNOWN": 47.07,
+        "OUT_OF_PLAY": 0.8
+      },
+      "camera_cuts_count": 32,
+      "longest_continuous_segment_seconds": 9.28
+    }
+  },
+  "continuous_shot_proxy_chelsea_sunderland": {
+    "video_path": "27.mp4",
+    "start_frame": 840,
+    "processed_frames": 350,
+    "experiment_metadata": {
+      "experiment_id": "sprint3_1/chelsea_continuous_proxy_run",
+      "match_id": "chelsea_sunderland_continuous_proxy",
+      "match_name": "Chelsea vs Sunderland (Continuous Wide-Shot Proxy)",
+      "mode": "auto_teams_unsupervised",
+      "video_resolution": "1280x720",
+      "video_fps": 25.0,
+      "frame_stride": 2,
+      "processed_frames": 350,
+      "tracker_config": "botsort.yaml",
+      "feature_method": "hsv_lab",
+      "clustering_method": "kmeans",
+      "processing_wall_time_seconds": 209.27,
+      "average_processing_fps": 1.67
+    },
+    "team_discovery_report": {
+      "mode": "unsupervised_per_video_adaptation",
+      "feature_method": "hsv_lab",
+      "clustering_method": "kmeans",
+      "candidate_clusters": 3,
+      "selected_k": 4,
+      "reliable_tracks": 82,
+      "team_cluster_ids": {
+        "Team_A": 1,
+        "Team_B": 0
+      },
+      "excluded_cluster_ids": [
+        2,
+        3
+      ],
+      "retained_outlier_cluster_count": 1,
+      "inter_team_cosine_distance": 0.7338,
+      "silhouette_score": 0.4746,
+      "cluster_radii_cosine_distance": {
+        "1": 0.36,
+        "0": 0.1936
+      },
+      "cluster_spreads_median_cosine": {
+        "1": 0.197,
+        "0": 0.07
+      },
+      "track_label_counts": {
+        "Team_A": 21,
+        "Unknown": 32,
+        "Team_B": 29
+      },
+      "team_name_note": "Team_A and Team_B are visual clusters, not inferred club or national-team names."
+    },
+    "tracking_summary": {
+      "processed_frames": 350,
+      "distinct_tracking_ids": 153,
+      "short_tracks_under_5_obs": 65,
+      "short_track_fraction": 0.4248,
+      "mean_track_observations": 16.55,
+      "max_track_observations": 118,
+      "total_player_observations": 2532,
+      "known_team_observations": 1424,
+      "unknown_team_observations": 1108,
+      "stable_label_coverage": 0.5624,
+      "unknown_rate": 0.4376,
+      "raw_team_label_changes": 0,
+      "smoothed_team_label_changes": 0,
+      "label_change_reduction_ratio": 1.0,
+      "locked_tracks_count": 5,
+      "identity_resets_triggered": 64,
+      "note": "Descriptive tracking stability diagnostics. Does not represent formal ground-truth identity accuracy (IDF1/HOTA) unless evaluated against manual identity annotations.",
+      "tracker_config": "botsort.yaml"
+    },
+    "within_shot_player_tracking": {
+      "total_observations": 2532,
+      "distinct_track_ids": 153,
+      "camera_cuts_count": 6,
+      "total_shots": 7,
+      "continuous_shots_analyzed": 7,
+      "min_shot_frames_threshold": 10,
+      "cross_cut_id_leaks": 0,
+      "within_shot_mean_ids_per_player_slot": 4.605,
+      "within_shot_short_track_fraction": 0.4248,
+      "within_shot_mean_track_lifetime": 16.55,
+      "within_shot_team_label_consistency": 1.0,
+      "formal_identity_metrics": {
+        "metrics_available": false,
+        "idf1": null,
+        "hota": null,
+        "validation_blocker": "missing_verified_manual_identity_annotations"
+      }
+    },
+    "ball_tracking": {
+      "total_frames": 350,
+      "observed_frames": 207,
+      "interpolated_frames": 25,
+      "lost_frames": 118,
+      "observed_coverage_pct": 59.14,
+      "interpolated_coverage_pct": 7.14,
+      "lost_pct": 33.71,
+      "tracked_or_interpolated_pct": 66.29,
+      "camera_cut_resets": 6,
+      "rejected_outlier_detections": 167,
+      "false_track_associations": 0,
+      "blacklisted_static_zones_count": 0,
+      "reacquisition_events": 10,
+      "active_track_segments_count": 7,
+      "mean_continuous_track_frames": 33.14,
+      "max_continuous_track_frames": 135
+    },
+    "possession_coverage_pct": 8.86,
+    "attributed_possession_share": {
+      "team_a_name": "Team A",
+      "team_b_name": "Team B",
+      "team_a_pct": 54.84,
+      "team_b_pct": 45.16,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    }
+  },
+  "fixed_camera_generalisation": {
+    "status": "pending_fixed_camera_footage",
+    "reason": "All three local match videos (Norway vs Wales, Chelsea vs Sunderland, Man Utd vs Aston Villa) are panning/zooming broadcast TV footage. No elevated static tripod grassroots recording is present in the workspace.",
+    "ready_to_run_command": "python -m src.pipeline.cli --video \"data/raw/fixed_grassroots_match.mp4\" --auto-teams --enable-possession --tracker botsort.yaml --pitch-calibration \"configs/venue_pitch_calibration.json\" --max-frames 3000",
+    "evaluation_command": "python -m src.evaluation.harness --run-dir \"outputs/<exp_id>\" --match-id \"<match_id>\" --annotations-root \"data/annotations\" --output-json \"outputs/<exp_id>/harness_eval.json\""
+  }
+}

@@ -22,3 +22,4 @@ env/
 data/raw/*.mp4
 data/crops/*/images/
 data/annotations/*/frames/
+outputs/sprint3_1/*_run/

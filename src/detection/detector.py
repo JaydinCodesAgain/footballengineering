@@ -268,23 +268,25 @@ def benchmark_ball_detection_strategies(
     frames_with_ids: Sequence[Tuple[int, float, np.ndarray]],
     verified_annotations: Optional[Sequence[Any]] = None,
     iou_threshold: float = 0.50,
+    model_name: str = "yolo11n.pt",
 ) -> List[Dict[str, Any]]:
     """
     Benchmark the 6 football detection strategies under identical evaluation conditions:
-    1. `yolo11n_baseline_c040` (YOLO11n baseline: imgsz=1088, ball_conf=0.40)
-    2. `yolo11n_lowconf_filtered_c015` (Low-confidence full-frame: imgsz=1088, ball_conf=0.15 + FP filter)
-    3. `yolo11n_highres_1280_c018` (High-resolution detection: imgsz=1280, ball_conf=0.18 + FP filter)
-    4. `yolo11n_tiled_pitch_960_c018` (Tiled inference: 2x horizontal pitch tiles @ 960, ball_conf=0.18 + NMS)
-    5. `yolo11n_hybrid_1088_plus_tiled_fallback` (Hybrid full-frame 1088 + tiled fallback on missed frames)
-    6. `yolo11n_kalman_roi_recovery` (Full-frame 1088 + Kalman-guided 640x640 ROI recovery)
+    1. `yolo11_baseline_c040` (Baseline: imgsz=1088, ball_conf=0.40)
+    2. `yolo11_lowconf_filtered_c015` (Low-confidence full-frame: imgsz=1088, ball_conf=0.15 + FP filter)
+    3. `yolo11_highres_1280_c018` (High-resolution detection: imgsz=1280, ball_conf=0.18 + FP filter)
+    4. `yolo11_tiled_pitch_960_c018` (Tiled inference: 2x horizontal pitch tiles @ 960, ball_conf=0.18 + NMS)
+    5. `yolo11_hybrid_1088_plus_tiled_fallback` (Hybrid full-frame 1088 + tiled fallback on missed frames)
+    6. `yolo11_kalman_roi_recovery` (Full-frame 1088 + Kalman-guided 640x640 ROI recovery)
 
     Records inference latency (ms/frame), ball detection coverage (explicitly distinguished from
     recall), and (when verified manual bounding-box annotations exist) Precision, Recall, F1,
-    AP@50, and mAP@50:95.
+    AP@50, mAP@50:95, and centre localisation error.
     """
     from src.possession.ball_tracker import KalmanBallTracker, filter_ball_candidates
 
-    detector = FootballDetector(DetectionConfig(model_name="yolo11n.pt", imgsz=1088))
+    detector = FootballDetector(DetectionConfig(model_name=model_name, imgsz=1088))
+    model_tag = model_name.replace(".pt", "")
     n_frames = max(1, len(frames_with_ids))
     verified = [
         a
@@ -293,12 +295,12 @@ def benchmark_ball_detection_strategies(
     ]
 
     strategies = [
-        ("yolo11n_baseline_c040", 1088, 0.40, False, "full_only"),
-        ("yolo11n_lowconf_filtered_c015", 1088, 0.15, True, "full_only"),
-        ("yolo11n_highres_1280_c018", 1280, 0.18, True, "full_only"),
-        ("yolo11n_tiled_pitch_960_c018", 960, 0.18, True, "tiled_only"),
-        ("yolo11n_hybrid_1088_plus_tiled_fallback", 1088, 0.18, True, "hybrid_tiled"),
-        ("yolo11n_kalman_roi_recovery", 1088, 0.18, True, "kalman_roi"),
+        (f"{model_tag}_baseline_c040", 1088, 0.40, False, "full_only"),
+        (f"{model_tag}_lowconf_filtered_c015", 1088, 0.15, True, "full_only"),
+        (f"{model_tag}_highres_1280_c018", 1280, 0.18, True, "full_only"),
+        (f"{model_tag}_tiled_pitch_960_c018", 960, 0.18, True, "tiled_only"),
+        (f"{model_tag}_hybrid_1088_plus_tiled_fallback", 1088, 0.18, True, "hybrid_tiled"),
+        (f"{model_tag}_kalman_roi_recovery", 1088, 0.18, True, "kalman_roi"),
     ]
 
     results_table: List[Dict[str, Any]] = []
@@ -324,12 +326,19 @@ def benchmark_ball_detection_strategies(
                 )
                 players = [d for d in raw_dets if d.class_name == "player"]
                 balls = [d for d in raw_dets if d.class_name == "ball"]
+                if use_fp_filter and balls:
+                    balls = filter_ball_candidates(
+                        balls,
+                        players,
+                        (fh, fw),
+                        frame_bgr=frm,
+                        predicted_pos=kalman.get_predicted_position() if kalman else None,
+                    )
                 if mode == "hybrid_tiled" and not balls:
                     balls = detector.detect_balls_tiled(frm, fno, ts, conf_threshold=0.16, tile_imgsz=960)
                 elif mode == "kalman_roi" and kalman is not None and not balls:
                     roi = kalman.get_predicted_search_roi((fh, fw), roi_size=640)
                     if roi is None and players:
-                        # Fallback to player centroid ROI when tracker is not yet initialized
                         cx_p = int(np.mean([(p.bbox[0] + p.bbox[2]) / 2.0 for p in players]))
                         cy_p = int(np.mean([p.bbox[3] for p in players]))
                         x0 = max(0, min(fw - 640, cx_p - 320))
@@ -339,7 +348,13 @@ def benchmark_ball_detection_strategies(
                         balls = detector.detect_ball_in_roi(frm, roi, fno, ts, conf_threshold=0.14)
 
             if use_fp_filter:
-                balls = filter_ball_candidates(balls, players, (fh, fw))
+                balls = filter_ball_candidates(
+                    balls,
+                    players,
+                    (fh, fw),
+                    frame_bgr=frm,
+                    predicted_pos=kalman.get_predicted_position() if kalman else None,
+                )
 
             if kalman is not None:
                 kalman.step(fno, ts, balls, frame_bgr=frm, player_detections=players)
@@ -355,6 +370,7 @@ def benchmark_ball_detection_strategies(
 
         row: Dict[str, Any] = {
             "strategy": name,
+            "model_name": model_name,
             "imgsz": imgsz,
             "ball_conf": b_conf,
             "fp_filter": use_fp_filter,
@@ -374,12 +390,14 @@ def benchmark_ball_detection_strategies(
             row["ball_f1"] = b_m["f1"]
             row["ball_ap50"] = b_m["ap50"]
             row["ball_map50_95"] = b_m.get("map50_95")
+            row["ball_center_error_px"] = b_m.get("mean_center_error_px")
         else:
             row["ball_precision"] = None
             row["ball_recall"] = None
             row["ball_f1"] = None
             row["ball_ap50"] = None
             row["ball_map50_95"] = None
+            row["ball_center_error_px"] = None
 
         results_table.append(row)
 

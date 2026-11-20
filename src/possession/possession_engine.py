@@ -106,6 +106,9 @@ class PossessionEngine:
                 min_size=self.match_config.detection.min_ball_box_size_px,
                 max_size=self.match_config.detection.max_ball_box_size_px,
                 blacklisted_zones=self.ball_tracker.blacklisted_static_zones,
+                frame_bgr=frame_bgr,
+                predicted_pos=self.ball_tracker.get_predicted_position(),
+                filter_crowd_horizon=self.match_config.ball_tracking.filter_crowd_horizon,
             )
         else:
             filtered_balls = list(raw_ball_detections)

@@ -103,6 +103,18 @@ class TemporalTeamStabilizer:
         state.last_frame = frame_number
         state.last_bbox = bbox
 
+    def on_camera_cut(self) -> None:
+        """Reset active track vote histories and soft locks across a broadcast camera cut."""
+        for state in self.tracks.values():
+            if state.history or state.locked_label is not None:
+                state.history.clear()
+                state.locked_label = None
+                state.contradiction_streak = 0
+                state.contradiction_candidate = None
+                state.current_stable_label = InternalLabel.UNKNOWN.value
+                state.track_confidence = 0.0
+                state.identity_resets += 1
+
     def update(
         self,
         track_id: Optional[int],
