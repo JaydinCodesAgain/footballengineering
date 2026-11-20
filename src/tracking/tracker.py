@@ -15,17 +15,36 @@ from src.detection.detector import (
     FootballDetector,
     _nms_ball_detections,
 )
+from src.possession.ball_tracker import detect_camera_cut, filter_ball_candidates
 from src.schemas import DetectionRecord
 
 
 SUPPORTED_TRACKERS = ("bytetrack.yaml", "botsort.yaml")
 
 
+def _reset_ultralytics_tracker(model: object) -> None:
+    """Safely reset Ultralytics internal MOT tracker state across broadcast camera cuts."""
+    predictor = getattr(model, "predictor", None)
+    trackers = getattr(predictor, "trackers", None) if predictor is not None else None
+    if trackers:
+        for trk in trackers:
+            reset_fn = getattr(trk, "reset", None)
+            if callable(reset_fn):
+                reset_fn()
+
+
 class MultiObjectTracker:
     """
-    Wraps Ultralytics multi-object tracking (`bytetrack.yaml` or `botsort.yaml`) for players (`class 0`)
-    while capturing raw post-NMS football detections (`class 32`) BEFORE ByteTrack's two-frame IoU
-    activation filter (`is_activated`) discards fast-moving balls.
+    Wraps Ultralytics multi-object tracking (`bytetrack.yaml`, `botsort.yaml`, or custom YAML)
+    for players (`class 0`) while capturing raw post-NMS football detections (`class 32`) BEFORE
+    ByteTrack's two-frame IoU activation filter (`is_activated`) discards fast-moving balls.
+
+    Sprint 3.1 improvements:
+    - Optional camera-cut reset (`reset_on_camera_cut=True`) resets internal tracker state on
+      broadcast scene cuts so player IDs do not contaminate different players across shots.
+    - Pre-filters obvious false-positive ball detections (crowd/scoreboard/torso/pure-turf) before
+      deciding whether tiled pitch fallback should execute, preventing a crowd steward FP from
+      suppressing fallback recovery of the actual match ball.
     """
 
     def __init__(
@@ -36,10 +55,11 @@ class MultiObjectTracker:
     ) -> None:
         self.det_config = detection_config or DetectionConfig()
         self.trk_config = tracking_config or TrackingConfig()
-        if self.trk_config.tracker_config not in SUPPORTED_TRACKERS:
+        trk_name = str(self.trk_config.tracker_config)
+        if trk_name not in SUPPORTED_TRACKERS and not Path(trk_name).is_file():
             raise ValueError(
                 f"Unsupported tracker '{self.trk_config.tracker_config}'. "
-                f"Supported trackers: {SUPPORTED_TRACKERS}"
+                f"Supported trackers: {SUPPORTED_TRACKERS} or an existing YAML file path."
             )
         self.device: str | int = (
             device if device is not None else (0 if torch.cuda.is_available() else "cpu")
@@ -71,8 +91,6 @@ class MultiObjectTracker:
         model = YOLO(self.det_config.model_name)
         min_conf = min(self.det_config.person_conf, self.det_config.ball_conf, 0.14)
 
-        # Hook executed on `on_predict_postprocess_end` BEFORE `track.on_predict_postprocess_end`
-        # overwrites `predictor.results[0].boxes` and drops unactivated fast-moving ball boxes.
         captured_raw_boxes: List[object] = []
 
         def _capture_raw_postprocess_boxes(predictor: object) -> None:
@@ -84,6 +102,11 @@ class MultiObjectTracker:
         model.add_callback("on_predict_postprocess_end", _capture_raw_postprocess_boxes)
 
         aux_detector = FootballDetector(config=self.det_config, device=self.device)
+        prev_small: Optional[np.ndarray] = None
+        prev_med_h: Optional[float] = None
+        last_cut_frame: Optional[int] = None
+        track_id_offset: int = 0
+        max_global_id: int = 0
 
         try:
             if start_frame > 0:
@@ -106,6 +129,20 @@ class MultiObjectTracker:
                 timestamp = round(actual_frame_number / fps, 3)
                 frame_offset += 1
 
+                # Reset internal MOT tracker on broadcast camera cuts and advance global ID offset
+                # so track IDs are strictly unique across shots (never recycled to 1).
+                if self.trk_config.reset_on_camera_cut:
+                    small_curr = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
+                    if prev_small is not None and detect_camera_cut(
+                        prev_small, small_curr, corr_threshold=0.52
+                    ):
+                        if last_cut_frame is None or (actual_frame_number - last_cut_frame) > 6:
+                            _reset_ultralytics_tracker(model)
+                            track_id_offset = max_global_id
+                            last_cut_frame = actual_frame_number
+                            prev_med_h = None
+                    prev_small = small_curr
+
                 results = model.track(
                     source=frame_bgr,
                     persist=True,
@@ -127,7 +164,34 @@ class MultiObjectTracker:
                 player_records = [r for r in tracked_records if r.class_name == "player"]
                 ball_records = [r for r in tracked_records if r.class_name == "ball"]
 
-                # Recover any ball detections that were suppressed by ByteTrack's 2-frame IoU gate
+                # Detect wide-to-closeup scale-jump cuts that preserve green HSV histograms
+                if self.trk_config.reset_on_camera_cut and player_records:
+                    p_heights = [float(r.bbox[3] - r.bbox[1]) for r in player_records if (r.bbox[3] - r.bbox[1]) > 15]
+                    curr_med_h = float(np.median(p_heights)) if p_heights else None
+                    if (
+                        prev_med_h is not None
+                        and curr_med_h is not None
+                        and detect_camera_cut(
+                            None, None, prev_median_player_h=prev_med_h, curr_median_player_h=curr_med_h
+                        )
+                        and (last_cut_frame is None or (actual_frame_number - last_cut_frame) > 6)
+                    ):
+                        _reset_ultralytics_tracker(model)
+                        track_id_offset = max_global_id
+                        last_cut_frame = actual_frame_number
+                    if curr_med_h is not None:
+                        prev_med_h = curr_med_h
+
+                # Apply monotonic global ID offset across shots
+                if track_id_offset > 0:
+                    for p in player_records:
+                        if p.tracking_id is not None:
+                            p.tracking_id = int(p.tracking_id) + track_id_offset
+                for p in player_records:
+                    if p.tracking_id is not None and int(p.tracking_id) > max_global_id:
+                        max_global_id = int(p.tracking_id)
+
+                # Recover any ball detections suppressed by ByteTrack's 2-frame IoU gate
                 if captured_raw_boxes:
                     raw_parsed = FootballDetector.parse_ultralytics_boxes(
                         captured_raw_boxes[0],
@@ -140,8 +204,22 @@ class MultiObjectTracker:
                     if raw_balls:
                         ball_records = _nms_ball_detections(ball_records + raw_balls)
 
-                # If still no ball found and tiled ball search fallback is enabled, scan pitch tiles
-                if not ball_records and self.det_config.enable_tiled_ball_search:
+                # Check whether full-frame produced any plausible on-pitch ball before skipping tiled search
+                plausible_balls = (
+                    filter_ball_candidates(
+                        ball_records,
+                        player_records,
+                        frame_bgr.shape[:2],
+                        min_size=self.det_config.min_ball_box_size_px,
+                        max_size=self.det_config.max_ball_box_size_px,
+                        frame_bgr=frame_bgr,
+                    )
+                    if self.det_config.filter_false_positive_balls and ball_records
+                    else ball_records
+                )
+
+                # If no plausible ball found and tiled fallback is enabled, scan pitch tiles
+                if not plausible_balls and self.det_config.enable_tiled_ball_search:
                     tiled_balls = aux_detector.detect_balls_tiled(
                         frame_bgr,
                         frame_number=actual_frame_number,
@@ -150,7 +228,7 @@ class MultiObjectTracker:
                         tile_imgsz=960,
                     )
                     if tiled_balls:
-                        ball_records = tiled_balls
+                        ball_records = _nms_ball_detections(plausible_balls + tiled_balls)
 
                 yielded += 1
                 yield actual_frame_number, timestamp, frame_bgr, (player_records + ball_records)

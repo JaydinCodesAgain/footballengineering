@@ -539,16 +539,39 @@ def evaluate_possession_predictions(
         transition_timing_error_sec = float(sum(dts))
 
     total_eval_sec = sum(dts)
+    team_ctrl_states = (
+        PossessionState.TEAM_A_CONTROL.value,
+        PossessionState.TEAM_B_CONTROL.value,
+    )
     confident_pred_sec = sum(
-        dt
-        for p, dt in zip(y_pred, dts)
-        if p in (PossessionState.TEAM_A_CONTROL.value, PossessionState.TEAM_B_CONTROL.value)
+        dt for p, dt in zip(y_pred, dts) if p in team_ctrl_states
+    )
+    incorrect_confident_pred_sec = sum(
+        dt for t, p, dt in zip(y_true, y_pred, dts) if p in team_ctrl_states and p != t
+    )
+    confident_pred_frames = sum(1 for p in y_pred if p in team_ctrl_states)
+    incorrect_confident_pred_frames = sum(
+        1 for t, p in zip(y_true, y_pred) if p in team_ctrl_states and p != t
+    )
+    team_swap_frames = sum(
+        1
+        for t, p in zip(y_true, y_pred)
+        if t in team_ctrl_states and p in team_ctrl_states and t != p
     )
     unknown_pred_sec = sum(
         dt for p, dt in zip(y_pred, dts) if p == PossessionState.UNKNOWN.value
     )
     confident_coverage = (confident_pred_sec / total_eval_sec) if total_eval_sec > 0 else 0.0
+    incorrect_confident_rate = (
+        incorrect_confident_pred_sec / confident_pred_sec if confident_pred_sec > 0 else 0.0
+    )
     unknown_state_rate = (unknown_pred_sec / total_eval_sec) if total_eval_sec > 0 else 0.0
+
+    per_state_duration_errors = {}
+    for st in all_states:
+        gt_s = sum(dt for t, dt in zip(y_true, dts) if t == st)
+        pr_s = sum(dt for p, dt in zip(y_pred, dts) if p == st)
+        per_state_duration_errors[st] = round(abs(pr_s - gt_s), 2)
 
     return {
         "metrics_available": True,
@@ -559,11 +582,16 @@ def evaluate_possession_predictions(
         "state_accuracy": round(acc, 4),
         "macro_f1": round(macro_f1, 4),
         "per_state": per_state,
+        "per_state_duration_error_seconds": per_state_duration_errors,
         "team_a_time_error_seconds": round(abs(pred_a_sec - gt_a_sec), 2),
         "team_b_time_error_seconds": round(abs(pred_b_sec - gt_b_sec), 2),
         "team_possession_share_error_pct_points": round(share_error_pct_pts, 2),
         "gt_team_a_share_pct": round(gt_a_share, 2),
         "pred_team_a_share_pct": round(pred_a_share, 2),
+        "team_ownership_swap_frames": int(team_swap_frames),
+        "confident_attribution_frames": int(confident_pred_frames),
+        "incorrect_confident_attribution_frames": int(incorrect_confident_pred_frames),
+        "incorrect_confident_attribution_rate": round(incorrect_confident_rate, 4),
         "gt_transitions": gt_transitions,
         "pred_transitions": pred_transitions,
         "transition_count_error": transition_error,

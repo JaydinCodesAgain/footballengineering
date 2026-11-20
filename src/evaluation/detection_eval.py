@@ -173,6 +173,7 @@ def evaluate_class_detections(
 
     all_confs: List[float] = []
     all_is_tp: List[bool] = []
+    center_errors_px: List[float] = []
     frame_diagnostics: List[Dict[str, Any]] = []
 
     for ann in verified_annotations:
@@ -201,6 +202,13 @@ def evaluate_class_detections(
             all_confs.append(conf)
             all_is_tp.append(p_idx in matched_pred_set)
 
+        for p_i, g_i, _ in matches:
+            pb = pred_boxes[p_i]
+            gb = gt_boxes[g_i]
+            pcx, pcy = (pb[0] + pb[2]) / 2.0, (pb[1] + pb[3]) / 2.0
+            gcx, gcy = (gb[0] + gb[2]) / 2.0, (gb[1] + gb[3]) / 2.0
+            center_errors_px.append(float(np.hypot(pcx - gcx, pcy - gcy)))
+
         tp = len(matches)
         fp = len(fp_idxs)
         fn = len(fn_idxs)
@@ -223,6 +231,17 @@ def evaluate_class_detections(
                         "gt_bbox": gt_boxes[g_i],
                         "iou": round(iou_v, 4),
                         "confidence": round(pred_confs[p_i], 4),
+                        "center_error_px": round(
+                            float(
+                                np.hypot(
+                                    (pred_boxes[p_i][0] + pred_boxes[p_i][2]) / 2.0
+                                    - (gt_boxes[g_i][0] + gt_boxes[g_i][2]) / 2.0,
+                                    (pred_boxes[p_i][1] + pred_boxes[p_i][3]) / 2.0
+                                    - (gt_boxes[g_i][1] + gt_boxes[g_i][3]) / 2.0,
+                                )
+                            ),
+                            2,
+                        ),
                     }
                     for p_i, g_i, iou_v in matches
                 ],
@@ -236,6 +255,9 @@ def evaluate_class_detections(
     precision = float(total_tp) / float(total_tp + total_fp) if (total_tp + total_fp) > 0 else 0.0
     recall = float(total_tp) / float(total_tp + total_fn) if (total_tp + total_fn) > 0 else 0.0
     f1 = (2.0 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
+    false_positive_rate = float(total_fp) / float(total_tp + total_fp) if (total_tp + total_fp) > 0 else 0.0
+    miss_rate = float(total_fn) / float(total_gt) if total_gt > 0 else 0.0
+    fp_per_frame = float(total_fp) / float(max(1, len(verified_annotations)))
     ap50 = compute_average_precision(all_confs, all_is_tp, total_gt)
 
     # Compute mAP@0.50:0.95
@@ -269,6 +291,11 @@ def evaluate_class_detections(
         "precision": round(precision, 4),
         "recall": round(recall, 4),
         "f1": round(f1, 4),
+        "false_positive_rate": round(false_positive_rate, 4),
+        "false_positives_per_frame": round(fp_per_frame, 4),
+        "miss_rate": round(miss_rate, 4),
+        "mean_center_error_px": round(float(np.mean(center_errors_px)), 2) if center_errors_px else None,
+        "median_center_error_px": round(float(np.median(center_errors_px)), 2) if center_errors_px else None,
         "ap50": round(ap50, 4),
         "map50_95": round(map_50_95, 4),
         "frame_diagnostics": frame_diagnostics,

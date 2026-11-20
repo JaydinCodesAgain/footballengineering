@@ -60,7 +60,7 @@ class ClassificationConfig:
 
 @dataclass
 class TrackingConfig:
-    tracker_config: str = "bytetrack.yaml"
+    tracker_config: str = "botsort.yaml"
     start_frame: int = 0
     history_length: int = 9
     min_votes: int = 3
@@ -71,6 +71,7 @@ class TrackingConfig:
     reclassify_contradiction_streak: int = 5
     max_missing_frames_before_reset: int = 30
     max_spatial_jump_ratio: float = 3.5
+    reset_on_camera_cut: bool = True
 
 
 @dataclass
@@ -89,8 +90,13 @@ class BallTrackingConfig:
     velocity_damping: float = 0.85
     interpolation_conf_decay: float = 0.78
     camera_cut_hist_threshold: float = 0.52
+    camera_cut_cooldown_frames: int = 6
     process_noise_scale: float = 8.0
     measurement_noise_scale: float = 12.0
+    init_confirm_frames: int = 2
+    init_high_conf_threshold: float = 0.45
+    static_zone_ttl_frames: int = 250
+    filter_crowd_horizon: bool = True
 
 
 @dataclass
@@ -109,6 +115,36 @@ class PossessionConfig:
     pitch_y_max_frac: float = 0.96
     pitch_x_min_frac: float = 0.02
     pitch_x_max_frac: float = 0.98
+
+
+@dataclass
+class TeamDiscoveryConfig:
+    """Configuration for per-video, label-free team appearance discovery."""
+
+    enabled: bool = False
+    feature_method: str = "hsv_lab"
+    clustering_method: str = "kmeans"
+    candidate_clusters: int = 3
+    auto_select_k: bool = True
+    max_candidate_clusters: int = 4
+    min_track_observations: int = 3
+    min_cluster_tracks: int = 2
+    max_samples_per_track: int = 8
+    assignment_distance_multiplier: float = 1.0
+    radius_mad_multiplier: float = 2.6
+    min_team_margin: float = 0.03
+    max_distance_ratio: float = 0.85
+    outlier_repulsion_ratio: float = 1.05
+    random_state: int = 42
+
+
+@dataclass
+class PitchConfig:
+    """Optional fixed-camera pitch calibration; coordinates are in metres."""
+
+    calibration_path: Optional[str] = None
+    pitch_length_m: float = 105.0
+    pitch_width_m: float = 68.0
 
 
 @dataclass
@@ -143,6 +179,8 @@ class MatchConfig:
     splits: SplitConfig = field(default_factory=SplitConfig)
     ball_tracking: BallTrackingConfig = field(default_factory=BallTrackingConfig)
     possession: PossessionConfig = field(default_factory=PossessionConfig)
+    team_discovery: TeamDiscoveryConfig = field(default_factory=TeamDiscoveryConfig)
+    pitch: PitchConfig = field(default_factory=PitchConfig)
 
     def resolve_video_path(self, base_dir: Optional[Path] = None) -> Path:
         """Resolve the video path across primary and fallback locations."""
@@ -215,6 +253,8 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
     spl_raw = raw.get("splits", {})
     btrk_raw = raw.get("ball_tracking", {})
     poss_raw = raw.get("possession", {})
+    discovery_raw = raw.get("team_discovery", {})
+    pitch_raw = raw.get("pitch", {})
 
     colours_raw = raw.get("team_colours_bgr", {})
     colours_parsed: Dict[str, Tuple[int, int, int]] = {
@@ -250,5 +290,7 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
         splits=SplitConfig(**spl_raw),
         ball_tracking=BallTrackingConfig(**btrk_raw),
         possession=PossessionConfig(**poss_raw),
+        team_discovery=TeamDiscoveryConfig(**discovery_raw),
+        pitch=PitchConfig(**pitch_raw),
     )
 

@@ -1,0 +1,5 @@
+segment,tracker,processed_frames,camera_cuts_detected,distinct_tracking_ids,short_tracks_under_5_obs,short_track_fraction,mean_track_observations,max_track_observations,cross_cut_id_leaks,within_shot_ids_per_player_slot,within_shot_short_track_fraction,within_shot_mean_track_lifetime,within_shot_team_consistency,stable_label_coverage,raw_team_label_changes,smoothed_team_label_changes,ms_per_frame
+chelsea_sunderland_continuous_shot,bytetrack.yaml,150,2,57,19,0.3333,19.39,61,0,4.057,0.3333,19.39,0.9713,0.5991,5,2,328.5
+chelsea_sunderland_continuous_shot,botsort.yaml,150,2,57,24,0.4211,18.68,61,0,3.933,0.4211,18.68,0.9476,0.5915,7,2,341.7
+norway_wales_continuous_shot,bytetrack.yaml,120,1,29,10,0.3448,29.97,87,0,2.849,0.3448,29.97,1.0,0.7618,1,0,311.5
+norway_wales_continuous_shot,botsort.yaml,120,1,25,9,0.36,33.68,87,0,2.552,0.36,33.68,1.0,0.7815,1,0,332.1

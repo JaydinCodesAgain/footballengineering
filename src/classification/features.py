@@ -386,6 +386,18 @@ def extract_spatial_embedding_features(crop: np.ndarray) -> np.ndarray:
     return _l2_normalize(embedding)
 
 
+def extract_hybrid_hsv_lab_fg_features(crop: np.ndarray) -> np.ndarray:
+    """
+    6. Hybrid Chromatic/Achromatic HSV+LAB + Foreground-Masked Torso Descriptor:
+    Fuses `hsv_lab` (0.60 weight) with `foreground_masked` (0.40 weight) to preserve
+    clean achromatic separation (white/grey/black kits) alongside elliptical central
+    torso colour moments.
+    """
+    hsv_lab_vec = extract_hsv_lab_features(crop)
+    fg_vec = extract_foreground_masked_features(crop)
+    return _l2_normalize(np.concatenate([hsv_lab_vec * 0.60, fg_vec * 0.40]))
+
+
 FEATURE_EXTRACTORS: Dict[str, Callable[[np.ndarray], np.ndarray]] = {
     "baseline_hsv": extract_baseline_hsv_features,
     "legacy_enhanced": extract_legacy_enhanced_features,
@@ -393,6 +405,7 @@ FEATURE_EXTRACTORS: Dict[str, Callable[[np.ndarray], np.ndarray]] = {
     "foreground_masked": extract_foreground_masked_features,
     "dominant_colour": extract_dominant_colour_features,
     "spatial_embedding": extract_spatial_embedding_features,
+    "hybrid_hsv_lab_fg": extract_hybrid_hsv_lab_fg_features,
 }
 
 

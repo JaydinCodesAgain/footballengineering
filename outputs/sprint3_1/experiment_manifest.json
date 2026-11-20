@@ -1,0 +1,137 @@
+{
+  "sprint": "Sprint 3.1 — Model Accuracy, Generalisation & Fixed-Camera Reliability",
+  "generated_at": "2026-11-19T10:00:00Z",
+  "repository": "https://github.com/JaydinCodesAgain/footballengineering",
+  "git_branch": "feat/sprint3.1-accuracy-reliability",
+  "base_commit_sprint3": "4c91813",
+  "base_commit_main": "8a2505e",
+  "hardware_environment": {
+    "os": "Windows",
+    "logical_cpu_cores": 22,
+    "gpu_present_in_nvidia_smi": "NVIDIA RTX 500 Ada Generation Laptop GPU",
+    "torch_cuda_available": false,
+    "execution_device": "cpu"
+  },
+  "datasets": {
+    "norway_wales": {
+      "video_path": "Norway vs Wales _ HIGHLIGHTS _ UEFA Nations League.mp4",
+      "resolution": "1280x720",
+      "fps": 25.0,
+      "total_frames": 2953,
+      "footage_type": "broadcast_tv_highlights",
+      "verified_jersey_crops": 147,
+      "verified_detection_boxes": 0,
+      "legacy_count_only_frames": 11,
+      "verified_possession_intervals": 0,
+      "verified_identity_tracks": 0,
+      "split_role": "development_and_model_selection"
+    },
+    "chelsea_sunderland": {
+      "video_path": "27.mp4",
+      "resolution": "1280x720",
+      "fps": 25.0,
+      "total_frames": 2930,
+      "footage_type": "broadcast_tv_continuous_segments",
+      "verified_jersey_crops": 80,
+      "verified_detection_boxes": 0,
+      "verified_possession_intervals": 0,
+      "verified_identity_tracks": 0,
+      "split_role": "development_and_continuous_shot_proxy"
+    },
+    "man_utd_4_4_aston_villa_highlights": {
+      "video_path": "data/Man Utd 4-4 Aston Villa _ Highlights.mp4",
+      "resolution": "1280x720",
+      "fps": 25.0,
+      "total_frames": 3503,
+      "footage_type": "broadcast_tv_highlights",
+      "verified_jersey_crops": 0,
+      "verified_detection_boxes": 0,
+      "verified_possession_intervals": 0,
+      "verified_identity_tracks": 0,
+      "human_review_templates_dir": "data/annotations/man_utd_4_4_aston_villa_highlights",
+      "split_role": "held_out_unseen_match_frozen_config"
+    },
+    "fixed_camera_grassroots": {
+      "status": "unavailable_in_workspace",
+      "footage_type": "elevated_static_tripod",
+      "split_role": "pending_fixed_camera_generalisation"
+    }
+  },
+  "frozen_model_configuration": {
+    "detector": {
+      "model_name": "yolo11n.pt",
+      "imgsz": 1088,
+      "frame_stride": 2,
+      "person_conf_threshold": 0.3,
+      "ball_conf_threshold": 0.18,
+      "enable_tiled_ball_fallback": true,
+      "enable_kalman_roi_recovery": true,
+      "roi_conf_threshold": 0.12
+    },
+    "team_discovery": {
+      "feature_method": "hsv_lab",
+      "clustering_method": "kmeans",
+      "auto_select_k": true,
+      "max_candidate_clusters": 4,
+      "radius_mad_multiplier": 2.6,
+      "min_team_margin": 0.03,
+      "max_distance_ratio": 0.85,
+      "outlier_repulsion_ratio": 1.05,
+      "assignment_distance_multiplier": 1.0,
+      "random_state": 42,
+      "shot_segmented_track_cache": true
+    },
+    "player_tracking": {
+      "tracker_config": "botsort.yaml",
+      "reset_on_camera_cut": true,
+      "monotonic_global_track_id_offset": true,
+      "stabilizer_cut_reset": true
+    },
+    "ball_tracking": {
+      "filter_crowd_horizon": true,
+      "camera_cut_cooldown_frames": 6,
+      "init_confirm_frames": 2,
+      "init_high_conf_threshold": 0.45,
+      "static_zone_ttl_frames": 250,
+      "max_interpolation_frames": 6
+    },
+    "possession": {
+      "perspective_scaled_speed_threshold": true,
+      "stabilizer_rejection_override_disabled": true,
+      "min_team_confidence": 0.35
+    }
+  },
+  "reproducible_commands": {
+    "stage_b_team_discovery_benchmark": "python scripts/run_sprint3_1_team_discovery_eval.py",
+    "stage_c_ball_detection_benchmark": "python scripts/run_sprint3_1_ball_eval.py",
+    "stage_d_tracking_comparison": "python scripts/run_sprint3_1_tracking_eval.py",
+    "stage_ef_unseen_and_continuous_eval": "python scripts/run_sprint3_1_unseen_and_continuous.py --tracker botsort.yaml --model yolo11n.pt --max-frames-unseen 1500 --max-frames-continuous 350",
+    "accuracy_evaluation_harness": "python -m src.evaluation.harness --run-dir outputs/sprint3_1/man_utd_villa_run --match-id man_utd_4_4_aston_villa_highlights",
+    "required_cli_entrypoint": "python -m src.pipeline.cli --video \"data/Man Utd 4-4 Aston Villa _ Highlights.mp4\" --auto-teams --enable-possession --max-frames 1500",
+    "automated_tests": "python -m pytest -v"
+  },
+  "deliverable_artifacts": {
+    "baseline_comparison": "outputs/sprint3_1/baseline_comparison.md",
+    "experiment_manifest": "outputs/sprint3_1/experiment_manifest.json",
+    "team_clustering_report": "outputs/sprint3_1/team_discovery/clustering_report.json",
+    "team_metrics_csv": "outputs/sprint3_1/team_discovery/team_metrics.csv",
+    "team_confusion_matrix_png": "outputs/sprint3_1/team_discovery/team_confusion_matrix.png",
+    "player_tracking_metrics": "outputs/sprint3_1/player_tracking/tracking_metrics.json",
+    "player_fragmentation_csv": "outputs/sprint3_1/player_tracking/fragmentation_report.csv",
+    "unseen_per_shot_fragmentation_csv": "outputs/sprint3_1/player_tracking/unseen_per_shot_fragmentation.csv",
+    "ball_detection_metrics": "outputs/sprint3_1/ball_tracking/detection_metrics.json",
+    "ball_tracking_metrics": "outputs/sprint3_1/ball_tracking/tracking_metrics.json",
+    "ball_false_positive_examples_csv": "outputs/sprint3_1/ball_tracking/false_positive_examples.csv",
+    "possession_summary": "outputs/sprint3_1/possession/possession_summary.json",
+    "possession_evaluation": "outputs/sprint3_1/possession/possession_evaluation.json",
+    "unseen_match_results": "outputs/sprint3_1/experiments/unseen_match_results.json",
+    "final_engineering_report": "outputs/sprint3_1/final_engineering_report.md"
+  },
+  "ground_truth_validation_blockers": [
+    "No independently verified per-frame ground-truth ball bounding boxes (`verified=true, source=manual`) exist across the three matches; ball mAP/AP@50/IoU recall/center error remain pending manual annotation.",
+    "No independently verified ground-truth possession intervals (`verified=true, source=manual`) exist yet; possession state accuracy and share error remain pending manual annotation.",
+    "No independently verified multi-object player identity tracks exist yet; formal IDF1/HOTA remain pending manual annotation.",
+    "No verified jersey labels exist yet for the held-out unseen match (`Man Utd 4-4 Aston Villa`); unverified review templates have been exported to `data/annotations/man_utd_4_4_aston_villa_highlights/`.",
+    "No elevated fixed-position tripod grassroots match video is present in the workspace; fixed-camera generalisation remains pending real fixed-camera footage."
+  ]
+}

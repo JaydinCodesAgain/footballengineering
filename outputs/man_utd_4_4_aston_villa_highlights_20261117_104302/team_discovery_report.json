@@ -1,0 +1,24 @@
+{
+  "mode": "unsupervised_per_video_adaptation",
+  "feature_method": "spatial_embedding",
+  "clustering_method": "kmeans",
+  "candidate_clusters": 3,
+  "reliable_tracks": 427,
+  "team_cluster_ids": {
+    "Team_A": 1,
+    "Team_B": 2
+  },
+  "excluded_cluster_ids": [
+    0
+  ],
+  "cluster_radii_cosine_distance": {
+    "1": 0.2466,
+    "2": 0.2969
+  },
+  "track_label_counts": {
+    "Team_A": 178,
+    "Team_B": 172,
+    "Unknown": 77
+  },
+  "team_name_note": "Team_A and Team_B are visual clusters, not inferred club or national-team names."
+}

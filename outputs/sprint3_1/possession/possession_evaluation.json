@@ -1,0 +1,21 @@
+{
+  "unseen_man_utd_villa_1500f": {
+    "metrics_available": false,
+    "status": "pending_manual_possession_annotations",
+    "validation_blocker": "missing_verified_manual_possession_annotations",
+    "message": "No manually verified ground-truth possession intervals are present yet. Open `data/annotations/<match_id>/possession_annotator.html` or edit `possession_annotations.csv` with `verified=true` and `source=manual` to compute ground-truth possession accuracy."
+  },
+  "continuous_shot_proxy_chelsea_sunderland": {
+    "metrics_available": false,
+    "status": "pending_manual_possession_annotations",
+    "validation_blocker": "missing_verified_manual_possession_annotations",
+    "message": "No manually verified ground-truth possession intervals are present yet. Open `data/annotations/<match_id>/possession_annotator.html` or edit `possession_annotations.csv` with `verified=true` and `source=manual` to compute ground-truth possession accuracy."
+  },
+  "human_review_templates_generated": {
+    "detection_annotations_json": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\detection_annotations.json",
+    "detection_annotator_html": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\detection_annotator.html",
+    "possession_annotations_json": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\possession_annotations.json",
+    "possession_annotator_html": "data\\annotations\\man_utd_4_4_aston_villa_highlights\\possession_annotator.html"
+  },
+  "reporting_guardrail": "Attributed possession shares are reported strictly alongside attribution coverage and full 6-state time distribution. Low-coverage broadcast highlight segments must not be presented as validated full-match possession."
+}
