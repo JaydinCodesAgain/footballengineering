@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 from src.config import MatchConfig
+from src.geometry.pitch_region import PitchRegionFilter
 from src.possession.ball_tracker import KalmanBallTracker, filter_ball_candidates
 from src.possession.metrics import compute_possession_summary
 from src.possession.ownership import evaluate_frame_ownership_candidates
@@ -34,16 +35,19 @@ class PossessionEngine:
         fps: float = 25.0,
         frame_stride: int = 2,
         total_video_duration_seconds: Optional[float] = None,
+        pitch_region_filter: Optional[PitchRegionFilter] = None,
     ) -> None:
         self.match_config = match_config
         self.fps = max(1.0, float(fps))
         self.frame_stride = max(1, int(frame_stride))
         self.default_dt = float(self.frame_stride) / self.fps
         self.total_video_duration_seconds = total_video_duration_seconds
+        self.pitch_region_filter = pitch_region_filter
 
         self.ball_tracker = KalmanBallTracker(
             match_id=match_config.match_id,
             config=match_config.ball_tracking,
+            pitch_region_filter=pitch_region_filter,
         )
         self.state_machine = PossessionStateMachine(config=match_config.possession)
 
@@ -109,6 +113,7 @@ class PossessionEngine:
                 frame_bgr=frame_bgr,
                 predicted_pos=self.ball_tracker.get_predicted_position(),
                 filter_crowd_horizon=self.match_config.ball_tracking.filter_crowd_horizon,
+                pitch_region_filter=self.pitch_region_filter if self.match_config.pitch.filter_balls_by_pitch else None,
             )
         else:
             filtered_balls = list(raw_ball_detections)

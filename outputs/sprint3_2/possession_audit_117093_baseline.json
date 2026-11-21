@@ -1,0 +1,119 @@
+{
+  "match_id": "117093",
+  "run_dir": "outputs\\sprint3_2\\match_117093_baseline",
+  "ball_trajectory": {
+    "total_frames": 180,
+    "observed_frames": 17,
+    "interpolated_frames": 0,
+    "lost_frames": 163,
+    "observed_pct": 9.44,
+    "active_pct": 9.44,
+    "detection_sources": {
+      "full_frame": 16,
+      "kalman_roi_recovery": 1
+    },
+    "false_track_associations": 5,
+    "permanent_static_zones_count": 0
+  },
+  "verified_ball_overlap_eval": {
+    "available": false
+  },
+  "possession_state_distribution_pct": {
+    "LOOSE_BALL": 9.44,
+    "UNKNOWN": 90.56
+  },
+  "bas_acting_team_diagnostic": {
+    "available": true,
+    "caveat": "BAS actions provide point-in-time acting-team labels (left/right) at discrete ball actions, NOT continuous human-annotated possession intervals; continuous possession percentages remain unvalidated unless independent interval ground truth is supplied.",
+    "team_alignment_map": {
+      "left": "Team_B",
+      "right": "Team_A",
+      "permutation_swapped": true
+    },
+    "bas_actions_in_window": 7,
+    "attributed_actions": 0,
+    "unattributed_unknown_or_loose": 7,
+    "attributed_agreement_count": 0,
+    "attributed_disagreement_count": 0,
+    "attributed_agreement_rate": null,
+    "actions": [
+      {
+        "bas_frame_1b": 17,
+        "label": "PASS",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 16,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 53,
+        "label": "HIGH PASS",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 52,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 135,
+        "label": "OUT",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 134,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 208,
+        "label": "THROW IN",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_B",
+        "nearest_eval_frame": 206,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 263,
+        "label": "DRIVE",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_B",
+        "nearest_eval_frame": 262,
+        "nearest_state": "LOOSE_BALL",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 281,
+        "label": "HIGH PASS",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_B",
+        "nearest_eval_frame": 280,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 336,
+        "label": "PASS",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 334,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      }
+    ]
+  }
+}

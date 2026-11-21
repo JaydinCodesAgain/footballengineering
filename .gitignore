@@ -23,3 +23,10 @@ data/raw/*.mp4
 data/crops/*/images/
 data/annotations/*/frames/
 outputs/sprint3_1/*_run/
+outputs/sprint3_2/*_run/
+outputs/sprint3_2/match_*/
+outputs/sprint3_2/*cache*.json
+outputs/sprint3_2/ball_eval/*cache*.json
+outputs/sprint3_2/ball_audit_sheets/
+outputs/soccertrack_v2_baseline/*_unchanged/
+SoccerTrack-v2/

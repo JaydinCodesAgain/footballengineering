@@ -1,0 +1,467 @@
+{
+  "eval_set_path": "outputs\\sprint3_2\\ball_eval\\verified_ball_eval_set_dev.json",
+  "strategies": {
+    "1_baseline_full_yolo11n_1088": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 0,
+      "fp": 0,
+      "fn": 40,
+      "neg_control_fp": 0,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "ap": 0.0,
+      "median_center_err_px": null,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 0,
+          "fp": 0,
+          "neg_fp": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 0,
+          "fp": 0,
+          "neg_fp": 0,
+          "precision": null,
+          "recall": 0.0
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 0,
+          "fp_per_frame": 0.0
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        }
+      },
+      "mean_ms_per_frame": 150.0
+    },
+    "2_tiled_yolo11n_1280_pitch": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 6,
+      "fp": 5,
+      "fn": 34,
+      "neg_control_fp": 3,
+      "precision": 0.5455,
+      "recall": 0.15,
+      "f1": 0.2353,
+      "ap": 0.1119,
+      "median_center_err_px": 1.8,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 1,
+          "fp": 0,
+          "neg_fp": 0,
+          "precision": 1.0,
+          "recall": 0.0455
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 5,
+          "fp": 5,
+          "neg_fp": 3,
+          "precision": 0.5,
+          "recall": 0.2778
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 3,
+          "fp_per_frame": 0.3
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 0,
+          "fp": 1,
+          "recall": 0.0
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 3,
+          "fp": 0,
+          "recall": 0.2727
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 3,
+          "fp": 1,
+          "recall": 0.2308
+        }
+      },
+      "mean_ms_per_frame": 1330.0
+    },
+    "3_tiled_yolo11s_1280_pitch": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 15,
+      "fp": 8,
+      "fn": 25,
+      "neg_control_fp": 4,
+      "precision": 0.6522,
+      "recall": 0.375,
+      "f1": 0.4762,
+      "ap": 0.2763,
+      "median_center_err_px": 1.8,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 6,
+          "fp": 2,
+          "neg_fp": 0,
+          "precision": 0.75,
+          "recall": 0.2727
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 9,
+          "fp": 6,
+          "neg_fp": 4,
+          "precision": 0.6,
+          "recall": 0.5
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 4,
+          "fp_per_frame": 0.4
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 1,
+          "fp": 1,
+          "recall": 0.1667
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 7,
+          "fp": 0,
+          "recall": 0.6364
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 7,
+          "fp": 3,
+          "recall": 0.5385
+        }
+      },
+      "mean_ms_per_frame": 4516.9
+    },
+    "4_tiled_yolo11s_plus_motion3f_unverified": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 17,
+      "fp": 53,
+      "fn": 23,
+      "neg_control_fp": 15,
+      "precision": 0.2429,
+      "recall": 0.425,
+      "f1": 0.3091,
+      "ap": 0.1879,
+      "median_center_err_px": 2.0,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 8,
+          "fp": 47,
+          "neg_fp": 11,
+          "precision": 0.1455,
+          "recall": 0.3636
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 9,
+          "fp": 6,
+          "neg_fp": 4,
+          "precision": 0.6,
+          "recall": 0.5
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 15,
+          "fp_per_frame": 1.5
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 0,
+          "fp": 4,
+          "recall": 0.0
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 1,
+          "fp": 7,
+          "recall": 0.1667
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 6,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 1,
+          "fp": 2,
+          "recall": 0.5
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 8,
+          "fp": 5,
+          "recall": 0.7273
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 7,
+          "fp": 14,
+          "recall": 0.5385
+        }
+      },
+      "mean_ms_per_frame": 4762.8
+    },
+    "5_tiled_yolo11s_plus_motion3f_yolo2x": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 15,
+      "fp": 8,
+      "fn": 25,
+      "neg_control_fp": 4,
+      "precision": 0.6522,
+      "recall": 0.375,
+      "f1": 0.4762,
+      "ap": 0.2763,
+      "median_center_err_px": 1.8,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 6,
+          "fp": 2,
+          "neg_fp": 0,
+          "precision": 0.75,
+          "recall": 0.2727
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 9,
+          "fp": 6,
+          "neg_fp": 4,
+          "precision": 0.6,
+          "recall": 0.5
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 4,
+          "fp_per_frame": 0.4
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 1,
+          "fp": 1,
+          "recall": 0.1667
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 7,
+          "fp": 0,
+          "recall": 0.6364
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 7,
+          "fp": 3,
+          "recall": 0.5385
+        }
+      },
+      "mean_ms_per_frame": 6460.2
+    },
+    "6_tiled_yolo11s_kalman_roi2x_gated_motion": {
+      "visible_total": 40,
+      "absent_total": 10,
+      "tp": 17,
+      "fp": 9,
+      "fn": 23,
+      "neg_control_fp": 4,
+      "precision": 0.6538,
+      "recall": 0.425,
+      "f1": 0.5152,
+      "ap": 0.3161,
+      "median_center_err_px": 1.8,
+      "by_match": {
+        "117092": {
+          "visible": 22,
+          "absent": 4,
+          "tp": 6,
+          "fp": 3,
+          "neg_fp": 0,
+          "precision": 0.6667,
+          "recall": 0.2727
+        },
+        "118575": {
+          "visible": 18,
+          "absent": 6,
+          "tp": 11,
+          "fp": 6,
+          "neg_fp": 4,
+          "precision": 0.6471,
+          "recall": 0.6111
+        }
+      },
+      "by_category": {
+        "absent_out_of_play": {
+          "total": 10,
+          "fp": 4,
+          "fp_per_frame": 0.4
+        },
+        "aerial_motion_blur": {
+          "total": 4,
+          "tp": 1,
+          "fp": 1,
+          "recall": 0.25
+        },
+        "occluded_at_foot": {
+          "total": 6,
+          "tp": 2,
+          "fp": 1,
+          "recall": 0.3333
+        },
+        "stationary_set_piece": {
+          "total": 4,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_far": {
+          "total": 2,
+          "tp": 0,
+          "fp": 0,
+          "recall": 0.0
+        },
+        "visible_mid": {
+          "total": 11,
+          "tp": 7,
+          "fp": 0,
+          "recall": 0.6364
+        },
+        "visible_near": {
+          "total": 13,
+          "tp": 7,
+          "fp": 3,
+          "recall": 0.5385
+        }
+      },
+      "mean_ms_per_frame": 4803.8
+    }
+  }
+}

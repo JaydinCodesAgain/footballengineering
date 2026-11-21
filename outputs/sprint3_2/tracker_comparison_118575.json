@@ -1,0 +1,114 @@
+{
+  "match_id": "118575",
+  "frames_evaluated": 180,
+  "frame_range": [
+    0,
+    358
+  ],
+  "detector_config": {
+    "model": "yolo11s.pt",
+    "person_conf": 0.28,
+    "tile_size": "1280x1280@1280",
+    "pitch_roi": [
+      0,
+      39,
+      4063,
+      856
+    ],
+    "det_wall_time_s": 714.76,
+    "det_ms_per_frame": 3970.9,
+    "avg_players_detected": 25.63
+  },
+  "trackers": {
+    "bytetrack.yaml": {
+      "tracker_ms_per_frame": 7.35,
+      "pitch_5m": {
+        "frames_evaluated": 180,
+        "total_gt_players": 3960,
+        "total_pred_all": 4552,
+        "total_pred_on_pitch": 4365,
+        "off_pitch_sideline_detections": 187,
+        "off_pitch_label_counts": {
+          "Unknown": 187
+        },
+        "tp": 3854,
+        "fp_all": 698,
+        "fp_on_pitch": 511,
+        "fn": 106,
+        "detection_precision_all": 0.8467,
+        "detection_precision_on_pitch": 0.8829,
+        "detection_recall": 0.9732,
+        "detection_f1_all": 0.9055,
+        "mean_matched_distance_m": 1.29,
+        "median_matched_distance_m": 0.88,
+        "mota_all": 0.7881,
+        "mota_on_pitch": 0.8354,
+        "idf1": 0.7293,
+        "idp": 0.6819,
+        "idr": 0.7838,
+        "idtp": 3104,
+        "idfp": 1448,
+        "idfn": 856,
+        "id_switches": 35,
+        "fragmentations": 31,
+        "gt_unique_identities": 22,
+        "pred_unique_identities_matched": 38,
+        "mostly_tracked_mt": 21,
+        "partially_tracked_pt": 1,
+        "mostly_lost_ml": 0,
+        "mean_gt_dominant_id_purity": 0.8067,
+        "mean_distinct_pred_ids_per_gt_player": 2.23,
+        "gs_hota": 0.5604,
+        "gs_deta": 0.5587,
+        "gs_assa": 0.5656,
+        "gs_loca": 0.8309
+      },
+      "pitch_8m": null
+    },
+    "botsort.yaml": {
+      "tracker_ms_per_frame": 10.08,
+      "pitch_5m": {
+        "frames_evaluated": 180,
+        "total_gt_players": 3960,
+        "total_pred_all": 4549,
+        "total_pred_on_pitch": 4362,
+        "off_pitch_sideline_detections": 187,
+        "off_pitch_label_counts": {
+          "Unknown": 187
+        },
+        "tp": 3851,
+        "fp_all": 698,
+        "fp_on_pitch": 511,
+        "fn": 109,
+        "detection_precision_all": 0.8466,
+        "detection_precision_on_pitch": 0.8829,
+        "detection_recall": 0.9725,
+        "detection_f1_all": 0.9052,
+        "mean_matched_distance_m": 1.29,
+        "median_matched_distance_m": 0.88,
+        "mota_all": 0.7864,
+        "mota_on_pitch": 0.8336,
+        "idf1": 0.7514,
+        "idp": 0.7028,
+        "idr": 0.8073,
+        "idtp": 3197,
+        "idfp": 1352,
+        "idfn": 763,
+        "id_switches": 39,
+        "fragmentations": 32,
+        "gt_unique_identities": 22,
+        "pred_unique_identities_matched": 41,
+        "mostly_tracked_mt": 21,
+        "partially_tracked_pt": 1,
+        "mostly_lost_ml": 0,
+        "mean_gt_dominant_id_purity": 0.8305,
+        "mean_distinct_pred_ids_per_gt_player": 2.32,
+        "gs_hota": 0.5667,
+        "gs_deta": 0.5577,
+        "gs_assa": 0.5789,
+        "gs_loca": 0.8306
+      },
+      "pitch_8m": null
+    }
+  }
+}

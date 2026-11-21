@@ -1,0 +1,275 @@
+{
+  "match_id": "118575",
+  "run_dir": "outputs\\sprint3_2\\match_118575_sprint3_2",
+  "ball_trajectory": {
+    "total_frames": 180,
+    "observed_frames": 128,
+    "interpolated_frames": 16,
+    "lost_frames": 36,
+    "observed_pct": 71.11,
+    "active_pct": 80.0,
+    "detection_sources": {
+      "tiled_yolo": 121,
+      "motion_assisted": 4,
+      "kalman_roi_recovery": 3
+    },
+    "false_track_associations": 0,
+    "permanent_static_zones_count": 0
+  },
+  "verified_ball_overlap_eval": {
+    "available": true,
+    "overlapping_visible_frames": 12,
+    "overlapping_absent_frames": 0,
+    "observed_only": {
+      "tp": 7,
+      "fp": 1,
+      "fn": 5,
+      "neg_fp": 0,
+      "precision": 0.875,
+      "recall": 0.5833,
+      "median_err_px": 2.3
+    },
+    "observed_plus_interpolated": {
+      "tp": 8,
+      "fp": 1,
+      "fn": 4,
+      "neg_fp": 0,
+      "precision": 0.8889,
+      "recall": 0.6667,
+      "median_err_px": 2.2
+    },
+    "details": [
+      {
+        "frame": 6,
+        "gt_visible": true,
+        "mode": "lost",
+        "source": "none",
+        "center_err_px": null,
+        "hit_obs_30px": false,
+        "hit_active_35px": false
+      },
+      {
+        "frame": 16,
+        "gt_visible": true,
+        "mode": "lost",
+        "source": "none",
+        "center_err_px": null,
+        "hit_obs_30px": false,
+        "hit_active_35px": false
+      },
+      {
+        "frame": 30,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 1.9,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 110,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 2.0,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 214,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 2.4,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 144,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 2.7,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 168,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 2.5,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 238,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 2.3,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 354,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 0.9,
+        "hit_obs_30px": true,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 50,
+        "gt_visible": true,
+        "mode": "lost",
+        "source": "none",
+        "center_err_px": null,
+        "hit_obs_30px": false,
+        "hit_active_35px": false
+      },
+      {
+        "frame": 74,
+        "gt_visible": true,
+        "mode": "interpolated",
+        "source": "kalman_interpolation",
+        "center_err_px": 2.1,
+        "hit_obs_30px": false,
+        "hit_active_35px": true
+      },
+      {
+        "frame": 298,
+        "gt_visible": true,
+        "mode": "observed",
+        "source": "tiled_yolo",
+        "center_err_px": 454.8,
+        "hit_obs_30px": false,
+        "hit_active_35px": false
+      }
+    ]
+  },
+  "possession_state_distribution_pct": {
+    "UNKNOWN": 28.33,
+    "LOOSE_BALL": 29.44,
+    "TEAM_A_CONTROL": 27.78,
+    "CONTESTED": 1.67,
+    "TEAM_B_CONTROL": 12.78
+  },
+  "bas_acting_team_diagnostic": {
+    "available": true,
+    "caveat": "BAS actions provide point-in-time acting-team labels (left/right) at discrete ball actions, NOT continuous human-annotated possession intervals; continuous possession percentages remain unvalidated unless independent interval ground truth is supplied.",
+    "team_alignment_map": {
+      "left": "Team_A",
+      "right": "Team_B",
+      "permutation_swapped": false
+    },
+    "bas_actions_in_window": 9,
+    "attributed_actions": 6,
+    "unattributed_unknown_or_loose": 3,
+    "attributed_agreement_count": 6,
+    "attributed_disagreement_count": 0,
+    "attributed_agreement_rate": 1.0,
+    "actions": [
+      {
+        "bas_frame_1b": 16,
+        "label": "PASS",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 14,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 49,
+        "label": "DRIVE",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 48,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 74,
+        "label": "PASS",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 72,
+        "nearest_state": "LOOSE_BALL",
+        "nearest_team": "",
+        "window_attributed_team": "Team_A",
+        "agreed": true
+      },
+      {
+        "bas_frame_1b": 143,
+        "label": "DRIVE",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 142,
+        "nearest_state": "TEAM_A_CONTROL",
+        "nearest_team": "Team_A",
+        "window_attributed_team": "Team_A",
+        "agreed": true
+      },
+      {
+        "bas_frame_1b": 168,
+        "label": "PASS",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 166,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Team_A",
+        "agreed": true
+      },
+      {
+        "bas_frame_1b": 214,
+        "label": "PASS",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 212,
+        "nearest_state": "UNKNOWN",
+        "nearest_team": "",
+        "window_attributed_team": "Unknown/Unattributed",
+        "agreed": null
+      },
+      {
+        "bas_frame_1b": 235,
+        "label": "DRIVE",
+        "bas_team_side": "left",
+        "expected_internal_team": "Team_A",
+        "nearest_eval_frame": 234,
+        "nearest_state": "TEAM_A_CONTROL",
+        "nearest_team": "Team_A",
+        "window_attributed_team": "Team_A",
+        "agreed": true
+      },
+      {
+        "bas_frame_1b": 298,
+        "label": "DRIVE",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_B",
+        "nearest_eval_frame": 296,
+        "nearest_state": "TEAM_B_CONTROL",
+        "nearest_team": "Team_B",
+        "window_attributed_team": "Team_B",
+        "agreed": true
+      },
+      {
+        "bas_frame_1b": 355,
+        "label": "PASS",
+        "bas_team_side": "right",
+        "expected_internal_team": "Team_B",
+        "nearest_eval_frame": 354,
+        "nearest_state": "TEAM_B_CONTROL",
+        "nearest_team": "Team_B",
+        "window_attributed_team": "Team_B",
+        "agreed": true
+      }
+    ]
+  }
+}

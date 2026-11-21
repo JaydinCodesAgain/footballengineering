@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Football AI — Detection Ground-Truth Annotator (soccertrack_128057)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #141619; color: #f0f0f0; margin: 0; padding: 16px; }
+  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; background: #212529; padding: 10px 14px; border-radius: 6px; }
+  button, select { padding: 6px 12px; border-radius: 4px; border: 1px solid #495057; background: #343a40; color: #fff; cursor: pointer; font-weight: 600; }
+  button.primary { background: #198754; border-color: #198754; }
+  button.active-cls { outline: 2px solid #ffc107; }
+  #canvas-wrap { position: relative; display: inline-block; border: 2px solid #495057; overflow: auto; max-width: 100%; }
+  canvas { display: block; cursor: crosshair; }
+  .status { font-size: 14px; color: #adb5bd; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <strong>Match: soccertrack_128057</strong>
+  <button onclick="prevFrame()">&#9664; Prev Frame</button>
+  <span id="frame-info">Frame 0/0</span>
+  <button onclick="nextFrame()">Next Frame &#9654;</button>
+  <button id="btn-ball" class="active-cls" onclick="setClass('ball')">Class: BALL (Key 1)</button>
+  <button id="btn-player" onclick="setClass('player')">Class: PLAYER (Key 2)</button>
+  <button onclick="undoBox()">Undo Last Box (Z)</button>
+  <button onclick="clearFrameBoxes()">Clear Frame</button>
+  <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
+  <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
+  <span class="status">Drag on image to draw box. Save CSV to data/annotations/soccertrack_128057/detection_boxes.csv</span>
+</div>
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<script>
+const frames = [{"match_id": "soccertrack_128057", "frame_number": 0, "timestamp": 0.0, "image_rel_path": "frames/frame_000000.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 12, "timestamp": 0.48, "image_rel_path": "frames/frame_000012.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 24, "timestamp": 0.96, "image_rel_path": "frames/frame_000024.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 36, "timestamp": 1.44, "image_rel_path": "frames/frame_000036.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 38, "timestamp": 1.52, "image_rel_path": "frames/frame_000038.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 48, "timestamp": 1.92, "image_rel_path": "frames/frame_000048.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 60, "timestamp": 2.4, "image_rel_path": "frames/frame_000060.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 74, "timestamp": 2.96, "image_rel_path": "frames/frame_000074.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 86, "timestamp": 3.44, "image_rel_path": "frames/frame_000086.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 94, "timestamp": 3.76, "image_rel_path": "frames/frame_000094.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 98, "timestamp": 3.92, "image_rel_path": "frames/frame_000098.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 110, "timestamp": 4.4, "image_rel_path": "frames/frame_000110.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 122, "timestamp": 4.88, "image_rel_path": "frames/frame_000122.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 134, "timestamp": 5.36, "image_rel_path": "frames/frame_000134.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 148, "timestamp": 5.92, "image_rel_path": "frames/frame_000148.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 160, "timestamp": 6.4, "image_rel_path": "frames/frame_000160.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 172, "timestamp": 6.88, "image_rel_path": "frames/frame_000172.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 182, "timestamp": 7.28, "image_rel_path": "frames/frame_000182.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 184, "timestamp": 7.36, "image_rel_path": "frames/frame_000184.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 196, "timestamp": 7.84, "image_rel_path": "frames/frame_000196.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 208, "timestamp": 8.32, "image_rel_path": "frames/frame_000208.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 222, "timestamp": 8.88, "image_rel_path": "frames/frame_000222.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 234, "timestamp": 9.36, "image_rel_path": "frames/frame_000234.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 246, "timestamp": 9.84, "image_rel_path": "frames/frame_000246.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 258, "timestamp": 10.32, "image_rel_path": "frames/frame_000258.jpg", "verified": false, "source": "unlabelled", "scene_tag": "normal_possession", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 270, "timestamp": 10.8, "image_rel_path": "frames/frame_000270.jpg", "verified": false, "source": "unlabelled", "scene_tag": "aerial_or_long_pass", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 282, "timestamp": 11.28, "image_rel_path": "frames/frame_000282.jpg", "verified": false, "source": "unlabelled", "scene_tag": "crowded_box", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 296, "timestamp": 11.84, "image_rel_path": "frames/frame_000296.jpg", "verified": false, "source": "unlabelled", "scene_tag": "camera_pan_or_zoom", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 308, "timestamp": 12.32, "image_rel_path": "frames/frame_000308.jpg", "verified": false, "source": "unlabelled", "scene_tag": "partial_occlusion", "boxes": [], "legacy_counts": null}, {"match_id": "soccertrack_128057", "frame_number": 320, "timestamp": 12.8, "image_rel_path": "frames/frame_000320.jpg", "verified": false, "source": "unlabelled", "scene_tag": "difficult_background", "boxes": [], "legacy_counts": null}];
+let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0;
+const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+const img = new Image();
+
+function loadFrame(i) {
+  if (!frames.length) return;
+  idx = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[idx];
+  document.getElementById('frame-info').textContent = `#${idx+1}/${frames.length} | Frame ${f.frame_number} (${f.timestamp}s) [${f.scene_tag}] | Boxes: ${f.boxes.length}`;
+  document.getElementById('chk-verified').checked = !!f.verified;
+  img.onload = () => { canvas.width = img.width; canvas.height = img.height; render(); };
+  img.src = f.image_rel_path;
+}
+
+function render(previewRect) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0);
+  const f = frames[idx];
+  for (const b of f.boxes) {
+    const [x1, y1, x2, y2] = b.bbox;
+    ctx.strokeStyle = b.class_name === 'ball' ? '#ffc107' : '#20c997';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(b.class_name.toUpperCase(), x1, Math.max(14, y1 - 4));
+  }
+  if (previewRect) {
+    ctx.strokeStyle = '#ff4d4d';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(previewRect[0], previewRect[1], previewRect[2] - previewRect[0], previewRect[3] - previewRect[1]);
+  }
+}
+
+canvas.addEventListener('mousedown', e => {
+  const r = canvas.getBoundingClientRect();
+  startX = Math.round(e.clientX - r.left);
+  startY = Math.round(e.clientY - r.top);
+  dragging = true;
+});
+canvas.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  render([Math.min(startX, cx), Math.min(startY, cy), Math.max(startX, cx), Math.max(startY, cy)]);
+});
+canvas.addEventListener('mouseup', e => {
+  if (!dragging) return;
+  dragging = false;
+  const r = canvas.getBoundingClientRect();
+  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const x1 = Math.min(startX, cx), y1 = Math.min(startY, cy), x2 = Math.max(startX, cx), y2 = Math.max(startY, cy);
+  if (x2 - x1 >= 4 && y2 - y1 >= 4) {
+    frames[idx].boxes.push({ class_name: currentClass, bbox: [x1, y1, x2, y2] });
+    frames[idx].verified = true;
+    frames[idx].source = 'manual';
+    document.getElementById('chk-verified').checked = true;
+  }
+  loadFrame(idx);
+});
+
+function setClass(c) {
+  currentClass = c;
+  document.getElementById('btn-ball').className = c === 'ball' ? 'active-cls' : '';
+  document.getElementById('btn-player').className = c === 'player' ? 'active-cls' : '';
+}
+function undoBox() { frames[idx].boxes.pop(); loadFrame(idx); }
+function clearFrameBoxes() { frames[idx].boxes = []; loadFrame(idx); }
+function toggleVerified(v) { frames[idx].verified = v; if (v) frames[idx].source = 'manual'; }
+function prevFrame() { loadFrame(idx - 1); }
+function nextFrame() { loadFrame(idx + 1); }
+window.addEventListener('keydown', e => {
+  if (e.key === '1') setClass('ball');
+  if (e.key === '2') setClass('player');
+  if (e.key === 'z' || e.key === 'Z') undoBox();
+  if (e.key === 'ArrowLeft') prevFrame();
+  if (e.key === 'ArrowRight') nextFrame();
+});
+
+function exportCSV() {
+  const rows = ['frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source'];
+  for (const f of frames) {
+    const src = f.verified ? 'manual' : f.source;
+    if (!f.boxes.length) {
+      rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},,,,,,${f.verified},${src}`);
+    } else {
+      for (const b of f.boxes) {
+        rows.push(`${f.frame_number},${f.timestamp},${f.scene_tag},${b.class_name},${b.bbox[0]},${b.bbox[1]},${b.bbox[2]},${b.bbox[3]},${f.verified},${src}`);
+      }
+    }
+  }
+  const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'detection_boxes.csv';
+  a.click();
+}
+loadFrame(0);
+</script>
+</body>
+</html>

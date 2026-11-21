@@ -95,6 +95,35 @@ def main() -> None:
         default=None,
         help="Optional override for frame sampling stride.",
     )
+    # Sprint 3.2: panoramic multi-tile detection, fixed-camera pitch filtering & motion-ball recovery
+    parser.add_argument(
+        "--detection-mode",
+        choices=("full_frame", "tiled", "auto"),
+        default=None,
+        help="Detection mode: full_frame (default broadcast), tiled (overlapping native-res tiles), or auto.",
+    )
+    parser.add_argument("--model", type=str, default=None, help="Optional override for YOLO detector weights (e.g. yolo11n.pt, yolo11s.pt).")
+    parser.add_argument("--person-conf", type=float, default=None, help="Optional override for player detection confidence threshold.")
+    parser.add_argument("--tile-width", type=int, default=None, help="Optional tile width in pixels for tiled mode.")
+    parser.add_argument("--tile-height", type=int, default=None, help="Optional tile height in pixels for tiled mode.")
+    parser.add_argument("--tile-overlap", type=float, default=None, help="Optional tile overlap fraction (0.0..0.49).")
+    parser.add_argument("--tile-imgsz", type=int, default=None, help="Optional YOLO imgsz per tile.")
+    parser.add_argument(
+        "--fixed-camera",
+        action="store_true",
+        help="Enable fixed-camera mode (persistent static-distractor mask, disables broadcast camera-cut/GMC, enables motion-assisted small-ball recovery).",
+    )
+    parser.add_argument(
+        "--pitch-coordinate-space",
+        choices=("raw_fisheye", "undistorted", "planar"),
+        default=None,
+        help="Coordinate space of the supplied pitch calibration (default: raw_fisheye).",
+    )
+    parser.add_argument("--pitch-player-margin", type=float, default=None, help="Pitch boundary margin in metres for players (default: 2.0).")
+    parser.add_argument("--pitch-ball-margin", type=float, default=None, help="Pitch boundary margin in metres for balls (default: 2.5).")
+    parser.add_argument("--disable-pitch-filter", action="store_true", help="Disable geometric pitch-region filtering even when pitch calibration is supplied.")
+    parser.add_argument("--enable-motion-ball", action="store_true", help="Explicitly enable fixed-camera motion-assisted small-ball recovery.")
+    parser.add_argument("--disable-motion-ball", action="store_true", help="Disable motion-assisted small-ball recovery.")
 
     args = parser.parse_args()
     if args.auto_teams and args.video:
@@ -133,6 +162,40 @@ def main() -> None:
         match_cfg.pitch.calibration_path = args.pitch_calibration
     if args.tracker:
         match_cfg.tracking.tracker_config = str(args.tracker)
+    if args.detection_mode:
+        match_cfg.detection.inference_mode = str(args.detection_mode)
+    if args.model:
+        match_cfg.detection.model_name = str(args.model)
+    if args.person_conf is not None:
+        match_cfg.detection.person_conf = float(args.person_conf)
+    if args.tile_width is not None:
+        match_cfg.detection.tile_width = int(args.tile_width)
+    if args.tile_height is not None:
+        match_cfg.detection.tile_height = int(args.tile_height)
+    if args.tile_overlap is not None:
+        match_cfg.detection.tile_overlap = float(args.tile_overlap)
+    if args.tile_imgsz is not None:
+        match_cfg.detection.tile_imgsz = int(args.tile_imgsz)
+    if args.fixed_camera:
+        match_cfg.ball_tracking.fixed_camera = True
+        match_cfg.ball_tracking.persistent_static_distractors = True
+        match_cfg.ball_tracking.enable_motion_ball_recovery = True
+        match_cfg.ball_tracking.roi_upscale_factor = 2.0
+        match_cfg.ball_tracking.init_high_conf_threshold = 0.30
+        match_cfg.detection.roi_size_px = 416
+        match_cfg.tracking.reset_on_camera_cut = False
+    if args.pitch_coordinate_space:
+        match_cfg.pitch.coordinate_space = str(args.pitch_coordinate_space)
+    if args.pitch_player_margin is not None:
+        match_cfg.pitch.player_margin_m = float(args.pitch_player_margin)
+    if args.pitch_ball_margin is not None:
+        match_cfg.pitch.ball_margin_m = float(args.pitch_ball_margin)
+    if args.disable_pitch_filter:
+        match_cfg.pitch.enable_region_filter = False
+    if args.enable_motion_ball:
+        match_cfg.ball_tracking.enable_motion_ball_recovery = True
+    if args.disable_motion_ball:
+        match_cfg.ball_tracking.enable_motion_ball_recovery = False
 
     result = run_match_pipeline(
         config=match_cfg,
