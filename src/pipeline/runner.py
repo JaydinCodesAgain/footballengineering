@@ -23,7 +23,9 @@ from src.classification.team_discovery import (
     is_tactical_discovery_frame,
 )
 from src.config import MatchConfig, load_match_config
+from src.detection.motion_ball import FixedCameraMotionBallDetector, MotionBallConfig
 from src.geometry.pitch import load_pitch_calibration
+from src.geometry.pitch_region import PitchRegionConfig, PitchRegionFilter
 from src.detection.annotation_workflow import (
     DetectionAnnotationStore,
     sample_representative_frame_numbers,
@@ -191,11 +193,29 @@ def _build_ball_diagnostic_panel_crop(
     return cv2.resize(canvas, (320, 240), interpolation=cv2.INTER_AREA)
 
 
+def _build_pitch_region_filter(match_config: MatchConfig) -> Optional[PitchRegionFilter]:
+    """Build optional geometric pitch-region filter when a fixed-camera calibration is supplied."""
+    if not match_config.pitch.calibration_path or not match_config.pitch.enable_region_filter:
+        return None
+    pr_cfg = PitchRegionConfig(
+        pitch_length_m=float(match_config.pitch.pitch_length_m),
+        pitch_width_m=float(match_config.pitch.pitch_width_m),
+        player_margin_m=float(match_config.pitch.player_margin_m),
+        ball_margin_m=float(match_config.pitch.ball_margin_m),
+    )
+    return PitchRegionFilter.from_calibration_path(
+        match_config.pitch.calibration_path,
+        coordinate_space=str(match_config.pitch.coordinate_space),
+        config=pr_cfg,
+    )
+
+
 def _discover_teams_with_frame_cache(
     video_path: Path,
     match_config: MatchConfig,
     max_frames: Optional[int] = 300,
     fps_override: Optional[float] = None,
+    pitch_region_filter: Optional[PitchRegionFilter] = None,
 ) -> Tuple[
     AutomaticTeamDiscoverer,
     List[Tuple[Any, np.ndarray, str]],
@@ -208,6 +228,12 @@ def _discover_teams_with_frame_cache(
     tracker = MultiObjectTracker(
         detection_config=match_config.detection,
         tracking_config=match_config.tracking,
+        pitch_region_filter=pitch_region_filter,
+        fixed_camera=bool(match_config.ball_tracking.fixed_camera),
+        use_pitch_roi_for_tiling=bool(match_config.pitch.use_pitch_roi_for_tiling),
+        filter_players_by_pitch=bool(match_config.pitch.filter_players_by_pitch),
+        filter_balls_by_pitch=bool(match_config.pitch.filter_balls_by_pitch),
+        motion_ball_detector=None,
     )
     extractor = get_feature_extractor(match_config.team_discovery.feature_method)
     tactical_observations: List[TeamDiscoveryObservation] = []
@@ -232,12 +258,16 @@ def _discover_teams_with_frame_cache(
 
         small_curr = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
         is_cut = False
-        if prev_small is not None and detect_camera_cut(
-            prev_small,
-            small_curr,
-            corr_threshold=match_config.ball_tracking.camera_cut_hist_threshold,
-            prev_median_player_h=prev_med_h,
-            curr_median_player_h=med_h,
+        if (
+            not match_config.ball_tracking.fixed_camera
+            and prev_small is not None
+            and detect_camera_cut(
+                prev_small,
+                small_curr,
+                corr_threshold=match_config.ball_tracking.camera_cut_hist_threshold,
+                prev_median_player_h=prev_med_h,
+                curr_median_player_h=med_h,
+            )
         ):
             if last_cut_frame is None or (fno - last_cut_frame) > cooldown:
                 shot_id += 1
@@ -247,8 +277,12 @@ def _discover_teams_with_frame_cache(
         if med_h is not None:
             prev_med_h = med_h
 
-        tactical = is_tactical_discovery_frame(player_boxes, (fh, fw))
-        valid_disc_indices = set(filter_discovery_player_indices(player_boxes, (fh, fw))) if tactical else set()
+        if pitch_region_filter is not None and match_config.pitch.filter_players_by_pitch:
+            tactical = len(player_boxes) >= 4
+            valid_disc_indices = set(range(len(player_boxes))) if tactical else set()
+        else:
+            tactical = is_tactical_discovery_frame(player_boxes, (fh, fw))
+            valid_disc_indices = set(filter_discovery_player_indices(player_boxes, (fh, fw))) if tactical else set()
 
         per_player_features: List[Optional[np.ndarray]] = []
         per_player_weights: List[float] = []
@@ -360,8 +394,13 @@ def _run_auto_team_pipeline(
     total_video_duration = total_video_frames / max(1.0, fps)
     cap.release()
 
+    pitch_region_filter = _build_pitch_region_filter(match_cfg)
     discoverer, gallery, discovery, cached_frames = _discover_teams_with_frame_cache(
-        video_path, match_cfg, max_frames=max_frames, fps_override=fps
+        video_path,
+        match_cfg,
+        max_frames=max_frames,
+        fps_override=fps,
+        pitch_region_filter=pitch_region_filter,
     )
     report_path = output_dir / "team_discovery_report.json"
     report_path.write_text(json.dumps(discovery, indent=2), encoding="utf-8")
@@ -412,6 +451,18 @@ def _run_auto_team_pipeline(
         fps=fps,
         frame_stride=match_cfg.detection.frame_stride,
         total_video_duration_seconds=total_video_duration,
+        pitch_region_filter=pitch_region_filter,
+    )
+    motion_ball_det = (
+        FixedCameraMotionBallDetector(
+            config=MotionBallConfig(
+                enabled=True,
+                verify_with_upscaled_yolo=bool(match_cfg.ball_tracking.motion_ball_verify_with_yolo),
+            ),
+            pitch_region_filter=pitch_region_filter,
+        )
+        if match_cfg.ball_tracking.enable_motion_ball_recovery
+        else None
     )
     observations: List[FrameObservationRecord] = []
     processed = 0
@@ -448,8 +499,9 @@ def _run_auto_team_pipeline(
                 track_buffer.on_camera_cut()
                 stabilizer.on_camera_cut()
 
-            # Check whether cached detections contain a plausible on-pitch ball; if not, run Kalman ROI recovery
-            det_source = "full_or_tiled" if balls else "none"
+            # Check whether cached detections contain a plausible on-pitch ball; if not, run Kalman ROI & motion recovery
+            pred_ball_pos = engine.ball_tracker.get_predicted_position()
+            active_blacklist = engine.ball_tracker.blacklisted_static_zones
             plausible_balls = (
                 filter_ball_candidates(
                     balls,
@@ -457,15 +509,36 @@ def _run_auto_team_pipeline(
                     (height, width),
                     min_size=match_cfg.detection.min_ball_box_size_px,
                     max_size=match_cfg.detection.max_ball_box_size_px,
-                    blacklisted_zones=engine.ball_tracker.blacklisted_static_zones,
+                    blacklisted_zones=active_blacklist,
                     frame_bgr=frame,
-                    predicted_pos=engine.ball_tracker.get_predicted_position(),
+                    predicted_pos=pred_ball_pos,
                     filter_crowd_horizon=match_cfg.ball_tracking.filter_crowd_horizon,
+                    pitch_region_filter=pitch_region_filter if match_cfg.pitch.filter_balls_by_pitch else None,
                 )
                 if match_cfg.detection.filter_false_positive_balls and balls
                 else balls
             )
-            if not plausible_balls and match_cfg.detection.enable_roi_ball_search:
+            det_source = (
+                "tiled_yolo"
+                if (plausible_balls and aux_detector.should_use_tiled((height, width)))
+                else ("full_frame" if plausible_balls else "none")
+            )
+            active_balls = list(plausible_balls)
+
+            # Always step fixed-camera motion background model so temporal state stays current
+            motion_balls: List[Any] = []
+            if motion_ball_det is not None:
+                motion_balls = motion_ball_det.detect_candidates(
+                    frame_bgr=frame,
+                    frame_number=fno,
+                    timestamp=ts,
+                    player_detections=players,
+                    predicted_ball_pos=pred_ball_pos,
+                    blacklisted_zones=active_blacklist,
+                    yolo_detector=aux_detector if not active_balls else None,
+                )
+
+            if not active_balls and match_cfg.detection.enable_roi_ball_search:
                 roi_box = engine.get_predicted_ball_roi((height, width))
                 if roi_box is not None:
                     roi_balls = aux_detector.detect_ball_in_roi(
@@ -474,10 +547,32 @@ def _run_auto_team_pipeline(
                         frame_number=fno,
                         timestamp=ts,
                         conf_threshold=match_cfg.detection.roi_conf_threshold,
+                        upscale_factor=float(match_cfg.ball_tracking.roi_upscale_factor),
                     )
                     if roi_balls:
-                        balls = _nms_ball_detections(roi_balls)
-                        det_source = "kalman_roi_recovery"
+                        roi_plausible = (
+                            filter_ball_candidates(
+                                roi_balls,
+                                players,
+                                (height, width),
+                                min_size=match_cfg.detection.min_ball_box_size_px,
+                                max_size=match_cfg.detection.max_ball_box_size_px,
+                                blacklisted_zones=active_blacklist,
+                                frame_bgr=frame,
+                                predicted_pos=pred_ball_pos,
+                                filter_crowd_horizon=match_cfg.ball_tracking.filter_crowd_horizon,
+                                pitch_region_filter=pitch_region_filter if match_cfg.pitch.filter_balls_by_pitch else None,
+                            )
+                            if match_cfg.detection.filter_false_positive_balls
+                            else roi_balls
+                        )
+                        if roi_plausible:
+                            active_balls = _nms_ball_detections(roi_plausible)
+                            det_source = "kalman_roi_recovery"
+
+            if not active_balls and motion_balls:
+                active_balls = _nms_ball_detections(motion_balls)
+                det_source = "motion_assisted"
 
             frame_obs: List[FrameObservationRecord] = []
             for player, feat, q_weight in zip(players, per_player_features, per_player_weights):
@@ -499,7 +594,7 @@ def _run_auto_team_pipeline(
                     prediction = buf_pred
 
                 label, stability, locked = stabilizer.update(player.tracking_id, fno, player.bbox, prediction)
-                raw_ball = max(balls, key=lambda b: b.confidence) if balls else None
+                raw_ball = max(active_balls, key=lambda b: b.confidence) if active_balls else None
                 record = FrameObservationRecord(
                     match_cfg.match_id,
                     fno,
@@ -521,9 +616,9 @@ def _run_auto_team_pipeline(
                 observations.append(record)
 
             ball_rec, poss_rec, _ = engine.step_frame(
-                fno, ts, frame_obs, balls, players, frame, (height, width), detection_source=det_source
+                fno, ts, frame_obs, active_balls, players, frame, (height, width), detection_source=det_source
             )
-            writer.write(annotate_match_frame(frame, frame_obs, balls, match_cfg, ball_rec, poss_rec))
+            writer.write(annotate_match_frame(frame, frame_obs, active_balls, match_cfg, ball_rec, poss_rec))
             processed += 1
     finally:
         cap_read.release()
@@ -534,11 +629,18 @@ def _run_auto_team_pipeline(
     artifacts["annotated_video"] = str(final_video)
     artifacts["frame_observations_csv"] = str(export_possession_foundation_records(output_dir / "frame_observations.csv", observations))
     if match_cfg.pitch.calibration_path:
-        calibration = load_pitch_calibration(match_cfg.pitch.calibration_path)
         pitch_rows = []
+        planar_cal = None
+        if pitch_region_filter is None:
+            planar_cal = load_pitch_calibration(match_cfg.pitch.calibration_path)
         for observation in observations:
             x1, _, x2, y2 = observation.player_bbox
-            position = calibration.project_pixel((x1 + x2) / 2.0, y2)
+            if pitch_region_filter is not None:
+                position = pitch_region_filter.project_pixel_to_pitch_m((x1 + x2) / 2.0, y2)
+            elif planar_cal is not None:
+                position = planar_cal.project_pixel((x1 + x2) / 2.0, y2)
+            else:
+                position = None
             if position is not None:
                 pitch_rows.append(
                     {
@@ -546,8 +648,8 @@ def _run_auto_team_pipeline(
                         "timestamp": observation.timestamp,
                         "tracking_id": observation.player_id,
                         "team_id": observation.team_id,
-                        "pitch_x_m": position[0],
-                        "pitch_y_m": position[1],
+                        "pitch_x_m": round(float(position[0]), 3),
+                        "pitch_y_m": round(float(position[1]), 3),
                     }
                 )
         artifacts["pitch_positions_csv"] = str(write_csv_rows(output_dir / "pitch_positions.csv", pitch_rows))
@@ -601,6 +703,14 @@ def _run_auto_team_pipeline(
         "frame_stride": match_cfg.detection.frame_stride,
         "processed_frames": processed,
         "tracker_config": match_cfg.tracking.tracker_config,
+        "detection_mode": match_cfg.detection.inference_mode,
+        "detector_model": match_cfg.detection.model_name,
+        "person_conf": match_cfg.detection.person_conf,
+        "tile_size": f"{match_cfg.detection.tile_width}x{match_cfg.detection.tile_height}",
+        "tile_imgsz": match_cfg.detection.tile_imgsz,
+        "fixed_camera": bool(match_cfg.ball_tracking.fixed_camera),
+        "pitch_region_filter": pitch_region_filter.source_description if pitch_region_filter else None,
+        "motion_ball_recovery": bool(match_cfg.ball_tracking.enable_motion_ball_recovery),
         "feature_method": match_cfg.team_discovery.feature_method,
         "clustering_method": match_cfg.team_discovery.clustering_method,
         "processing_wall_time_seconds": wall_time,

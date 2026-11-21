@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 
 from src.config import BallTrackingConfig
+from src.geometry.pitch_region import PitchRegionFilter, PitchZone
 from src.schemas import BallObservationMode, BallTrajectoryRecord, DetectionRecord
 
 
@@ -192,6 +193,7 @@ def filter_ball_candidates(
     frame_bgr: Optional[np.ndarray] = None,
     predicted_pos: Optional[Tuple[float, float]] = None,
     filter_crowd_horizon: bool = True,
+    pitch_region_filter: Optional[PitchRegionFilter] = None,
 ) -> List[DetectionRecord]:
     """
     Filter false-positive ball detections caused by:
@@ -255,6 +257,31 @@ def filter_ball_candidates(
             predicted_pos is not None
             and math.hypot(cx - predicted_pos[0], cy - predicted_pos[1]) <= 90.0
         )
+
+        # Geometric fixed-camera pitch-region filter (eliminates sideline spare balls, benches, ads)
+        if pitch_region_filter is not None:
+            if not pitch_region_filter.is_ball_in_region(
+                b.bbox,
+                include_margin=True,
+                allow_aerial_above_far_line=True,
+                near_active_trajectory=near_predicted,
+            ):
+                continue
+            # Reject isolated stationary spare balls / cones sitting OUTSIDE the playable touchlines
+            # (in BOUNDARY_MARGIN) when there is no active ball trajectory and no nearby throw-in/corner player.
+            b_zone = pitch_region_filter.classify_point(cx, cy, for_ball=True)
+            if b_zone == PitchZone.BOUNDARY_MARGIN and not near_predicted:
+                ref_h = med_ph if (med_ph is not None and med_ph > 20.0) else 65.0
+                near_any_player = False
+                for p in player_detections:
+                    px1, py1, px2, py2 = p.bbox
+                    pfx = (px1 + px2) / 2.0
+                    pfy = py2 - 0.15 * (py2 - py1)
+                    if math.hypot(cx - pfx, cy - pfy) <= 1.8 * ref_h:
+                        near_any_player = True
+                        break
+                if not near_any_player:
+                    continue
 
         # Reject stadium crowd / high-vis steward detections above the green pitch horizon
         if pitch_top_y is not None and frame_bgr is not None and cy < pitch_top_y - 0.025 * fh:
@@ -330,10 +357,15 @@ class KalmanBallTracker:
         self,
         match_id: str = "match",
         config: Optional[BallTrackingConfig] = None,
+        pitch_region_filter: Optional[PitchRegionFilter] = None,
     ) -> None:
         self.match_id = match_id
         self.config = config or BallTrackingConfig()
-        self._blacklisted_zone_entries: List[Tuple[float, float, float, int]] = []
+        self.pitch_region_filter = pitch_region_filter
+        # Entries: (cx, cy, radius, created_frame, is_permanent)
+        self._blacklisted_zone_entries: List[Tuple[float, float, float, int, bool]] = []
+        # Tracks recurring stationary isolated candidate spots before they can repeatedly re-trigger
+        self._static_spot_counts: List[List[float]] = []  # [cx, cy, hits, last_frame]
         self.false_track_associations: int = 0
         self.reacquisition_events: int = 0
         self.history: List[BallTrajectoryRecord] = []
@@ -345,7 +377,79 @@ class KalmanBallTracker:
     @property
     def blacklisted_static_zones(self) -> List[Tuple[float, float, float]]:
         """Expose active static clutter zones as `(cx, cy, radius)` tuples."""
-        return [(zx, zy, zr) for zx, zy, zr, _ in self._blacklisted_zone_entries]
+        return [(zx, zy, zr) for zx, zy, zr, _, _ in self._blacklisted_zone_entries]
+
+    @property
+    def permanent_static_zones(self) -> List[Tuple[float, float, float]]:
+        """Expose persistent fixed-camera static distractor zones that do not expire by TTL."""
+        return [(zx, zy, zr) for zx, zy, zr, _, perm in self._blacklisted_zone_entries if perm]
+
+    def _register_static_distractor(
+        self,
+        cx: float,
+        cy: float,
+        frame_number: int,
+        radius: Optional[float] = None,
+    ) -> None:
+        """Add a confirmed static distractor zone; permanent on fixed cameras (especially off-pitch)."""
+        rad = float(radius if radius is not None else self.config.static_distractor_radius_px)
+        # Avoid duplicates near an existing zone
+        for idx, (zx, zy, zr, created_f, perm) in enumerate(self._blacklisted_zone_entries):
+            if math.hypot(cx - zx, cy - zy) <= max(rad, zr):
+                # Escalate repeated triggers at the exact same spot to permanent when persistent mode is on
+                new_perm = perm or bool(self.config.fixed_camera or self.config.persistent_static_distractors)
+                self._blacklisted_zone_entries[idx] = (zx, zy, max(rad, zr), int(frame_number), new_perm)
+                return
+
+        is_permanent = False
+        if self.config.fixed_camera or self.config.persistent_static_distractors:
+            if self.pitch_region_filter is not None:
+                zone = self.pitch_region_filter.classify_point(cx, cy, for_ball=True)
+                # Outside core playable pitch (margin/curb/sideline): always permanent
+                is_permanent = zone != PitchZone.PLAYABLE or bool(self.config.persistent_static_distractors)
+            else:
+                is_permanent = True
+
+        self._blacklisted_zone_entries.append((float(cx), float(cy), rad, int(frame_number), is_permanent))
+
+    def _update_static_spot_detector(
+        self,
+        ball_candidates: Sequence[DetectionRecord],
+        frame_number: int,
+        player_detections: Optional[Sequence[DetectionRecord]],
+        med_ph: Optional[float],
+    ) -> None:
+        """On fixed cameras, detect motionless isolated candidate hotspots across frames so a
+        stationary sideline spare ball or marker is masked persistently even without a track lock.
+        """
+        if not (self.config.fixed_camera or self.config.persistent_static_distractors):
+            return
+        if not ball_candidates:
+            return
+        ref_h = med_ph if (med_ph and med_ph > 20.0) else 65.0
+        min_hits = max(3, int(self.config.static_distractor_min_hits))
+        for cand in ball_candidates:
+            cx = (cand.bbox[0] + cand.bbox[2]) / 2.0
+            cy = (cand.bbox[1] + cand.bbox[3]) / 2.0
+            min_p_d = self._min_distance_to_players(cx, cy, player_detections)
+            is_isolated = (min_p_d is None) or (min_p_d > 2.0 * ref_h)
+            if not is_isolated:
+                continue
+            matched = False
+            for spot in self._static_spot_counts:
+                if math.hypot(cx - spot[0], cy - spot[1]) <= 6.0:
+                    if frame_number > int(spot[3]):
+                        spot[2] += 1.0
+                        spot[3] = float(frame_number)
+                    if int(spot[2]) >= min_hits:
+                        self._register_static_distractor(spot[0], spot[1], frame_number)
+                    matched = True
+                    break
+            if not matched:
+                self._static_spot_counts.append([cx, cy, 1.0, float(frame_number)])
+        # Bound bookkeeping list to recent/active spots
+        if len(self._static_spot_counts) > 64:
+            self._static_spot_counts = [s for s in self._static_spot_counts if frame_number - int(s[3]) <= 300]
 
     def _prune_blacklisted_zones(
         self,
@@ -353,21 +457,37 @@ class KalmanBallTracker:
         player_detections: Optional[Sequence[DetectionRecord]],
         med_ph: Optional[float],
     ) -> None:
-        """Expire aged static zones and release any zone approached by a player (set-piece safety)."""
+        """Expire aged broadcast static zones and release playable-pitch zones approached by a player.
+
+        Permanent fixed-camera distractor zones outside the core playable pitch are never expired
+        by TTL so stationary sideline spare balls cannot reappear later in the match.
+        """
         if not self._blacklisted_zone_entries:
             return
         ttl = max(20, int(self.config.static_zone_ttl_frames))
         ref_h = med_ph if (med_ph and med_ph > 25.0) else 75.0
-        kept: List[Tuple[float, float, float, int]] = []
-        for zx, zy, zr, created_f in self._blacklisted_zone_entries:
-            if frame_number - created_f > ttl:
+        kept: List[Tuple[float, float, float, int, bool]] = []
+        for zx, zy, zr, created_f, is_permanent in self._blacklisted_zone_entries:
+            if not is_permanent and (frame_number - created_f > ttl):
                 continue
-            # If a player approaches this spot (e.g. lining up a free kick / corner), release the zone
-            if player_detections:
+            # Release a zone if a player approaches ONLY when the spot lies inside the playable pitch
+            # (protects free kicks/corners/kickoffs without un-masking off-pitch concrete-curb spare balls).
+            zone_in_playable = (
+                self.pitch_region_filter is None
+                or self.pitch_region_filter.classify_point(zx, zy, for_ball=False) == PitchZone.PLAYABLE
+            )
+            if player_detections and zone_in_playable:
                 min_p_d = self._min_distance_to_players(zx, zy, player_detections)
-                if min_p_d is not None and min_p_d <= 1.5 * ref_h:
+                if not is_permanent and min_p_d is not None and min_p_d <= 1.5 * ref_h:
                     continue
-            kept.append((zx, zy, zr, created_f))
+                if (
+                    is_permanent
+                    and self.pitch_region_filter is not None
+                    and min_p_d is not None
+                    and min_p_d <= 1.2 * ref_h
+                ):
+                    continue
+            kept.append((zx, zy, zr, created_f, is_permanent))
         self._blacklisted_zone_entries = kept
 
     def _reset_kalman_state(self) -> None:
@@ -389,6 +509,7 @@ class KalmanBallTracker:
     def reset(self) -> None:
         """Full reset of tracker state and history."""
         self._blacklisted_zone_entries.clear()
+        self._static_spot_counts.clear()
         self.false_track_associations = 0
         self.reacquisition_events = 0
         self.history.clear()
@@ -615,33 +736,34 @@ class KalmanBallTracker:
         raw_cut = False
         camera_cut = False
 
-        if frame_bgr is not None and frame_bgr.size > 0:
-            small_curr = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
-            if self._prev_frame_small is not None and detect_camera_cut(
-                self._prev_frame_small,
-                small_curr,
-                corr_threshold=self.config.camera_cut_hist_threshold,
-                prev_median_player_h=self._prev_median_player_h,
-                curr_median_player_h=med_ph,
+        if not self.config.fixed_camera:
+            if frame_bgr is not None and frame_bgr.size > 0:
+                small_curr = cv2.resize(frame_bgr, (160, 90), interpolation=cv2.INTER_AREA)
+                if self._prev_frame_small is not None and detect_camera_cut(
+                    self._prev_frame_small,
+                    small_curr,
+                    corr_threshold=self.config.camera_cut_hist_threshold,
+                    prev_median_player_h=self._prev_median_player_h,
+                    curr_median_player_h=med_ph,
+                ):
+                    raw_cut = True
+                self._prev_frame_small = small_curr
+            elif (
+                self._prev_median_player_h is not None
+                and med_ph is not None
+                and detect_camera_cut(
+                    None,
+                    None,
+                    prev_median_player_h=self._prev_median_player_h,
+                    curr_median_player_h=med_ph,
+                )
             ):
                 raw_cut = True
-            self._prev_frame_small = small_curr
-        elif (
-            self._prev_median_player_h is not None
-            and med_ph is not None
-            and detect_camera_cut(
-                None,
-                None,
-                prev_median_player_h=self._prev_median_player_h,
-                curr_median_player_h=med_ph,
-            )
-        ):
-            raw_cut = True
 
         if raw_cut:
-            # Always reset tracker state and clear broadcast-specific static zones across cuts
+            # Always reset tracker state and clear non-permanent broadcast static zones across cuts
             self._reset_kalman_state()
-            self._blacklisted_zone_entries.clear()
+            self._blacklisted_zone_entries = [z for z in self._blacklisted_zone_entries if z[4]]
             cooldown = max(0, int(self.config.camera_cut_cooldown_frames))
             if self._last_cut_frame is None or (frame_number - self._last_cut_frame) > cooldown:
                 camera_cut = True
@@ -650,8 +772,9 @@ class KalmanBallTracker:
         if med_ph is not None:
             self._prev_median_player_h = med_ph
 
-        # Maintain time-bounded, set-piece-safe static clutter blacklist
+        # Maintain static clutter blacklist & fixed-camera persistent static spot detector
         self._prune_blacklisted_zones(frame_number, player_detections, med_ph)
+        self._update_static_spot_detector(ball_candidates, frame_number, player_detections, med_ph)
 
         # Filter out any candidates sitting inside active blacklisted static background zones
         active_candidates = [
@@ -659,7 +782,7 @@ class KalmanBallTracker:
             for c in ball_candidates
             if not any(
                 math.hypot((c.bbox[0] + c.bbox[2]) / 2.0 - zx, (c.bbox[1] + c.bbox[3]) / 2.0 - zy) <= zr
-                for zx, zy, zr, _ in self._blacklisted_zone_entries
+                for zx, zy, zr, _, _ in self._blacklisted_zone_entries
             )
         ]
 
@@ -777,8 +900,8 @@ class KalmanBallTracker:
                         self._static_isolated_streak = 1 if is_isolated else 0
 
                     if self._static_isolated_streak >= 4:
-                        # Static background false positive confirmed -> TTL-bounded blacklist & reset
-                        self._blacklisted_zone_entries.append((cx, cy, 24.0, int(frame_number)))
+                        # Static background false positive confirmed -> blacklist (permanent on fixed camera) & reset
+                        self._register_static_distractor(cx, cy, int(frame_number))
                         self.false_track_associations += 1
                         chosen_det = None
                         self._reset_kalman_state()
@@ -932,6 +1055,7 @@ class KalmanBallTracker:
             "rejected_outlier_detections": outliers,
             "false_track_associations": int(self.false_track_associations),
             "blacklisted_static_zones_count": len(self._blacklisted_zone_entries),
+            "permanent_static_zones_count": sum(1 for z in self._blacklisted_zone_entries if z[4]),
             "reacquisition_events": int(self.reacquisition_events),
             "active_track_segments_count": len(segment_lengths),
             "mean_continuous_track_frames": round(mean_seg, 2),

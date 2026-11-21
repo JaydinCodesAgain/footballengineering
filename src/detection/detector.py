@@ -10,6 +10,13 @@ import numpy as np
 import torch
 
 from src.config import DetectionConfig
+from src.detection.tiling import (
+    TileSpec,
+    estimate_active_content_bbox,
+    extract_tile_views,
+    generate_tile_grid,
+    merge_tiled_detections,
+)
 from src.evaluation.detection_eval import compute_iou, evaluate_detections_against_ground_truth
 from src.schemas import DetectionRecord
 
@@ -63,6 +70,155 @@ class FootballDetector:
             self._model = YOLO(self.config.model_name)
         return self._model
 
+    def should_use_tiled(self, frame_shape: Tuple[int, int]) -> bool:
+        """Return True if multi-tile detection should be used for `frame_shape`."""
+        mode = str(self.config.inference_mode).strip().lower()
+        if mode == "tiled":
+            return True
+        if mode == "auto":
+            return int(frame_shape[1]) >= int(self.config.auto_tile_min_width_px)
+        return False
+
+    def detect_frame_auto(
+        self,
+        frame_bgr: np.ndarray,
+        frame_number: int = 0,
+        timestamp: float = 0.0,
+        roi_bbox: Optional[Tuple[int, int, int, int]] = None,
+        person_conf_override: Optional[float] = None,
+        ball_conf_override: Optional[float] = None,
+    ) -> List[DetectionRecord]:
+        """Dispatch to native-resolution multi-tile or standard full-frame detection based on config."""
+        if self.should_use_tiled(frame_bgr.shape[:2]):
+            return self.detect_frame_tiled(
+                frame_bgr,
+                frame_number=frame_number,
+                timestamp=timestamp,
+                roi_bbox=roi_bbox,
+                person_conf_override=person_conf_override,
+                ball_conf_override=ball_conf_override,
+            )
+        return self.detect_frame(
+            frame_bgr,
+            frame_number=frame_number,
+            timestamp=timestamp,
+            person_conf_override=person_conf_override,
+            ball_conf_override=ball_conf_override,
+        )
+
+    def detect_frame_tiled(
+        self,
+        frame_bgr: np.ndarray,
+        frame_number: int = 0,
+        timestamp: float = 0.0,
+        roi_bbox: Optional[Tuple[int, int, int, int]] = None,
+        tile_width: Optional[int] = None,
+        tile_height: Optional[int] = None,
+        tile_overlap: Optional[float] = None,
+        tile_imgsz: Optional[int] = None,
+        person_conf_override: Optional[float] = None,
+        ball_conf_override: Optional[float] = None,
+        include_full_frame: Optional[bool] = None,
+    ) -> List[DetectionRecord]:
+        """Run overlapping native-resolution multi-tile detection for both players and footballs.
+
+        Slices zero-copy NumPy views from `frame_bgr`, runs batched YOLO inference per tile,
+        maps detections back into raw panoramic pixel coordinates, and merges overlaps with
+        seam-aware class-specific NMS + containment deduplication.
+        """
+        fh, fw = frame_bgr.shape[:2]
+        p_conf = float(person_conf_override if person_conf_override is not None else self.config.person_conf)
+        b_conf = float(ball_conf_override if ball_conf_override is not None else self.config.ball_conf)
+        min_conf = min(p_conf, b_conf)
+
+        active_roi = roi_bbox
+        if active_roi is None and self.config.tile_auto_content_crop:
+            active_roi = estimate_active_content_bbox(frame_bgr)
+
+        tw = int(tile_width if tile_width is not None else self.config.tile_width)
+        th = int(tile_height if tile_height is not None else self.config.tile_height)
+        ov = float(tile_overlap if tile_overlap is not None else self.config.tile_overlap)
+        imgsz = int(tile_imgsz if tile_imgsz is not None else self.config.tile_imgsz)
+
+        tiles = generate_tile_grid(
+            (fh, fw),
+            tile_width=tw,
+            tile_height=th,
+            overlap=ov,
+            roi_bbox=active_roi,
+        )
+        if not tiles:
+            return []
+
+        views = extract_tile_views(frame_bgr, tiles)
+        batch_sz = max(1, int(self.config.tile_batch_size))
+        mapped: List[Tuple[DetectionRecord, Optional[TileSpec]]] = []
+
+        for start in range(0, len(tiles), batch_sz):
+            batch_tiles = tiles[start : start + batch_sz]
+            batch_views = views[start : start + batch_sz]
+            results = self.model.predict(
+                batch_views,
+                classes=[COCO_PERSON_CLASS_ID, COCO_BALL_CLASS_ID],
+                conf=min_conf,
+                imgsz=imgsz,
+                device=self.device,
+                verbose=False,
+            )
+            if not results:
+                continue
+            for tile, res in zip(batch_tiles, results):
+                local_recs = self.parse_ultralytics_boxes(
+                    res.boxes,
+                    frame_number=frame_number,
+                    timestamp=timestamp,
+                    person_conf=p_conf,
+                    ball_conf=b_conf,
+                )
+                for rec in local_recs:
+                    gx1 = rec.bbox[0] + tile.x1
+                    gy1 = rec.bbox[1] + tile.y1
+                    gx2 = rec.bbox[2] + tile.x1
+                    gy2 = rec.bbox[3] + tile.y1
+                    mapped.append(
+                        (
+                            DetectionRecord(
+                                frame_number=rec.frame_number,
+                                timestamp=rec.timestamp,
+                                class_id=rec.class_id,
+                                class_name=rec.class_name,
+                                bbox=(gx1, gy1, gx2, gy2),
+                                confidence=rec.confidence,
+                                tracking_id=None,
+                            ),
+                            tile,
+                        )
+                    )
+
+        use_global = (
+            bool(include_full_frame)
+            if include_full_frame is not None
+            else bool(self.config.include_full_frame_in_tiled)
+        )
+        if use_global:
+            global_recs = self.detect_frame(
+                frame_bgr,
+                frame_number=frame_number,
+                timestamp=timestamp,
+                person_conf_override=p_conf,
+                ball_conf_override=b_conf,
+            )
+            for rec in global_recs:
+                mapped.append((rec, None))
+
+        return merge_tiled_detections(
+            mapped,
+            frame_shape=(fh, fw),
+            player_nms_iou=float(self.config.player_nms_iou),
+            player_containment_iom=float(self.config.player_containment_iom),
+            ball_nms_iou=float(self.config.ball_nms_iou),
+        )
+
     def detect_frame(
         self,
         frame_bgr: np.ndarray,
@@ -104,10 +260,12 @@ class FootballDetector:
         frame_number: int = 0,
         timestamp: float = 0.0,
         conf_threshold: Optional[float] = None,
+        upscale_factor: float = 1.0,
     ) -> List[DetectionRecord]:
         """
         Run targeted ball detection inside a local `(rx1, ry1, rx2, ry2)` crop and map coordinates
-        back to full-frame pixel space.
+        back to full-frame pixel space. Optional `upscale_factor > 1.0` enlarges tiny 9-12 px
+        panoramic footballs into COCO YOLO's effective scale range before inference.
         """
         rx1, ry1, rx2, ry2 = roi_bbox
         fh, fw = frame_bgr.shape[:2]
@@ -120,11 +278,21 @@ class FootballDetector:
         if crop.size == 0 or crop.shape[0] < 32 or crop.shape[1] < 32:
             return []
 
+        scale = max(1.0, float(upscale_factor))
+        if scale > 1.01:
+            infer_crop = cv2.resize(
+                crop,
+                (int(round(crop.shape[1] * scale)), int(round(crop.shape[0] * scale))),
+                interpolation=cv2.INTER_CUBIC,
+            )
+        else:
+            infer_crop = crop
+
         b_conf = float(conf_threshold if conf_threshold is not None else self.config.roi_conf_threshold)
-        roi_imgsz = max(320, min(960, int(math.ceil(max(crop.shape[:2]) / 32.0) * 32))) if "math" in globals() else 640
+        roi_imgsz = max(320, min(1024, int(math.ceil(max(infer_crop.shape[:2]) / 32.0) * 32)))
 
         results = self.model.predict(
-            crop,
+            infer_crop,
             classes=[COCO_BALL_CLASS_ID],
             conf=b_conf,
             imgsz=roi_imgsz,
@@ -142,10 +310,12 @@ class FootballDetector:
             if conf < b_conf:
                 continue
             coords = box.xyxy[0].cpu().tolist()
-            bx1 = int(round(float(coords[0]))) + rx1
-            by1 = int(round(float(coords[1]))) + ry1
-            bx2 = int(round(float(coords[2]))) + rx1
-            by2 = int(round(float(coords[3]))) + ry1
+            bx1 = int(round(float(coords[0]) / scale)) + rx1
+            by1 = int(round(float(coords[1]) / scale)) + ry1
+            bx2 = int(round(float(coords[2]) / scale)) + rx1
+            by2 = int(round(float(coords[3]) / scale)) + ry1
+            if bx2 <= bx1 or by2 <= by1:
+                continue
             mapped.append(
                 DetectionRecord(
                     frame_number=int(frame_number),

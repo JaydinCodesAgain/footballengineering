@@ -26,6 +26,19 @@ class DetectionConfig:
     min_ball_box_size_px: int = 5
     max_ball_box_size_px: int = 140
     filter_false_positive_balls: bool = True
+    # Sprint 3.2: native-resolution overlapping multi-tile player + ball detection
+    inference_mode: str = "full_frame"  # "full_frame" | "tiled" | "auto"
+    auto_tile_min_width_px: int = 2400
+    tile_width: int = 1280
+    tile_height: int = 1280
+    tile_overlap: float = 0.22
+    tile_imgsz: int = 1280
+    tile_batch_size: int = 4
+    tile_auto_content_crop: bool = True
+    player_nms_iou: float = 0.45
+    player_containment_iom: float = 0.72
+    ball_nms_iou: float = 0.35
+    include_full_frame_in_tiled: bool = False
 
 
 @dataclass
@@ -97,6 +110,14 @@ class BallTrackingConfig:
     init_high_conf_threshold: float = 0.45
     static_zone_ttl_frames: int = 250
     filter_crowd_horizon: bool = True
+    # Sprint 3.2: fixed-camera persistent static-background distractor mask & cut control
+    fixed_camera: bool = False
+    persistent_static_distractors: bool = False
+    static_distractor_radius_px: float = 24.0
+    static_distractor_min_hits: int = 4
+    enable_motion_ball_recovery: bool = False
+    motion_ball_verify_with_yolo: bool = False
+    roi_upscale_factor: float = 1.0
 
 
 @dataclass
@@ -140,11 +161,18 @@ class TeamDiscoveryConfig:
 
 @dataclass
 class PitchConfig:
-    """Optional fixed-camera pitch calibration; coordinates are in metres."""
+    """Optional fixed-camera pitch calibration & geometric pitch-region filtering."""
 
     calibration_path: Optional[str] = None
     pitch_length_m: float = 105.0
     pitch_width_m: float = 68.0
+    enable_region_filter: bool = True
+    coordinate_space: str = "raw_fisheye"  # "raw_fisheye" | "undistorted" | "planar"
+    player_margin_m: float = 2.0
+    ball_margin_m: float = 2.5
+    filter_players_by_pitch: bool = True
+    filter_balls_by_pitch: bool = True
+    use_pitch_roi_for_tiling: bool = True
 
 
 @dataclass
