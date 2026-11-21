@@ -1,0 +1,985 @@
+{
+  "provenance": "visually_verified_4x_zoom_dev_eval_set",
+  "split": "development_only_117092_night_and_118575_day",
+  "note": "Zero overlap with held-out matches (128057, 117093). Every visible bounding box verified on 4x zoomed native patches; absent_out_of_play frames verified on status==0 BAS dead-ball windows.",
+  "matches": {
+    "117092": {
+      "resolution": [
+        3840,
+        1906
+      ],
+      "total_frames": 26,
+      "visible_frames": 22,
+      "absent_negative_frames": 4,
+      "category_counts": {
+        "stationary_set_piece": 3,
+        "visible_mid": 6,
+        "visible_near": 7,
+        "visible_far": 1,
+        "occluded_at_foot": 3,
+        "aerial_motion_blur": 2,
+        "absent_out_of_play": 4
+      },
+      "width_px_range": [
+        6,
+        19
+      ],
+      "height_px_range": [
+        6,
+        14
+      ],
+      "median_size_px": [
+        11.0,
+        10.0
+      ],
+      "frames": [
+        {
+          "frame_number": 10,
+          "category": "stationary_set_piece",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1933,
+            651,
+            1943,
+            661
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            53.12,
+            25.17
+          ],
+          "note": "pre_kickoff_center_spot"
+        },
+        {
+          "frame_number": 20,
+          "category": "stationary_set_piece",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1933,
+            646,
+            1943,
+            656
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            53.14,
+            24.1
+          ],
+          "note": "pre_kickoff_center_spot"
+        },
+        {
+          "frame_number": 450,
+          "category": "stationary_set_piece",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            922,
+            805,
+            932,
+            815
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            11.77,
+            36.53
+          ],
+          "note": "gk_stationary_ball_in_box"
+        },
+        {
+          "frame_number": 32,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1944,
+            651,
+            1955,
+            661
+          ],
+          "width_px": 11,
+          "height_px": 10,
+          "pitch_xy_m": [
+            53.55,
+            25.27
+          ],
+          "note": "kickoff_pass_bas_anchor"
+        },
+        {
+          "frame_number": 40,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2036,
+            648,
+            2047,
+            658
+          ],
+          "width_px": 11,
+          "height_px": 10,
+          "pitch_xy_m": [
+            56.99,
+            25.4
+          ],
+          "note": "ground_pass_open_turf"
+        },
+        {
+          "frame_number": 50,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2125,
+            649,
+            2135,
+            659
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            60.23,
+            26.15
+          ],
+          "note": "ground_pass_open_turf"
+        },
+        {
+          "frame_number": 60,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2186,
+            648,
+            2196,
+            658
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            62.54,
+            26.23
+          ],
+          "note": "ground_pass_center_circle"
+        },
+        {
+          "frame_number": 70,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2246,
+            647,
+            2256,
+            657
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            64.87,
+            26.22
+          ],
+          "note": "ground_pass_open_turf"
+        },
+        {
+          "frame_number": 240,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1929,
+            787,
+            1943,
+            800
+          ],
+          "width_px": 14,
+          "height_px": 13,
+          "pitch_xy_m": [
+            52.69,
+            43.76
+          ],
+          "note": "pass_open_turf_bas_anchor"
+        },
+        {
+          "frame_number": 136,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            1201,
+            931,
+            1213,
+            944
+          ],
+          "width_px": 12,
+          "height_px": 13,
+          "pitch_xy_m": [
+            35.86,
+            51.81
+          ],
+          "note": "clearance_pass_near_left"
+        },
+        {
+          "frame_number": 1268,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3174,
+            975,
+            3184,
+            986
+          ],
+          "width_px": 10,
+          "height_px": 11,
+          "pitch_xy_m": [
+            79.62,
+            60.84
+          ],
+          "note": "near_right_drive"
+        },
+        {
+          "frame_number": 1458,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3146,
+            859,
+            3164,
+            868
+          ],
+          "width_px": 18,
+          "height_px": 9,
+          "pitch_xy_m": [
+            87.04,
+            53.86
+          ],
+          "note": "fast_rolling_block_motion_stretch"
+        },
+        {
+          "frame_number": 1470,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3230,
+            875,
+            3240,
+            883
+          ],
+          "width_px": 10,
+          "height_px": 8,
+          "pitch_xy_m": [
+            89.73,
+            55.62
+          ],
+          "note": "near_right_pass_rolling"
+        },
+        {
+          "frame_number": 1480,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3275,
+            882,
+            3287,
+            891
+          ],
+          "width_px": 12,
+          "height_px": 9,
+          "pitch_xy_m": [
+            91.49,
+            56.56
+          ],
+          "note": "near_right_pass_open"
+        },
+        {
+          "frame_number": 1796,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3352,
+            976,
+            3364,
+            988
+          ],
+          "width_px": 12,
+          "height_px": 12,
+          "pitch_xy_m": [
+            86.68,
+            62.75
+          ],
+          "note": "near_right_at_feet"
+        },
+        {
+          "frame_number": 3266,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            2678,
+            930,
+            2692,
+            943
+          ],
+          "width_px": 14,
+          "height_px": 13,
+          "pitch_xy_m": [
+            67.12,
+            55.54
+          ],
+          "note": "near_touchline_clear_ball"
+        },
+        {
+          "frame_number": 2286,
+          "category": "visible_far",
+          "depth_zone": "far",
+          "ball_visible": true,
+          "bbox": [
+            1625,
+            604,
+            1631,
+            610
+          ],
+          "width_px": 6,
+          "height_px": 6,
+          "pitch_xy_m": [
+            37.02,
+            4.9
+          ],
+          "note": "far_touchline_tiny_6x6"
+        },
+        {
+          "frame_number": 204,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2616,
+            843,
+            2630,
+            857
+          ],
+          "width_px": 14,
+          "height_px": 14,
+          "pitch_xy_m": [
+            68.26,
+            50.31
+          ],
+          "note": "pass_at_foot_bas_anchor"
+        },
+        {
+          "frame_number": 258,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2032,
+            821,
+            2046,
+            835
+          ],
+          "width_px": 14,
+          "height_px": 14,
+          "pitch_xy_m": [
+            54.95,
+            46.92
+          ],
+          "note": "high_pass_at_foot_bas_anchor"
+        },
+        {
+          "frame_number": 956,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2957,
+            776,
+            2969,
+            787
+          ],
+          "width_px": 12,
+          "height_px": 11,
+          "pitch_xy_m": [
+            85.23,
+            45.53
+          ],
+          "note": "contested_drive_at_foot"
+        },
+        {
+          "frame_number": 86,
+          "category": "aerial_motion_blur",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2287,
+            636,
+            2306,
+            648
+          ],
+          "width_px": 19,
+          "height_px": 12,
+          "pitch_xy_m": [
+            67.27,
+            24.16
+          ],
+          "note": "high_pass_motion_blur_bas_anchor"
+        },
+        {
+          "frame_number": 788,
+          "category": "aerial_motion_blur",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            940,
+            807,
+            949,
+            816
+          ],
+          "width_px": 9,
+          "height_px": 9,
+          "pitch_xy_m": [
+            13.51,
+            37.13
+          ],
+          "note": "gk_high_punt_release"
+        },
+        {
+          "frame_number": 6460,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_status0_after_6447_OUT"
+        },
+        {
+          "frame_number": 8100,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_stoppage_status0_spare_balls_visible"
+        },
+        {
+          "frame_number": 8250,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_stoppage_status0_spare_balls_visible"
+        },
+        {
+          "frame_number": 8400,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_stoppage_status0_spare_balls_visible"
+        }
+      ]
+    },
+    "118575": {
+      "resolution": [
+        4096,
+        1080
+      ],
+      "total_frames": 24,
+      "visible_frames": 18,
+      "absent_negative_frames": 6,
+      "category_counts": {
+        "stationary_set_piece": 1,
+        "visible_mid": 5,
+        "visible_near": 6,
+        "visible_far": 1,
+        "occluded_at_foot": 3,
+        "aerial_motion_blur": 2,
+        "absent_out_of_play": 6
+      },
+      "width_px_range": [
+        7,
+        15
+      ],
+      "height_px_range": [
+        7,
+        13
+      ],
+      "median_size_px": [
+        9.5,
+        9.0
+      ],
+      "frames": [
+        {
+          "frame_number": 6,
+          "category": "stationary_set_piece",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2044,
+            240,
+            2053,
+            249
+          ],
+          "width_px": 9,
+          "height_px": 9,
+          "pitch_xy_m": [
+            52.49,
+            30.75
+          ],
+          "note": "pre_kickoff_center_spot"
+        },
+        {
+          "frame_number": 16,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2044,
+            240,
+            2053,
+            249
+          ],
+          "width_px": 9,
+          "height_px": 9,
+          "pitch_xy_m": [
+            52.49,
+            30.75
+          ],
+          "note": "kickoff_pass_bas_anchor"
+        },
+        {
+          "frame_number": 30,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1846,
+            229,
+            1854,
+            237
+          ],
+          "width_px": 8,
+          "height_px": 8,
+          "pitch_xy_m": [
+            45.29,
+            26.84
+          ],
+          "note": "ground_pass_center_circle"
+        },
+        {
+          "frame_number": 110,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1290,
+            366,
+            1301,
+            376
+          ],
+          "width_px": 11,
+          "height_px": 10,
+          "pitch_xy_m": [
+            33.04,
+            48.4
+          ],
+          "note": "ground_pass_left_half"
+        },
+        {
+          "frame_number": 214,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2228,
+            384,
+            2238,
+            395
+          ],
+          "width_px": 10,
+          "height_px": 11,
+          "pitch_xy_m": [
+            55.83,
+            52.55
+          ],
+          "note": "ground_pass_mid_open"
+        },
+        {
+          "frame_number": 518,
+          "category": "visible_mid",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2899,
+            261,
+            2909,
+            271
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            85.7,
+            31.28
+          ],
+          "note": "gk_ground_pass_right_box"
+        },
+        {
+          "frame_number": 144,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            1041,
+            469,
+            1052,
+            480
+          ],
+          "width_px": 11,
+          "height_px": 11,
+          "pitch_xy_m": [
+            31.21,
+            57.57
+          ],
+          "note": "near_left_drive"
+        },
+        {
+          "frame_number": 168,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            1049,
+            483,
+            1061,
+            492
+          ],
+          "width_px": 12,
+          "height_px": 9,
+          "pitch_xy_m": [
+            32.1,
+            58.54
+          ],
+          "note": "near_left_pass_struck"
+        },
+        {
+          "frame_number": 238,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            2159,
+            478,
+            2174,
+            490
+          ],
+          "width_px": 15,
+          "height_px": 12,
+          "pitch_xy_m": [
+            53.76,
+            59.37
+          ],
+          "note": "near_center_drive"
+        },
+        {
+          "frame_number": 354,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            2732,
+            486,
+            2745,
+            498
+          ],
+          "width_px": 13,
+          "height_px": 12,
+          "pitch_xy_m": [
+            63.89,
+            60.27
+          ],
+          "note": "near_right_pass_at_leg"
+        },
+        {
+          "frame_number": 420,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            3119,
+            419,
+            3129,
+            429
+          ],
+          "width_px": 10,
+          "height_px": 10,
+          "pitch_xy_m": [
+            77.5,
+            55.33
+          ],
+          "note": "near_right_open_turf"
+        },
+        {
+          "frame_number": 2520,
+          "category": "visible_near",
+          "depth_zone": "near",
+          "ball_visible": true,
+          "bbox": [
+            496,
+            581,
+            509,
+            594
+          ],
+          "width_px": 13,
+          "height_px": 13,
+          "pitch_xy_m": [
+            20.19,
+            65.0
+          ],
+          "note": "near_left_touchline_with_spare_ball_distractor"
+        },
+        {
+          "frame_number": 1582,
+          "category": "visible_far",
+          "depth_zone": "far",
+          "ball_visible": true,
+          "bbox": [
+            2451,
+            185,
+            2459,
+            193
+          ],
+          "width_px": 8,
+          "height_px": 8,
+          "pitch_xy_m": [
+            72.43,
+            11.07
+          ],
+          "note": "far_pitch_tiny_8x8_open_turf"
+        },
+        {
+          "frame_number": 50,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1690,
+            233,
+            1699,
+            241
+          ],
+          "width_px": 9,
+          "height_px": 8,
+          "pitch_xy_m": [
+            39.39,
+            26.58
+          ],
+          "note": "drive_at_foot_mid"
+        },
+        {
+          "frame_number": 74,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            1645,
+            240,
+            1653,
+            249
+          ],
+          "width_px": 8,
+          "height_px": 9,
+          "pitch_xy_m": [
+            37.99,
+            28.18
+          ],
+          "note": "pass_at_foot_mid"
+        },
+        {
+          "frame_number": 298,
+          "category": "occluded_at_foot",
+          "depth_zone": "mid",
+          "ball_visible": true,
+          "bbox": [
+            2517,
+            252,
+            2525,
+            259
+          ],
+          "width_px": 8,
+          "height_px": 7,
+          "pitch_xy_m": [
+            68.79,
+            32.52
+          ],
+          "note": "turnover_drive_at_foot_blue"
+        },
+        {
+          "frame_number": 606,
+          "category": "aerial_motion_blur",
+          "depth_zone": "far",
+          "ball_visible": true,
+          "bbox": [
+            2489,
+            181,
+            2497,
+            189
+          ],
+          "width_px": 8,
+          "height_px": 8,
+          "pitch_xy_m": [
+            75.13,
+            8.59
+          ],
+          "note": "lofted_high_pass_mid_air"
+        },
+        {
+          "frame_number": 1612,
+          "category": "aerial_motion_blur",
+          "depth_zone": "far",
+          "ball_visible": true,
+          "bbox": [
+            2277,
+            120,
+            2284,
+            127
+          ],
+          "width_px": 7,
+          "height_px": 7,
+          "pitch_xy_m": [
+            71.37,
+            -33.45
+          ],
+          "note": "lofted_aerial_ball_above_far_touchline_canopy"
+        },
+        {
+          "frame_number": 996,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_after_981_OUT_spare_balls_visible"
+        },
+        {
+          "frame_number": 1004,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_after_981_OUT_spare_balls_visible"
+        },
+        {
+          "frame_number": 1012,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_after_981_OUT_spare_balls_visible"
+        },
+        {
+          "frame_number": 2620,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_status0_spare_balls_visible"
+        },
+        {
+          "frame_number": 2650,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_status0_spare_balls_visible"
+        },
+        {
+          "frame_number": 2700,
+          "category": "absent_out_of_play",
+          "depth_zone": "none",
+          "ball_visible": false,
+          "bbox": null,
+          "width_px": null,
+          "height_px": null,
+          "pitch_xy_m": null,
+          "note": "out_of_play_status0_spare_balls_visible"
+        }
+      ]
+    }
+  },
+  "size_by_pitch_depth_summary": {
+    "near": {
+      "count": 13,
+      "width_px_min_med_max": [
+        10,
+        12.0,
+        18
+      ],
+      "height_px_min_med_max": [
+        8,
+        11.0,
+        13
+      ],
+      "mean_area_px2": 136.6
+    },
+    "mid": {
+      "count": 23,
+      "width_px_min_med_max": [
+        8,
+        10.0,
+        19
+      ],
+      "height_px_min_med_max": [
+        7,
+        10.0,
+        14
+      ],
+      "mean_area_px2": 112.2
+    },
+    "far": {
+      "count": 4,
+      "width_px_min_med_max": [
+        6,
+        7.5,
+        8
+      ],
+      "height_px_min_med_max": [
+        6,
+        7.5,
+        8
+      ],
+      "mean_area_px2": 53.2
+    }
+  }
+}

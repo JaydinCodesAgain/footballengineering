@@ -1,0 +1,406 @@
+{
+  "provenance_note": "Small visually audited ball-box sample verified on 4x zoomed native-resolution patches (source='visual_audit'). Human-reviewable DetectionAnnotationStore HTML kits are also exported under data/annotations/soccertrack_117092/ and data/annotations/soccertrack_128057/.",
+  "matches": {
+    "117092": {
+      "audited_frames": 10,
+      "gt_visible_ball_frames": 10,
+      "gt_negative_out_of_play_frames": 0,
+      "model_predicted_ball_frames_in_sample": 0,
+      "tp_iou50": 0,
+      "tp_within_30px": 0,
+      "fp": 0,
+      "fn": 10,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gt_ball_width_px_range": [
+        10,
+        19
+      ],
+      "gt_ball_height_px_range": [
+        10,
+        14
+      ],
+      "gt_ball_median_size_px": [
+        11.5,
+        11.0
+      ],
+      "per_frame": [
+        {
+          "frame_number": 32,
+          "ball_visible": true,
+          "bbox": [
+            1944,
+            651,
+            1955,
+            661
+          ],
+          "scene": "kickoff_pass_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 40,
+          "ball_visible": true,
+          "bbox": [
+            2036,
+            648,
+            2047,
+            658
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 50,
+          "ball_visible": true,
+          "bbox": [
+            2125,
+            649,
+            2135,
+            659
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 60,
+          "ball_visible": true,
+          "bbox": [
+            2186,
+            648,
+            2196,
+            658
+          ],
+          "scene": "ground_pass_center_circle",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 70,
+          "ball_visible": true,
+          "bbox": [
+            2246,
+            647,
+            2256,
+            657
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 86,
+          "ball_visible": true,
+          "bbox": [
+            2287,
+            636,
+            2306,
+            648
+          ],
+          "scene": "high_pass_motion_blur_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 136,
+          "ball_visible": true,
+          "bbox": [
+            1201,
+            931,
+            1213,
+            944
+          ],
+          "scene": "clearance_pass_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 204,
+          "ball_visible": true,
+          "bbox": [
+            2616,
+            843,
+            2630,
+            857
+          ],
+          "scene": "pass_at_foot_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 240,
+          "ball_visible": true,
+          "bbox": [
+            1929,
+            787,
+            1943,
+            800
+          ],
+          "scene": "pass_open_turf_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 258,
+          "ball_visible": true,
+          "bbox": [
+            2032,
+            821,
+            2046,
+            835
+          ],
+          "scene": "high_pass_at_foot_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        }
+      ]
+    },
+    "128057": {
+      "audited_frames": 12,
+      "gt_visible_ball_frames": 8,
+      "gt_negative_out_of_play_frames": 4,
+      "model_predicted_ball_frames_in_sample": 3,
+      "tp_iou50": 0,
+      "tp_within_30px": 0,
+      "fp": 3,
+      "fn": 8,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gt_ball_width_px_range": [
+        9,
+        14
+      ],
+      "gt_ball_height_px_range": [
+        9,
+        13
+      ],
+      "gt_ball_median_size_px": [
+        9.0,
+        9.0
+      ],
+      "per_frame": [
+        {
+          "frame_number": 8,
+          "ball_visible": true,
+          "bbox": [
+            2044,
+            238,
+            2053,
+            247
+          ],
+          "scene": "pre_kickoff_center_spot_and_spare_ball_fp",
+          "pred_mode": "observed",
+          "pred_bbox": [
+            3483,
+            816,
+            3502,
+            840
+          ],
+          "pred_conf": 0.1852,
+          "iou": 0.0,
+          "center_error_px": 1558.2
+        },
+        {
+          "frame_number": 38,
+          "ball_visible": true,
+          "bbox": [
+            2036,
+            238,
+            2045,
+            247
+          ],
+          "scene": "kickoff_pass_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 46,
+          "ball_visible": true,
+          "bbox": [
+            1945,
+            238,
+            1954,
+            247
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 56,
+          "ball_visible": true,
+          "bbox": [
+            1863,
+            238,
+            1872,
+            247
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 64,
+          "ball_visible": true,
+          "bbox": [
+            1805,
+            239,
+            1814,
+            248
+          ],
+          "scene": "ground_pass_center_circle",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 74,
+          "ball_visible": true,
+          "bbox": [
+            1747,
+            240,
+            1756,
+            249
+          ],
+          "scene": "ground_pass_open_turf",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 94,
+          "ball_visible": true,
+          "bbox": [
+            1634,
+            243,
+            1643,
+            252
+          ],
+          "scene": "high_pass_at_foot_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 182,
+          "ball_visible": true,
+          "bbox": [
+            3479,
+            588,
+            3493,
+            601
+          ],
+          "scene": "ball_crossing_near_touchline_bas_anchor",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": 0.0,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 210,
+          "ball_visible": false,
+          "bbox": null,
+          "scene": "out_of_play_negative_control",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": null,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 240,
+          "ball_visible": false,
+          "bbox": null,
+          "scene": "out_of_play_negative_control",
+          "pred_mode": "lost",
+          "pred_bbox": null,
+          "pred_conf": 0.0,
+          "iou": null,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 270,
+          "ball_visible": false,
+          "bbox": null,
+          "scene": "out_of_play_spare_curb_ball_fp",
+          "pred_mode": "observed",
+          "pred_bbox": [
+            3483,
+            817,
+            3501,
+            840
+          ],
+          "pred_conf": 0.4101,
+          "iou": null,
+          "center_error_px": null
+        },
+        {
+          "frame_number": 272,
+          "ball_visible": false,
+          "bbox": null,
+          "scene": "out_of_play_spare_curb_ball_fp",
+          "pred_mode": "observed",
+          "pred_bbox": [
+            3484,
+            817,
+            3501,
+            840
+          ],
+          "pred_conf": 0.5031,
+          "iou": null,
+          "center_error_px": null
+        }
+      ]
+    }
+  }
+}

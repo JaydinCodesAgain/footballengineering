@@ -1,0 +1,23 @@
+match_id,frame_number,scene,ball_visible,x1,y1,x2,y2,width_px,height_px,source,pred_mode,pred_bbox,error_type
+117092,32,kickoff_pass_bas_anchor,True,1944,651,1955,661,11,10,visual_audit,lost,,false_negative_missed_ball
+117092,40,ground_pass_open_turf,True,2036,648,2047,658,11,10,visual_audit,lost,,false_negative_missed_ball
+117092,50,ground_pass_open_turf,True,2125,649,2135,659,10,10,visual_audit,lost,,false_negative_missed_ball
+117092,60,ground_pass_center_circle,True,2186,648,2196,658,10,10,visual_audit,lost,,false_negative_missed_ball
+117092,70,ground_pass_open_turf,True,2246,647,2256,657,10,10,visual_audit,lost,,false_negative_missed_ball
+117092,86,high_pass_motion_blur_bas_anchor,True,2287,636,2306,648,19,12,visual_audit,lost,,false_negative_missed_ball
+117092,136,clearance_pass_bas_anchor,True,1201,931,1213,944,12,13,visual_audit,lost,,false_negative_missed_ball
+117092,204,pass_at_foot_bas_anchor,True,2616,843,2630,857,14,14,visual_audit,lost,,false_negative_missed_ball
+117092,240,pass_open_turf_bas_anchor,True,1929,787,1943,800,14,13,visual_audit,lost,,false_negative_missed_ball
+117092,258,high_pass_at_foot_bas_anchor,True,2032,821,2046,835,14,14,visual_audit,lost,,false_negative_missed_ball
+128057,8,pre_kickoff_center_spot_and_spare_ball_fp,True,2044,238,2053,247,9,9,visual_audit,observed,"[3483, 816, 3502, 840]",false_positive_and_miss
+128057,38,kickoff_pass_bas_anchor,True,2036,238,2045,247,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,46,ground_pass_open_turf,True,1945,238,1954,247,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,56,ground_pass_open_turf,True,1863,238,1872,247,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,64,ground_pass_center_circle,True,1805,239,1814,248,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,74,ground_pass_open_turf,True,1747,240,1756,249,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,94,high_pass_at_foot_bas_anchor,True,1634,243,1643,252,9,9,visual_audit,lost,,false_negative_missed_ball
+128057,182,ball_crossing_near_touchline_bas_anchor,True,3479,588,3493,601,14,13,visual_audit,lost,,false_negative_missed_ball
+128057,210,out_of_play_negative_control,False,,,,,,,visual_audit,lost,,true_negative
+128057,240,out_of_play_negative_control,False,,,,,,,visual_audit,lost,,true_negative
+128057,270,out_of_play_spare_curb_ball_fp,False,,,,,,,visual_audit,observed,"[3483, 817, 3501, 840]",false_positive_spare_sideline_ball
+128057,272,out_of_play_spare_curb_ball_fp,False,,,,,,,visual_audit,observed,"[3484, 817, 3501, 840]",false_positive_spare_sideline_ball

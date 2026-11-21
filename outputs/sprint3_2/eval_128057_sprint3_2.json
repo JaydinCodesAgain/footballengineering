@@ -1,0 +1,3561 @@
+{
+  "match_id": "128057",
+  "run_dir": "outputs\\sprint3_2\\match_128057_sprint3_2",
+  "gsr_json": "SoccerTrack-v2\\data\\gsr\\128057\\128057_1st.json",
+  "gsr_meta": {
+    "image_size": [
+      4096,
+      1080
+    ],
+    "info": {
+      "version": "1.3",
+      "game_id": "7",
+      "id": "913",
+      "num_tracklets": "23",
+      "action_position": "0",
+      "action_class": "Unknown",
+      "visibility": "visible",
+      "game_time_start": "1 - 00:00",
+      "game_time_stop": "1 - 45:05",
+      "clip_start": "0",
+      "clip_stop": "2705000",
+      "name": "CLPD-128057-1st",
+      "im_dir": "img1",
+      "frame_rate": 25,
+      "seq_length": 67625,
+      "im_ext": ".jpg"
+    }
+  },
+  "evaluated_frame_range_0based": [
+    0,
+    358
+  ],
+  "evaluated_frame_count": 180,
+  "frame_alignment_check": {
+    "best_offset": 1,
+    "per_offset": {
+      "-1": {
+        "matched_count": 816,
+        "total_gt": 1100,
+        "recall_iou20": 0.7418,
+        "mean_matched_iou": 0.3655
+      },
+      "0": {
+        "matched_count": 819,
+        "total_gt": 1100,
+        "recall_iou20": 0.7445,
+        "mean_matched_iou": 0.3635
+      },
+      "1": {
+        "matched_count": 821,
+        "total_gt": 1100,
+        "recall_iou20": 0.7464,
+        "mean_matched_iou": 0.3532
+      },
+      "2": {
+        "matched_count": 803,
+        "total_gt": 1100,
+        "recall_iou20": 0.73,
+        "mean_matched_iou": 0.3423
+      },
+      "3": {
+        "matched_count": 760,
+        "total_gt": 1100,
+        "recall_iou20": 0.6909,
+        "mean_matched_iou": 0.3366
+      }
+    }
+  },
+  "pipeline_metadata": {
+    "experiment_id": "sprint3_2/match_128057_sprint3_2",
+    "match_id": "128057_panorama_1st_half",
+    "match_name": "128057_panorama_1st_half",
+    "mode": "auto_teams_unsupervised",
+    "video_resolution": "4096x1080",
+    "video_fps": 25.0,
+    "frame_stride": 2,
+    "processed_frames": 180,
+    "tracker_config": "botsort.yaml",
+    "detection_mode": "tiled",
+    "detector_model": "yolo11s.pt",
+    "person_conf": 0.28,
+    "tile_size": "1280x1280",
+    "tile_imgsz": 1280,
+    "fixed_camera": true,
+    "pitch_region_filter": "fisheye_plus_keypoints:128057_camera_intrinsics.npz",
+    "motion_ball_recovery": true,
+    "feature_method": "hsv_lab",
+    "clustering_method": "kmeans",
+    "processing_wall_time_seconds": 495.96,
+    "average_processing_fps": 0.36
+  },
+  "unsupervised_team_discovery_report": {
+    "mode": "unsupervised_per_video_adaptation",
+    "feature_method": "hsv_lab",
+    "clustering_method": "kmeans",
+    "candidate_clusters": 3,
+    "selected_k": 4,
+    "reliable_tracks": 32,
+    "team_cluster_ids": {
+      "Team_A": 1,
+      "Team_B": 2
+    },
+    "excluded_cluster_ids": [
+      0,
+      3
+    ],
+    "retained_outlier_cluster_count": 2,
+    "inter_team_cosine_distance": 0.7262,
+    "silhouette_score": 0.6495,
+    "cluster_radii_cosine_distance": {
+      "1": 0.2198,
+      "2": 0.1721
+    },
+    "cluster_spreads_median_cosine": {
+      "1": 0.0706,
+      "2": 0.0515
+    },
+    "track_label_counts": {
+      "Team_A": 13,
+      "Team_B": 11,
+      "Unknown": 8
+    },
+    "team_name_note": "Team_A and Team_B are visual clusters, not inferred club or national-team names."
+  },
+  "team_discovery_evaluation_iou30": {
+    "iou_threshold": 0.3,
+    "outfield_frame_observations_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 1936,
+      "covered_samples": 1884,
+      "classification_coverage": 0.9731,
+      "team_coverage": 0.9731,
+      "unknown_prediction_rate": 0.0269,
+      "clustering_accuracy_on_covered": 0.9968,
+      "macro_f1_on_covered": 0.9967,
+      "team_accuracy_including_rejected": 0.97,
+      "overall_accuracy_including_rejected": 0.97,
+      "macro_f1_including_unknown": 0.6558,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9954,
+          "f1": 0.9972,
+          "support": 1081
+        },
+        "Team_B": {
+          "precision": 0.9938,
+          "recall": 0.9988,
+          "f1": 0.9963,
+          "support": 803
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9624,
+          "f1": 0.9804,
+          "support": 1118
+        },
+        "Team_B": {
+          "precision": 0.9938,
+          "recall": 0.9804,
+          "f1": 0.9871,
+          "support": 818
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 0.9319,
+      "adjusted_rand_index_3way": 0.9319,
+      "normalized_mutual_information": 0.8782,
+      "normalized_mutual_information_3way": 0.8782,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          1076,
+          5,
+          37
+        ],
+        [
+          1,
+          802,
+          15
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          1076,
+          5,
+          37
+        ],
+        [
+          1,
+          802,
+          15
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "1884 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "1936 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "1936 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "outfield_raw_pre_stabilizer_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 1936,
+      "covered_samples": 1904,
+      "classification_coverage": 0.9835,
+      "team_coverage": 0.9835,
+      "unknown_prediction_rate": 0.0165,
+      "clustering_accuracy_on_covered": 0.9968,
+      "macro_f1_on_covered": 0.9968,
+      "team_accuracy_including_rejected": 0.9804,
+      "overall_accuracy_including_rejected": 0.9804,
+      "macro_f1_including_unknown": 0.6595,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9954,
+          "f1": 0.9972,
+          "support": 1089
+        },
+        "Team_B": {
+          "precision": 0.9939,
+          "recall": 0.9988,
+          "f1": 0.9963,
+          "support": 815
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9696,
+          "f1": 0.9841,
+          "support": 1118
+        },
+        "Team_B": {
+          "precision": 0.9939,
+          "recall": 0.9951,
+          "f1": 0.9945,
+          "support": 818
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 0.9514,
+      "adjusted_rand_index_3way": 0.9514,
+      "normalized_mutual_information": 0.9129,
+      "normalized_mutual_information_3way": 0.9129,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          1084,
+          5,
+          29
+        ],
+        [
+          1,
+          814,
+          3
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          1084,
+          5,
+          29
+        ],
+        [
+          1,
+          814,
+          3
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "1904 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "1936 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "1936 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "outfield_plus_gk_as_unknown_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 1937,
+      "covered_samples": 1884,
+      "classification_coverage": 0.9726,
+      "team_coverage": 0.9731,
+      "unknown_prediction_rate": 0.0274,
+      "clustering_accuracy_on_covered": 0.9968,
+      "macro_f1_on_covered": 0.9967,
+      "team_accuracy_including_rejected": 0.97,
+      "overall_accuracy_including_rejected": 0.9701,
+      "macro_f1_including_unknown": 0.6682,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9954,
+          "f1": 0.9972,
+          "support": 1081
+        },
+        "Team_B": {
+          "precision": 0.9938,
+          "recall": 0.9988,
+          "f1": 0.9963,
+          "support": 803
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 0.9991,
+          "recall": 0.9624,
+          "f1": 0.9804,
+          "support": 1118
+        },
+        "Team_B": {
+          "precision": 0.9938,
+          "recall": 0.9804,
+          "f1": 0.9871,
+          "support": 818
+        },
+        "Unknown": {
+          "precision": 0.0189,
+          "recall": 1.0,
+          "f1": 0.037,
+          "support": 1
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": 0.0,
+      "adjusted_rand_index": 0.9319,
+      "adjusted_rand_index_3way": 0.9319,
+      "normalized_mutual_information": 0.877,
+      "normalized_mutual_information_3way": 0.877,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          1076,
+          5,
+          37
+        ],
+        [
+          1,
+          802,
+          15
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          1076,
+          5,
+          37
+        ],
+        [
+          1,
+          802,
+          15
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "1884 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "1936 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "1937 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "1 ground-truth Unknown/GK samples"
+      }
+    },
+    "predicted_track_level_outfield_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 24,
+      "covered_samples": 22,
+      "classification_coverage": 0.9167,
+      "team_coverage": 0.9167,
+      "unknown_prediction_rate": 0.0833,
+      "clustering_accuracy_on_covered": 1.0,
+      "macro_f1_on_covered": 1.0,
+      "team_accuracy_including_rejected": 0.9167,
+      "overall_accuracy_including_rejected": 0.9167,
+      "macro_f1_including_unknown": 0.6377,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 11
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 11
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 0.9167,
+          "f1": 0.9565,
+          "support": 12
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 0.9167,
+          "f1": 0.9565,
+          "support": 12
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 0.8319,
+      "adjusted_rand_index_3way": 0.8319,
+      "normalized_mutual_information": 0.7867,
+      "normalized_mutual_information_3way": 0.7867,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          11,
+          0,
+          1
+        ],
+        [
+          0,
+          11,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          11,
+          0,
+          1
+        ],
+        [
+          0,
+          11,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "22 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "24 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "24 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "gt_outfield_player_majority_summary": {
+      "total_gt_outfield_players_matched": 20,
+      "correct_team": 20,
+      "wrong_team": 0,
+      "unknown_majority": 0
+    },
+    "goalkeeper_handling": {
+      "total_gk_matched_observations": 1,
+      "gk_predicted_counts": {
+        "Unknown": 1
+      },
+      "gk_rejected_as_unknown_rate": 1.0
+    },
+    "unmatched_predictions_label_counts": {
+      "Unknown": 825,
+      "Team_A": 725,
+      "Team_B": 876
+    },
+    "per_gt_player_team": {
+      "1": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 156
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 156,
+        "correct_dominant": true
+      },
+      "2": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 33
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 33,
+        "correct_dominant": true
+      },
+      "3": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_B": 132
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 134,
+        "correct_dominant": true
+      },
+      "4": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 47
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 47,
+        "correct_dominant": true
+      },
+      "5": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 63,
+          "Team_A": 1
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 64,
+        "correct_dominant": true
+      },
+      "6": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_B": 68
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 70,
+        "correct_dominant": true
+      },
+      "7": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Unknown": 5,
+          "Team_B": 53
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 58,
+        "correct_dominant": true
+      },
+      "8": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 98
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 98,
+        "correct_dominant": true
+      },
+      "10": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Unknown": 4,
+          "Team_B": 131
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 135,
+        "correct_dominant": true
+      },
+      "11": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_B": 21
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 23,
+        "correct_dominant": true
+      },
+      "12": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 138
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 138,
+        "correct_dominant": true
+      },
+      "13": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 115
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 115,
+        "correct_dominant": true
+      },
+      "14": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 1,
+          "Team_A": 49
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 50,
+        "correct_dominant": true
+      },
+      "15": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 29,
+          "Team_B": 1,
+          "Team_A": 113
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 143,
+        "correct_dominant": true
+      },
+      "17": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_A": 86,
+          "Team_B": 4
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 92,
+        "correct_dominant": true
+      },
+      "18": {
+        "role": "goalkeeper",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 1
+        },
+        "dominant_aligned_pred": "Unknown",
+        "total_matched_obs": 1,
+        "correct_dominant": true
+      },
+      "19": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 119
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 119,
+        "correct_dominant": true
+      },
+      "20": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 129
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 129,
+        "correct_dominant": true
+      },
+      "21": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_A": 96
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 98,
+        "correct_dominant": true
+      },
+      "22": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 2,
+          "Team_A": 129
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 131,
+        "correct_dominant": true
+      },
+      "23": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Unknown": 1,
+          "Team_A": 102
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 103,
+        "correct_dominant": true
+      }
+    }
+  },
+  "team_discovery_evaluation_iou50": {
+    "iou_threshold": 0.5,
+    "outfield_frame_observations_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 159,
+      "covered_samples": 159,
+      "classification_coverage": 1.0,
+      "team_coverage": 1.0,
+      "unknown_prediction_rate": 0.0,
+      "clustering_accuracy_on_covered": 1.0,
+      "macro_f1_on_covered": 1.0,
+      "team_accuracy_including_rejected": 1.0,
+      "overall_accuracy_including_rejected": 1.0,
+      "macro_f1_including_unknown": 0.6667,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 1.0,
+      "adjusted_rand_index_3way": 1.0,
+      "normalized_mutual_information": 1.0,
+      "normalized_mutual_information_3way": 1.0,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "159 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "159 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "159 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "outfield_raw_pre_stabilizer_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 159,
+      "covered_samples": 159,
+      "classification_coverage": 1.0,
+      "team_coverage": 1.0,
+      "unknown_prediction_rate": 0.0,
+      "clustering_accuracy_on_covered": 1.0,
+      "macro_f1_on_covered": 1.0,
+      "team_accuracy_including_rejected": 1.0,
+      "overall_accuracy_including_rejected": 1.0,
+      "macro_f1_including_unknown": 0.6667,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 1.0,
+      "adjusted_rand_index_3way": 1.0,
+      "normalized_mutual_information": 1.0,
+      "normalized_mutual_information_3way": 1.0,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "159 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "159 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "159 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "outfield_plus_gk_as_unknown_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 159,
+      "covered_samples": 159,
+      "classification_coverage": 1.0,
+      "team_coverage": 1.0,
+      "unknown_prediction_rate": 0.0,
+      "clustering_accuracy_on_covered": 1.0,
+      "macro_f1_on_covered": 1.0,
+      "team_accuracy_including_rejected": 1.0,
+      "overall_accuracy_including_rejected": 1.0,
+      "macro_f1_including_unknown": 0.6667,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 80
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 79
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 1.0,
+      "adjusted_rand_index_3way": 1.0,
+      "normalized_mutual_information": 1.0,
+      "normalized_mutual_information_3way": 1.0,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "159 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "159 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "159 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "predicted_track_level_outfield_eval": {
+      "metrics_available": true,
+      "permutation_applied": false,
+      "total_samples": 13,
+      "covered_samples": 13,
+      "classification_coverage": 1.0,
+      "team_coverage": 1.0,
+      "unknown_prediction_rate": 0.0,
+      "clustering_accuracy_on_covered": 1.0,
+      "macro_f1_on_covered": 1.0,
+      "team_accuracy_including_rejected": 1.0,
+      "overall_accuracy_including_rejected": 1.0,
+      "macro_f1_including_unknown": 0.6667,
+      "per_team_on_covered": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 6
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 7
+        }
+      },
+      "per_class_all_samples": {
+        "Team_A": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 6
+        },
+        "Team_B": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 7
+        },
+        "Unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "referee_misclassification_rate": null,
+      "unknown_misclassification_rate": null,
+      "adjusted_rand_index": 1.0,
+      "adjusted_rand_index_3way": 1.0,
+      "normalized_mutual_information": 1.0,
+      "normalized_mutual_information_3way": 1.0,
+      "labels": [
+        "Team_A",
+        "Team_B"
+      ],
+      "labels_with_unknown": [
+        "Team_A",
+        "Team_B",
+        "Unknown"
+      ],
+      "confusion_matrix": [
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_3way": [
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "denominators": {
+        "clustering_accuracy_on_covered": "13 predictions assigned Team_A or Team_B",
+        "team_accuracy_including_rejected": "13 ground-truth playing-team samples (rejected Unknown counts as miss)",
+        "overall_accuracy_including_rejected": "13 total samples (GT Referee/Unknown mapped to expected Unknown)",
+        "referee_misclassification_rate": "0 ground-truth Referee samples",
+        "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+      }
+    },
+    "gt_outfield_player_majority_summary": {
+      "total_gt_outfield_players_matched": 13,
+      "correct_team": 13,
+      "wrong_team": 0,
+      "unknown_majority": 0
+    },
+    "goalkeeper_handling": {
+      "total_gk_matched_observations": 0,
+      "gk_predicted_counts": {},
+      "gk_rejected_as_unknown_rate": null
+    },
+    "unmatched_predictions_label_counts": {
+      "Unknown": 878,
+      "Team_A": 1722,
+      "Team_B": 1604
+    },
+    "per_gt_player_team": {
+      "1": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 18
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 18,
+        "correct_dominant": true
+      },
+      "2": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 17
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 17,
+        "correct_dominant": true
+      },
+      "3": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 7
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 7,
+        "correct_dominant": true
+      },
+      "5": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 6
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 6,
+        "correct_dominant": true
+      },
+      "6": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 6
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 6,
+        "correct_dominant": true
+      },
+      "8": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 12
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 12,
+        "correct_dominant": true
+      },
+      "10": {
+        "role": "player",
+        "gt_team": "Team_B",
+        "aligned_pred_counts": {
+          "Team_B": 13
+        },
+        "dominant_aligned_pred": "Team_B",
+        "total_matched_obs": 13,
+        "correct_dominant": true
+      },
+      "15": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 25
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 25,
+        "correct_dominant": true
+      },
+      "17": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 5
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 5,
+        "correct_dominant": true
+      },
+      "19": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 8
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 8,
+        "correct_dominant": true
+      },
+      "20": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 5
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 5,
+        "correct_dominant": true
+      },
+      "21": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 26
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 26,
+        "correct_dominant": true
+      },
+      "22": {
+        "role": "player",
+        "gt_team": "Team_A",
+        "aligned_pred_counts": {
+          "Team_A": 11
+        },
+        "dominant_aligned_pred": "Team_A",
+        "total_matched_obs": 11,
+        "correct_dominant": true
+      }
+    }
+  },
+  "player_tracking_evaluation_iou30": {
+    "primary_iou_threshold": 0.3,
+    "frames_evaluated": 180,
+    "total_gt_boxes": 3960,
+    "total_pred_boxes": 4363,
+    "tp": 1937,
+    "fp": 2426,
+    "fn": 2023,
+    "detection_precision": 0.444,
+    "detection_recall": 0.4891,
+    "detection_f1": 0.4655,
+    "mota": -0.1268,
+    "motp_mean_iou": 0.3993,
+    "idf1": 0.451,
+    "idp": 0.4302,
+    "idr": 0.474,
+    "idtp": 1877,
+    "idfp": 2486,
+    "idfn": 2083,
+    "id_switches": 13,
+    "fragmentations": 100,
+    "gt_unique_identities": 22,
+    "pred_unique_identities_matched": 25,
+    "mostly_tracked_mt": 1,
+    "partially_tracked_pt": 17,
+    "mostly_lost_ml": 4,
+    "mean_gt_dominant_id_purity": 0.9673,
+    "mean_distinct_pred_ids_per_gt_player": 1.32,
+    "hota": 0.2238,
+    "deta": 0.1953,
+    "assa": 0.2583,
+    "loca": 0.3092,
+    "hota_at_iou50": 0.0315,
+    "deta_at_iou50": 0.0195,
+    "assa_at_iou50": 0.0509,
+    "per_gt_player": {
+      "1": {
+        "gt_frames": 180,
+        "matched_frames": 156,
+        "track_recall": 0.8667,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 20,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "2": {
+        "gt_frames": 180,
+        "matched_frames": 33,
+        "track_recall": 0.1833,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 8,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "3": {
+        "gt_frames": 180,
+        "matched_frames": 134,
+        "track_recall": 0.7444,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 24,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "4": {
+        "gt_frames": 180,
+        "matched_frames": 47,
+        "track_recall": 0.2611,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 15,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "5": {
+        "gt_frames": 180,
+        "matched_frames": 64,
+        "track_recall": 0.3556,
+        "distinct_pred_ids": 2,
+        "dominant_pred_id": 3,
+        "dominant_id_purity": 0.9844,
+        "id_switches": 2
+      },
+      "6": {
+        "gt_frames": 180,
+        "matched_frames": 70,
+        "track_recall": 0.3889,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 14,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "7": {
+        "gt_frames": 180,
+        "matched_frames": 58,
+        "track_recall": 0.3222,
+        "distinct_pred_ids": 3,
+        "dominant_pred_id": 77,
+        "dominant_id_purity": 0.6379,
+        "id_switches": 2
+      },
+      "8": {
+        "gt_frames": 180,
+        "matched_frames": 98,
+        "track_recall": 0.5444,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 9,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "9": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "10": {
+        "gt_frames": 180,
+        "matched_frames": 135,
+        "track_recall": 0.75,
+        "distinct_pred_ids": 2,
+        "dominant_pred_id": 6,
+        "dominant_id_purity": 0.9852,
+        "id_switches": 2
+      },
+      "11": {
+        "gt_frames": 180,
+        "matched_frames": 23,
+        "track_recall": 0.1278,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 16,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "12": {
+        "gt_frames": 180,
+        "matched_frames": 138,
+        "track_recall": 0.7667,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 18,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "13": {
+        "gt_frames": 180,
+        "matched_frames": 115,
+        "track_recall": 0.6389,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 2,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "14": {
+        "gt_frames": 180,
+        "matched_frames": 50,
+        "track_recall": 0.2778,
+        "distinct_pred_ids": 2,
+        "dominant_pred_id": 1,
+        "dominant_id_purity": 0.96,
+        "id_switches": 1
+      },
+      "15": {
+        "gt_frames": 180,
+        "matched_frames": 143,
+        "track_recall": 0.7944,
+        "distinct_pred_ids": 3,
+        "dominant_pred_id": 38,
+        "dominant_id_purity": 0.7902,
+        "id_switches": 2
+      },
+      "17": {
+        "gt_frames": 180,
+        "matched_frames": 92,
+        "track_recall": 0.5111,
+        "distinct_pred_ids": 2,
+        "dominant_pred_id": 22,
+        "dominant_id_purity": 0.9565,
+        "id_switches": 4
+      },
+      "18": {
+        "gt_frames": 180,
+        "matched_frames": 1,
+        "track_recall": 0.0056,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 10,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "19": {
+        "gt_frames": 180,
+        "matched_frames": 119,
+        "track_recall": 0.6611,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 12,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "20": {
+        "gt_frames": 180,
+        "matched_frames": 129,
+        "track_recall": 0.7167,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 23,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "21": {
+        "gt_frames": 180,
+        "matched_frames": 98,
+        "track_recall": 0.5444,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 5,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "22": {
+        "gt_frames": 180,
+        "matched_frames": 131,
+        "track_recall": 0.7278,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 21,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "23": {
+        "gt_frames": 180,
+        "matched_frames": 103,
+        "track_recall": 0.5722,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 7,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      }
+    }
+  },
+  "player_tracking_evaluation_iou50": {
+    "primary_iou_threshold": 0.5,
+    "frames_evaluated": 180,
+    "total_gt_boxes": 3960,
+    "total_pred_boxes": 4363,
+    "tp": 159,
+    "fp": 4204,
+    "fn": 3801,
+    "detection_precision": 0.0364,
+    "detection_recall": 0.0402,
+    "detection_f1": 0.0382,
+    "mota": -1.0215,
+    "motp_mean_iou": 0.5381,
+    "idf1": 0.0382,
+    "idp": 0.0364,
+    "idr": 0.0402,
+    "idtp": 159,
+    "idfp": 4204,
+    "idfn": 3801,
+    "id_switches": 0,
+    "fragmentations": 43,
+    "gt_unique_identities": 22,
+    "pred_unique_identities_matched": 13,
+    "mostly_tracked_mt": 0,
+    "partially_tracked_pt": 0,
+    "mostly_lost_ml": 22,
+    "mean_gt_dominant_id_purity": 1.0,
+    "mean_distinct_pred_ids_per_gt_player": 0.59,
+    "hota": 0.2238,
+    "deta": 0.1953,
+    "assa": 0.2583,
+    "loca": 0.3092,
+    "hota_at_iou50": 0.0315,
+    "deta_at_iou50": 0.0195,
+    "assa_at_iou50": 0.0509,
+    "per_gt_player": {
+      "1": {
+        "gt_frames": 180,
+        "matched_frames": 18,
+        "track_recall": 0.1,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 20,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "2": {
+        "gt_frames": 180,
+        "matched_frames": 17,
+        "track_recall": 0.0944,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 8,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "3": {
+        "gt_frames": 180,
+        "matched_frames": 7,
+        "track_recall": 0.0389,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 24,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "4": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "5": {
+        "gt_frames": 180,
+        "matched_frames": 6,
+        "track_recall": 0.0333,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 3,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "6": {
+        "gt_frames": 180,
+        "matched_frames": 6,
+        "track_recall": 0.0333,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 14,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "7": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "8": {
+        "gt_frames": 180,
+        "matched_frames": 12,
+        "track_recall": 0.0667,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 9,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "9": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "10": {
+        "gt_frames": 180,
+        "matched_frames": 13,
+        "track_recall": 0.0722,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 6,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "11": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "12": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "13": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "14": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "15": {
+        "gt_frames": 180,
+        "matched_frames": 25,
+        "track_recall": 0.1389,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 38,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "17": {
+        "gt_frames": 180,
+        "matched_frames": 5,
+        "track_recall": 0.0278,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 22,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "18": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      },
+      "19": {
+        "gt_frames": 180,
+        "matched_frames": 8,
+        "track_recall": 0.0444,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 12,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "20": {
+        "gt_frames": 180,
+        "matched_frames": 5,
+        "track_recall": 0.0278,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 23,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "21": {
+        "gt_frames": 180,
+        "matched_frames": 26,
+        "track_recall": 0.1444,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 5,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "22": {
+        "gt_frames": 180,
+        "matched_frames": 11,
+        "track_recall": 0.0611,
+        "distinct_pred_ids": 1,
+        "dominant_pred_id": 21,
+        "dominant_id_purity": 1.0,
+        "id_switches": 0
+      },
+      "23": {
+        "gt_frames": 180,
+        "matched_frames": 0,
+        "track_recall": 0.0,
+        "distinct_pred_ids": 0,
+        "dominant_pred_id": null,
+        "dominant_id_purity": 0.0,
+        "id_switches": 0
+      }
+    }
+  },
+  "pitch_space_gsr_evaluation_5m": {
+    "match_radius_m": 5.0,
+    "calibration_keypoint_error": {
+      "median_m": 2.05,
+      "p90_m": 4.86,
+      "max_m": 7.84
+    },
+    "hota_similarity_definition": "S(d) = max(0, 1 - d / 5.0m) over alpha=0.05..0.95",
+    "tracking": {
+      "frames_evaluated": 180,
+      "total_gt_players": 3960,
+      "total_pred_all": 4363,
+      "total_pred_on_pitch": 4182,
+      "off_pitch_sideline_detections": 181,
+      "off_pitch_label_counts": {
+        "Unknown": 88,
+        "Team_A": 93
+      },
+      "tp": 3757,
+      "fp_all": 606,
+      "fp_on_pitch": 425,
+      "fn": 203,
+      "detection_precision_all": 0.8611,
+      "detection_precision_on_pitch": 0.8984,
+      "detection_recall": 0.9487,
+      "detection_f1_all": 0.9028,
+      "mean_matched_distance_m": 1.22,
+      "median_matched_distance_m": 0.83,
+      "mota_all": 0.7922,
+      "mota_on_pitch": 0.8379,
+      "idf1": 0.8672,
+      "idp": 0.8272,
+      "idr": 0.9114,
+      "idtp": 3609,
+      "idfp": 754,
+      "idfn": 351,
+      "id_switches": 14,
+      "fragmentations": 37,
+      "gt_unique_identities": 22,
+      "pred_unique_identities_matched": 27,
+      "mostly_tracked_mt": 20,
+      "partially_tracked_pt": 2,
+      "mostly_lost_ml": 0,
+      "mean_gt_dominant_id_purity": 0.9592,
+      "mean_distinct_pred_ids_per_gt_player": 1.41,
+      "gs_hota": 0.6476,
+      "gs_deta": 0.571,
+      "gs_assa": 0.7371,
+      "gs_loca": 0.8377,
+      "per_gt_player": {
+        "1": {
+          "gt_frames": 180,
+          "matched_frames": 178,
+          "track_recall": 0.9889,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 20,
+          "dominant_id_purity": 0.9888,
+          "id_switches": 2
+        },
+        "2": {
+          "gt_frames": 180,
+          "matched_frames": 112,
+          "track_recall": 0.6222,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 8,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "3": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 24,
+          "dominant_id_purity": 0.9944,
+          "id_switches": 1
+        },
+        "4": {
+          "gt_frames": 180,
+          "matched_frames": 179,
+          "track_recall": 0.9944,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 15,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "5": {
+          "gt_frames": 180,
+          "matched_frames": 179,
+          "track_recall": 0.9944,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 3,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "6": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 14,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "7": {
+          "gt_frames": 180,
+          "matched_frames": 157,
+          "track_recall": 0.8722,
+          "distinct_pred_ids": 3,
+          "dominant_pred_id": 77,
+          "dominant_id_purity": 0.6943,
+          "id_switches": 2
+        },
+        "8": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 9,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "9": {
+          "gt_frames": 180,
+          "matched_frames": 133,
+          "track_recall": 0.7389,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 17,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "10": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 6,
+          "dominant_id_purity": 0.9889,
+          "id_switches": 2
+        },
+        "11": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 16,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "12": {
+          "gt_frames": 180,
+          "matched_frames": 178,
+          "track_recall": 0.9889,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 18,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "13": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 2,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "14": {
+          "gt_frames": 180,
+          "matched_frames": 167,
+          "track_recall": 0.9278,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 1,
+          "dominant_id_purity": 0.6647,
+          "id_switches": 1
+        },
+        "15": {
+          "gt_frames": 180,
+          "matched_frames": 169,
+          "track_recall": 0.9389,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 38,
+          "dominant_id_purity": 0.7988,
+          "id_switches": 1
+        },
+        "17": {
+          "gt_frames": 180,
+          "matched_frames": 175,
+          "track_recall": 0.9722,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 22,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "18": {
+          "gt_frames": 180,
+          "matched_frames": 150,
+          "track_recall": 0.8333,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 10,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "19": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 12,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "20": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 3,
+          "dominant_pred_id": 23,
+          "dominant_id_purity": 0.9722,
+          "id_switches": 5
+        },
+        "21": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 5,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "22": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 21,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "23": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 7,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        }
+      }
+    },
+    "team_discovery": {
+      "outfield_frame_observations_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3474,
+        "covered_samples": 3387,
+        "classification_coverage": 0.975,
+        "team_coverage": 0.975,
+        "unknown_prediction_rate": 0.025,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.975,
+        "overall_accuracy_including_rejected": 0.975,
+        "macro_f1_including_unknown": 0.6583,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1709
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1678
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.9661,
+            "f1": 0.9827,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9842,
+            "f1": 0.992,
+            "support": 1705
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.9504,
+        "adjusted_rand_index_3way": 0.9504,
+        "normalized_mutual_information": 0.9119,
+        "normalized_mutual_information_3way": 0.9119,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1678,
+            27
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1678,
+            27
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3387 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3474 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3474 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "outfield_raw_pre_stabilizer_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3474,
+        "covered_samples": 3431,
+        "classification_coverage": 0.9876,
+        "team_coverage": 0.9876,
+        "unknown_prediction_rate": 0.0124,
+        "clustering_accuracy_on_covered": 0.9994,
+        "macro_f1_on_covered": 0.9994,
+        "team_accuracy_including_rejected": 0.987,
+        "overall_accuracy_including_rejected": 0.987,
+        "macro_f1_including_unknown": 0.6622,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 0.9994,
+            "recall": 0.9994,
+            "f1": 0.9994,
+            "support": 1731
+          },
+          "Team_B": {
+            "precision": 0.9994,
+            "recall": 0.9994,
+            "f1": 0.9994,
+            "support": 1700
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 0.9994,
+            "recall": 0.978,
+            "f1": 0.9886,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 0.9994,
+            "recall": 0.9965,
+            "f1": 0.9979,
+            "support": 1705
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.973,
+        "adjusted_rand_index_3way": 0.973,
+        "normalized_mutual_information": 0.9468,
+        "normalized_mutual_information_3way": 0.9468,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1730,
+            1,
+            38
+          ],
+          [
+            1,
+            1699,
+            5
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1730,
+            1,
+            38
+          ],
+          [
+            1,
+            1699,
+            5
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3431 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3474 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3474 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "outfield_plus_gk_as_unknown_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3757,
+        "covered_samples": 3387,
+        "classification_coverage": 0.9015,
+        "team_coverage": 0.975,
+        "unknown_prediction_rate": 0.0985,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.975,
+        "overall_accuracy_including_rejected": 0.9768,
+        "macro_f1_including_unknown": 0.9472,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1709
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1678
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.9661,
+            "f1": 0.9827,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9842,
+            "f1": 0.992,
+            "support": 1705
+          },
+          "Unknown": {
+            "precision": 0.7649,
+            "recall": 1.0,
+            "f1": 0.8668,
+            "support": 283
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": 0.0,
+        "adjusted_rand_index": 0.9495,
+        "adjusted_rand_index_3way": 0.9495,
+        "normalized_mutual_information": 0.9058,
+        "normalized_mutual_information_3way": 0.9058,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1678,
+            27
+          ],
+          [
+            0,
+            0,
+            283
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1678,
+            27
+          ],
+          [
+            0,
+            0,
+            283
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3387 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3474 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3757 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "283 ground-truth Unknown/GK samples"
+        }
+      },
+      "predicted_track_level_outfield_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 25,
+        "covered_samples": 22,
+        "classification_coverage": 0.88,
+        "team_coverage": 0.88,
+        "unknown_prediction_rate": 0.12,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.88,
+        "overall_accuracy_including_rejected": 0.88,
+        "macro_f1_including_unknown": 0.6244,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 11
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 11
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.8462,
+            "f1": 0.9167,
+            "support": 13
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9167,
+            "f1": 0.9565,
+            "support": 12
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.7643,
+        "adjusted_rand_index_3way": 0.7643,
+        "normalized_mutual_information": 0.738,
+        "normalized_mutual_information_3way": 0.738,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            11,
+            0,
+            2
+          ],
+          [
+            0,
+            11,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            11,
+            0,
+            2
+          ],
+          [
+            0,
+            11,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "22 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "25 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "25 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "gt_outfield_player_majority_summary": {
+        "total_gt_outfield_players_matched": 20,
+        "correct_team": 20,
+        "wrong_team": 0,
+        "unknown_majority": 0
+      },
+      "goalkeeper_handling": {
+        "total_gk_matched_observations": 283,
+        "gk_predicted_counts": {
+          "Unknown": 283
+        }
+      }
+    },
+    "pitch_offset_check": {
+      "-1": {
+        "matched_within_6m": 1076,
+        "total_on_pitch_pred": 1178,
+        "median_m": 0.9
+      },
+      "0": {
+        "matched_within_6m": 1077,
+        "total_on_pitch_pred": 1178,
+        "median_m": 0.9
+      },
+      "1": {
+        "matched_within_6m": 1078,
+        "total_on_pitch_pred": 1178,
+        "median_m": 0.92
+      },
+      "2": {
+        "matched_within_6m": 1079,
+        "total_on_pitch_pred": 1178,
+        "median_m": 0.94
+      },
+      "3": {
+        "matched_within_6m": 1080,
+        "total_on_pitch_pred": 1178,
+        "median_m": 0.98
+      }
+    }
+  },
+  "pitch_space_gsr_evaluation_8m": {
+    "match_radius_m": 8.0,
+    "calibration_keypoint_error": {
+      "median_m": 2.05,
+      "p90_m": 4.86,
+      "max_m": 7.84
+    },
+    "hota_similarity_definition": "S(d) = max(0, 1 - d / 8.0m) over alpha=0.05..0.95",
+    "tracking": {
+      "frames_evaluated": 180,
+      "total_gt_players": 3960,
+      "total_pred_all": 4363,
+      "total_pred_on_pitch": 4182,
+      "off_pitch_sideline_detections": 181,
+      "off_pitch_label_counts": {
+        "Unknown": 88,
+        "Team_A": 93
+      },
+      "tp": 3840,
+      "fp_all": 523,
+      "fp_on_pitch": 342,
+      "fn": 120,
+      "detection_precision_all": 0.8801,
+      "detection_precision_on_pitch": 0.9182,
+      "detection_recall": 0.9697,
+      "detection_f1_all": 0.9227,
+      "mean_matched_distance_m": 1.31,
+      "median_matched_distance_m": 0.84,
+      "mota_all": 0.8338,
+      "mota_on_pitch": 0.8795,
+      "idf1": 0.8855,
+      "idp": 0.8446,
+      "idr": 0.9306,
+      "idtp": 3685,
+      "idfp": 678,
+      "idfn": 275,
+      "id_switches": 15,
+      "fragmentations": 14,
+      "gt_unique_identities": 22,
+      "pred_unique_identities_matched": 29,
+      "mostly_tracked_mt": 21,
+      "partially_tracked_pt": 1,
+      "mostly_lost_ml": 0,
+      "mean_gt_dominant_id_purity": 0.957,
+      "mean_distinct_pred_ids_per_gt_player": 1.41,
+      "gs_hota": 0.7444,
+      "gs_deta": 0.6838,
+      "gs_assa": 0.8135,
+      "gs_loca": 0.8747,
+      "per_gt_player": {
+        "1": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 3,
+          "dominant_pred_id": 20,
+          "dominant_id_purity": 0.9778,
+          "id_switches": 4
+        },
+        "2": {
+          "gt_frames": 180,
+          "matched_frames": 116,
+          "track_recall": 0.6444,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 8,
+          "dominant_id_purity": 0.9655,
+          "id_switches": 1
+        },
+        "3": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 24,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "4": {
+          "gt_frames": 180,
+          "matched_frames": 179,
+          "track_recall": 0.9944,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 15,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "5": {
+          "gt_frames": 180,
+          "matched_frames": 179,
+          "track_recall": 0.9944,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 3,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "6": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 14,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "7": {
+          "gt_frames": 180,
+          "matched_frames": 160,
+          "track_recall": 0.8889,
+          "distinct_pred_ids": 3,
+          "dominant_pred_id": 77,
+          "dominant_id_purity": 0.6813,
+          "id_switches": 2
+        },
+        "8": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 9,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "9": {
+          "gt_frames": 180,
+          "matched_frames": 178,
+          "track_recall": 0.9889,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 17,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "10": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 6,
+          "dominant_id_purity": 0.9889,
+          "id_switches": 2
+        },
+        "11": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 16,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "12": {
+          "gt_frames": 180,
+          "matched_frames": 178,
+          "track_recall": 0.9889,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 18,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "13": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 2,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "14": {
+          "gt_frames": 180,
+          "matched_frames": 167,
+          "track_recall": 0.9278,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 1,
+          "dominant_id_purity": 0.6647,
+          "id_switches": 1
+        },
+        "15": {
+          "gt_frames": 180,
+          "matched_frames": 169,
+          "track_recall": 0.9389,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 38,
+          "dominant_id_purity": 0.7988,
+          "id_switches": 1
+        },
+        "17": {
+          "gt_frames": 180,
+          "matched_frames": 175,
+          "track_recall": 0.9722,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 22,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "18": {
+          "gt_frames": 180,
+          "matched_frames": 179,
+          "track_recall": 0.9944,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 10,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "19": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 12,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "20": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 2,
+          "dominant_pred_id": 23,
+          "dominant_id_purity": 0.9778,
+          "id_switches": 4
+        },
+        "21": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 5,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "22": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 21,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        },
+        "23": {
+          "gt_frames": 180,
+          "matched_frames": 180,
+          "track_recall": 1.0,
+          "distinct_pred_ids": 1,
+          "dominant_pred_id": 7,
+          "dominant_id_purity": 1.0,
+          "id_switches": 0
+        }
+      }
+    },
+    "team_discovery": {
+      "outfield_frame_observations_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3483,
+        "covered_samples": 3390,
+        "classification_coverage": 0.9733,
+        "team_coverage": 0.9733,
+        "unknown_prediction_rate": 0.0267,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.9733,
+        "overall_accuracy_including_rejected": 0.9733,
+        "macro_f1_including_unknown": 0.6577,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1709
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1681
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.9661,
+            "f1": 0.9827,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9807,
+            "f1": 0.9903,
+            "support": 1714
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.9472,
+        "adjusted_rand_index_3way": 0.9472,
+        "normalized_mutual_information": 0.9065,
+        "normalized_mutual_information_3way": 0.9065,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1681,
+            33
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1681,
+            33
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3390 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3483 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3483 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "outfield_raw_pre_stabilizer_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3483,
+        "covered_samples": 3434,
+        "classification_coverage": 0.9859,
+        "team_coverage": 0.9859,
+        "unknown_prediction_rate": 0.0141,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.9859,
+        "overall_accuracy_including_rejected": 0.9859,
+        "macro_f1_including_unknown": 0.662,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1731
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1703
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.9785,
+            "f1": 0.9891,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9936,
+            "f1": 0.9968,
+            "support": 1714
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.972,
+        "adjusted_rand_index_3way": 0.972,
+        "normalized_mutual_information": 0.9453,
+        "normalized_mutual_information_3way": 0.9453,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1731,
+            0,
+            38
+          ],
+          [
+            0,
+            1703,
+            11
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1731,
+            0,
+            38
+          ],
+          [
+            0,
+            1703,
+            11
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3434 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3483 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3483 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "outfield_plus_gk_as_unknown_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 3840,
+        "covered_samples": 3390,
+        "classification_coverage": 0.8828,
+        "team_coverage": 0.9733,
+        "unknown_prediction_rate": 0.1172,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.9733,
+        "overall_accuracy_including_rejected": 0.9758,
+        "macro_f1_including_unknown": 0.9526,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1709
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1681
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.9661,
+            "f1": 0.9827,
+            "support": 1769
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.9807,
+            "f1": 0.9903,
+            "support": 1714
+          },
+          "Unknown": {
+            "precision": 0.7933,
+            "recall": 1.0,
+            "f1": 0.8848,
+            "support": 357
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": 0.0,
+        "adjusted_rand_index": 0.9459,
+        "adjusted_rand_index_3way": 0.9459,
+        "normalized_mutual_information": 0.9026,
+        "normalized_mutual_information_3way": 0.9026,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1681,
+            33
+          ],
+          [
+            0,
+            0,
+            357
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            1709,
+            0,
+            60
+          ],
+          [
+            0,
+            1681,
+            33
+          ],
+          [
+            0,
+            0,
+            357
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "3390 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "3483 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "3840 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "357 ground-truth Unknown/GK samples"
+        }
+      },
+      "predicted_track_level_outfield_eval": {
+        "metrics_available": true,
+        "permutation_applied": false,
+        "total_samples": 27,
+        "covered_samples": 22,
+        "classification_coverage": 0.8148,
+        "team_coverage": 0.8148,
+        "unknown_prediction_rate": 0.1852,
+        "clustering_accuracy_on_covered": 1.0,
+        "macro_f1_on_covered": 1.0,
+        "team_accuracy_including_rejected": 0.8148,
+        "overall_accuracy_including_rejected": 0.8148,
+        "macro_f1_including_unknown": 0.5989,
+        "per_team_on_covered": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 11
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 11
+          }
+        },
+        "per_class_all_samples": {
+          "Team_A": {
+            "precision": 1.0,
+            "recall": 0.8462,
+            "f1": 0.9167,
+            "support": 13
+          },
+          "Team_B": {
+            "precision": 1.0,
+            "recall": 0.7857,
+            "f1": 0.88,
+            "support": 14
+          },
+          "Unknown": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 0
+          }
+        },
+        "referee_misclassification_rate": null,
+        "unknown_misclassification_rate": null,
+        "adjusted_rand_index": 0.6483,
+        "adjusted_rand_index_3way": 0.6483,
+        "normalized_mutual_information": 0.654,
+        "normalized_mutual_information_3way": 0.654,
+        "labels": [
+          "Team_A",
+          "Team_B"
+        ],
+        "labels_with_unknown": [
+          "Team_A",
+          "Team_B",
+          "Unknown"
+        ],
+        "confusion_matrix": [
+          [
+            11,
+            0,
+            2
+          ],
+          [
+            0,
+            11,
+            3
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "confusion_matrix_3way": [
+          [
+            11,
+            0,
+            2
+          ],
+          [
+            0,
+            11,
+            3
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "denominators": {
+          "clustering_accuracy_on_covered": "22 predictions assigned Team_A or Team_B",
+          "team_accuracy_including_rejected": "27 ground-truth playing-team samples (rejected Unknown counts as miss)",
+          "overall_accuracy_including_rejected": "27 total samples (GT Referee/Unknown mapped to expected Unknown)",
+          "referee_misclassification_rate": "0 ground-truth Referee samples",
+          "unknown_misclassification_rate": "0 ground-truth Unknown/GK samples"
+        }
+      },
+      "gt_outfield_player_majority_summary": {
+        "total_gt_outfield_players_matched": 20,
+        "correct_team": 20,
+        "wrong_team": 0,
+        "unknown_majority": 0
+      },
+      "goalkeeper_handling": {
+        "total_gk_matched_observations": 357,
+        "gk_predicted_counts": {
+          "Unknown": 357
+        }
+      }
+    }
+  },
+  "within_shot_player_tracking": {
+    "total_observations": 4363,
+    "distinct_track_ids": 42,
+    "camera_cuts_count": 0,
+    "total_shots": 1,
+    "continuous_shots_analyzed": 1,
+    "min_shot_frames_threshold": 10,
+    "cross_cut_id_leaks": 0,
+    "within_shot_mean_ids_per_player_slot": 1.733,
+    "within_shot_short_track_fraction": 0.2143,
+    "within_shot_mean_track_lifetime": 103.88,
+    "within_shot_team_label_consistency": 1.0,
+    "formal_identity_metrics": {
+      "metrics_available": false,
+      "idf1": null,
+      "hota": null,
+      "validation_blocker": "missing_verified_manual_identity_annotations"
+    },
+    "per_shot": [
+      {
+        "shot_id": 0,
+        "start_frame": 0,
+        "end_frame": 358,
+        "frames_count": 180,
+        "distinct_track_ids": 42,
+        "avg_players_per_frame": 24.24,
+        "ids_per_player_slot": 1.733,
+        "short_tracks_under_5_obs": 9,
+        "short_track_fraction": 0.2143,
+        "mean_track_lifetime": 103.88,
+        "max_track_lifetime": 180,
+        "within_shot_team_switches": 0,
+        "within_shot_team_consistency": 1.0
+      }
+    ]
+  },
+  "ball_tracking_analysis": {
+    "total_frames": 180,
+    "observed_frames": 38,
+    "interpolated_frames": 23,
+    "lost_frames": 119,
+    "observed_rate_pct": 21.11,
+    "interpolated_rate_pct": 12.78,
+    "active_rate_pct": 33.89,
+    "lost_rate_pct": 66.11,
+    "detection_source_counts": {
+      "tiled_yolo": 30,
+      "kalman_roi_recovery": 8
+    },
+    "false_camera_cuts_on_fixed_camera": 0,
+    "camera_cut_frames": [],
+    "mean_continuous_track_frames": 7.62,
+    "max_continuous_track_frames": 23,
+    "longest_lost_streaks": [
+      [
+        256,
+        358,
+        52
+      ],
+      [
+        0,
+        32,
+        16
+      ],
+      [
+        106,
+        138,
+        16
+      ],
+      [
+        38,
+        56,
+        9
+      ],
+      [
+        216,
+        234,
+        9
+      ],
+      [
+        158,
+        170,
+        6
+      ],
+      [
+        240,
+        250,
+        5
+      ],
+      [
+        144,
+        152,
+        4
+      ],
+      [
+        94,
+        98,
+        2
+      ]
+    ],
+    "large_jumps_over_150px_count": 5,
+    "top_large_jumps": [
+      {
+        "frame_number": 234,
+        "prev_frame": 210,
+        "dist_px": 1922.82,
+        "px_per_frame": 80.12,
+        "center": [
+          1922.0,
+          307.5
+        ],
+        "conf": 0.4077,
+        "source": "tiled_yolo"
+      },
+      {
+        "frame_number": 138,
+        "prev_frame": 100,
+        "dist_px": 1812.76,
+        "px_per_frame": 47.7,
+        "center": [
+          3516.0,
+          617.5
+        ],
+        "conf": 0.3387,
+        "source": "tiled_yolo"
+      },
+      {
+        "frame_number": 56,
+        "prev_frame": 32,
+        "dist_px": 1510.13,
+        "px_per_frame": 62.92,
+        "center": [
+          1868.0,
+          241.0
+        ],
+        "conf": 0.5039,
+        "source": "tiled_yolo"
+      },
+      {
+        "frame_number": 170,
+        "prev_frame": 152,
+        "dist_px": 1284.96,
+        "px_per_frame": 71.39,
+        "center": [
+          2297.5,
+          442.0
+        ],
+        "conf": 0.4216,
+        "source": "tiled_yolo"
+      },
+      {
+        "frame_number": 174,
+        "prev_frame": 170,
+        "dist_px": 1031.41,
+        "px_per_frame": 257.85,
+        "center": [
+          3326.5,
+          371.5
+        ],
+        "conf": 0.793,
+        "source": "tiled_yolo"
+      }
+    ],
+    "top_spatial_cells_40px": [
+      {
+        "cell_xy_px": [
+          1800,
+          240
+        ],
+        "observed_hits": 3
+      },
+      {
+        "cell_xy_px": [
+          1680,
+          240
+        ],
+        "observed_hits": 3
+      },
+      {
+        "cell_xy_px": [
+          1840,
+          240
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          1760,
+          240
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          1720,
+          240
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          3520,
+          600
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          3720,
+          520
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          3760,
+          520
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          3800,
+          560
+        ],
+        "observed_hits": 2
+      },
+      {
+        "cell_xy_px": [
+          3320,
+          640
+        ],
+        "observed_hits": 1
+      }
+    ],
+    "bas_event_anchor_checks": [
+      {
+        "bas_frame_1b": 39,
+        "eval_frame_0b": 38,
+        "label": "PASS",
+        "team": "left",
+        "actor_player_id": "506491",
+        "actor_bbox_xyxy": [
+          2026.0,
+          203.0,
+          2071.0,
+          243.0
+        ],
+        "ball_mode": "lost",
+        "ball_center": null,
+        "ball_conf": 0.0,
+        "ball_source": "none",
+        "dist_to_actor_feet_px": null
+      },
+      {
+        "bas_frame_1b": 95,
+        "eval_frame_0b": 94,
+        "label": "HIGH PASS",
+        "team": "left",
+        "actor_player_id": "506485",
+        "actor_bbox_xyxy": [
+          1601.0,
+          211.0,
+          1653.0,
+          251.0
+        ],
+        "ball_mode": "lost",
+        "ball_center": null,
+        "ball_conf": 0.0,
+        "ball_source": "none",
+        "dist_to_actor_feet_px": null
+      },
+      {
+        "bas_frame_1b": 183,
+        "eval_frame_0b": 182,
+        "label": "OUT",
+        "team": "left",
+        "actor_player_id": "506485",
+        "actor_bbox_xyxy": [
+          1746.0,
+          204.0,
+          1795.0,
+          244.0
+        ],
+        "ball_mode": "observed",
+        "ball_center": [
+          3487.3,
+          595.1
+        ],
+        "ball_conf": 0.5931,
+        "ball_source": "tiled_yolo",
+        "dist_to_actor_feet_px": 1752.4
+      }
+    ],
+    "auxiliary_ball_track_diagnostic": {
+      "available": true,
+      "caveat": "SoccerTrack v2 auxiliary ball track is piecewise constant-speed interpolated between annotated BAS events (not independently measured per frame); use for coarse diagnostic triage only, NOT formal precision/recall.",
+      "player_foot_projection_median_error_px": 3.97,
+      "y_flipped_used": false,
+      "eval_frames_with_aux_ball": 180,
+      "active_pred_compared_frames": 61,
+      "median_dist_to_aux_ball_px": 96.1,
+      "p90_dist_to_aux_ball_px": 1340.5,
+      "within_120px_of_aux_ball": 31,
+      "over_300px_from_aux_ball_likely_fp": 17
+    }
+  },
+  "possession_summary_excerpt": {
+    "attributed_possession_share": {
+      "team_a_name": "Team A",
+      "team_b_name": "Team B",
+      "team_a_pct": 76.19,
+      "team_b_pct": 23.81,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    },
+    "possession_coverage_pct": 11.67,
+    "state_distribution_pct": {
+      "TEAM_A_CONTROL": 8.89,
+      "TEAM_B_CONTROL": 2.78,
+      "CONTESTED": 0.0,
+      "LOOSE_BALL": 13.33,
+      "UNKNOWN": 75.0,
+      "OUT_OF_PLAY": 0.0
+    },
+    "ball_tracking": {
+      "total_frames": 180,
+      "observed_frames": 38,
+      "interpolated_frames": 23,
+      "lost_frames": 119,
+      "observed_coverage_pct": 21.11,
+      "interpolated_coverage_pct": 12.78,
+      "lost_pct": 66.11,
+      "tracked_or_interpolated_pct": 33.89,
+      "camera_cut_resets": 0,
+      "rejected_outlier_detections": 8,
+      "false_track_associations": 0,
+      "blacklisted_static_zones_count": 0,
+      "permanent_static_zones_count": 0,
+      "reacquisition_events": 9,
+      "active_track_segments_count": 8,
+      "mean_continuous_track_frames": 7.62,
+      "max_continuous_track_frames": 23
+    }
+  },
+  "ball_sample_export": null
+}
