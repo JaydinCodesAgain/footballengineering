@@ -54,12 +54,16 @@ class FootballDetector:
         self,
         config: Optional[DetectionConfig] = None,
         device: Optional[str | int] = None,
+        half: bool = False,
     ) -> None:
+        from src.config import resolve_compute_device
+
         self.config = config or DetectionConfig()
-        if device is None:
-            self.device: str | int = 0 if torch.cuda.is_available() else "cpu"
-        else:
-            self.device = device
+        req_dev = "auto" if device is None else str(device)
+        resolved_dev, resolved_half, fell_back = resolve_compute_device(req_dev, bool(half))
+        self.device: str | int = resolved_dev
+        self.half: bool = resolved_half
+        self.fell_back_to_cpu: bool = fell_back
         self._model = None
 
     @property
@@ -157,14 +161,16 @@ class FootballDetector:
         for start in range(0, len(tiles), batch_sz):
             batch_tiles = tiles[start : start + batch_sz]
             batch_views = views[start : start + batch_sz]
-            results = self.model.predict(
-                batch_views,
-                classes=[COCO_PERSON_CLASS_ID, COCO_BALL_CLASS_ID],
-                conf=min_conf,
-                imgsz=imgsz,
-                device=self.device,
-                verbose=False,
-            )
+            pred_kwargs: Dict[str, Any] = {
+                "classes": [COCO_PERSON_CLASS_ID, COCO_BALL_CLASS_ID],
+                "conf": min_conf,
+                "imgsz": imgsz,
+                "device": self.device,
+                "verbose": False,
+            }
+            if self.half:
+                pred_kwargs["half"] = True
+            results = self.model.predict(batch_views, **pred_kwargs)
             if not results:
                 continue
             for tile, res in zip(batch_tiles, results):
@@ -234,14 +240,16 @@ class FootballDetector:
         min_conf = min(p_conf, b_conf)
         imgsz = int(imgsz_override if imgsz_override is not None else self.config.imgsz)
 
-        results = self.model.predict(
-            frame_bgr,
-            classes=[COCO_PERSON_CLASS_ID, COCO_BALL_CLASS_ID],
-            conf=min_conf,
-            imgsz=imgsz,
-            device=self.device,
-            verbose=False,
-        )
+        pred_kwargs: Dict[str, Any] = {
+            "classes": [COCO_PERSON_CLASS_ID, COCO_BALL_CLASS_ID],
+            "conf": min_conf,
+            "imgsz": imgsz,
+            "device": self.device,
+            "verbose": False,
+        }
+        if self.half:
+            pred_kwargs["half"] = True
+        results = self.model.predict(frame_bgr, **pred_kwargs)
         if not results:
             return []
 
@@ -291,14 +299,16 @@ class FootballDetector:
         b_conf = float(conf_threshold if conf_threshold is not None else self.config.roi_conf_threshold)
         roi_imgsz = max(320, min(1024, int(math.ceil(max(infer_crop.shape[:2]) / 32.0) * 32)))
 
-        results = self.model.predict(
-            infer_crop,
-            classes=[COCO_BALL_CLASS_ID],
-            conf=b_conf,
-            imgsz=roi_imgsz,
-            device=self.device,
-            verbose=False,
-        )
+        pred_kwargs: Dict[str, Any] = {
+            "classes": [COCO_BALL_CLASS_ID],
+            "conf": b_conf,
+            "imgsz": roi_imgsz,
+            "device": self.device,
+            "verbose": False,
+        }
+        if self.half:
+            pred_kwargs["half"] = True
+        results = self.model.predict(infer_crop, **pred_kwargs)
         if not results or results[0].boxes is None:
             return []
 

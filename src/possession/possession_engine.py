@@ -130,6 +130,11 @@ class PossessionEngine:
 
         prev_pid = None if ball_rec.camera_cut_reset else self.state_machine.controlling_player_id
         prev_tid = None if ball_rec.camera_cut_reset else self.state_machine.controlling_team_id
+        prev_raw = (
+            None
+            if (ball_rec.camera_cut_reset or not self.timeline)
+            else self.timeline[-1].raw_interaction_state
+        )
         proximities, raw_interaction = evaluate_frame_ownership_candidates(
             frame_observations=player_observations,
             ball_record=ball_rec,
@@ -137,6 +142,8 @@ class PossessionEngine:
             frame_shape=frame_shape,
             prev_controlling_player_id=prev_pid,
             prev_controlling_team_id=prev_tid,
+            pitch_region_filter=self.pitch_region_filter,
+            prev_raw_state=prev_raw,
         )
         self.player_proximities.extend(proximities)
 

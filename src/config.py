@@ -85,6 +85,78 @@ class TrackingConfig:
     max_missing_frames_before_reset: int = 30
     max_spatial_jump_ratio: float = 3.5
     reset_on_camera_cut: bool = True
+    fixed_camera_stitching: bool = False
+
+
+@dataclass
+class ComputeConfig:
+    """Reproducible hardware compute profile with explicit device selection and safe CPU fallback."""
+
+    profile: str = "cpu_fallback"  # "local_low_vram" | "colab_t4" | "cpu_fallback"
+    device: str = "auto"  # "auto" | "cpu" | "cuda" | "0"
+    half: bool = False
+    clear_cuda_cache_every_n_frames: int = 100
+
+
+COMPUTE_PROFILE_PRESETS: Dict[str, Dict[str, Any]] = {
+    "local_low_vram": {
+        "device": "auto",
+        "half": True,
+        "tile_batch_size": 2,
+        "tile_imgsz": 1024,
+        "clear_cuda_cache_every_n_frames": 50,
+    },
+    "colab_t4": {
+        "device": "auto",
+        "half": True,
+        "tile_batch_size": 4,
+        "tile_imgsz": 1280,
+        "clear_cuda_cache_every_n_frames": 100,
+    },
+    "cpu_fallback": {
+        "device": "cpu",
+        "half": False,
+        "tile_batch_size": 2,
+        "tile_imgsz": 1280,
+        "clear_cuda_cache_every_n_frames": 0,
+    },
+}
+
+
+def resolve_compute_device(requested_device: str = "auto", requested_half: bool = False) -> Tuple[str | int, bool, bool]:
+    """Resolve `(device, use_half, fell_back_to_cpu)` safely without crashing on CPU-only hosts."""
+    import torch
+
+    cuda_ok = bool(torch.cuda.is_available())
+    req = str(requested_device).strip().lower()
+    if req == "cpu":
+        return "cpu", False, False
+    if req == "auto":
+        if cuda_ok:
+            return 0, bool(requested_half), False
+        return "cpu", False, False
+    # Explicit CUDA device requested ("cuda", "cuda:0", "0", etc.)
+    if cuda_ok:
+        dev: str | int = int(req) if req.isdigit() else req
+        return dev, bool(requested_half), False
+    return "cpu", False, True
+
+
+def apply_compute_profile(match_cfg: "MatchConfig", profile_name: str) -> "MatchConfig":
+    """Apply a named hardware compute profile (`local_low_vram`, `colab_t4`, `cpu_fallback`)."""
+    key = str(profile_name).strip().lower()
+    if key not in COMPUTE_PROFILE_PRESETS:
+        raise ValueError(
+            f"Unknown compute profile '{profile_name}'. Valid profiles: {sorted(COMPUTE_PROFILE_PRESETS.keys())}"
+        )
+    preset = COMPUTE_PROFILE_PRESETS[key]
+    match_cfg.compute.profile = key
+    match_cfg.compute.device = str(preset["device"])
+    match_cfg.compute.half = bool(preset["half"])
+    match_cfg.compute.clear_cuda_cache_every_n_frames = int(preset["clear_cuda_cache_every_n_frames"])
+    match_cfg.detection.tile_batch_size = int(preset["tile_batch_size"])
+    match_cfg.detection.tile_imgsz = int(preset["tile_imgsz"])
+    return match_cfg
 
 
 @dataclass
@@ -157,6 +229,7 @@ class TeamDiscoveryConfig:
     max_distance_ratio: float = 0.85
     outlier_repulsion_ratio: float = 1.05
     random_state: int = 42
+    quality_weighted_aggregation: bool = True
 
 
 @dataclass
@@ -209,6 +282,7 @@ class MatchConfig:
     possession: PossessionConfig = field(default_factory=PossessionConfig)
     team_discovery: TeamDiscoveryConfig = field(default_factory=TeamDiscoveryConfig)
     pitch: PitchConfig = field(default_factory=PitchConfig)
+    compute: ComputeConfig = field(default_factory=ComputeConfig)
 
     def resolve_video_path(self, base_dir: Optional[Path] = None) -> Path:
         """Resolve the video path across primary and fallback locations."""
@@ -283,6 +357,7 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
     poss_raw = raw.get("possession", {})
     discovery_raw = raw.get("team_discovery", {})
     pitch_raw = raw.get("pitch", {})
+    compute_raw = raw.get("compute", {})
 
     colours_raw = raw.get("team_colours_bgr", {})
     colours_parsed: Dict[str, Tuple[int, int, int]] = {
@@ -320,5 +395,6 @@ def load_match_config(config_path: str | Path) -> MatchConfig:
         possession=PossessionConfig(**poss_raw),
         team_discovery=TeamDiscoveryConfig(**discovery_raw),
         pitch=PitchConfig(**pitch_raw),
+        compute=ComputeConfig(**compute_raw),
     )
 

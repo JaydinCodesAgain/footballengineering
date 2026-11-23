@@ -558,6 +558,34 @@ def evaluate_possession_predictions(
         for t, p in zip(y_true, y_pred)
         if t in team_ctrl_states and p in team_ctrl_states and t != p
     )
+    both_confident_frames = sum(
+        1 for t, p in zip(y_true, y_pred) if t in team_ctrl_states and p in team_ctrl_states
+    )
+    correct_confident_team_frames = sum(
+        1 for t, p in zip(y_true, y_pred) if t in team_ctrl_states and p in team_ctrl_states and t == p
+    )
+    confident_attribution_accuracy = (
+        correct_confident_team_frames / float(both_confident_frames)
+        if both_confident_frames > 0
+        else 1.0
+    )
+    strict_incorrect_States = (
+        PossessionState.TEAM_A_CONTROL.value,
+        PossessionState.TEAM_B_CONTROL.value,
+        PossessionState.OUT_OF_PLAY.value,
+        PossessionState.CONTESTED.value,
+    )
+    strict_incorrect_confident_frames = sum(
+        1
+        for t, p in zip(y_true, y_pred)
+        if p in team_ctrl_states and t in strict_incorrect_States and p != t
+    )
+    strict_incorrect_confident_rate_all_frames = (
+        strict_incorrect_confident_frames / float(len(y_true)) if y_true else 0.0
+    )
+    incorrect_confident_rate_all_frames = (
+        incorrect_confident_pred_frames / float(len(y_true)) if y_true else 0.0
+    )
     unknown_pred_sec = sum(
         dt for p, dt in zip(y_pred, dts) if p == PossessionState.UNKNOWN.value
     )
@@ -581,6 +609,9 @@ def evaluate_possession_predictions(
         "uncertain_frames_excluded": uncertain_frames,
         "state_accuracy": round(acc, 4),
         "macro_f1": round(macro_f1, 4),
+        "confident_attribution_accuracy": round(float(confident_attribution_accuracy), 4),
+        "both_confident_team_frames": int(both_confident_frames),
+        "correct_confident_team_frames": int(correct_confident_team_frames),
         "per_state": per_state,
         "per_state_duration_error_seconds": per_state_duration_errors,
         "team_a_time_error_seconds": round(abs(pred_a_sec - gt_a_sec), 2),
@@ -592,12 +623,20 @@ def evaluate_possession_predictions(
         "confident_attribution_frames": int(confident_pred_frames),
         "incorrect_confident_attribution_frames": int(incorrect_confident_pred_frames),
         "incorrect_confident_attribution_rate": round(incorrect_confident_rate, 4),
+        "incorrect_confident_attribution_rate_all_frames": round(
+            float(incorrect_confident_rate_all_frames), 4
+        ),
+        "strict_incorrect_confident_frames": int(strict_incorrect_confident_frames),
+        "strict_incorrect_confident_rate_all_frames": round(
+            float(strict_incorrect_confident_rate_all_frames), 4
+        ),
         "gt_transitions": gt_transitions,
         "pred_transitions": pred_transitions,
         "transition_count_error": transition_error,
         "transition_timing_error_seconds": round(transition_timing_error_sec, 3),
         "unknown_state_rate": round(unknown_state_rate, 4),
         "confident_attribution_coverage": round(confident_coverage, 4),
+        "attribution_coverage": round(confident_coverage, 4),
         "confidently_assigned_possession_pct": round(confident_coverage * 100.0, 2),
         "state_labels": all_states,
         "confusion_matrix": cm.tolist(),

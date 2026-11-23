@@ -155,6 +155,22 @@ class FixedCameraMotionBallDetector:
         if contrast < self.config.min_local_contrast:
             return None
 
+        # Compact 4-cardinal ring contrast check: a real football is brighter than surrounding turf
+        # on at least 3 of 4 sides, whereas painted pitch-line flicker is bright along 2 opposite sides.
+        ring_h, ring_w = ring_gray.shape[:2]
+        icx = (ex1 - sx1 + ex2 - sx1) // 2
+        icy = (ey1 - sy1 + ey2 - sy1) // 2
+        top_strip = ring_gray[: max(1, ey1 - sy1), :]
+        bot_strip = ring_gray[min(ring_h - 1, ey2 - sy1) :, :]
+        left_strip = ring_gray[:, : max(1, ex1 - sx1)]
+        right_strip = ring_gray[:, min(ring_w - 1, ex2 - sx1) :]
+        darker_sides = 0
+        for strip in (top_strip, bot_strip, left_strip, right_strip):
+            if strip.size >= 4 and (core_bright - float(np.median(strip))) >= self.config.min_local_contrast * 0.55:
+                darker_sides += 1
+        if darker_sides < 3:
+            return None
+
         # Reject pure green turf patches using the unpadded foreground core (a circle in a square has >= 22% corners)
         hsv = cv2.cvtColor(patch_bgr, cv2.COLOR_BGR2HSV)
         green = cv2.inRange(

@@ -62,12 +62,38 @@ def is_ball_out_of_play_bounds(
     ball_center: Tuple[float, float],
     frame_shape: Tuple[int, int],
     config: PossessionConfig,
+    pitch_region_filter: Optional[Any] = None,
+    ball_speed_px_s: float = 0.0,
+    prev_out_of_play: bool = False,
 ) -> bool:
-    """Check whether the ball centre falls outside the configured broadcast pitch region."""
+    """Check whether the ball centre falls outside the playable pitch region.
+
+    When `pitch_region_filter` is supplied (fixed-camera geometry), classifies `(bx, by)`
+    using `pitch_region_filter.classify_point(bx, by)`:
+    - `PitchZone.OFF_PITCH` is immediately out of play.
+    - `PitchZone.BOUNDARY_MARGIN` is out of play when stationary/slow outside the touchline
+      (`ball_speed_px_s <= 45.0` or already out of play).
+    Falls back to fractional broadcast image margins when `pitch_region_filter` is None.
+    """
+    bx, by = ball_center
+    if pitch_region_filter is not None and getattr(pitch_region_filter, "is_fitted", True):
+        classify_fn = getattr(pitch_region_filter, "classify_point", None)
+        if callable(classify_fn):
+            try:
+                zone = classify_fn(bx, by, for_ball=True)
+            except TypeError:
+                zone = classify_fn(bx, by)
+            zone_val = getattr(zone, "value", str(zone)).lower()
+            if zone_val == "off_pitch":
+                return True
+            if zone_val == "boundary_margin":
+                if prev_out_of_play or float(ball_speed_px_s) <= 20.0:
+                    return True
+            return False
+
     fh, fw = frame_shape[:2]
     if fh <= 0 or fw <= 0:
         return False
-    bx, by = ball_center
     x_frac = bx / float(fw)
     y_frac = by / float(fh)
     return (
@@ -85,6 +111,8 @@ def evaluate_frame_ownership_candidates(
     frame_shape: Optional[Tuple[int, int]] = None,
     prev_controlling_player_id: Optional[int] = None,
     prev_controlling_team_id: Optional[str] = None,
+    pitch_region_filter: Optional[Any] = None,
+    prev_raw_state: Optional[str] = None,
 ) -> Tuple[List[PlayerProximityRecord], Dict[str, Any]]:
     """
     Evaluate all players in a frame relative to the ball and determine the raw frame interaction state.
@@ -132,11 +160,18 @@ def evaluate_frame_ownership_candidates(
             "controlling_player_id": None,
             "controlling_team_id": None,
             "confidence": 0.0,
+            "ball_observation_mode": ball_record.observation_mode,
+            "ball_confidence": 0.0,
+            "frames_since_observed": int(ball_record.frames_since_observed),
             "closest_player_id": None,
             "closest_team_id": None,
             "closest_norm_dist": None,
             "second_closest_team_id": None,
             "second_closest_norm_dist": None,
+            "team_a_norm_dist": None,
+            "team_b_norm_dist": None,
+            "team_a_player_id": None,
+            "team_b_player_id": None,
         }
 
     assert ball_record.center_x is not None and ball_record.center_y is not None
@@ -181,15 +216,33 @@ def evaluate_frame_ownership_candidates(
                 "controlling_team_id": None,
                 "confidence": 0.0,
                 "reason": "non_tactical_closeup_frame",
+                "ball_observation_mode": ball_record.observation_mode,
+                "ball_confidence": round(float(ball_record.confidence), 4),
+                "frames_since_observed": int(ball_record.frames_since_observed),
                 "closest_player_id": None,
                 "closest_team_id": None,
                 "closest_norm_dist": None,
                 "second_closest_team_id": None,
                 "second_closest_norm_dist": None,
+                "team_a_norm_dist": None,
+                "team_b_norm_dist": None,
+                "team_a_player_id": None,
+                "team_b_player_id": None,
                 "note": "non_tactical_closeup_camera_shot",
             }
 
-    if frame_shape is not None and is_ball_out_of_play_bounds(ball_center, frame_shape, cfg):
+    is_out_of_play = False
+    if pitch_region_filter is not None or frame_shape is not None:
+        is_out_of_play = is_ball_out_of_play_bounds(
+            ball_center,
+            frame_shape or (0, 0),
+            cfg,
+            pitch_region_filter=pitch_region_filter,
+            ball_speed_px_s=float(ball_record.speed_px_per_sec),
+            prev_out_of_play=(prev_raw_state == PossessionState.OUT_OF_PLAY.value),
+        )
+
+    if is_out_of_play:
         for obs in frame_observations:
             fx, fy, ph = compute_player_foot_position(obs.player_bbox)
             px_d, norm_d, aerial = compute_normalized_ball_distance(obs.player_bbox, ball_center)
@@ -217,16 +270,24 @@ def evaluate_frame_ownership_candidates(
             "controlling_player_id": None,
             "controlling_team_id": None,
             "confidence": round(float(ball_record.confidence), 4),
+            "ball_observation_mode": ball_record.observation_mode,
+            "ball_confidence": round(float(ball_record.confidence), 4),
+            "frames_since_observed": int(ball_record.frames_since_observed),
             "closest_player_id": None,
             "closest_team_id": None,
             "closest_norm_dist": None,
             "second_closest_team_id": None,
             "second_closest_norm_dist": None,
+            "team_a_norm_dist": None,
+            "team_b_norm_dist": None,
+            "team_a_player_id": None,
+            "team_b_player_id": None,
         }
 
     ball_conf_factor = max(0.35, min(1.0, float(ball_record.confidence) / 0.35))
-    if ball_record.is_interpolated:
-        ball_conf_factor *= 0.80
+    if ball_record.is_interpolated or ball_record.observation_mode == BallObservationMode.INTERPOLATED.value:
+        coast_steps = max(1, int(round(float(max(1, ball_record.frames_since_observed)) / 2.0)))
+        ball_conf_factor *= max(0.55, min(0.80, 0.85 ** coast_steps))
 
     # Scale speed threshold by observed player height (perspective/zoom invariance)
     p_heights_all = [
@@ -261,7 +322,7 @@ def evaluate_frame_ownership_candidates(
             eff_team_id == InternalLabel.UNKNOWN.value
             and float(obs.track_team_confidence or 0.0) <= 0.0
             and obs.raw_team_id in (InternalLabel.TEAM_A.value, InternalLabel.TEAM_B.value)
-            and float(obs.classification_confidence or 0.0) >= 0.72
+            and float(obs.classification_confidence or 0.0) >= 0.65
         ):
             eff_team_id = obs.raw_team_id
             conf_mult = 0.78
@@ -336,6 +397,21 @@ def evaluate_frame_ownership_candidates(
     dist_a = float(best_a.normalized_distance_to_ball) if best_a and best_a.normalized_distance_to_ball is not None else 999.0
     dist_b = float(best_b.normalized_distance_to_ball) if best_b and best_b.normalized_distance_to_ball is not None else 999.0
 
+    common_meta = {
+        "ball_observation_mode": ball_record.observation_mode,
+        "ball_confidence": round(float(ball_record.confidence), 4),
+        "frames_since_observed": int(ball_record.frames_since_observed),
+        "closest_player_id": closest_overall.player_id if closest_overall else None,
+        "closest_team_id": closest_overall.team_id if closest_overall else None,
+        "closest_norm_dist": closest_overall.normalized_distance_to_ball if closest_overall else None,
+        "second_closest_team_id": second_overall.team_id if second_overall else None,
+        "second_closest_norm_dist": second_overall.normalized_distance_to_ball if second_overall else None,
+        "team_a_norm_dist": round(dist_a, 4) if dist_a < 900.0 else None,
+        "team_b_norm_dist": round(dist_b, 4) if dist_b < 900.0 else None,
+        "team_a_player_id": best_a.player_id if best_a else None,
+        "team_b_player_id": best_b.player_id if best_b else None,
+    }
+
     # 1. Check if an Unknown player (e.g. Goalkeeper or unclassified player) clearly controls the ball
     if (
         closest_overall is not None
@@ -350,11 +426,7 @@ def evaluate_frame_ownership_candidates(
                 "controlling_player_id": closest_overall.player_id,
                 "controlling_team_id": None,
                 "confidence": 0.0,
-                "closest_player_id": closest_overall.player_id,
-                "closest_team_id": closest_overall.team_id,
-                "closest_norm_dist": closest_overall.normalized_distance_to_ball,
-                "second_closest_team_id": second_overall.team_id if second_overall else None,
-                "second_closest_norm_dist": second_overall.normalized_distance_to_ball if second_overall else None,
+                **common_meta,
             }
 
     # 2. Check for CONTESTED duel between Team A and Team B
@@ -369,11 +441,7 @@ def evaluate_frame_ownership_candidates(
             "controlling_player_id": None,
             "controlling_team_id": None,
             "confidence": conf_duel,
-            "closest_player_id": closest_overall.player_id if closest_overall else None,
-            "closest_team_id": closest_overall.team_id if closest_overall else None,
-            "closest_norm_dist": closest_overall.normalized_distance_to_ball if closest_overall else None,
-            "second_closest_team_id": second_overall.team_id if second_overall else None,
-            "second_closest_norm_dist": second_overall.normalized_distance_to_ball if second_overall else None,
+            **common_meta,
         }
 
     # 3. Check for single-team control vs LOOSE_BALL
@@ -410,11 +478,7 @@ def evaluate_frame_ownership_candidates(
                 "controlling_player_id": ctrl_pid,
                 "controlling_team_id": ctrl_tid,
                 "confidence": conf_val,
-                "closest_player_id": closest_overall.player_id if closest_overall else None,
-                "closest_team_id": closest_overall.team_id if closest_overall else None,
-                "closest_norm_dist": closest_overall.normalized_distance_to_ball if closest_overall else None,
-                "second_closest_team_id": second_overall.team_id if second_overall else None,
-                "second_closest_norm_dist": second_overall.normalized_distance_to_ball if second_overall else None,
+                **common_meta,
             }
 
     # Otherwise the ball is visible on the pitch but not controlled by any player -> LOOSE_BALL
@@ -423,9 +487,5 @@ def evaluate_frame_ownership_candidates(
         "controlling_player_id": None,
         "controlling_team_id": None,
         "confidence": round(float(ball_record.confidence), 4),
-        "closest_player_id": closest_overall.player_id if closest_overall else None,
-        "closest_team_id": closest_overall.team_id if closest_overall else None,
-        "closest_norm_dist": closest_overall.normalized_distance_to_ball if closest_overall else None,
-        "second_closest_team_id": second_overall.team_id if second_overall else None,
-        "second_closest_norm_dist": second_overall.normalized_distance_to_ball if second_overall else None,
+        **common_meta,
     }

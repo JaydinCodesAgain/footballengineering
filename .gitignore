@@ -28,5 +28,8 @@ outputs/sprint3_2/match_*/
 outputs/sprint3_2/*cache*.json
 outputs/sprint3_2/ball_eval/*cache*.json
 outputs/sprint3_2/ball_audit_sheets/
+outputs/sprint3_3/*/*cache*.json
+outputs/sprint3_3/blind_132877_frozen/
+outputs/sprint3_3/team_discovery/debug_*.jpg
 outputs/soccertrack_v2_baseline/*_unchanged/
 SoccerTrack-v2/

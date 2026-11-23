@@ -1,0 +1,122 @@
+{
+  "stage": "2_minute",
+  "match_id": "118575",
+  "duration_seconds": 120.0,
+  "video_frames_spanned": 3000,
+  "frame_stride": 15,
+  "sampled_frames_evaluated": 200,
+  "detector_config": "yolo11n.pt 4-tile 1024px (local_low_vram profile on CPU)",
+  "compute_profile": "local_low_vram",
+  "runtime_and_memory": {
+    "mean_detection_ms_per_frame": 1689.6,
+    "post_detection_pipeline_seconds": 246.72,
+    "estimated_total_wall_seconds": 584.64,
+    "effective_sampled_fps": 0.34,
+    "rss_start_mb": 850.3,
+    "rss_end_mb": 867.4,
+    "rss_peak_mb": 1199.3,
+    "rss_growth_mb": 17.1
+  },
+  "player_tracking_5m": {
+    "gs_hota": 0.0855,
+    "deta": 0.2228,
+    "assa": 0.0332,
+    "loca": 0.8062,
+    "idf1": 0.1155,
+    "idp": 0.1963,
+    "idr": 0.0818,
+    "mota": 0.1614,
+    "mota_on_pitch": 0.1623,
+    "id_switches": 602,
+    "fragmentations": 561,
+    "gt_unique_identities": 22,
+    "total_predicted_tracks": 162,
+    "pred_unique_identities_matched": 150,
+    "mean_track_lifetime_frames": 11.32,
+    "median_track_lifetime_frames": 9.0,
+    "short_tracks_under_5_frames": 48,
+    "mostly_tracked_mt": 0,
+    "partially_tracked_pt": 22,
+    "mostly_lost_ml": 0,
+    "mean_gt_dominant_id_purity": 0.2287,
+    "mean_distinct_pred_ids_per_gt_player": 20.95,
+    "detection_precision": 0.8577,
+    "detection_recall": 0.3575,
+    "detection_f1": 0.5047,
+    "mean_matched_distance_m": 1.54,
+    "median_matched_distance_m": 1.1,
+    "tp": 1573,
+    "fp": 261,
+    "fn": 2827,
+    "tracker_ms_per_frame": 0.0
+  },
+  "team_discovery": {
+    "feature_method": "illumination_invariant",
+    "covered_team_accuracy": 0.8105,
+    "team_coverage": 0.3481,
+    "overall_team_accuracy": 0.2821,
+    "gk_rejection_rate": 1.0,
+    "inter_team_cosine_distance": 0.4363,
+    "temporal_bucket_stability": {
+      "0s-30s": {
+        "matched_obs": 319,
+        "covered_team_accuracy": 0.8211,
+        "coverage": 0.2978
+      },
+      "30s-60s": {
+        "matched_obs": 336,
+        "covered_team_accuracy": 0.8158,
+        "coverage": 0.3393
+      },
+      "60s-90s": {
+        "matched_obs": 330,
+        "covered_team_accuracy": 0.5616,
+        "coverage": 0.2212
+      },
+      "90s-120s": {
+        "matched_obs": 440,
+        "covered_team_accuracy": 0.8879,
+        "coverage": 0.4864
+      }
+    }
+  },
+  "ball_tracking": {
+    "total_frames": 200,
+    "observed_frames": 40,
+    "interpolated_frames": 0,
+    "lost_frames": 160,
+    "observed_coverage_pct": 20.0,
+    "interpolated_coverage_pct": 0.0,
+    "lost_pct": 80.0,
+    "tracked_or_interpolated_pct": 20.0,
+    "camera_cut_resets": 0,
+    "rejected_outlier_detections": 8,
+    "false_track_associations": 0,
+    "blacklisted_static_zones_count": 0,
+    "permanent_static_zones_count": 0,
+    "reacquisition_events": 14,
+    "active_track_segments_count": 14,
+    "mean_continuous_track_frames": 2.86,
+    "max_continuous_track_frames": 10
+  },
+  "possession_summary": {
+    "state_distribution_pct": null,
+    "attributed_possession_share": {
+      "team_a_name": "Team A",
+      "team_b_name": "Team B",
+      "team_a_pct": 100.0,
+      "team_b_pct": 0.0,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    },
+    "possession_coverage_pct": 1.0,
+    "state_transitions_count": 29
+  },
+  "verified_manual_possession_eval": null,
+  "dense_stride2_compute_scaling": {
+    "dense_sampled_frames_12_5hz": 1500,
+    "local_cpu_yolo11n_1024_projected_minutes": 42.2,
+    "local_cpu_yolo11s_1280_projected_minutes": 118.7,
+    "colab_t4_fp16_yolo11s_1280_projected_minutes": 2.38,
+    "note": "Local host is CPU-only (cuda=False); therefore 2m/5m/10m continuous stages were executed on real frames with wider sampling strides to validate long-duration detection, team drift, and memory stability within local CPU budget. Dense 12.5 Hz (stride=2) multi-minute runs are supported directly via `--compute-profile colab_t4 --half`."
+  }
+}

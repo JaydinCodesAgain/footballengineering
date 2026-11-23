@@ -183,6 +183,63 @@ def _is_high_vis_steward_patch(frame_bgr: np.ndarray, bbox: Tuple[int, int, int,
     return float(np.mean(hivis > 0)) >= 0.30
 
 
+def verify_ball_appearance(
+    frame_bgr: Optional[np.ndarray],
+    bbox: Tuple[int, int, int, int],
+    in_boundary_margin: bool = False,
+) -> Tuple[bool, str]:
+    """Verify whether a candidate ball patch has plausible football appearance.
+
+    Rejects known grassroots fixed-camera distractors without weakening recall on genuine
+    white, hi-vis yellow/winter, or motion-blurred footballs:
+    - Saturated blue/cyan/purple training cones (e.g. SoccerTrack 117093 touchline cone:
+      B >> R, HSV H in [90..145], S >= 75, zero bright white core pixels).
+    - Saturated red/orange/magenta sideline training cones or bibs in boundary margins.
+    - Dark low-luminance mud/cleat/shadow blobs lacking reflective surface brightness.
+    """
+    if frame_bgr is None or frame_bgr.size == 0 or frame_bgr.ndim != 3:
+        return True, "no_frame"
+    fh, fw = frame_bgr.shape[:2]
+    x1 = max(0, min(fw - 1, int(bbox[0])))
+    y1 = max(0, min(fh - 1, int(bbox[1])))
+    x2 = max(x1 + 1, min(fw, int(bbox[2])))
+    y2 = max(y1 + 1, min(fh, int(bbox[3])))
+    patch = frame_bgr[y1:y2, x1:x2]
+    if patch.size == 0 or patch.shape[0] < 3 or patch.shape[1] < 3:
+        return True, "tiny_patch"
+
+    hsv = cv2.cvtColor(patch, cv2.COLOR_BGR2HSV)
+    h_ch = hsv[:, :, 0]
+    s_ch = hsv[:, :, 1]
+    v_ch = hsv[:, :, 2]
+
+    bright_white_frac = float(np.mean((s_ch < 65) & (v_ch >= 145)))
+    yellow_ball_frac = float(np.mean((h_ch >= 16) & (h_ch <= 42) & (s_ch >= 75) & (v_ch >= 140)))
+    plausible_core = bright_white_frac + yellow_ball_frac
+
+    # 1. Saturated blue/cyan/purple training cones (classic COCO sports-ball false positive)
+    blue_cone_frac = float(np.mean((h_ch >= 90) & (h_ch <= 145) & (s_ch >= 75)))
+    b_mean = float(np.mean(patch[:, :, 0]))
+    r_mean = float(np.mean(patch[:, :, 2]))
+    if blue_cone_frac >= 0.28 and plausible_core < 0.14 and (b_mean - r_mean) >= 18.0:
+        return False, "saturated_blue_cone"
+    if in_boundary_margin and blue_cone_frac >= 0.20 and plausible_core < 0.20:
+        return False, "boundary_blue_cone"
+
+    # 2. Saturated red/orange/magenta sideline cones & bibs (especially outside playable pitch)
+    red_orange_frac = float(np.mean(((h_ch <= 14) | (h_ch >= 164)) & (s_ch >= 120) & (v_ch < 225)))
+    if red_orange_frac >= 0.35 and bright_white_frac < 0.10:
+        if in_boundary_margin or float(np.percentile(v_ch, 85)) < 190.0:
+            return False, "saturated_red_orange_cone"
+
+    # 3. Dark low-luminance blobs (cleats, dark shadows, black markers)
+    v_p90 = float(np.percentile(v_ch, 90))
+    if v_p90 < 78.0:
+        return False, "dark_low_luminance_blob"
+
+    return True, "ok"
+
+
 def filter_ball_candidates(
     ball_detections: Sequence[DetectionRecord],
     player_detections: Sequence[DetectionRecord],
@@ -259,6 +316,7 @@ def filter_ball_candidates(
         )
 
         # Geometric fixed-camera pitch-region filter (eliminates sideline spare balls, benches, ads)
+        in_boundary_margin = False
         if pitch_region_filter is not None:
             if not pitch_region_filter.is_ball_in_region(
                 b.bbox,
@@ -270,18 +328,25 @@ def filter_ball_candidates(
             # Reject isolated stationary spare balls / cones sitting OUTSIDE the playable touchlines
             # (in BOUNDARY_MARGIN) when there is no active ball trajectory and no nearby throw-in/corner player.
             b_zone = pitch_region_filter.classify_point(cx, cy, for_ball=True)
-            if b_zone == PitchZone.BOUNDARY_MARGIN and not near_predicted:
+            in_boundary_margin = b_zone == PitchZone.BOUNDARY_MARGIN
+            if in_boundary_margin and not near_predicted:
                 ref_h = med_ph if (med_ph is not None and med_ph > 20.0) else 65.0
                 near_any_player = False
                 for p in player_detections:
                     px1, py1, px2, py2 = p.bbox
                     pfx = (px1 + px2) / 2.0
                     pfy = py2 - 0.15 * (py2 - py1)
-                    if math.hypot(cx - pfx, cy - pfy) <= 1.8 * ref_h:
+                    if math.hypot(cx - pfx, cy - pfy) <= 1.40 * ref_h:
                         near_any_player = True
                         break
                 if not near_any_player:
                     continue
+
+        # Appearance verification: reject saturated training cones (blue/red/orange) and dark non-ball blobs
+        if frame_bgr is not None:
+            ok_app, _ = verify_ball_appearance(frame_bgr, b.bbox, in_boundary_margin=in_boundary_margin)
+            if not ok_app:
+                continue
 
         # Reject stadium crowd / high-vis steward detections above the green pitch horizon
         if pitch_top_y is not None and frame_bgr is not None and cy < pitch_top_y - 0.025 * fh:
@@ -419,29 +484,42 @@ class KalmanBallTracker:
         player_detections: Optional[Sequence[DetectionRecord]],
         med_ph: Optional[float],
     ) -> None:
-        """On fixed cameras, detect motionless isolated candidate hotspots across frames so a
-        stationary sideline spare ball or marker is masked persistently even without a track lock.
+        """On fixed cameras, detect motionless candidate hotspots across frames so a
+        stationary sideline spare ball or training cone is masked permanently.
+
+        - Outside the core playable pitch (`BOUNDARY_MARGIN` / `OFF_PITCH`): accumulate
+          motionless observations (`<= 6.0 px`) EVEN when a player stands nearby (e.g. a
+          throw-in taker standing next to a sideline cone) and permanently blacklist at
+          `>= 3` hits.
+        - Inside `PitchZone.PLAYABLE`: require isolation (`min_p_d > 2.0 * ref_h`) so
+          genuine stationary set-piece balls (kickoffs, free kicks, penalties, corners)
+          are never falsely blacklisted.
         """
         if not (self.config.fixed_camera or self.config.persistent_static_distractors):
             return
         if not ball_candidates:
             return
         ref_h = med_ph if (med_ph and med_ph > 20.0) else 65.0
-        min_hits = max(3, int(self.config.static_distractor_min_hits))
+        min_hits_playable = max(3, int(self.config.static_distractor_min_hits))
         for cand in ball_candidates:
             cx = (cand.bbox[0] + cand.bbox[2]) / 2.0
             cy = (cand.bbox[1] + cand.bbox[3]) / 2.0
+            in_boundary_or_off = (
+                self.pitch_region_filter is not None
+                and self.pitch_region_filter.classify_point(cx, cy, for_ball=True) != PitchZone.PLAYABLE
+            )
             min_p_d = self._min_distance_to_players(cx, cy, player_detections)
             is_isolated = (min_p_d is None) or (min_p_d > 2.0 * ref_h)
-            if not is_isolated:
+            if not is_isolated and not in_boundary_or_off:
                 continue
+            needed_hits = 3 if in_boundary_or_off else min_hits_playable
             matched = False
             for spot in self._static_spot_counts:
                 if math.hypot(cx - spot[0], cy - spot[1]) <= 6.0:
                     if frame_number > int(spot[3]):
                         spot[2] += 1.0
                         spot[3] = float(frame_number)
-                    if int(spot[2]) >= min_hits:
+                    if int(spot[2]) >= needed_hits:
                         self._register_static_distractor(spot[0], spot[1], frame_number)
                     matched = True
                     break
@@ -848,58 +926,109 @@ class KalmanBallTracker:
                 self._reacquire_candidate_pos = None
                 self._reacquire_streak = 0
             elif out_of_gate:
-                best_out = max(
-                    out_of_gate,
-                    key=lambda item: self._score_candidate(
-                        item[1], None, 0.0, player_detections, med_ph
-                    ),
-                )[1]
-                bx1, by1, bx2, by2 = best_out.bbox
-                ox, oy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
-                prev_reacq = self._reacquire_candidate_pos
-                if prev_reacq is not None:
-                    if math.hypot(ox - prev_reacq[0], oy - prev_reacq[1]) <= self.config.max_jump_px_per_frame * 1.5:
-                        self._reacquire_streak += 1
-                    else:
-                        self._reacquire_streak = 1
-                else:
-                    self._reacquire_streak = 1
-                self._reacquire_candidate_pos = (ox, oy)
+                # Deflection / fast-kick recovery: if a confident, appearance-verified ball inside
+                # the core playable pitch sits just outside the constant-velocity gate (e.g. sharp
+                # volley/tackle/pass direction change), immediately re-lock and reset velocity!
+                deflection_det: Optional[DetectionRecord] = None
+                deflection_gate = max(1.85 * max_gate, 260.0)
+                if self.config.fixed_camera:
+                    deflection_cands: List[Tuple[float, DetectionRecord]] = []
+                    for dist_out, cand in out_of_gate:
+                        if dist_out > deflection_gate or float(cand.confidence) < 0.28:
+                            continue
+                        ccx = (cand.bbox[0] + cand.bbox[2]) / 2.0
+                        ccy = (cand.bbox[1] + cand.bbox[3]) / 2.0
+                        in_playable = (
+                            self.pitch_region_filter is None
+                            or self.pitch_region_filter.classify_point(ccx, ccy, for_ball=False) == PitchZone.PLAYABLE
+                        )
+                        if not in_playable:
+                            continue
+                        if frame_bgr is not None:
+                            ok_app, _ = verify_ball_appearance(frame_bgr, cand.bbox, in_boundary_margin=False)
+                            if not ok_app:
+                                continue
+                        deflection_cands.append((float(cand.confidence) - 0.15 * (dist_out / deflection_gate), cand))
+                    if deflection_cands:
+                        deflection_cands.sort(key=lambda x: x[0], reverse=True)
+                        deflection_det = deflection_cands[0][1]
 
-                if self._reacquire_streak >= self.config.reacquire_confirm_frames:
-                    chosen_det = best_out
-                    vx_est = (ox - prev_reacq[0]) / max(1e-3, dt) if prev_reacq is not None else 0.0
-                    vy_est = (oy - prev_reacq[1]) / max(1e-3, dt) if prev_reacq is not None else 0.0
+                if deflection_det is not None:
+                    chosen_det = deflection_det
+                    bx1, by1, bx2, by2 = chosen_det.bbox
+                    ox, oy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+                    vx_est = (ox - prev_pos[0]) / max(1e-3, dt)
+                    vy_est = (oy - prev_pos[1]) / max(1e-3, dt)
                     self.state = np.array([[ox], [oy], [vx_est], [vy_est]], dtype=np.float64)
-                    self.cov = np.diag([36.0, 36.0, 25000.0, 25000.0])
+                    self.cov = np.diag([36.0, 36.0, 40000.0, 40000.0])
                     self._reacquire_candidate_pos = None
                     self._reacquire_streak = 0
                     self.reacquisition_events += 1
                     did_fresh_init = True
+                    rejected_outliers = max(0, len(out_of_gate) - 1)
                 else:
-                    rejected_outliers = len(out_of_gate)
+                    best_out = max(
+                        out_of_gate,
+                        key=lambda item: self._score_candidate(
+                            item[1], None, 0.0, player_detections, med_ph
+                        ),
+                    )[1]
+                    bx1, by1, bx2, by2 = best_out.bbox
+                    ox, oy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+                    prev_reacq = self._reacquire_candidate_pos
+                    if prev_reacq is not None:
+                        if math.hypot(ox - prev_reacq[0], oy - prev_reacq[1]) <= self.config.max_jump_px_per_frame * 1.5:
+                            self._reacquire_streak += 1
+                        else:
+                            self._reacquire_streak = 1
+                    else:
+                        self._reacquire_streak = 1
+                    self._reacquire_candidate_pos = (ox, oy)
+
+                    if self._reacquire_streak >= self.config.reacquire_confirm_frames:
+                        chosen_det = best_out
+                        vx_est = (ox - prev_reacq[0]) / max(1e-3, dt) if prev_reacq is not None else 0.0
+                        vy_est = (oy - prev_reacq[1]) / max(1e-3, dt) if prev_reacq is not None else 0.0
+                        self.state = np.array([[ox], [oy], [vx_est], [vy_est]], dtype=np.float64)
+                        self.cov = np.diag([36.0, 36.0, 25000.0, 25000.0])
+                        self._reacquire_candidate_pos = None
+                        self._reacquire_streak = 0
+                        self.reacquisition_events += 1
+                        did_fresh_init = True
+                    else:
+                        rejected_outliers = len(out_of_gate)
 
             if chosen_det is not None:
                 bx1, by1, bx2, by2 = chosen_det.bbox
                 cx, cy = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
 
-                # Check for static isolated clutter lock (motionless object far from all players)
-                if player_detections and len(player_detections) > 0:
+                # Check for static clutter lock:
+                # - Inside playable pitch: only trigger when isolated far from all players (protects set pieces).
+                # - In BOUNDARY_MARGIN / OFF_PITCH on fixed cameras: trigger EVEN when a player stands nearby!
+                in_boundary_or_off = (
+                    self.pitch_region_filter is not None
+                    and self.pitch_region_filter.classify_point(cx, cy, for_ball=True) != PitchZone.PLAYABLE
+                )
+                if (player_detections and len(player_detections) > 0) or (
+                    self.config.fixed_camera and in_boundary_or_off
+                ):
                     min_p_d = self._min_distance_to_players(cx, cy, player_detections)
                     ref_h = med_ph if (med_ph and med_ph > 25.0) else 75.0
-                    is_isolated = (min_p_d is not None) and (min_p_d > 2.2 * ref_h)
+                    is_isolated = (min_p_d is None) or (min_p_d > 2.2 * ref_h)
+                    should_count_static = is_isolated or (self.config.fixed_camera and in_boundary_or_off)
                     if self._static_anchor_pos is not None:
                         move_d = math.hypot(cx - self._static_anchor_pos[0], cy - self._static_anchor_pos[1])
-                        if move_d <= 3.5 and is_isolated:
+                        if move_d <= 3.5 and should_count_static:
                             self._static_isolated_streak += 1
                         else:
                             self._static_anchor_pos = (cx, cy)
-                            self._static_isolated_streak = 1 if is_isolated else 0
+                            self._static_isolated_streak = 1 if should_count_static else 0
                     else:
                         self._static_anchor_pos = (cx, cy)
-                        self._static_isolated_streak = 1 if is_isolated else 0
+                        self._static_isolated_streak = 1 if should_count_static else 0
 
-                    if self._static_isolated_streak >= 4:
+                    streak_limit = 3 if (self.config.fixed_camera and in_boundary_or_off) else 4
+                    if self._static_isolated_streak >= streak_limit:
                         # Static background false positive confirmed -> blacklist (permanent on fixed camera) & reset
                         self._register_static_distractor(cx, cy, int(frame_number))
                         self.false_track_associations += 1

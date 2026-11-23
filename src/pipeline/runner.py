@@ -22,7 +22,7 @@ from src.classification.team_discovery import (
     filter_discovery_player_indices,
     is_tactical_discovery_frame,
 )
-from src.config import MatchConfig, load_match_config
+from src.config import MatchConfig, load_match_config, resolve_compute_device
 from src.detection.motion_ball import FixedCameraMotionBallDetector, MotionBallConfig
 from src.geometry.pitch import load_pitch_calibration
 from src.geometry.pitch_region import PitchRegionConfig, PitchRegionFilter
@@ -191,6 +191,22 @@ def _build_ball_diagnostic_panel_crop(
             return cv2.resize(patch, (320, 240), interpolation=cv2.INTER_AREA)
 
     return cv2.resize(canvas, (320, 240), interpolation=cv2.INTER_AREA)
+
+
+def _get_process_memory_mb() -> Optional[float]:
+    """Return current process RSS memory usage in MiB (cross-platform without mandatory psutil)."""
+    try:
+        import psutil  # type: ignore[import-untyped]
+
+        return round(float(psutil.Process().memory_info().rss) / (1024.0 * 1024.0), 1)
+    except Exception:
+        pass
+    try:
+        import resource  # type: ignore[import-not-found]
+
+        return round(float(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) / 1024.0, 1)
+    except Exception:
+        return None
 
 
 def _build_pitch_region_filter(match_config: MatchConfig) -> Optional[PitchRegionFilter]:
@@ -438,7 +454,12 @@ def _run_auto_team_pipeline(
         fps / max(1, match_cfg.detection.frame_stride),
         (width, height),
     )
-    aux_detector = FootballDetector(config=match_cfg.detection)
+    resolved_dev, resolved_half, fell_back_cpu = resolve_compute_device(
+        match_cfg.compute.device, match_cfg.compute.half
+    )
+    aux_detector = FootballDetector(
+        config=match_cfg.detection, device=resolved_dev, half=resolved_half
+    )
     track_buffer = TrackAppearanceBuffer(
         discoverer=discoverer,
         max_buffer_samples=max(8, match_cfg.team_discovery.max_samples_per_track),
@@ -713,8 +734,14 @@ def _run_auto_team_pipeline(
         "motion_ball_recovery": bool(match_cfg.ball_tracking.enable_motion_ball_recovery),
         "feature_method": match_cfg.team_discovery.feature_method,
         "clustering_method": match_cfg.team_discovery.clustering_method,
+        "compute_profile": match_cfg.compute.profile,
+        "compute_device_resolved": str(resolved_dev),
+        "compute_half_precision_active": bool(resolved_half),
+        "compute_cpu_fallback_triggered": bool(fell_back_cpu),
+        "process_memory_rss_mb": _get_process_memory_mb(),
         "processing_wall_time_seconds": wall_time,
         "average_processing_fps": round(processed / max(0.01, wall_time), 2),
+        "ms_per_frame": round((wall_time / max(1, processed)) * 1000.0, 1),
     }
     report_files = generate_consolidated_report(
         output_dir,
@@ -913,7 +940,12 @@ def run_match_pipeline(
         detection_config=match_cfg.detection,
         tracking_config=match_cfg.tracking,
     )
-    aux_detector = FootballDetector(config=match_cfg.detection)
+    resolved_dev, resolved_half, fell_back_cpu = resolve_compute_device(
+        match_cfg.compute.device, match_cfg.compute.half
+    )
+    aux_detector = FootballDetector(
+        config=match_cfg.detection, device=resolved_dev, half=resolved_half
+    )
     stabilizer = TemporalTeamStabilizer(config=match_cfg.tracking)
     possession_engine = (
         PossessionEngine(

@@ -24,6 +24,7 @@ from src.detection.motion_ball import FixedCameraMotionBallDetector
 from src.geometry.pitch_region import PitchRegionFilter
 from src.possession.ball_tracker import detect_camera_cut, filter_ball_candidates
 from src.schemas import DetectionRecord
+from src.tracking.pitch_stitcher import FixedCameraTrackletAssociator, StitcherConfig
 
 
 SUPPORTED_TRACKERS = ("bytetrack.yaml", "botsort.yaml")
@@ -74,6 +75,10 @@ def _build_ultralytics_tracker(
     tracker_config: str,
     frame_rate: int = 25,
     disable_gmc: bool = False,
+    fixed_camera_mode: bool = False,
+    track_buffer_override: Optional[int] = None,
+    new_track_thresh_override: Optional[float] = None,
+    match_thresh_override: Optional[float] = None,
 ):
     """Instantiate Ultralytics BYTETracker or BOTSORT directly for custom/tiled detections."""
     import inspect
@@ -84,8 +89,18 @@ def _build_ultralytics_tracker(
     if not cfg_path.is_file():
         cfg_path = Path(ultralytics.__file__).parent / "cfg" / "trackers" / tracker_config
     raw_cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    if disable_gmc:
+    if disable_gmc or fixed_camera_mode:
         raw_cfg["gmc_method"] = None
+    if fixed_camera_mode:
+        raw_cfg["track_buffer"] = 60
+        raw_cfg["new_track_thresh"] = 0.32
+        raw_cfg["match_thresh"] = 0.82
+    if track_buffer_override is not None:
+        raw_cfg["track_buffer"] = int(track_buffer_override)
+    if new_track_thresh_override is not None:
+        raw_cfg["new_track_thresh"] = float(new_track_thresh_override)
+    if match_thresh_override is not None:
+        raw_cfg["match_thresh"] = float(match_thresh_override)
     # Match Ultralytics defaults if absent
     raw_cfg.setdefault("fuse_score", True)
     raw_cfg.setdefault("proximity_thresh", 0.5)
@@ -132,6 +147,9 @@ class MultiObjectTracker:
         device: Optional[str | int] = None,
         pitch_region_filter: Optional[PitchRegionFilter] = None,
         fixed_camera: bool = False,
+        fixed_camera_mode: Optional[bool] = None,
+        stitch_lost_tracks: Optional[bool] = None,
+        stitcher_config: Optional[StitcherConfig] = None,
         use_pitch_roi_for_tiling: bool = True,
         filter_players_by_pitch: bool = True,
         filter_balls_by_pitch: bool = True,
@@ -140,7 +158,20 @@ class MultiObjectTracker:
         self.det_config = detection_config or DetectionConfig()
         self.trk_config = tracking_config or TrackingConfig()
         self.pitch_region_filter = pitch_region_filter
-        self.fixed_camera = bool(fixed_camera)
+        self.fixed_camera = bool(fixed_camera if fixed_camera_mode is None else (fixed_camera or fixed_camera_mode))
+        self.fixed_camera_mode = bool(fixed_camera_mode if fixed_camera_mode is not None else self.fixed_camera)
+        self.stitch_lost_tracks = bool(
+            stitch_lost_tracks if stitch_lost_tracks is not None else self.fixed_camera_mode
+        )
+        self.stitcher_config = stitcher_config or StitcherConfig(enabled=self.stitch_lost_tracks)
+        self.tracklet_associator: Optional[FixedCameraTrackletAssociator] = (
+            FixedCameraTrackletAssociator(
+                config=self.stitcher_config,
+                pitch_region_filter=self.pitch_region_filter,
+            )
+            if self.stitch_lost_tracks
+            else None
+        )
         self.use_pitch_roi_for_tiling = bool(use_pitch_roi_for_tiling)
         self.filter_players_by_pitch = bool(filter_players_by_pitch)
         self.filter_balls_by_pitch = bool(filter_balls_by_pitch)
@@ -179,7 +210,10 @@ class MultiObjectTracker:
             self.trk_config.tracker_config,
             frame_rate=eff_fps,
             disable_gmc=self.fixed_camera,
+            fixed_camera_mode=self.fixed_camera_mode,
         )
+        if self.tracklet_associator is not None:
+            self.tracklet_associator.reset()
 
         prev_small: Optional[np.ndarray] = None
         prev_med_h: Optional[float] = None
@@ -284,6 +318,15 @@ class MultiObjectTracker:
                                 tracking_id=tid,
                             )
                         )
+                if self.tracklet_associator is not None and player_records:
+                    player_records = self.tracklet_associator.update(
+                        frame_number=actual_frame_number,
+                        player_records=player_records,
+                        frame_bgr=frame_bgr,
+                    )
+                    for p in player_records:
+                        if p.tracking_id is not None and int(p.tracking_id) > max_global_id:
+                            max_global_id = int(p.tracking_id)
 
                 # Filter tiled ball detections before optionally augmenting with motion-assisted proposals
                 plausible_balls = (
@@ -453,6 +496,12 @@ class MultiObjectTracker:
                     for p in player_records:
                         if p.tracking_id is not None:
                             p.tracking_id = int(p.tracking_id) + track_id_offset
+                if self.tracklet_associator is not None and player_records:
+                    player_records = self.tracklet_associator.update(
+                        frame_number=actual_frame_number,
+                        player_records=player_records,
+                        frame_bgr=frame_bgr,
+                    )
                 for p in player_records:
                     if p.tracking_id is not None and int(p.tracking_id) > max_global_id:
                         max_global_id = int(p.tracking_id)
@@ -509,3 +558,7 @@ class MultiObjectTracker:
                 yield actual_frame_number, timestamp, frame_bgr, (player_records + ball_records)
         finally:
             cap.release()
+
+
+PlayerTracker = MultiObjectTracker
+
