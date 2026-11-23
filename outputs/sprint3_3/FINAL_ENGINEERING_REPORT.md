@@ -178,3 +178,4 @@ Executed via the official CLI with frozen Sprint 3.3 settings before downloading
 2. **Large white jersey numbers on dark/royal-blue kits (`132877` blind test)**: Two blue players (`18/20` correct) had large white back numbers occupying `> 38%` of the torso crop. **Recommendation:** Add connected-component digit/text masking or lightweight self-supervised ReID embeddings for jersey invariance.
 3. **Dense multi-minute execution requires GPU**: Local CPU (`~4.75 s/frame` for 4-tile `yolo11s@1280`) makes dense 10-minute runs impractical (`~10 hours` CPU vs `~11.9 min` on Colab T4 FP16). **Recommendation:** Run full-half (`45 min`) dense `stride=2` validation on Colab T4 using `--compute-profile colab_t4 --half`.
 4. **Match `117092` fisheye calibration residual (`30.63 px` RMS)**: Downstream tactical pitch-plane analytics on night venues with high lens distortion should validate keypoint reprojection RMS (`<= 12 px`) before exporting metric tactical coordinates.
+
