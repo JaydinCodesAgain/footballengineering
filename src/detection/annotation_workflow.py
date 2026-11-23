@@ -59,6 +59,10 @@ class FrameAnnotation:
     source: str = "unlabelled"  # MUST be "manual" with verified=True for independent evaluation
     scene_tag: str = "general_play"
     boxes: List[AnnotatedBox] = field(default_factory=list)
+    # Suggestions are deliberately separate from annotations.  They may be drawn in
+    # the review UI, but are never exported as ground truth until a human redraws
+    # and verifies the corresponding box.
+    model_proposals: List[AnnotatedBox] = field(default_factory=list)
     legacy_counts: Optional[Dict[str, int]] = None
 
     def to_dict(self) -> Dict[str, Any]:
@@ -67,6 +71,10 @@ class FrameAnnotation:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "FrameAnnotation":
         boxes = [AnnotatedBox(class_name=b["class_name"], bbox=list(b["bbox"])) for b in data.get("boxes", [])]
+        model_proposals = [
+            AnnotatedBox(class_name=b["class_name"], bbox=list(b["bbox"]))
+            for b in data.get("model_proposals", [])
+        ]
         return cls(
             match_id=str(data["match_id"]),
             frame_number=int(data["frame_number"]),
@@ -76,6 +84,7 @@ class FrameAnnotation:
             source=str(data.get("source", "unlabelled")),
             scene_tag=str(data.get("scene_tag", "general_play")),
             boxes=boxes,
+            model_proposals=model_proposals,
             legacy_counts=data.get("legacy_counts"),
         )
 
@@ -186,6 +195,7 @@ class DetectionAnnotationStore:
             source="manual",
             scene_tag=existing.scene_tag if existing else scene_tag,
             boxes=validated_boxes,
+            model_proposals=existing.model_proposals if existing else [],
             legacy_counts=existing.legacy_counts if existing else None,
         )
         self.frames[int(frame_number)] = ann
@@ -324,6 +334,7 @@ class DetectionAnnotationStore:
                 source=src,
                 scene_tag=tag,
                 boxes=boxes,
+                model_proposals=existing.model_proposals if existing else [],
                 legacy_counts=existing.legacy_counts if existing else None,
             )
             updated += 1
@@ -378,7 +389,7 @@ class DetectionAnnotationStore:
   <button onclick="clearFrameBoxes()">Clear Frame</button>
   <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
   <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
-  <span class="status">Drag on image to draw box. Save CSV to data/annotations/{self.match_id}/detection_boxes.csv</span>
+  <span class="status">Dashed teal boxes are model suggestions only: inspect them, then redraw every accepted box. Save CSV to data/annotations/{self.match_id}/detection_boxes.csv</span>
 </div>
 <div id="canvas-wrap"><canvas id="c"></canvas></div>
 <script>
@@ -391,7 +402,8 @@ function loadFrame(i) {{
   if (!frames.length) return;
   idx = Math.max(0, Math.min(frames.length - 1, i));
   const f = frames[idx];
-  document.getElementById('frame-info').textContent = `#${{idx+1}}/${{frames.length}} | Frame ${{f.frame_number}} (${{f.timestamp}}s) [${{f.scene_tag}}] | Boxes: ${{f.boxes.length}}`;
+  const proposalCount = (f.model_proposals || []).length;
+  document.getElementById('frame-info').textContent = `#${{idx+1}}/${{frames.length}} | Frame ${{f.frame_number}} (${{f.timestamp}}s) [${{f.scene_tag}}] | Manual: ${{f.boxes.length}} | Suggestions: ${{proposalCount}}`;
   document.getElementById('chk-verified').checked = !!f.verified;
   img.onload = () => {{ canvas.width = img.width; canvas.height = img.height; render(); }};
   img.src = f.image_rel_path;
@@ -401,6 +413,17 @@ function render(previewRect) {{
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img, 0, 0);
   const f = frames[idx];
+  ctx.setLineDash([7, 5]);
+  for (const b of (f.model_proposals || [])) {{
+    const [x1, y1, x2, y2] = b.bbox;
+    ctx.strokeStyle = '#20c997';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fillStyle = '#20c997';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(`SUGGESTED ${{b.class_name.toUpperCase()}}`, x1, Math.max(14, y1 - 4));
+  }}
+  ctx.setLineDash([]);
   for (const b of f.boxes) {{
     const [x1, y1, x2, y2] = b.bbox;
     ctx.strokeStyle = b.class_name === 'ball' ? '#ffc107' : '#20c997';
