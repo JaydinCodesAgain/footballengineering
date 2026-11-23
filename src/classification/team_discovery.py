@@ -146,6 +146,63 @@ def filter_discovery_player_indices(
     return kept
 
 
+def _compute_observation_quality_weight(
+    obs: TeamDiscoveryObservation,
+) -> float:
+    """Compute observation reliability weight favoring crisp, larger, low-glare torso crops.
+
+    On panoramic fixed-camera night footage (e.g. 3840x1906 floodlights), distant 16-24 px
+    players suffer far more specular glare and compression artifacts than 40-70 px midfield
+    players. Weighting by bbox scale, turf-free area, low occlusion, and sharpness prevents
+    noisy far-touchline crops from corrupting a track's aggregated appearance descriptor.
+    """
+    base_clean = max(0.05, (1.0 - float(obs.grass_ratio)) * (1.0 - float(obs.occlusion_ratio)))
+    blur_term = math.log1p(max(0.0, float(obs.blur_score))) / 4.5
+    blur_term = max(0.25, min(1.5, blur_term))
+
+    scale_term = 1.0
+    if obs.bbox is not None and len(obs.bbox) == 4:
+        bh = max(1.0, float(obs.bbox[3] - obs.bbox[1]))
+        scale_term = min(1.35, max(0.20, (bh / 42.0) ** 1.35))
+
+    glare_term = 1.0
+    if obs.crop_bgr is not None and obs.crop_bgr.size > 0:
+        # Down-weight crops overwhelmed by extreme blown-out floodlight glare (V>235, S<30)
+        import cv2
+
+        hsv = cv2.cvtColor(obs.crop_bgr, cv2.COLOR_BGR2HSV)
+        extreme_glare = float(np.mean((hsv[:, :, 2] > 235) & (hsv[:, :, 1] < 30)))
+        if 0.15 < extreme_glare < 0.65:
+            glare_term = max(0.45, 1.0 - 0.8 * extreme_glare)
+
+    return float(max(0.05, base_clean * blur_term * scale_term * glare_term))
+
+
+def _weighted_trimmed_aggregate(
+    features: Sequence[np.ndarray],
+    weights: Sequence[float],
+) -> np.ndarray:
+    """Robust quality-weighted descriptor aggregation with cosine-outlier down-weighting."""
+    mat = np.vstack([_l2(f) for f in features]).astype(np.float32)
+    w = np.asarray(weights, dtype=np.float32)
+    w = np.where(np.isfinite(w) & (w > 0.0), w, 0.05)
+    if len(mat) == 1:
+        return _l2(mat[0])
+    if len(mat) == 2:
+        return _l2(np.average(mat, axis=0, weights=w))
+
+    # First-pass coordinate-wise median anchor, then quality-weighted mean down-weighting outliers
+    anchor = _l2(np.median(mat, axis=0))
+    sims = np.clip(mat @ anchor, -1.0, 1.0)
+    dists = 1.0 - sims
+    med_d = float(np.median(dists))
+    inlier_w = np.exp(-np.maximum(0.0, dists - med_d) / max(0.08, med_d + 0.05))
+    combined_w = w * inlier_w.astype(np.float32)
+    if float(np.sum(combined_w)) <= 1e-8:
+        return anchor
+    return _l2(np.average(mat, axis=0, weights=combined_w))
+
+
 def collect_track_appearances(
     observations: Sequence[TeamDiscoveryObservation],
     config: Optional[TeamDiscoveryConfig] = None,
@@ -177,31 +234,33 @@ def collect_track_appearances(
         if len(ordered) < max(1, cfg.min_track_observations):
             continue
         count = min(len(ordered), max(1, cfg.max_samples_per_track))
-        # Partition into `count` temporal strata and pick the cleanest crop per stratum
+        # Partition into `count` temporal strata and pick the highest-quality crop per stratum
         strata = np.array_split(np.arange(len(ordered)), count)
         selected: List[TeamDiscoveryObservation] = []
+        selected_weights: List[float] = []
         for stratum in strata:
             if len(stratum) == 0:
                 continue
-            best_idx = max(
-                (int(i) for i in stratum),
-                key=lambda i: (
-                    (1.0 - ordered[i].grass_ratio)
-                    * (1.0 - ordered[i].occlusion_ratio)
-                    * math.log1p(max(0.0, ordered[i].blur_score))
-                ),
-            )
+            scored = [(int(i), _compute_observation_quality_weight(ordered[int(i)])) for i in stratum]
+            best_idx, best_w = max(scored, key=lambda pair: pair[1])
             selected.append(ordered[best_idx])
+            selected_weights.append(best_w)
 
         features = [
             _l2(item.feature) if (item.feature is not None and item.feature.size > 0) else _l2(extractor(item.crop_bgr))
             for item in selected
         ]
+        use_weighted = bool(getattr(cfg, "quality_weighted_aggregation", True))
+        agg_feat = (
+            _weighted_trimmed_aggregate(features, selected_weights)
+            if use_weighted
+            else _l2(np.median(np.vstack(features), axis=0))
+        )
         appearances.append(
             TrackAppearance(
                 tracking_id=track_id,
                 shot_id=shot_id,
-                feature=_l2(np.median(np.vstack(features), axis=0)),
+                feature=agg_feat,
                 observation_count=len(selected),
                 frame_numbers=[item.frame_number for item in selected],
                 mean_blur=round(float(np.mean([item.blur_score for item in selected])), 2),
@@ -741,7 +800,7 @@ class TrackAppearanceBuffer:
                 rejection_reason="filtered_crop_no_track_history",
             )
 
-        agg_feature = _l2(np.median(np.vstack(state.features), axis=0))
+        agg_feature = _weighted_trimmed_aggregate(state.features, state.weights)
         return self.discoverer.predict_feature_detailed(agg_feature)
 
 

@@ -1,0 +1,5 @@
+strategy,mean_ms_per_frame,all_precision,all_recall,all_f1,all_ap,all_tp,all_fp,all_neg_fp,dev_precision,dev_recall,dev_f1,reg_precision,reg_recall,reg_f1,reg_117093_fp,reg_117093_tp,reg_128057_fp,reg_128057_tp
+S0_baseline_full_yolo11n_1088,169.3,,0.0,0.0,0.0,0,0,0,,0.0,0.0,,0.0,0.0,0,0,0,0
+S1_sprint3_2_yolo11s_4tile_pitchfilter,4746.9,0.625,0.4545,0.5263,0.3382,25,15,7,0.6,0.375,0.4615,0.6667,0.6667,0.6667,3,5,2,5
+S2_sprint3_3_appearance_cone_filter,4747.3,0.7742,0.4364,0.5581,0.3646,24,7,3,0.7143,0.375,0.4918,0.9,0.6,0.72,0,4,1,5
+S3_sprint3_3_full_ball_intelligence,5044.3,0.7941,0.4909,0.6067,0.3973,27,7,4,0.7143,0.375,0.4918,0.9231,0.8,0.8571,0,7,1,5

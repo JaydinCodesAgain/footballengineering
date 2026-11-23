@@ -1,0 +1,15 @@
+match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes
+soccertrack_117092,0,43,0.0,1.72,UNKNOWN,False,True,manual,Visually verified pre-kickoff dead-ball setup at center spot (status=0 through f=31) and occluded kickoff touch before ball emerges from center cluster
+soccertrack_117092,44,47,1.76,1.88,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white shirts, right side #467259) kickoff pass control emerging at center circle (2080,649)"
+soccertrack_117092,48,81,1.92,3.24,LOOSE_BALL,False,True,manual,"Visually verified kickoff back-pass rolling across right-center turf from (2114,651) toward Team_A defender #467256 at (2303,652)"
+soccertrack_117092,82,87,3.28,3.48,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #467256) receiving back-pass and striking high pass forward (BAS HIGH PASS f=86)
+soccertrack_117092,88,173,3.52,6.92,UNKNOWN,False,True,manual,"Visually verified night-time aerial high-pass flight and far-left deflection (BAS PASS f=135) where ball is too small/dark to detect and baseline falsely locks onto a static background spot at (2151,557)"
+soccertrack_117092,174,195,6.96,7.8,LOOSE_BALL,False,True,manual,"Visually verified ground pass rolling across center-right midfield open turf from (2336,832) toward Team_A receiver #467248"
+soccertrack_117092,196,203,7.84,8.12,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #467248) receiving pass in near-right midfield and releasing pass (BAS PASS f=205)
+soccertrack_117092,204,239,8.16,9.56,UNKNOWN,False,True,manual,Visually verified night-time occlusion/ball-loss window after f=205 pass as ball travels through dark midfield shadow zone
+soccertrack_117092,240,243,9.6,9.72,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white #467259) one-touch pass control in central midfield at (1936,793) (BAS PASS f=240)"
+soccertrack_117092,244,251,9.76,10.04,LOOSE_BALL,False,True,manual,Visually verified short midfield pass rolling across open turf from Team_A #467259 toward teammate #467249
+soccertrack_117092,252,261,10.08,10.44,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white #467249) receiving midfield pass and striking high pass at (2038,828) (BAS HIGH PASS f=258)"
+soccertrack_117092,262,271,10.48,10.84,TEAM_B_CONTROL,False,True,manual,Visually verified Team_B (dark navy challenger) intercepting/deflecting ball immediately after f=258 kick in central midfield
+soccertrack_117092,272,279,10.88,11.16,CONTESTED,False,True,manual,Visually verified contested loose-ball duel in central midfield between Team_B (dark navy) and Team_A (white #467259)
+soccertrack_117092,280,358,11.2,14.32,UNKNOWN,False,True,manual,Visually verified night-time ball-loss and low-confidence unclassified player contact window in left-center midfield (f=280..358)

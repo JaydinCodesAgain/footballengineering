@@ -7,7 +7,13 @@ import json
 from pathlib import Path
 import re
 
-from src.config import MatchConfig, TeamDiscoveryConfig, load_match_config
+from src.config import (
+    COMPUTE_PROFILE_PRESETS,
+    MatchConfig,
+    TeamDiscoveryConfig,
+    apply_compute_profile,
+    load_match_config,
+)
 from src.pipeline.runner import run_match_pipeline
 
 
@@ -124,6 +130,21 @@ def main() -> None:
     parser.add_argument("--disable-pitch-filter", action="store_true", help="Disable geometric pitch-region filtering even when pitch calibration is supplied.")
     parser.add_argument("--enable-motion-ball", action="store_true", help="Explicitly enable fixed-camera motion-assisted small-ball recovery.")
     parser.add_argument("--disable-motion-ball", action="store_true", help="Disable motion-assisted small-ball recovery.")
+    # Sprint 3.3: compute profiles, device/FP16 selection & illumination-invariant team discovery
+    parser.add_argument(
+        "--compute-profile",
+        choices=tuple(sorted(COMPUTE_PROFILE_PRESETS.keys())),
+        default=None,
+        help="Reproducible hardware compute profile: local_low_vram, colab_t4, or cpu_fallback.",
+    )
+    parser.add_argument("--device", type=str, default=None, help="Explicit inference device override ('auto', 'cpu', 'cuda', '0').")
+    parser.add_argument("--half", action="store_true", help="Enable FP16 mixed-precision inference when CUDA is available (safely disabled on CPU).")
+    parser.add_argument(
+        "--team-feature-method",
+        type=str,
+        default=None,
+        help="Feature extractor for team discovery (e.g. illumination_invariant, hsv_lab).",
+    )
 
     args = parser.parse_args()
     if args.auto_teams and args.video:
@@ -184,6 +205,17 @@ def main() -> None:
         match_cfg.ball_tracking.init_high_conf_threshold = 0.30
         match_cfg.detection.roi_size_px = 416
         match_cfg.tracking.reset_on_camera_cut = False
+        match_cfg.tracking.fixed_camera_stitching = True
+        if match_cfg.team_discovery.enabled and args.team_feature_method is None:
+            match_cfg.team_discovery.feature_method = "illumination_invariant"
+    if args.compute_profile:
+        apply_compute_profile(match_cfg, args.compute_profile)
+    if args.device is not None:
+        match_cfg.compute.device = str(args.device)
+    if args.half:
+        match_cfg.compute.half = True
+    if args.team_feature_method:
+        match_cfg.team_discovery.feature_method = str(args.team_feature_method)
     if args.pitch_coordinate_space:
         match_cfg.pitch.coordinate_space = str(args.pitch_coordinate_space)
     if args.pitch_player_margin is not None:

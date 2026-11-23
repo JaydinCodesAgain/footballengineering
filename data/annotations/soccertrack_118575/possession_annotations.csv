@@ -1,0 +1,30 @@
+match_id,start_frame,end_frame,start_timestamp,end_timestamp,state,uncertain,verified,source,notes
+soccertrack_118575,0,15,0.0,0.6,UNKNOWN,False,True,manual,"Visually verified pre-kickoff dead-ball setup at center spot (ball stationary at (2048,244), status=0 before referee whistle at f=15)"
+soccertrack_118575,16,23,0.64,0.92,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white #476362) kickoff pass touch at center circle (BAS PASS f=16, ball struck toward left midfield)"
+soccertrack_118575,24,35,0.96,1.4,LOOSE_BALL,False,True,manual,Visually verified kickoff pass rolling across center circle toward Team_A midfielder #476357 (uncontested open-turf flight)
+soccertrack_118575,36,41,1.44,1.64,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476357) first-touch reception and control on far-left center circle edge
+soccertrack_118575,42,71,1.68,2.84,UNKNOWN,False,True,manual,Visually verified far-side dribble by Team_A #476357 where 8px ball is occluded behind player legs/shadows (BAS DRIVE f=49; detector ball lost)
+soccertrack_118575,72,77,2.88,3.08,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white #476357) pass release down left channel (BAS PASS f=74, ball visible at feet (1655,244))"
+soccertrack_118575,78,85,3.12,3.4,UNKNOWN,False,True,manual,Visually verified short occlusion gap after Team_A pass release as ball crosses midfield shadow line
+soccertrack_118575,86,95,3.44,3.8,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476357/#476359) guiding pass reception along left wing channel
+soccertrack_118575,96,111,3.84,4.44,LOOSE_BALL,False,True,manual,Visually verified through-ball rolling in open turf toward near-left wing ahead of Team_A winger #476356
+soccertrack_118575,112,173,4.48,6.92,TEAM_A_CONTROL,False,True,manual,"Visually verified Team_A (white winger #476356) receiving and dribbling along near-left wing before striking cross-field pass (BAS DRIVE f=143, PASS f=168)"
+soccertrack_118575,174,207,6.96,8.28,LOOSE_BALL,False,True,manual,"Visually verified long ground pass by Team_A #476356 travelling across midfield open turf from (1301,458) to (2161,398)"
+soccertrack_118575,208,227,8.32,9.08,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A midfielder #476362 (white kit) receiving pass in center midfield and playing short pass to teammate #476361 (BAS PASS f=214)
+soccertrack_118575,228,245,9.12,9.8,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476361) receiving pass and driving forward in central-near midfield (BAS DRIVE f=235)
+soccertrack_118575,246,259,9.84,10.36,UNKNOWN,False,True,manual,Visually verified midfield pressure transition where ball is occluded between legs and detector briefly jumps (f=246..258)
+soccertrack_118575,260,273,10.4,10.92,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476362/#476360) shielding ball in central midfield as Team_B defenders close in
+soccertrack_118575,274,293,10.96,11.72,CONTESTED,False,True,manual,Visually verified close 50/50 physical duel in midfield between Team_A (white #476360) and Team_B (blue #476369/#476371)
+soccertrack_118575,294,311,11.76,12.44,TEAM_B_CONTROL,False,True,manual,"Visually verified Team_B (blue #476371) winning midfield duel, driving forward, and releasing pass toward right wing (BAS DRIVE f=298)"
+soccertrack_118575,312,333,12.48,13.32,LOOSE_BALL,False,True,manual,"Visually verified Team_B pass rolling across right-midfield open turf from (2393,475) toward near-right touchline receiver #476370"
+soccertrack_118575,334,359,13.36,14.36,TEAM_B_CONTROL,False,True,manual,Visually verified Team_B (blue #476370) controlling ball on near-right wing and playing pass down the line (BAS PASS f=355)
+soccertrack_118575,360,383,14.4,15.32,LOOSE_BALL,False,True,manual,Visually verified Team_B pass rolling down near-right wing toward advancing blue defender/midfielder #476368
+soccertrack_118575,384,443,15.36,17.72,TEAM_B_CONTROL,False,True,manual,"Visually verified Team_B (blue #476368) receiving on right wing, dribbling inside, and playing back-pass toward goalkeeper (BAS DRIVE f=399, PASS f=440)"
+soccertrack_118575,444,471,17.76,18.84,LOOSE_BALL,False,True,manual,Visually verified Team_B back-pass rolling across right penalty area approach toward yellow goalkeeper #476367
+soccertrack_118575,472,525,18.88,21.0,UNKNOWN,False,True,manual,"Visually verified Team_B goalkeeper (yellow kit #12, pid=476367, role=goalkeeper) controlling and passing ball inside penalty box (BAS DRIVE f=481, PASS f=519; GK mapped to UNKNOWN)"
+soccertrack_118575,526,535,21.04,21.4,LOOSE_BALL,False,True,manual,Visually verified goalkeeper short distribution rolling out of penalty area toward Team_B defender #476369
+soccertrack_118575,536,599,21.44,23.96,TEAM_B_CONTROL,False,True,manual,"Visually verified Team_B (blue #476369) receiving GK pass on right flank, carrying forward, and launching long high pass (BAS DRIVE f=541, HIGH PASS f=597)"
+soccertrack_118575,600,677,24.0,27.08,LOOSE_BALL,False,True,manual,Visually verified long aerial high pass by Team_B #476369 in flight across halfway line toward left midfield
+soccertrack_118575,678,691,27.12,27.64,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476355) winning second ball in left midfield and playing forward pass (BAS PASS f=683)
+soccertrack_118575,692,719,27.68,28.76,LOOSE_BALL,False,True,manual,Visually verified Team_A pass rolling toward far-left wing receiver #476354
+soccertrack_118575,720,750,28.8,30.0,TEAM_A_CONTROL,False,True,manual,Visually verified Team_A (white #476354) receiving and driving down far-left wing (BAS DRIVE f=735)

@@ -1,0 +1,129 @@
+{
+  "sprint": "3.3",
+  "title": "Reliable Match Understanding, Ball Intelligence & Long-Duration Validation",
+  "base_commit": "6b5cd90",
+  "working_branch": "feat/sprint3.3-reliable-match-understanding",
+  "created_at": "2026-04-12T00:00:00Z",
+  "environment": {
+    "os": "Windows 10/11 x86_64",
+    "python": "3.13.9",
+    "pytorch": "2.11.0+cpu",
+    "cuda_available": false,
+    "compute_profile_active": "cpu_fallback"
+  },
+  "datasets": {
+    "development": [
+      {
+        "match_id": "117092",
+        "split": "train",
+        "conditions": "night_floodlights",
+        "resolution": [3840, 1906],
+        "fps": 25.0,
+        "role": "Primary night development match (floodlight glare, small far-side ball)"
+      },
+      {
+        "match_id": "118575",
+        "split": "train",
+        "conditions": "daylight",
+        "resolution": [4096, 1080],
+        "fps": 25.0,
+        "role": "Primary daylight development match (high-contrast kits, sideline spare balls, multi-minute validation)"
+      }
+    ],
+    "previously_inspected_reference": [
+      {
+        "match_id": "128057",
+        "split": "test",
+        "conditions": "daylight",
+        "resolution": [4096, 1080],
+        "fps": 25.0,
+        "role": "Previously inspected reference match (spare ball at (3492, 828) regression check; NOT blind)"
+      },
+      {
+        "match_id": "117093",
+        "split": "val",
+        "conditions": "daylight",
+        "resolution": [4096, 1080],
+        "fps": 25.0,
+        "role": "Previously inspected reference match (left-touchline blue training cone f=206..280 regression check; NOT blind)"
+      }
+    ],
+    "untouched_blind_generalization": [
+      {
+        "match_id": "132877",
+        "split": "val",
+        "conditions": "fixed_camera_panoramic",
+        "role": "Reserved untouched match for Step 9 post-freeze blind generalization evaluation"
+      }
+    ]
+  },
+  "sprint3_2_baseline_metrics": {
+    "117092": {
+      "player_recall_5m": 0.6992,
+      "player_precision_5m": 0.7109,
+      "player_f1_5m": 0.7050,
+      "gs_hota_5m": 0.2051,
+      "gs_hota_8m": 0.3251,
+      "idf1_5m": 0.2780,
+      "mota_5m": 0.4042,
+      "idsw": 145,
+      "fragmentations": 180,
+      "team_covered_accuracy": 0.7770,
+      "team_coverage": 0.9428,
+      "gk_rejection_rate": 1.0000
+    },
+    "118575": {
+      "player_recall_5m": 0.9732,
+      "player_precision_5m": 0.9336,
+      "player_f1_5m": 0.9530,
+      "gs_hota_5m": 0.5666,
+      "idf1_5m": 0.7242,
+      "mota_5m": 0.9024,
+      "idsw": 39,
+      "fragmentations": 32,
+      "team_covered_accuracy": 0.9750,
+      "team_coverage": 0.9121,
+      "gk_rejection_rate": 1.0000
+    },
+    "128057": {
+      "player_recall_5m": 0.9486,
+      "player_precision_5m": 0.9500,
+      "player_f1_5m": 0.9493,
+      "gs_hota_5m": 0.6480,
+      "idf1_5m": 0.6461,
+      "mota_5m": 0.8878,
+      "idsw": 79,
+      "fragmentations": 82,
+      "team_covered_accuracy": 1.0000,
+      "team_coverage": 0.9753,
+      "gk_rejection_rate": 1.0000
+    },
+    "117093": {
+      "player_recall_5m": 0.9259,
+      "player_precision_5m": 0.9620,
+      "player_f1_5m": 0.9436,
+      "gs_hota_5m": 0.6080,
+      "idf1_5m": 0.6361,
+      "mota_5m": 0.8777,
+      "idsw": 65,
+      "fragmentations": 68,
+      "team_covered_accuracy": 0.9518,
+      "team_coverage": 0.9326,
+      "gk_rejection_rate": 1.0000,
+      "ball_audit_precision_25px": 0.2500,
+      "ball_audit_recall_25px": 0.2500
+    },
+    "dev_ball_benchmark_50frames": {
+      "config": "S3_yolo11s_4tile_kalman_pitchfilter",
+      "precision_25px": 0.6538,
+      "recall_25px": 0.4250,
+      "f1_25px": 0.5152,
+      "ap_25px": 0.3156,
+      "tp": 17,
+      "fp": 9,
+      "fn": 23,
+      "tn_absent": 8
+    }
+  }
+}
+

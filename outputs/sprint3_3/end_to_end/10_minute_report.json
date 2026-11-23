@@ -1,0 +1,127 @@
+{
+  "stage": "10_minute",
+  "match_id": "118575",
+  "duration_seconds": 600.0,
+  "video_frames_spanned": 15000,
+  "frame_stride": 60,
+  "sampled_frames_evaluated": 250,
+  "detector_config": "yolo11n.pt 4-tile 1024px (local_low_vram profile on CPU)",
+  "compute_profile": "local_low_vram",
+  "runtime_and_memory": {
+    "mean_detection_ms_per_frame": 2707.2,
+    "post_detection_pipeline_seconds": 798.66,
+    "estimated_total_wall_seconds": 1475.46,
+    "effective_sampled_fps": 0.17,
+    "rss_start_mb": 843.1,
+    "rss_end_mb": 869.3,
+    "rss_peak_mb": 1196.4,
+    "rss_growth_mb": 26.2
+  },
+  "player_tracking_5m": {
+    "gs_hota": 0.0308,
+    "deta": 0.1084,
+    "assa": 0.009,
+    "loca": 0.7896,
+    "idf1": 0.0348,
+    "idp": 0.1045,
+    "idr": 0.0209,
+    "mota": 0.0142,
+    "mota_on_pitch": 0.0156,
+    "id_switches": 698,
+    "fragmentations": 661,
+    "gt_unique_identities": 22,
+    "total_predicted_tracks": 197,
+    "pred_unique_identities_matched": 178,
+    "mean_track_lifetime_frames": 5.58,
+    "median_track_lifetime_frames": 4.0,
+    "short_tracks_under_5_frames": 115,
+    "mostly_tracked_mt": 0,
+    "partially_tracked_pt": 7,
+    "mostly_lost_ml": 15,
+    "mean_gt_dominant_id_purity": 0.1335,
+    "mean_distinct_pred_ids_per_gt_player": 25.36,
+    "detection_precision": 0.8527,
+    "detection_recall": 0.1705,
+    "detection_f1": 0.2842,
+    "mean_matched_distance_m": 1.67,
+    "median_matched_distance_m": 1.28,
+    "tp": 938,
+    "fp": 162,
+    "fn": 4562,
+    "tracker_ms_per_frame": 0.0
+  },
+  "team_discovery": {
+    "feature_method": "illumination_invariant",
+    "covered_team_accuracy": null,
+    "team_coverage": 0.0,
+    "overall_team_accuracy": 0.0,
+    "gk_rejection_rate": 1.0,
+    "inter_team_cosine_distance": 0.2785,
+    "temporal_bucket_stability": {
+      "0s-120s": {
+        "matched_obs": 129,
+        "covered_team_accuracy": null,
+        "coverage": 0.0
+      },
+      "120s-240s": {
+        "matched_obs": 172,
+        "covered_team_accuracy": null,
+        "coverage": 0.0
+      },
+      "240s-360s": {
+        "matched_obs": 139,
+        "covered_team_accuracy": null,
+        "coverage": 0.0
+      },
+      "360s-480s": {
+        "matched_obs": 185,
+        "covered_team_accuracy": null,
+        "coverage": 0.0
+      },
+      "480s-600s": {
+        "matched_obs": 230,
+        "covered_team_accuracy": null,
+        "coverage": 0.0
+      }
+    }
+  },
+  "ball_tracking": {
+    "total_frames": 250,
+    "observed_frames": 23,
+    "interpolated_frames": 0,
+    "lost_frames": 227,
+    "observed_coverage_pct": 9.2,
+    "interpolated_coverage_pct": 0.0,
+    "lost_pct": 90.8,
+    "tracked_or_interpolated_pct": 9.2,
+    "camera_cut_resets": 0,
+    "rejected_outlier_detections": 6,
+    "false_track_associations": 0,
+    "blacklisted_static_zones_count": 0,
+    "permanent_static_zones_count": 0,
+    "reacquisition_events": 16,
+    "active_track_segments_count": 13,
+    "mean_continuous_track_frames": 1.77,
+    "max_continuous_track_frames": 5
+  },
+  "possession_summary": {
+    "state_distribution_pct": null,
+    "attributed_possession_share": {
+      "team_a_name": "Team A",
+      "team_b_name": "Team B",
+      "team_a_pct": null,
+      "team_b_pct": null,
+      "definition": "T_team / (T_Team_A + T_Team_B) over confidently attributed control intervals only."
+    },
+    "possession_coverage_pct": 0.0,
+    "state_transitions_count": 20
+  },
+  "verified_manual_possession_eval": null,
+  "dense_stride2_compute_scaling": {
+    "dense_sampled_frames_12_5hz": 7500,
+    "local_cpu_yolo11n_1024_projected_minutes": 338.4,
+    "local_cpu_yolo11s_1280_projected_minutes": 593.4,
+    "colab_t4_fp16_yolo11s_1280_projected_minutes": 11.88,
+    "note": "Local host is CPU-only (cuda=False); therefore 2m/5m/10m continuous stages were executed on real frames with wider sampling strides to validate long-duration detection, team drift, and memory stability within local CPU budget. Dense 12.5 Hz (stride=2) multi-minute runs are supported directly via `--compute-profile colab_t4 --half`."
+  }
+}

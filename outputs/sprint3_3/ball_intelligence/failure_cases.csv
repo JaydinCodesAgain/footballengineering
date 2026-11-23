@@ -1,0 +1,36 @@
+match_id,split,frame_number,category,failure_type,gt_bbox,pred_bbox,pred_conf,center_err_px,note
+117092,development,10,stationary_set_piece,false_negative_missed_ball,"[1933, 651, 1943, 661]",,,,pre_kickoff_center_spot
+117092,development,20,stationary_set_piece,false_negative_missed_ball,"[1933, 646, 1943, 656]",,,,pre_kickoff_center_spot
+117092,development,450,stationary_set_piece,false_negative_missed_ball,"[922, 805, 932, 815]",,,,gk_stationary_ball_in_box
+117092,development,32,visible_mid,false_negative_missed_ball,"[1944, 651, 1955, 661]",,,,kickoff_pass_bas_anchor
+117092,development,40,visible_mid,false_negative_missed_ball,"[2036, 648, 2047, 658]",,,,ground_pass_open_turf
+117092,development,136,visible_near,false_negative_missed_ball,"[1201, 931, 1213, 944]",,,,clearance_pass_near_left
+117092,development,1268,visible_near,false_negative_missed_ball,"[3174, 975, 3184, 986]",,,,near_right_drive
+117092,development,1458,visible_near,false_negative_missed_ball,"[3146, 859, 3164, 868]",,,,fast_rolling_block_motion_stretch
+117092,development,1470,visible_near,false_negative_missed_ball,"[3230, 875, 3240, 883]",,,,near_right_pass_rolling
+117092,development,1480,visible_near,false_negative_missed_ball,"[3275, 882, 3287, 891]",,,,near_right_pass_open
+117092,development,1796,visible_near,false_negative_missed_ball,"[3352, 976, 3364, 988]",,,,near_right_at_feet
+117092,development,2286,visible_far,false_negative_missed_ball,"[1625, 604, 1631, 610]",,,,far_touchline_tiny_6x6
+117092,development,204,occluded_at_foot,false_negative_missed_ball,"[2616, 843, 2630, 857]",,,,pass_at_foot_bas_anchor
+117092,development,956,occluded_at_foot,false_negative_missed_ball,"[2957, 776, 2969, 787]",,,,contested_drive_at_foot
+117092,development,86,aerial_motion_blur,false_positive_mislocalized,"[2287, 636, 2306, 648]","[2327, 651, 2335, 659]",0.4255,36.9,high_pass_motion_blur_bas_anchor
+117092,development,86,aerial_motion_blur,false_negative_missed_ball,"[2287, 636, 2306, 648]",,,,high_pass_motion_blur_bas_anchor
+117092,development,788,aerial_motion_blur,false_negative_missed_ball,"[940, 807, 949, 816]",,,,gk_high_punt_release
+118575,development,6,stationary_set_piece,false_negative_missed_ball,"[2044, 240, 2053, 249]",,,,pre_kickoff_center_spot
+118575,development,16,visible_mid,false_negative_missed_ball,"[2044, 240, 2053, 249]",,,,kickoff_pass_bas_anchor
+118575,development,518,visible_mid,false_negative_missed_ball,"[2899, 261, 2909, 271]",,,,gk_ground_pass_right_box
+118575,development,2520,visible_near,false_positive_mislocalized,"[496, 581, 509, 594]","[503, 627, 513, 635]",0.5004,43.8,near_left_touchline_with_spare_ball_distractor
+118575,development,2520,visible_near,false_negative_missed_ball,"[496, 581, 509, 594]",,,,near_left_touchline_with_spare_ball_distractor
+118575,development,1582,visible_far,false_negative_missed_ball,"[2451, 185, 2459, 193]",,,,far_pitch_tiny_8x8_open_turf
+118575,development,50,occluded_at_foot,false_negative_missed_ball,"[1690, 233, 1699, 241]",,,,drive_at_foot_mid
+118575,development,74,occluded_at_foot,false_negative_missed_ball,"[1645, 240, 1653, 249]",,,,pass_at_foot_mid
+118575,development,298,occluded_at_foot,false_positive_mislocalized,"[2517, 252, 2525, 259]","[2155, 528, 2170, 543]",0.6947,454.9,turnover_drive_at_foot_blue
+118575,development,298,occluded_at_foot,false_negative_missed_ball,"[2517, 252, 2525, 259]",,,,turnover_drive_at_foot_blue
+118575,development,1612,aerial_motion_blur,false_negative_missed_ball,"[2277, 120, 2284, 127]",,,,lofted_aerial_ball_above_far_touchline_canopy
+118575,development,2620,absent_out_of_play,false_positive_on_absent_frame,,"[250, 600, 258, 611]",0.5839,,out_of_play_status0_spare_balls_visible
+118575,development,2650,absent_out_of_play,false_positive_on_absent_frame,,"[225, 599, 233, 610]",0.37,,out_of_play_status0_spare_balls_visible
+118575,development,2700,absent_out_of_play,false_positive_on_absent_frame,,"[213, 597, 222, 609]",0.5468,,out_of_play_status0_spare_balls_visible
+128057,inspected_regression,8,stationary_set_piece,false_negative_missed_ball,"[2044, 238, 2053, 247]",,,,pre_kickoff_center_spot_and_spare_ball_fp
+128057,inspected_regression,38,visible_mid,false_negative_missed_ball,"[2036, 238, 2045, 247]",,,,kickoff_pass_bas_anchor
+128057,inspected_regression,94,occluded_at_foot,false_negative_missed_ball,"[1634, 243, 1643, 252]",,,,high_pass_at_foot_bas_anchor
+128057,inspected_regression,210,absent_out_of_play,false_positive_on_absent_frame,,"[3817, 584, 3831, 597]",0.7219,,out_of_play_negative_control

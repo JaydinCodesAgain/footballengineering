@@ -1,0 +1,2797 @@
+{
+  "sprint": "3.3",
+  "component": "Sub-Agent D \u2014 Possession Verification & Geometric State Machine",
+  "dataset_provenance": {
+    "source": "manual",
+    "verified": true,
+    "methodology": "Continuous match intervals visually verified on native panoramic video frames cross-referenced against ball trajectories, player positions, SoccerTrack v2 BAS event timestamps, and GSR player/goalkeeper roles. Model predictions were never copied as ground truth.",
+    "matches": {
+      "soccertrack_118575": {
+        "annotations_json": "data/annotations/soccertrack_118575/possession_annotations.json",
+        "annotations_csv": "data/annotations/soccertrack_118575/possession_annotations.csv",
+        "verified_intervals_count": 29,
+        "frame_range_covered": [
+          0,
+          750
+        ],
+        "duration_covered_seconds": 30.0,
+        "visual_audit": {
+          "rendered": true,
+          "video_path": "C:\\Users\\jmorrison\\projects\\footballengineering\\SoccerTrack-v2\\data\\videos\\118575\\118575_panorama_1st_half.mp4",
+          "video_resolution": [
+            4096,
+            1080
+          ],
+          "intervals_sampled": 12,
+          "audit_strip_path": "C:\\Users\\jmorrison\\projects\\footballengineering\\outputs\\sprint3_3\\possession\\visual_audit_118575.jpg"
+        }
+      },
+      "soccertrack_117092": {
+        "annotations_json": "data/annotations/soccertrack_117092/possession_annotations.json",
+        "annotations_csv": "data/annotations/soccertrack_117092/possession_annotations.csv",
+        "verified_intervals_count": 14,
+        "frame_range_covered": [
+          0,
+          358
+        ],
+        "duration_covered_seconds": 14.4,
+        "visual_audit": {
+          "rendered": true,
+          "video_path": "C:\\Users\\jmorrison\\projects\\footballengineering\\SoccerTrack-v2\\data\\videos\\117092\\117092_panorama_1st_half.mp4",
+          "video_resolution": [
+            3840,
+            1906
+          ],
+          "intervals_sampled": 12,
+          "audit_strip_path": "C:\\Users\\jmorrison\\projects\\footballengineering\\outputs\\sprint3_3\\possession\\visual_audit_117092.jpg"
+        }
+      }
+    }
+  },
+  "pooled_development_benchmark_360_frames": {
+    "evaluated_frames": 360,
+    "evaluated_duration_seconds": 28.8,
+    "sprint3_2_baseline": {
+      "metrics_available": true,
+      "status": "verified_manual_possession_evaluation",
+      "validation_blocker": null,
+      "evaluated_frames": 360,
+      "uncertain_frames_excluded": 0,
+      "state_accuracy": 0.7306,
+      "macro_f1": 0.7072,
+      "confident_attribution_accuracy": 1.0,
+      "both_confident_team_frames": 82,
+      "correct_confident_team_frames": 82,
+      "per_state": {
+        "TEAM_A_CONTROL": {
+          "precision": 1.0,
+          "recall": 0.6705,
+          "f1": 0.8027,
+          "support_frames": 88
+        },
+        "TEAM_B_CONTROL": {
+          "precision": 0.8519,
+          "recall": 0.8519,
+          "f1": 0.8519,
+          "support_frames": 27
+        },
+        "CONTESTED": {
+          "precision": 0.7143,
+          "recall": 0.3571,
+          "f1": 0.4762,
+          "support_frames": 14
+        },
+        "LOOSE_BALL": {
+          "precision": 0.5069,
+          "recall": 0.9865,
+          "f1": 0.6697,
+          "support_frames": 74
+        },
+        "UNKNOWN": {
+          "precision": 0.8374,
+          "recall": 0.6561,
+          "f1": 0.7357,
+          "support_frames": 157
+        },
+        "OUT_OF_PLAY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support_frames": 0
+        }
+      },
+      "per_state_duration_error_seconds": {
+        "TEAM_A_CONTROL": 2.32,
+        "TEAM_B_CONTROL": 0.0,
+        "CONTESTED": 0.56,
+        "LOOSE_BALL": 5.6,
+        "UNKNOWN": 2.72,
+        "OUT_OF_PLAY": 0
+      },
+      "team_a_time_error_seconds": 2.32,
+      "team_b_time_error_seconds": 0.0,
+      "team_possession_share_error_pct_points": 7.92,
+      "gt_team_a_share_pct": 76.52,
+      "pred_team_a_share_pct": 68.6,
+      "team_ownership_swap_frames": 0,
+      "confident_attribution_frames": 86,
+      "incorrect_confident_attribution_frames": 4,
+      "incorrect_confident_attribution_rate": 0.0465,
+      "incorrect_confident_attribution_rate_all_frames": 0.0111,
+      "strict_incorrect_confident_frames": 4,
+      "strict_incorrect_confident_rate_all_frames": 0.0111,
+      "gt_transitions": 31,
+      "pred_transitions": 62,
+      "transition_count_error": 31,
+      "transition_timing_error_seconds": 0.021,
+      "unknown_state_rate": 0.3417,
+      "confident_attribution_coverage": 0.2389,
+      "attribution_coverage": 0.2389,
+      "confidently_assigned_possession_pct": 23.89,
+      "state_labels": [
+        "TEAM_A_CONTROL",
+        "TEAM_B_CONTROL",
+        "CONTESTED",
+        "LOOSE_BALL",
+        "UNKNOWN",
+        "OUT_OF_PLAY"
+      ],
+      "confusion_matrix": [
+        [
+          59,
+          0,
+          0,
+          12,
+          17,
+          0
+        ],
+        [
+          0,
+          23,
+          1,
+          1,
+          2,
+          0
+        ],
+        [
+          0,
+          4,
+          5,
+          5,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          73,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          53,
+          103,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "mispredicted_frames": [
+        {
+          "frame_number": 16,
+          "timestamp": 0.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 18,
+          "timestamp": 0.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 20,
+          "timestamp": 0.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 22,
+          "timestamp": 0.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 34,
+          "timestamp": 1.36,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "interpolated",
+          "closest_normalized_distance": 1.266
+        },
+        {
+          "frame_number": 36,
+          "timestamp": 1.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.9895
+        },
+        {
+          "frame_number": 72,
+          "timestamp": 2.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1964
+        },
+        {
+          "frame_number": 86,
+          "timestamp": 3.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.4468
+        },
+        {
+          "frame_number": 88,
+          "timestamp": 3.52,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.1344
+        },
+        {
+          "frame_number": 112,
+          "timestamp": 4.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.2603
+        },
+        {
+          "frame_number": 166,
+          "timestamp": 6.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 208,
+          "timestamp": 8.32,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.3014
+        },
+        {
+          "frame_number": 210,
+          "timestamp": 8.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.7899
+        },
+        {
+          "frame_number": 212,
+          "timestamp": 8.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3034
+        },
+        {
+          "frame_number": 214,
+          "timestamp": 8.56,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3233
+        },
+        {
+          "frame_number": 216,
+          "timestamp": 8.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3829
+        },
+        {
+          "frame_number": 218,
+          "timestamp": 8.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.4119
+        },
+        {
+          "frame_number": 220,
+          "timestamp": 8.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.427
+        },
+        {
+          "frame_number": 222,
+          "timestamp": 8.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.5757
+        },
+        {
+          "frame_number": 224,
+          "timestamp": 8.96,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.8047
+        },
+        {
+          "frame_number": 226,
+          "timestamp": 9.04,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0398
+        },
+        {
+          "frame_number": 228,
+          "timestamp": 9.12,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0276
+        },
+        {
+          "frame_number": 246,
+          "timestamp": 9.84,
+          "ground_truth_state": "UNKNOWN",
+          "predicted_state": "CONTESTED",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1987
+        },
+        {
+          "frame_number": 250,
+          "timestamp": 10.0,
+          "ground_truth_state": "UNKNOWN",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "interpolated",
+          "closest_normalized_distance": 0.114
+        },
+        {
+          "frame_number": 260,
+          "timestamp": 10.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0984
+        }
+      ]
+    },
+    "sprint3_3_possession_engine": {
+      "metrics_available": true,
+      "status": "verified_manual_possession_evaluation",
+      "validation_blocker": null,
+      "evaluated_frames": 360,
+      "uncertain_frames_excluded": 0,
+      "state_accuracy": 0.8722,
+      "macro_f1": 0.6852,
+      "confident_attribution_accuracy": 1.0,
+      "both_confident_team_frames": 84,
+      "correct_confident_team_frames": 84,
+      "per_state": {
+        "TEAM_A_CONTROL": {
+          "precision": 0.9531,
+          "recall": 0.6932,
+          "f1": 0.8026,
+          "support_frames": 88
+        },
+        "TEAM_B_CONTROL": {
+          "precision": 0.92,
+          "recall": 0.8519,
+          "f1": 0.8846,
+          "support_frames": 27
+        },
+        "CONTESTED": {
+          "precision": 0.875,
+          "recall": 0.5,
+          "f1": 0.6364,
+          "support_frames": 14
+        },
+        "LOOSE_BALL": {
+          "precision": 0.7802,
+          "recall": 0.9595,
+          "f1": 0.8606,
+          "support_frames": 74
+        },
+        "UNKNOWN": {
+          "precision": 0.8889,
+          "recall": 0.9682,
+          "f1": 0.9268,
+          "support_frames": 157
+        },
+        "OUT_OF_PLAY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support_frames": 0
+        }
+      },
+      "per_state_duration_error_seconds": {
+        "TEAM_A_CONTROL": 1.92,
+        "TEAM_B_CONTROL": 0.16,
+        "CONTESTED": 0.48,
+        "LOOSE_BALL": 1.36,
+        "UNKNOWN": 1.12,
+        "OUT_OF_PLAY": 0.08
+      },
+      "team_a_time_error_seconds": 1.92,
+      "team_b_time_error_seconds": 0.16,
+      "team_possession_share_error_pct_points": 4.61,
+      "gt_team_a_share_pct": 76.52,
+      "pred_team_a_share_pct": 71.91,
+      "team_ownership_swap_frames": 0,
+      "confident_attribution_frames": 89,
+      "incorrect_confident_attribution_frames": 5,
+      "incorrect_confident_attribution_rate": 0.0562,
+      "incorrect_confident_attribution_rate_all_frames": 0.0139,
+      "strict_incorrect_confident_frames": 2,
+      "strict_incorrect_confident_rate_all_frames": 0.0056,
+      "gt_transitions": 31,
+      "pred_transitions": 58,
+      "transition_count_error": 27,
+      "transition_timing_error_seconds": 0.031,
+      "unknown_state_rate": 0.475,
+      "confident_attribution_coverage": 0.2472,
+      "attribution_coverage": 0.2472,
+      "confidently_assigned_possession_pct": 24.72,
+      "state_labels": [
+        "TEAM_A_CONTROL",
+        "TEAM_B_CONTROL",
+        "CONTESTED",
+        "LOOSE_BALL",
+        "UNKNOWN",
+        "OUT_OF_PLAY"
+      ],
+      "confusion_matrix": [
+        [
+          61,
+          0,
+          0,
+          11,
+          16,
+          0
+        ],
+        [
+          0,
+          23,
+          1,
+          1,
+          2,
+          0
+        ],
+        [
+          0,
+          2,
+          7,
+          5,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          71,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          3,
+          152,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "mispredicted_frames": [
+        {
+          "frame_number": 16,
+          "timestamp": 0.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 18,
+          "timestamp": 0.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 20,
+          "timestamp": 0.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 22,
+          "timestamp": 0.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 72,
+          "timestamp": 2.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1964
+        },
+        {
+          "frame_number": 86,
+          "timestamp": 3.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.4468
+        },
+        {
+          "frame_number": 88,
+          "timestamp": 3.52,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.1344
+        },
+        {
+          "frame_number": 90,
+          "timestamp": 3.6,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0187
+        },
+        {
+          "frame_number": 166,
+          "timestamp": 6.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 174,
+          "timestamp": 6.96,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "TEAM_A_CONTROL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 2.0353
+        },
+        {
+          "frame_number": 176,
+          "timestamp": 7.04,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "TEAM_A_CONTROL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.9071
+        },
+        {
+          "frame_number": 208,
+          "timestamp": 8.32,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.3014
+        },
+        {
+          "frame_number": 210,
+          "timestamp": 8.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.7899
+        },
+        {
+          "frame_number": 212,
+          "timestamp": 8.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3034
+        },
+        {
+          "frame_number": 214,
+          "timestamp": 8.56,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3233
+        },
+        {
+          "frame_number": 216,
+          "timestamp": 8.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3829
+        },
+        {
+          "frame_number": 218,
+          "timestamp": 8.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.4119
+        },
+        {
+          "frame_number": 220,
+          "timestamp": 8.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.427
+        },
+        {
+          "frame_number": 222,
+          "timestamp": 8.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.5757
+        },
+        {
+          "frame_number": 224,
+          "timestamp": 8.96,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.8047
+        },
+        {
+          "frame_number": 226,
+          "timestamp": 9.04,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0398
+        },
+        {
+          "frame_number": 228,
+          "timestamp": 9.12,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0276
+        },
+        {
+          "frame_number": 260,
+          "timestamp": 10.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0984
+        },
+        {
+          "frame_number": 276,
+          "timestamp": 11.04,
+          "ground_truth_state": "CONTESTED",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0209
+        },
+        {
+          "frame_number": 280,
+          "timestamp": 11.2,
+          "ground_truth_state": "CONTESTED",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.2795
+        }
+      ]
+    },
+    "deltas": {
+      "state_accuracy_delta": 0.1416,
+      "macro_f1_delta": -0.022,
+      "confident_attribution_accuracy_delta": 0.0,
+      "incorrect_confident_attribution_rate_delta": 0.0097,
+      "incorrect_confident_attribution_rate_all_frames_delta": 0.0028,
+      "strict_incorrect_confident_rate_all_frames_delta": -0.0055,
+      "team_possession_share_error_pct_points_delta": -3.31
+    }
+  },
+  "per_match_180_frames_14_4s": {
+    "118575_daylight": {
+      "sprint3_2_baseline": {
+        "metrics_available": true,
+        "status": "verified_manual_possession_evaluation",
+        "validation_blocker": null,
+        "evaluated_frames": 180,
+        "uncertain_frames_excluded": 0,
+        "state_accuracy": 0.8,
+        "macro_f1": 0.7176,
+        "confident_attribution_accuracy": 1.0,
+        "both_confident_team_frames": 69,
+        "correct_confident_team_frames": 69,
+        "per_state": {
+          "TEAM_A_CONTROL": {
+            "precision": 1.0,
+            "recall": 0.6944,
+            "f1": 0.8197,
+            "support_frames": 72
+          },
+          "TEAM_B_CONTROL": {
+            "precision": 0.8261,
+            "recall": 0.8636,
+            "f1": 0.8444,
+            "support_frames": 22
+          },
+          "CONTESTED": {
+            "precision": 0.6667,
+            "recall": 0.2,
+            "f1": 0.3077,
+            "support_frames": 10
+          },
+          "LOOSE_BALL": {
+            "precision": 0.7736,
+            "recall": 0.9762,
+            "f1": 0.8632,
+            "support_frames": 42
+          },
+          "UNKNOWN": {
+            "precision": 0.6275,
+            "recall": 0.9412,
+            "f1": 0.7529,
+            "support_frames": 34
+          },
+          "OUT_OF_PLAY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support_frames": 0
+          }
+        },
+        "per_state_duration_error_seconds": {
+          "TEAM_A_CONTROL": 1.76,
+          "TEAM_B_CONTROL": 0.08,
+          "CONTESTED": 0.56,
+          "LOOSE_BALL": 0.88,
+          "UNKNOWN": 1.36,
+          "OUT_OF_PLAY": 0
+        },
+        "team_a_time_error_seconds": 1.76,
+        "team_b_time_error_seconds": 0.08,
+        "team_possession_share_error_pct_points": 8.1,
+        "gt_team_a_share_pct": 76.6,
+        "pred_team_a_share_pct": 68.49,
+        "team_ownership_swap_frames": 0,
+        "confident_attribution_frames": 73,
+        "incorrect_confident_attribution_frames": 4,
+        "incorrect_confident_attribution_rate": 0.0548,
+        "incorrect_confident_attribution_rate_all_frames": 0.0222,
+        "strict_incorrect_confident_frames": 4,
+        "strict_incorrect_confident_rate_all_frames": 0.0222,
+        "gt_transitions": 17,
+        "pred_transitions": 36,
+        "transition_count_error": 19,
+        "transition_timing_error_seconds": 0.028,
+        "unknown_state_rate": 0.2833,
+        "confident_attribution_coverage": 0.4056,
+        "attribution_coverage": 0.4056,
+        "confidently_assigned_possession_pct": 40.56,
+        "state_labels": [
+          "TEAM_A_CONTROL",
+          "TEAM_B_CONTROL",
+          "CONTESTED",
+          "LOOSE_BALL",
+          "UNKNOWN",
+          "OUT_OF_PLAY"
+        ],
+        "confusion_matrix": [
+          [
+            50,
+            0,
+            0,
+            6,
+            16,
+            0
+          ],
+          [
+            0,
+            19,
+            0,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            4,
+            2,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            41,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            32,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "mispredicted_frames": [
+          {
+            "frame_number": 16,
+            "timestamp": 0.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 18,
+            "timestamp": 0.72,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 20,
+            "timestamp": 0.8,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 22,
+            "timestamp": 0.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 34,
+            "timestamp": 1.36,
+            "ground_truth_state": "LOOSE_BALL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 1.266
+          },
+          {
+            "frame_number": 36,
+            "timestamp": 1.44,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.9895
+          },
+          {
+            "frame_number": 72,
+            "timestamp": 2.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.1964
+          },
+          {
+            "frame_number": 86,
+            "timestamp": 3.44,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4468
+          },
+          {
+            "frame_number": 88,
+            "timestamp": 3.52,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.1344
+          },
+          {
+            "frame_number": 112,
+            "timestamp": 4.48,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.2603
+          },
+          {
+            "frame_number": 166,
+            "timestamp": 6.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 208,
+            "timestamp": 8.32,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.3014
+          },
+          {
+            "frame_number": 210,
+            "timestamp": 8.4,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.7899
+          },
+          {
+            "frame_number": 212,
+            "timestamp": 8.48,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3034
+          },
+          {
+            "frame_number": 214,
+            "timestamp": 8.56,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3233
+          },
+          {
+            "frame_number": 216,
+            "timestamp": 8.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3829
+          },
+          {
+            "frame_number": 218,
+            "timestamp": 8.72,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.4119
+          },
+          {
+            "frame_number": 220,
+            "timestamp": 8.8,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.427
+          },
+          {
+            "frame_number": 222,
+            "timestamp": 8.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.5757
+          },
+          {
+            "frame_number": 224,
+            "timestamp": 8.96,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.8047
+          },
+          {
+            "frame_number": 226,
+            "timestamp": 9.04,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.0398
+          },
+          {
+            "frame_number": 228,
+            "timestamp": 9.12,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.0276
+          },
+          {
+            "frame_number": 246,
+            "timestamp": 9.84,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "CONTESTED",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.1987
+          },
+          {
+            "frame_number": 250,
+            "timestamp": 10.0,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 0.114
+          },
+          {
+            "frame_number": 260,
+            "timestamp": 10.4,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.0984
+          }
+        ]
+      },
+      "sprint3_3_possession_engine": {
+        "metrics_available": true,
+        "status": "verified_manual_possession_evaluation",
+        "validation_blocker": null,
+        "evaluated_frames": 180,
+        "uncertain_frames_excluded": 0,
+        "state_accuracy": 0.8167,
+        "macro_f1": 0.7624,
+        "confident_attribution_accuracy": 1.0,
+        "both_confident_team_frames": 70,
+        "correct_confident_team_frames": 70,
+        "per_state": {
+          "TEAM_A_CONTROL": {
+            "precision": 0.9623,
+            "recall": 0.7083,
+            "f1": 0.816,
+            "support_frames": 72
+          },
+          "TEAM_B_CONTROL": {
+            "precision": 0.9048,
+            "recall": 0.8636,
+            "f1": 0.8837,
+            "support_frames": 22
+          },
+          "CONTESTED": {
+            "precision": 1.0,
+            "recall": 0.3,
+            "f1": 0.4615,
+            "support_frames": 10
+          },
+          "LOOSE_BALL": {
+            "precision": 0.7843,
+            "recall": 0.9524,
+            "f1": 0.8602,
+            "support_frames": 42
+          },
+          "UNKNOWN": {
+            "precision": 0.6538,
+            "recall": 1.0,
+            "f1": 0.7907,
+            "support_frames": 34
+          },
+          "OUT_OF_PLAY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support_frames": 0
+          }
+        },
+        "per_state_duration_error_seconds": {
+          "TEAM_A_CONTROL": 1.52,
+          "TEAM_B_CONTROL": 0.08,
+          "CONTESTED": 0.56,
+          "LOOSE_BALL": 0.72,
+          "UNKNOWN": 1.44,
+          "OUT_OF_PLAY": 0
+        },
+        "team_a_time_error_seconds": 1.52,
+        "team_b_time_error_seconds": 0.08,
+        "team_possession_share_error_pct_points": 4.97,
+        "gt_team_a_share_pct": 76.6,
+        "pred_team_a_share_pct": 71.62,
+        "team_ownership_swap_frames": 0,
+        "confident_attribution_frames": 74,
+        "incorrect_confident_attribution_frames": 4,
+        "incorrect_confident_attribution_rate": 0.0541,
+        "incorrect_confident_attribution_rate_all_frames": 0.0222,
+        "strict_incorrect_confident_frames": 2,
+        "strict_incorrect_confident_rate_all_frames": 0.0111,
+        "gt_transitions": 17,
+        "pred_transitions": 34,
+        "transition_count_error": 17,
+        "transition_timing_error_seconds": 0.033,
+        "unknown_state_rate": 0.2889,
+        "confident_attribution_coverage": 0.4111,
+        "attribution_coverage": 0.4111,
+        "confidently_assigned_possession_pct": 41.11,
+        "state_labels": [
+          "TEAM_A_CONTROL",
+          "TEAM_B_CONTROL",
+          "CONTESTED",
+          "LOOSE_BALL",
+          "UNKNOWN",
+          "OUT_OF_PLAY"
+        ],
+        "confusion_matrix": [
+          [
+            51,
+            0,
+            0,
+            5,
+            16,
+            0
+          ],
+          [
+            0,
+            19,
+            0,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            3,
+            5,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            40,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            34,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "mispredicted_frames": [
+          {
+            "frame_number": 16,
+            "timestamp": 0.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 18,
+            "timestamp": 0.72,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 20,
+            "timestamp": 0.8,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 22,
+            "timestamp": 0.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 72,
+            "timestamp": 2.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.1964
+          },
+          {
+            "frame_number": 86,
+            "timestamp": 3.44,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4468
+          },
+          {
+            "frame_number": 88,
+            "timestamp": 3.52,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.1344
+          },
+          {
+            "frame_number": 90,
+            "timestamp": 3.6,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.0187
+          },
+          {
+            "frame_number": 166,
+            "timestamp": 6.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 174,
+            "timestamp": 6.96,
+            "ground_truth_state": "LOOSE_BALL",
+            "predicted_state": "TEAM_A_CONTROL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 2.0353
+          },
+          {
+            "frame_number": 176,
+            "timestamp": 7.04,
+            "ground_truth_state": "LOOSE_BALL",
+            "predicted_state": "TEAM_A_CONTROL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.9071
+          },
+          {
+            "frame_number": 208,
+            "timestamp": 8.32,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.3014
+          },
+          {
+            "frame_number": 210,
+            "timestamp": 8.4,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.7899
+          },
+          {
+            "frame_number": 212,
+            "timestamp": 8.48,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3034
+          },
+          {
+            "frame_number": 214,
+            "timestamp": 8.56,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3233
+          },
+          {
+            "frame_number": 216,
+            "timestamp": 8.64,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.3829
+          },
+          {
+            "frame_number": 218,
+            "timestamp": 8.72,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.4119
+          },
+          {
+            "frame_number": 220,
+            "timestamp": 8.8,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.427
+          },
+          {
+            "frame_number": 222,
+            "timestamp": 8.88,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.5757
+          },
+          {
+            "frame_number": 224,
+            "timestamp": 8.96,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.8047
+          },
+          {
+            "frame_number": 226,
+            "timestamp": 9.04,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.0398
+          },
+          {
+            "frame_number": 228,
+            "timestamp": 9.12,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.0276
+          },
+          {
+            "frame_number": 260,
+            "timestamp": 10.4,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.0984
+          },
+          {
+            "frame_number": 276,
+            "timestamp": 11.04,
+            "ground_truth_state": "CONTESTED",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.0209
+          },
+          {
+            "frame_number": 280,
+            "timestamp": 11.2,
+            "ground_truth_state": "CONTESTED",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.2795
+          }
+        ]
+      }
+    },
+    "117092_night": {
+      "sprint3_2_baseline": {
+        "metrics_available": true,
+        "status": "verified_manual_possession_evaluation",
+        "validation_blocker": null,
+        "evaluated_frames": 180,
+        "uncertain_frames_excluded": 0,
+        "state_accuracy": 0.6611,
+        "macro_f1": 0.7215,
+        "confident_attribution_accuracy": 1.0,
+        "both_confident_team_frames": 13,
+        "correct_confident_team_frames": 13,
+        "per_state": {
+          "TEAM_A_CONTROL": {
+            "precision": 1.0,
+            "recall": 0.5625,
+            "f1": 0.72,
+            "support_frames": 16
+          },
+          "TEAM_B_CONTROL": {
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.8889,
+            "support_frames": 5
+          },
+          "CONTESTED": {
+            "precision": 0.75,
+            "recall": 0.75,
+            "f1": 0.75,
+            "support_frames": 4
+          },
+          "LOOSE_BALL": {
+            "precision": 0.3516,
+            "recall": 1.0,
+            "f1": 0.5203,
+            "support_frames": 32
+          },
+          "UNKNOWN": {
+            "precision": 0.9861,
+            "recall": 0.5772,
+            "f1": 0.7282,
+            "support_frames": 123
+          },
+          "OUT_OF_PLAY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support_frames": 0
+          }
+        },
+        "per_state_duration_error_seconds": {
+          "TEAM_A_CONTROL": 0.56,
+          "TEAM_B_CONTROL": 0.08,
+          "CONTESTED": 0.0,
+          "LOOSE_BALL": 4.72,
+          "UNKNOWN": 4.08,
+          "OUT_OF_PLAY": 0
+        },
+        "team_a_time_error_seconds": 0.56,
+        "team_b_time_error_seconds": 0.08,
+        "team_possession_share_error_pct_points": 6.96,
+        "gt_team_a_share_pct": 76.19,
+        "pred_team_a_share_pct": 69.23,
+        "team_ownership_swap_frames": 0,
+        "confident_attribution_frames": 13,
+        "incorrect_confident_attribution_frames": 0,
+        "incorrect_confident_attribution_rate": 0.0,
+        "incorrect_confident_attribution_rate_all_frames": 0.0,
+        "strict_incorrect_confident_frames": 0,
+        "strict_incorrect_confident_rate_all_frames": 0.0,
+        "gt_transitions": 13,
+        "pred_transitions": 25,
+        "transition_count_error": 12,
+        "transition_timing_error_seconds": 0.086,
+        "unknown_state_rate": 0.4,
+        "confident_attribution_coverage": 0.0722,
+        "attribution_coverage": 0.0722,
+        "confidently_assigned_possession_pct": 7.22,
+        "state_labels": [
+          "TEAM_A_CONTROL",
+          "TEAM_B_CONTROL",
+          "CONTESTED",
+          "LOOSE_BALL",
+          "UNKNOWN",
+          "OUT_OF_PLAY"
+        ],
+        "confusion_matrix": [
+          [
+            9,
+            0,
+            0,
+            6,
+            1,
+            0
+          ],
+          [
+            0,
+            4,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            32,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            52,
+            71,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "mispredicted_frames": [
+          {
+            "frame_number": 44,
+            "timestamp": 1.76,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.613
+          },
+          {
+            "frame_number": 82,
+            "timestamp": 3.28,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 2.0779
+          },
+          {
+            "frame_number": 84,
+            "timestamp": 3.36,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.4597
+          },
+          {
+            "frame_number": 88,
+            "timestamp": 3.52,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4205
+          },
+          {
+            "frame_number": 90,
+            "timestamp": 3.6,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.7053
+          },
+          {
+            "frame_number": 92,
+            "timestamp": 3.68,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4063
+          },
+          {
+            "frame_number": 94,
+            "timestamp": 3.76,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.756
+          },
+          {
+            "frame_number": 96,
+            "timestamp": 3.84,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8018
+          },
+          {
+            "frame_number": 98,
+            "timestamp": 3.92,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.774
+          },
+          {
+            "frame_number": 100,
+            "timestamp": 4.0,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 1.8057
+          },
+          {
+            "frame_number": 102,
+            "timestamp": 4.08,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.841
+          },
+          {
+            "frame_number": 104,
+            "timestamp": 4.16,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8218
+          },
+          {
+            "frame_number": 106,
+            "timestamp": 4.24,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.7684
+          },
+          {
+            "frame_number": 108,
+            "timestamp": 4.32,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.859
+          },
+          {
+            "frame_number": 110,
+            "timestamp": 4.4,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.898
+          },
+          {
+            "frame_number": 112,
+            "timestamp": 4.48,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8411
+          },
+          {
+            "frame_number": 114,
+            "timestamp": 4.56,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8339
+          },
+          {
+            "frame_number": 116,
+            "timestamp": 4.64,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8504
+          },
+          {
+            "frame_number": 118,
+            "timestamp": 4.72,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8938
+          },
+          {
+            "frame_number": 120,
+            "timestamp": 4.8,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 1.8687
+          },
+          {
+            "frame_number": 122,
+            "timestamp": 4.88,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8412
+          },
+          {
+            "frame_number": 124,
+            "timestamp": 4.96,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.8362
+          },
+          {
+            "frame_number": 126,
+            "timestamp": 5.04,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.7081
+          },
+          {
+            "frame_number": 128,
+            "timestamp": 5.12,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.9488
+          },
+          {
+            "frame_number": 130,
+            "timestamp": 5.2,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.9424
+          }
+        ]
+      },
+      "sprint3_3_possession_engine": {
+        "metrics_available": true,
+        "status": "verified_manual_possession_evaluation",
+        "validation_blocker": null,
+        "evaluated_frames": 180,
+        "uncertain_frames_excluded": 0,
+        "state_accuracy": 0.9278,
+        "macro_f1": 0.7258,
+        "confident_attribution_accuracy": 1.0,
+        "both_confident_team_frames": 14,
+        "correct_confident_team_frames": 14,
+        "per_state": {
+          "TEAM_A_CONTROL": {
+            "precision": 0.9091,
+            "recall": 0.625,
+            "f1": 0.7407,
+            "support_frames": 16
+          },
+          "TEAM_B_CONTROL": {
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.8889,
+            "support_frames": 5
+          },
+          "CONTESTED": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.8889,
+            "support_frames": 4
+          },
+          "LOOSE_BALL": {
+            "precision": 0.775,
+            "recall": 0.9688,
+            "f1": 0.8611,
+            "support_frames": 32
+          },
+          "UNKNOWN": {
+            "precision": 0.9916,
+            "recall": 0.9593,
+            "f1": 0.9752,
+            "support_frames": 123
+          },
+          "OUT_OF_PLAY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support_frames": 0
+          }
+        },
+        "per_state_duration_error_seconds": {
+          "TEAM_A_CONTROL": 0.4,
+          "TEAM_B_CONTROL": 0.08,
+          "CONTESTED": 0.08,
+          "LOOSE_BALL": 0.64,
+          "UNKNOWN": 0.32,
+          "OUT_OF_PLAY": 0.08
+        },
+        "team_a_time_error_seconds": 0.4,
+        "team_b_time_error_seconds": 0.08,
+        "team_possession_share_error_pct_points": 2.86,
+        "gt_team_a_share_pct": 76.19,
+        "pred_team_a_share_pct": 73.33,
+        "team_ownership_swap_frames": 0,
+        "confident_attribution_frames": 15,
+        "incorrect_confident_attribution_frames": 1,
+        "incorrect_confident_attribution_rate": 0.0667,
+        "incorrect_confident_attribution_rate_all_frames": 0.0056,
+        "strict_incorrect_confident_frames": 0,
+        "strict_incorrect_confident_rate_all_frames": 0.0,
+        "gt_transitions": 13,
+        "pred_transitions": 23,
+        "transition_count_error": 10,
+        "transition_timing_error_seconds": 0.037,
+        "unknown_state_rate": 0.6611,
+        "confident_attribution_coverage": 0.0833,
+        "attribution_coverage": 0.0833,
+        "confidently_assigned_possession_pct": 8.33,
+        "state_labels": [
+          "TEAM_A_CONTROL",
+          "TEAM_B_CONTROL",
+          "CONTESTED",
+          "LOOSE_BALL",
+          "UNKNOWN",
+          "OUT_OF_PLAY"
+        ],
+        "confusion_matrix": [
+          [
+            10,
+            0,
+            0,
+            6,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            31,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            3,
+            118,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "mispredicted_frames": [
+          {
+            "frame_number": 44,
+            "timestamp": 1.76,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.613
+          },
+          {
+            "frame_number": 82,
+            "timestamp": 3.28,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 2.0779
+          },
+          {
+            "frame_number": 84,
+            "timestamp": 3.36,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.4597
+          },
+          {
+            "frame_number": 88,
+            "timestamp": 3.52,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4205
+          },
+          {
+            "frame_number": 92,
+            "timestamp": 3.68,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4063
+          },
+          {
+            "frame_number": 174,
+            "timestamp": 6.96,
+            "ground_truth_state": "LOOSE_BALL",
+            "predicted_state": "UNKNOWN",
+            "ball_observation_mode": "lost",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 196,
+            "timestamp": 7.84,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.9461
+          },
+          {
+            "frame_number": 204,
+            "timestamp": 8.16,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "TEAM_A_CONTROL",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 0.5578
+          },
+          {
+            "frame_number": 240,
+            "timestamp": 9.6,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.6016
+          },
+          {
+            "frame_number": 252,
+            "timestamp": 10.08,
+            "ground_truth_state": "TEAM_A_CONTROL",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 1.4376
+          },
+          {
+            "frame_number": 262,
+            "timestamp": 10.48,
+            "ground_truth_state": "TEAM_B_CONTROL",
+            "predicted_state": "CONTESTED",
+            "ball_observation_mode": "observed",
+            "closest_normalized_distance": 0.1935
+          },
+          {
+            "frame_number": 322,
+            "timestamp": 12.88,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "OUT_OF_PLAY",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": null
+          },
+          {
+            "frame_number": 352,
+            "timestamp": 14.08,
+            "ground_truth_state": "UNKNOWN",
+            "predicted_state": "LOOSE_BALL",
+            "ball_observation_mode": "interpolated",
+            "closest_normalized_distance": 1.598
+          }
+        ]
+      }
+    }
+  },
+  "extended_30s_118575_375_frames": {
+    "frames_evaluated": 375,
+    "duration_seconds": 30.0,
+    "sprint3_2_baseline": {
+      "metrics_available": true,
+      "status": "verified_manual_possession_evaluation",
+      "validation_blocker": null,
+      "evaluated_frames": 375,
+      "uncertain_frames_excluded": 0,
+      "state_accuracy": 0.7653,
+      "macro_f1": 0.6801,
+      "confident_attribution_accuracy": 1.0,
+      "both_confident_team_frames": 140,
+      "correct_confident_team_frames": 140,
+      "per_state": {
+        "TEAM_A_CONTROL": {
+          "precision": 0.8023,
+          "recall": 0.734,
+          "f1": 0.7667,
+          "support_frames": 94
+        },
+        "TEAM_B_CONTROL": {
+          "precision": 0.8765,
+          "recall": 0.8452,
+          "f1": 0.8606,
+          "support_frames": 84
+        },
+        "CONTESTED": {
+          "precision": 0.5,
+          "recall": 0.2,
+          "f1": 0.2857,
+          "support_frames": 10
+        },
+        "LOOSE_BALL": {
+          "precision": 0.7838,
+          "recall": 0.6905,
+          "f1": 0.7342,
+          "support_frames": 126
+        },
+        "UNKNOWN": {
+          "precision": 0.6237,
+          "recall": 0.9508,
+          "f1": 0.7532,
+          "support_frames": 61
+        },
+        "OUT_OF_PLAY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support_frames": 0
+        }
+      },
+      "per_state_duration_error_seconds": {
+        "TEAM_A_CONTROL": 0.64,
+        "TEAM_B_CONTROL": 0.24,
+        "CONTESTED": 0.48,
+        "LOOSE_BALL": 1.2,
+        "UNKNOWN": 2.56,
+        "OUT_OF_PLAY": 0
+      },
+      "team_a_time_error_seconds": 0.64,
+      "team_b_time_error_seconds": 0.24,
+      "team_possession_share_error_pct_points": 1.31,
+      "gt_team_a_share_pct": 52.81,
+      "pred_team_a_share_pct": 51.5,
+      "team_ownership_swap_frames": 0,
+      "confident_attribution_frames": 167,
+      "incorrect_confident_attribution_frames": 27,
+      "incorrect_confident_attribution_rate": 0.1617,
+      "incorrect_confident_attribution_rate_all_frames": 0.072,
+      "strict_incorrect_confident_frames": 4,
+      "strict_incorrect_confident_rate_all_frames": 0.0107,
+      "gt_transitions": 27,
+      "pred_transitions": 63,
+      "transition_count_error": 36,
+      "transition_timing_error_seconds": 0.145,
+      "unknown_state_rate": 0.248,
+      "confident_attribution_coverage": 0.4453,
+      "attribution_coverage": 0.4453,
+      "confidently_assigned_possession_pct": 44.53,
+      "state_labels": [
+        "TEAM_A_CONTROL",
+        "TEAM_B_CONTROL",
+        "CONTESTED",
+        "LOOSE_BALL",
+        "UNKNOWN",
+        "OUT_OF_PLAY"
+      ],
+      "confusion_matrix": [
+        [
+          69,
+          0,
+          0,
+          8,
+          17,
+          0
+        ],
+        [
+          0,
+          71,
+          1,
+          10,
+          2,
+          0
+        ],
+        [
+          0,
+          4,
+          2,
+          4,
+          0,
+          0
+        ],
+        [
+          17,
+          6,
+          0,
+          87,
+          16,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          2,
+          58,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "mispredicted_frames": [
+        {
+          "frame_number": 16,
+          "timestamp": 0.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 18,
+          "timestamp": 0.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 20,
+          "timestamp": 0.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 22,
+          "timestamp": 0.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 34,
+          "timestamp": 1.36,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "interpolated",
+          "closest_normalized_distance": 1.266
+        },
+        {
+          "frame_number": 36,
+          "timestamp": 1.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.9895
+        },
+        {
+          "frame_number": 72,
+          "timestamp": 2.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1964
+        },
+        {
+          "frame_number": 86,
+          "timestamp": 3.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.4468
+        },
+        {
+          "frame_number": 88,
+          "timestamp": 3.52,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.1344
+        },
+        {
+          "frame_number": 112,
+          "timestamp": 4.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.2603
+        },
+        {
+          "frame_number": 166,
+          "timestamp": 6.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 208,
+          "timestamp": 8.32,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.3014
+        },
+        {
+          "frame_number": 210,
+          "timestamp": 8.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.7899
+        },
+        {
+          "frame_number": 212,
+          "timestamp": 8.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3034
+        },
+        {
+          "frame_number": 214,
+          "timestamp": 8.56,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3233
+        },
+        {
+          "frame_number": 216,
+          "timestamp": 8.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3829
+        },
+        {
+          "frame_number": 218,
+          "timestamp": 8.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.4119
+        },
+        {
+          "frame_number": 220,
+          "timestamp": 8.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.427
+        },
+        {
+          "frame_number": 222,
+          "timestamp": 8.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.5757
+        },
+        {
+          "frame_number": 224,
+          "timestamp": 8.96,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.8047
+        },
+        {
+          "frame_number": 226,
+          "timestamp": 9.04,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0398
+        },
+        {
+          "frame_number": 228,
+          "timestamp": 9.12,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0276
+        },
+        {
+          "frame_number": 246,
+          "timestamp": 9.84,
+          "ground_truth_state": "UNKNOWN",
+          "predicted_state": "CONTESTED",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1987
+        },
+        {
+          "frame_number": 250,
+          "timestamp": 10.0,
+          "ground_truth_state": "UNKNOWN",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "interpolated",
+          "closest_normalized_distance": 0.114
+        },
+        {
+          "frame_number": 260,
+          "timestamp": 10.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0984
+        }
+      ]
+    },
+    "sprint3_3_possession_engine": {
+      "metrics_available": true,
+      "status": "verified_manual_possession_evaluation",
+      "validation_blocker": null,
+      "evaluated_frames": 375,
+      "uncertain_frames_excluded": 0,
+      "state_accuracy": 0.7733,
+      "macro_f1": 0.7142,
+      "confident_attribution_accuracy": 1.0,
+      "both_confident_team_frames": 141,
+      "correct_confident_team_frames": 141,
+      "per_state": {
+        "TEAM_A_CONTROL": {
+          "precision": 0.7865,
+          "recall": 0.7447,
+          "f1": 0.765,
+          "support_frames": 94
+        },
+        "TEAM_B_CONTROL": {
+          "precision": 0.8987,
+          "recall": 0.8452,
+          "f1": 0.8712,
+          "support_frames": 84
+        },
+        "CONTESTED": {
+          "precision": 0.75,
+          "recall": 0.3,
+          "f1": 0.4286,
+          "support_frames": 10
+        },
+        "LOOSE_BALL": {
+          "precision": 0.789,
+          "recall": 0.6825,
+          "f1": 0.7319,
+          "support_frames": 126
+        },
+        "UNKNOWN": {
+          "precision": 0.6383,
+          "recall": 0.9836,
+          "f1": 0.7742,
+          "support_frames": 61
+        },
+        "OUT_OF_PLAY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support_frames": 0
+        }
+      },
+      "per_state_duration_error_seconds": {
+        "TEAM_A_CONTROL": 0.4,
+        "TEAM_B_CONTROL": 0.4,
+        "CONTESTED": 0.48,
+        "LOOSE_BALL": 1.36,
+        "UNKNOWN": 2.64,
+        "OUT_OF_PLAY": 0
+      },
+      "team_a_time_error_seconds": 0.4,
+      "team_b_time_error_seconds": 0.4,
+      "team_possession_share_error_pct_points": 0.17,
+      "gt_team_a_share_pct": 52.81,
+      "pred_team_a_share_pct": 52.98,
+      "team_ownership_swap_frames": 0,
+      "confident_attribution_frames": 168,
+      "incorrect_confident_attribution_frames": 27,
+      "incorrect_confident_attribution_rate": 0.1607,
+      "incorrect_confident_attribution_rate_all_frames": 0.072,
+      "strict_incorrect_confident_frames": 2,
+      "strict_incorrect_confident_rate_all_frames": 0.0053,
+      "gt_transitions": 27,
+      "pred_transitions": 61,
+      "transition_count_error": 34,
+      "transition_timing_error_seconds": 0.148,
+      "unknown_state_rate": 0.2507,
+      "confident_attribution_coverage": 0.448,
+      "attribution_coverage": 0.448,
+      "confidently_assigned_possession_pct": 44.8,
+      "state_labels": [
+        "TEAM_A_CONTROL",
+        "TEAM_B_CONTROL",
+        "CONTESTED",
+        "LOOSE_BALL",
+        "UNKNOWN",
+        "OUT_OF_PLAY"
+      ],
+      "confusion_matrix": [
+        [
+          70,
+          0,
+          0,
+          7,
+          17,
+          0
+        ],
+        [
+          0,
+          71,
+          1,
+          10,
+          2,
+          0
+        ],
+        [
+          0,
+          2,
+          3,
+          5,
+          0,
+          0
+        ],
+        [
+          19,
+          6,
+          0,
+          86,
+          15,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          60,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "mispredicted_frames": [
+        {
+          "frame_number": 16,
+          "timestamp": 0.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 18,
+          "timestamp": 0.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 20,
+          "timestamp": 0.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 22,
+          "timestamp": 0.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 72,
+          "timestamp": 2.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.1964
+        },
+        {
+          "frame_number": 86,
+          "timestamp": 3.44,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.4468
+        },
+        {
+          "frame_number": 88,
+          "timestamp": 3.52,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.1344
+        },
+        {
+          "frame_number": 90,
+          "timestamp": 3.6,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0187
+        },
+        {
+          "frame_number": 166,
+          "timestamp": 6.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "lost",
+          "closest_normalized_distance": null
+        },
+        {
+          "frame_number": 174,
+          "timestamp": 6.96,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "TEAM_A_CONTROL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 2.0353
+        },
+        {
+          "frame_number": 176,
+          "timestamp": 7.04,
+          "ground_truth_state": "LOOSE_BALL",
+          "predicted_state": "TEAM_A_CONTROL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.9071
+        },
+        {
+          "frame_number": 208,
+          "timestamp": 8.32,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.3014
+        },
+        {
+          "frame_number": 210,
+          "timestamp": 8.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.7899
+        },
+        {
+          "frame_number": 212,
+          "timestamp": 8.48,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3034
+        },
+        {
+          "frame_number": 214,
+          "timestamp": 8.56,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3233
+        },
+        {
+          "frame_number": 216,
+          "timestamp": 8.64,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.3829
+        },
+        {
+          "frame_number": 218,
+          "timestamp": 8.72,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.4119
+        },
+        {
+          "frame_number": 220,
+          "timestamp": 8.8,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.427
+        },
+        {
+          "frame_number": 222,
+          "timestamp": 8.88,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.5757
+        },
+        {
+          "frame_number": 224,
+          "timestamp": 8.96,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.8047
+        },
+        {
+          "frame_number": 226,
+          "timestamp": 9.04,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "UNKNOWN",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0398
+        },
+        {
+          "frame_number": 228,
+          "timestamp": 9.12,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 1.0276
+        },
+        {
+          "frame_number": 260,
+          "timestamp": 10.4,
+          "ground_truth_state": "TEAM_A_CONTROL",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0984
+        },
+        {
+          "frame_number": 276,
+          "timestamp": 11.04,
+          "ground_truth_state": "CONTESTED",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.0209
+        },
+        {
+          "frame_number": 280,
+          "timestamp": 11.2,
+          "ground_truth_state": "CONTESTED",
+          "predicted_state": "LOOSE_BALL",
+          "ball_observation_mode": "observed",
+          "closest_normalized_distance": 0.2795
+        }
+      ]
+    }
+  },
+  "geometric_out_of_play_audit": {
+    "total_out_of_play_test_cases": 6,
+    "sprint3_2_fractional_recall": 0.0,
+    "sprint3_3_geometric_recall": 0.6667,
+    "cases": [
+      {
+        "case": "118575_f980_out_touchline",
+        "pitch_xy_m": [
+          28.35,
+          -35.8
+        ],
+        "pixel_uv": [
+          2534.2,
+          168.1
+        ],
+        "image_frac_xy": [
+          0.6187,
+          0.1556
+        ],
+        "pitch_zone": "playable",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": false
+      },
+      {
+        "case": "118575_f990_out_stoppage",
+        "pitch_xy_m": [
+          28.35,
+          -36.5
+        ],
+        "pixel_uv": [
+          2530.4,
+          166.8
+        ],
+        "image_frac_xy": [
+          0.6178,
+          0.1545
+        ],
+        "pitch_zone": "boundary_margin",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": true
+      },
+      {
+        "case": "118575_f1000_out_stoppage",
+        "pitch_xy_m": [
+          28.35,
+          -37.2
+        ],
+        "pixel_uv": [
+          2526.6,
+          165.6
+        ],
+        "image_frac_xy": [
+          0.6169,
+          0.1533
+        ],
+        "pitch_zone": "boundary_margin",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": true
+      },
+      {
+        "case": "118575_f1010_throw_in_prep",
+        "pitch_xy_m": [
+          28.35,
+          -35.2
+        ],
+        "pixel_uv": [
+          2537.5,
+          169.1
+        ],
+        "image_frac_xy": [
+          0.6195,
+          0.1566
+        ],
+        "pitch_zone": "playable",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": false
+      },
+      {
+        "case": "118575_sideline_spare_ball_left",
+        "pitch_xy_m": [
+          -34.0,
+          36.8
+        ],
+        "pixel_uv": [
+          262.5,
+          689.3
+        ],
+        "image_frac_xy": [
+          0.0641,
+          0.6382
+        ],
+        "pitch_zone": "off_pitch",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": true
+      },
+      {
+        "case": "118575_far_track_behind_goal",
+        "pitch_xy_m": [
+          56.0,
+          0.0
+        ],
+        "pixel_uv": [
+          3315.5,
+          305.0
+        ],
+        "image_frac_xy": [
+          0.8095,
+          0.2824
+        ],
+        "pitch_zone": "off_pitch",
+        "sprint3_2_fractional_out_of_play": false,
+        "sprint3_3_geometric_out_of_play": true
+      }
+    ]
+  }
+}
