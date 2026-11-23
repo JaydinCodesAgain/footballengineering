@@ -79,7 +79,7 @@ This is an algorithmic regression test, **not** an accuracy claim. It cannot sub
 
 [`benchmark_sprint3_4_foot_recovery.py`](../../scripts/benchmark_sprint3_4_foot_recovery.py) compares full masking and foot-zone masking densely on `132831`, with released MOT player boxes held constant. It labels the ball score a `reconstructed_coordinate_proxy` and records unmatched proposals separately. It must not be presented as ball precision/recall.
 
-The bounded 4K proxy run completed for four dense frames. Both full-mask and foot-zone variants achieved `0 / 4` proxy matches and emitted `3` unmatched proposals (`0.75` proposals/frame). This is a negative/inconclusive result, not evidence for activation; the feature remains disabled by default. The raw proxy record is [`foot_zone_motion_proxy.json`](foot_zone_motion_proxy.json).
+The bounded 4K proxy run completed for 60 dense frames. Both full-mask and foot-zone variants achieved `0 / 60` proxy matches and emitted `171` unmatched proposals (`2.85` proposals/frame). This is a negative/inconclusive result, not evidence for activation; the feature remains disabled by default. The raw proxy record is [`foot_zone_motion_proxy.json`](foot_zone_motion_proxy.json).
 
 ## 5. Possession accuracy and coverage
 
@@ -110,7 +110,7 @@ The only defensible dense continuous numbers available at report time remain the
 | Mean detection latency (prior CPU run) | `4,747 ms/frame` | Measured on the prior CPU run, not a GPU projection |
 | Effective sampled throughput (prior CPU run) | `0.18 FPS` | Insufficient for multi-minute dense evaluation locally |
 | Local CUDA availability at Sprint 3.4 audit | `false` | No local GPU throughput claim is possible |
-| New 4K foot-zone proxy ablation | `0 / 4` proxy matches; `3` unmatched proposals in each variant | Negative/inconclusive; not eligible as independent ball accuracy |
+| New 4K foot-zone proxy ablation | `0 / 60` proxy matches; `171` unmatched proposals in each variant | Negative/inconclusive; not eligible as independent ball accuracy |
 
 No Colab T4 measurement has been performed in this sprint. The existing `colab_t4` profile remains the recommended route for 2-, 5-, and 10-minute dense `stride=2` benchmarks once the full match videos and an independently labelled protocol are available.
 
