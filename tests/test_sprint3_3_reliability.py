@@ -34,6 +34,7 @@ from src.evaluation.possession_eval import (
 )
 from src.geometry.pitch import PitchCalibration
 from src.geometry.pitch_region import PitchRegionConfig, PitchRegionFilter, PitchZone
+from src.detection.motion_ball import FixedCameraMotionBallDetector, MotionBallConfig
 from src.possession.ball_tracker import (
     KalmanBallTracker,
     filter_ball_candidates,
@@ -213,6 +214,51 @@ def test_aerial_ball_above_far_touchline_allowed_when_connected_to_trajectory():
         pitch_region_filter=prf,
     )
     assert len(kept) == 1
+
+
+def test_opt_in_foot_zone_motion_recovery_preserves_temporally_confirmed_ball():
+    """A ball at a player's feet is recoverable only when the new foot-zone experiment is enabled.
+
+    The test also protects the safety property: the default remains the historical full-body
+    player mask, so a deployment cannot silently become more permissive around boots/shadows.
+    """
+    player = DetectionRecord(0, 0.0, 0, "player", (290, 260, 340, 360), 0.95)
+
+    def make_frame(ball_x: int) -> np.ndarray:
+        frame = _make_solid_frame(h=700, w=1000)
+        _paint_patch(frame, player.bbox, (55, 55, 55))
+        _paint_patch(frame, (ball_x, 350, ball_x + 10, 360), (235, 235, 235))
+        return frame
+
+    common = dict(
+        diff_threshold=8,
+        bg_diff_threshold=8,
+        min_local_contrast=12.0,
+        min_motion_step_px=4.0,
+        max_motion_step_px=40.0,
+        require_kalman_corroboration=False,
+        require_three_frame_or_kalman=True,
+        player_mask_pad_px=0,
+    )
+    masked = FixedCameraMotionBallDetector(MotionBallConfig(**common))
+    foot_zone = FixedCameraMotionBallDetector(
+        MotionBallConfig(**common, preserve_player_foot_region=True, player_foot_region_height_fraction=0.20)
+    )
+
+    masked_results = []
+    foot_results = []
+    # The causal 3-motion-blob verifier needs the initial reference frame plus
+    # three moving observations before it can confirm a trajectory.
+    for frame_number, ball_x in enumerate((300, 310, 320, 330)):
+        frame = make_frame(ball_x)
+        masked_results = masked.detect_candidates(frame, frame_number, frame_number / 25.0, [player])
+        foot_results = foot_zone.detect_candidates(frame, frame_number, frame_number / 25.0, [player])
+
+    assert masked_results == []
+    assert len(foot_results) == 1
+    recovered = foot_results[0]
+    assert 328 <= (recovered.bbox[0] + recovered.bbox[2]) / 2 <= 337
+    assert 350 <= (recovered.bbox[1] + recovered.bbox[3]) / 2 <= 361
 
 
 def test_night_glare_illumination_invariant_separates_dark_navy_from_white_kits():

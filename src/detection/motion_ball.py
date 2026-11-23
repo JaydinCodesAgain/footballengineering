@@ -41,6 +41,12 @@ class MotionBallConfig:
     min_local_contrast: float = 22.0
     max_green_ratio: float = 0.58
     player_mask_pad_px: int = 7
+    # A whole-box player mask suppresses the exact lower-body region where a controlled
+    # football is most likely to be visible. Keep the historical full mask by default;
+    # fixed-camera experiments may opt in to retain the lower foot zone, but only with
+    # the existing temporal/Kalman corroboration gates still enabled.
+    preserve_player_foot_region: bool = False
+    player_foot_region_height_fraction: float = 0.18
     min_motion_step_px: float = 5.0
     max_motion_step_px: float = 190.0
     max_trajectory_residual_px: float = 22.0
@@ -281,14 +287,25 @@ class FixedCameraMotionBallDetector:
         if self._pitch_mask_roi is not None:
             motion = cv2.bitwise_and(motion, self._pitch_mask_roi)
 
-        # Mask out detected player bodies (with generous pad to exclude legs/boots/limbs)
+        # Mask out detected player bodies (with generous pad to exclude legs/boots/limbs).
+        # When explicitly enabled, retain only each player's lower foot zone so the
+        # temporal verifier can recover a compact ball at the feet. This is deliberately
+        # opt-in because unverified lower-body motion contains boots and shadows.
         pad = int(self.config.player_mask_pad_px)
         rh, rw = motion.shape[:2]
         for p in player_detections:
             px1 = max(0, int(p.bbox[0]) - rx1 - pad)
             py1 = max(0, int(p.bbox[1]) - ry1 - pad)
             px2 = min(rw, int(p.bbox[2]) - rx1 + pad)
-            py2 = min(rh, int(p.bbox[3]) - ry1 + pad)
+            if self.config.preserve_player_foot_region:
+                player_height = max(1, int(p.bbox[3]) - int(p.bbox[1]))
+                preserved_height = max(
+                    1,
+                    int(round(player_height * float(self.config.player_foot_region_height_fraction))),
+                )
+                py2 = min(rh, max(py1, int(p.bbox[3]) - ry1 - preserved_height))
+            else:
+                py2 = min(rh, int(p.bbox[3]) - ry1 + pad)
             if px2 > px1 and py2 > py1:
                 motion[py1:py2, px1:px2] = 0
 
