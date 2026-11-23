@@ -24,6 +24,7 @@ data/raw/*.mp4
 data/crops/*/images/
 data/annotations/*/frames/
 data/annotations/sprint3_5_ball_review/
+data/annotations/sprint3_5_smoke/
 data/sprint3_5_ball_yolo/
 outputs/sprint3_1/*_run/
 outputs/sprint3_2/*_run/
