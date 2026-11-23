@@ -1,39 +1,51 @@
 # Sprint 3.5 football-box review hand-off
 
-This batch contains **360 unreviewed frames**. It is not training data and must not be used for model fitting or evaluation until all review steps below are complete.
+Start here: open `data/annotations/sprint3_5_ball_review/chelsea_sunderland/detection_annotator.html` in a browser. Do **five frames only** first, export its CSV, and run the gate command below. That proves the real local workflow before you invest time in the remaining batch.
 
-| Source match | Split reserved now | Frames | Suggested boxes |
-|---|---:|---:|---:|
-| Chelsea vs Sunderland | train | 120 | 196 |
-| Norway vs Wales | train | 120 | 202 |
-| Man United vs Aston Villa highlights | validation | 120 | 163 |
+## What the reviewer means
 
-The dashed teal boxes in the local HTML files are low-confidence YOLO11n suggestions. They are deliberately noisy and do not appear in the ground-truth CSV export. A suggestion may be incorrect, may identify a non-match object, or may miss the ball entirely.
+- **Dashed teal** boxes are low-confidence YOLO suggestions only. They are not labels and are never exported as ground truth.
+- **Solid yellow BALL** boxes are manually drawn labels. Redraw a suggestion only when it is the active match ball.
+- **No box + Mark Frame Verified** means you inspected the frame and the active match ball is not confidently visible. Use it for a cone, boot, graphic, spare/out-of-play ball, or genuine ambiguity.
+- Use **Zoom +** for small footballs. Drawing remains in native image pixels at every zoom level.
 
-## Reviewer procedure
+## Save and resume safely
 
-1. Open each local `detection_annotator.html` file under `data/annotations/sprint3_5_ball_review/<match_id>/` in a browser.
-2. For every frame, inspect the image at native resolution. Draw a tight **BALL** box only around the active match ball when its visible extent can be located. Redraw accepted suggestions; do not regard a dashed suggestion as accepted merely because it appears.
-3. Do **not** label cones, markings, football-shaped graphics, crowd objects, or spare/out-of-play balls as the active match ball. For a fully hidden, absent, or ambiguous ball, leave the box list empty and tick **Mark Frame Verified**. Those reviewed negatives are important precision controls.
-4. For partially visible balls, box only the visible ball extent if it can be identified confidently. If it cannot, treat the frame as a reviewed negative rather than guessing.
-5. Use the export button. Replace the corresponding `detection_boxes.csv` in that same match folder with the downloaded CSV. Keep the files in their existing match folders; do not mix source matches.
+1. The reviewer saves each edit to this browser's local storage automatically. Use **Save Browser Progress** before closing the tab.
+2. Click **Download detection_boxes.csv** at the end of each short session. Replace the `detection_boxes.csv` in the same match folder. The CSV is the portable record; browser storage is only a convenience.
+3. On reopening in the same browser, use **Restore Browser Progress**. To continue on another browser/device, use **Import CSV** and select the complete CSV you previously downloaded.
+4. Do not rerun batch preparation while you have an unexported browser-only session. Normal preparation is resumable and refuses to overwrite a changed reviewed set; destructive regeneration requires an explicit backup and confirmation flag.
 
-Then run:
+## Review order
+
+| Order | Match / role | HTML file | Frames |
+|---:|---|---|---:|
+| 1 | Chelsea–Sunderland / train | `chelsea_sunderland/detection_annotator.html` | 120 |
+| 2 | Norway–Wales / train | `norway_wales/detection_annotator.html` | 120 |
+| 3 | Man United–Aston Villa / validation | `man_utd_4_4_aston_villa_highlights/detection_annotator.html` | 120 |
+| 4 | SoccerTrack 132831 panoramic / train-only context | `soccertrack_132831_panorama_clip/detection_annotator.html` | 40 |
+
+The SoccerTrack clip was previously inspected in Sprint 3.4. It improves panoramic small-object coverage but is **not** an untouched final test match.
+
+## Check progress and export
 
 ```powershell
 python scripts/export_sprint3_5_yolo_dataset.py
+Get-Content outputs/sprint3_5/training_gate_status.json
 ```
 
-The command writes `outputs/sprint3_5/training_gate_status.json`. It will remain blocked unless there are at least 300 manually verified frames, at least 100 manual ball boxes, and both train and validation source matches remain distinct. Once it reports `training_eligible: true`, export the local, gitignored YOLO dataset:
+The gate is eligible only after all configured review frames are manually marked, at least 100 active-ball boxes exist overall, including at least 80 in train and 20 in validation, and every image/box passes validation. `verified=true` records a reviewer attestation; it cannot itself prove that a human inspected the image, so only mark it after inspection.
+
+When the status says `training_eligible: true`, create the local, gitignored YOLO dataset:
 
 ```powershell
 python scripts/export_sprint3_5_yolo_dataset.py --export
 ```
 
-Only then may the configured candidate experiment be run:
+Then, and only then, run the configured candidate:
 
 ```powershell
-yolo detect train model=yolo11s.pt data=data/sprint3_5_ball_yolo/dataset.yaml imgsz=1280 epochs=100 patience=20 batch=2 device=cpu seed=42 deterministic=True
+python scripts/train_sprint3_5_yolo.py --execute
 ```
 
-The complete proposed hyperparameters and augmentation policy are in `configs/sprint3_5_ball_training.yaml`. A separate genuinely unseen, manually reviewed source must still be reserved for final model evaluation; it must not influence training or model selection.
+The automated test `test_yolo_export_requires_manual_match_disjoint_review` already exercises this exact export path using a two-image synthetic fixture. That fixture is test-only and never contributes to the real review counts, dataset, model, or metrics.

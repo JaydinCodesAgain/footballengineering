@@ -2,11 +2,17 @@
   "training_eligible": false,
   "thresholds": {
     "min_verified_frames": 300,
-    "min_positive_ball_boxes": 100
+    "min_positive_ball_boxes": 100,
+    "min_positive_ball_boxes_train": 80,
+    "min_positive_ball_boxes_val": 20
   },
   "totals": {
     "manual_verified_frames": 0,
-    "manual_verified_ball_boxes": 0
+    "manual_verified_ball_boxes": 0,
+    "manual_verified_ball_boxes_by_split": {
+      "val": 0,
+      "train": 0
+    }
   },
   "sources": [
     {
@@ -32,14 +38,25 @@
       "review_frames": 120,
       "manual_verified_frames": 0,
       "manual_verified_ball_boxes": 0
+    },
+    {
+      "match_id": "soccertrack_132831_panorama_clip",
+      "split": "train",
+      "annotation_root": "C:\\Users\\jmorrison\\projects\\footballengineering\\data\\annotations\\sprint3_5_ball_review\\soccertrack_132831_panorama_clip",
+      "review_frames": 40,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0
     }
   ],
   "blockers": [
     "chelsea_sunderland: 0/120 frames have manual verification.",
     "norway_wales: 0/120 frames have manual verification.",
     "man_utd_4_4_aston_villa_highlights: 0/120 frames have manual verification.",
+    "soccertrack_132831_panorama_clip: 0/40 frames have manual verification.",
     "Only 0/300 required manually verified frames.",
-    "Only 0/100 required manually verified ball boxes."
+    "Only 0/100 required manually verified ball boxes.",
+    "Only 0/80 required manually verified ball boxes in train.",
+    "Only 0/20 required manually verified ball boxes in val."
   ],
-  "training_command_when_eligible": "yolo detect train model=yolo11s.pt data=data/sprint3_5_ball_yolo/dataset.yaml imgsz=1280 epochs=100 patience=20 batch=2 device=cpu seed=42 deterministic=True"
+  "training_command_when_eligible": "python scripts/train_sprint3_5_yolo.py --execute"
 }

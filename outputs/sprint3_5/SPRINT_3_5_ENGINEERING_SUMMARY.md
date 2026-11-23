@@ -1,50 +1,26 @@
-# Sprint 3.5 — first football-specific training experiment
+# Sprint 3.5 — PR #7 training-readiness fixes
 
-## Result
+## Current outcome
 
-No fine-tuned checkpoint was trained and no baseline-versus-candidate accuracy claim is made. The execution environment has no CUDA device, but the decisive blocker is data provenance: the repository had no manually verified training frames. Training from model suggestions, SoccerTrack reconstructed trajectories, or the 74-frame scored benchmark would invalidate the experiment.
+No football-specific model was trained. Current verified review count is **0 / 400** and verified active-ball boxes are **0**; the training gate is correctly closed. Therefore the existing 74-frame benchmark remains unchanged: precision **79.41%**, recall **49.09%**, F1 **0.607**. No new accuracy metric is claimed.
 
-## Existing evidence retained
+## PR fixes
 
-| Measure | Current evidence | Scope |
-|---|---:|---|
-| Ball precision | 79.41% (27 / 34) | 74-frame visually verified benchmark |
-| Ball recall | 49.09% (27 / 55) | Same benchmark |
-| Ball F1 | 0.607 | Same benchmark |
-| Candidate model metrics | Not available | No reviewed train/validation set and no candidate checkpoint |
+- Export now validates every reviewed box in image space before normalization: `0 <= x1 < x2 <= width` and `0 <= y1 < y2 <= height`. It rejects negative, reversed, zero-area, and out-of-image boxes with match and frame context; it never clips labels.
+- The gate now requires 300 reviewed frames, 100 active-ball boxes overall, and positive examples in **both** roles: at least 80 train and 20 validation. Unsupported splits, duplicate manifest sources, bad provenance, missing/corrupt images, invalid metadata, and invalid boxes block export.
+- Normal preparation imports a reviewer CSV before writing anything, preserving CSV-only work. It refuses a changed frame selection. Destructive regeneration is available only with an explicit backup directory and exact confirmation phrase.
+- The existing HTML reviewer now has zoom-aware native-pixel drawing, browser-progress save/restore, complete-CSV import, confirmed clearing, verified-negative support, and visible separation of dashed suggestions from manual boxes.
+- The environment has the Ultralytics Python package and `yolo11s.pt`, but no `yolo` console executable. The repository launcher uses the Python API and is dry-run by default; `--execute` independently rechecks the reviewed-data gate.
+- Added 40 unreviewed 3840×1504 SoccerTrack 132831 panoramic frames as train-only review context. The original 360 highlight frames remain unchanged. Total review workload is now 400 frames.
 
-The benchmark remains development/regression evidence, not a training source or a large independent test set.
+## Synthetic end-to-end proof
 
-## Executed data-preparation experiment
+`test_yolo_export_requires_manual_match_disjoint_review` constructs one reviewed train image and one reviewed validation image, passes the manual-provenance and per-split-positive gates, exports a ball-only YOLO dataset, and checks the generated labels. It is a test fixture only and does not contribute to training readiness.
 
-A deterministic 360-frame review batch was extracted from three source matches. The two training sources and validation source are match-disjoint. Low-threshold YOLO11n proposals were generated at 640px only as dashed review overlays:
+## Representativeness
 
-| Split | Sources | Frames | Unreviewed suggestion count |
-|---|---|---:|---:|
-| Train | Chelsea–Sunderland; Norway–Wales | 240 | 398 |
-| Validation | Man United–Aston Villa | 120 | 163 |
-| Total | 3 source matches | 360 | 561 |
+`batch_representativeness_audit.json` records measurable dimensions, luminance summaries, and perceptual near-duplicate candidates. It does not guess whether a frame is a replay, close-up, transition, or contains a small football. Three sources remain 1280×720 highlights; the new SoccerTrack source is panoramic but previously inspected. A genuinely untouched, manually reviewed final test match is still required.
 
-The counts above are not football labels or model metrics. The manifest records 0 verified frames and 0 verified ball boxes, so the dataset exporter correctly reported `training_eligible: false`.
+## Required next action
 
-## Guardrails added
-
-- `FrameAnnotation.model_proposals` keeps proposal boxes separate from manual boxes. The existing reviewer shows them as dashed teal suggestions; its CSV contains only manually drawn boxes.
-- The new YOLO exporter imports the reviewer CSV and accepts only `verified=true, source=manual` frames. It supports reviewed empty frames as negatives and rejects model provenance.
-- Match IDs are checked for split duplication. Export fails closed below 300 verified frames or 100 verified active-ball boxes.
-- The local YOLO dataset, frames, videos, and checkpoints remain gitignored.
-
-## Candidate configuration — not executed
-
-`configs/sprint3_5_ball_training.yaml` records a single lightweight candidate: pretrained `yolo11s.pt`, one `ball` class, 1280px input, 100 epochs, early stopping patience 20, seed 42, and conservative image augmentation. This retains the production pipeline's high-resolution small-object emphasis while avoiding synthetic copy-paste or mixup football artefacts.
-
-The reference command and review procedure are in `REVIEW_HANDOFF.md`. It must only be run after the review gate passes. A final match-held-out evaluation source is still required before any generalisation claim or production model integration.
-
-## Checks run
-
-- `python -m py_compile src/detection/annotation_workflow.py scripts/prepare_sprint3_5_ball_review_batch.py scripts/export_sprint3_5_yolo_dataset.py`
-- `python -m pytest -q tests/test_sprint3_5_training_data.py` — 4 passed after the final proposal-separation regression test is run.
-- `python -m pytest -q tests/test_evaluation_and_report.py` — 4 passed.
-- Actual 360-frame extraction and proposal run completed on CPU; the resulting manifest and closed training-gate status are committed artifacts.
-
-No dense possession comparison was run because the prerequisite detector improvement does not yet exist.
+Follow `REVIEW_HANDOFF.md`: complete five Chelsea–Sunderland frames, export the CSV, and run the gate command. Continue only after that real review/export loop succeeds. Training, baseline comparison, possession re-evaluation, and production integration remain blocked until valid reviewed data exists.

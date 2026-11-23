@@ -119,7 +119,14 @@ class DetectionAnnotationStore:
         """
         Extract specific video frames to `frames/frame_<id>.jpg`, initialize empty annotation
         templates ready for manual bounding-box labelling, and generate `detection_annotator.html`.
+
+        Any CSV exported by the browser is imported before this method writes.  This
+        makes preparation resumable and prevents a stale JSON file from silently
+        replacing completed CSV-only review work.
         """
+        if self.csv_path.is_file():
+            self.import_boxes_from_csv(self.csv_path, allow_destructive=False)
+
         cap = cv2.VideoCapture(str(video_path))
         if not cap.isOpened():
             raise ValueError(f"Could not open video for frame extraction: {video_path}")
@@ -144,7 +151,8 @@ class DetectionAnnotationStore:
                     ok, frame = cap.read()
                     if not ok or frame is None:
                         continue
-                    cv2.imwrite(str(abs_img), frame)
+                    if not cv2.imwrite(str(abs_img), frame):
+                        raise ValueError(f"Could not write annotation frame: {abs_img}")
 
                 tag = scene_categories[idx % len(scene_categories)]
                 if fno not in self.frames:
@@ -219,8 +227,10 @@ class DetectionAnnotationStore:
             ),
             "frames": [f.to_dict() for f in ordered],
         }
-        with self.json_path.open("w", encoding="utf-8") as f:
+        json_temp_path = self.json_path.with_suffix(".json.tmp")
+        with json_temp_path.open("w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
+        json_temp_path.replace(self.json_path)
 
         fieldnames = [
             "frame_number",
@@ -234,7 +244,8 @@ class DetectionAnnotationStore:
             "verified",
             "source",
         ]
-        with self.csv_path.open("w", encoding="utf-8", newline="") as f:
+        csv_temp_path = self.csv_path.with_suffix(".csv.tmp")
+        with csv_temp_path.open("w", encoding="utf-8", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for f_ann in ordered:
@@ -270,6 +281,8 @@ class DetectionAnnotationStore:
                             }
                         )
 
+        csv_temp_path.replace(self.csv_path)
+
     def load(self) -> None:
         """Load annotations from `detection_annotations.json`."""
         with self.json_path.open("r", encoding="utf-8") as f:
@@ -279,10 +292,17 @@ class DetectionAnnotationStore:
             ann = FrameAnnotation.from_dict(item)
             self.frames[ann.frame_number] = ann
 
-    def import_boxes_from_csv(self, csv_path: Optional[str | Path] = None) -> int:
+    def import_boxes_from_csv(
+        self,
+        csv_path: Optional[str | Path] = None,
+        *,
+        allow_destructive: bool = False,
+    ) -> int:
         """
         Load manual bounding box annotations from `detection_boxes.csv` (or a specified CSV file).
-        Rejects any row whose `source` is `'model_prediction'` or `'auto'` from being marked `verified`.
+        Rejects model provenance and inconsistent per-frame metadata. Existing
+        verified manual work may not be removed or changed unless an explicit
+        caller opts into ``allow_destructive`` after making a backup.
         """
         target = Path(csv_path) if csv_path else self.csv_path
         if not target.is_file():
@@ -300,15 +320,28 @@ class DetectionAnnotationStore:
                 fno = int(fno_str)
                 ts = float(row.get("timestamp", 0.0) or 0.0)
                 ver = row.get("verified", "false").strip().lower() in ("true", "1", "yes", "y")
-                src = row.get("source", "manual").strip() or "manual"
+                src = (row.get("source", "manual").strip() or "manual").lower()
                 tag = row.get("scene_tag", "general_play").strip() or "general_play"
                 if src.lower() in ("model", "model_prediction", "auto", "predicted", "yolo"):
                     raise ValueError(
                         f"Frame {fno}: Ground-truth boxes cannot be imported with source='{src}'. "
                         "Predictions must never be presented as independent ground truth."
                     )
+                if src not in ("manual", "unlabelled"):
+                    raise ValueError(
+                        f"Frame {fno}: unsupported annotation source='{src}'. Expected 'manual' or 'unlabelled'."
+                    )
+                if ver and src != "manual":
+                    raise ValueError(
+                        f"Frame {fno}: verified annotations must have source='manual', not '{src}'."
+                    )
 
-                frame_meta[fno] = (ts, ver, src, tag)
+                metadata = (ts, ver, src, tag)
+                if fno in frame_meta and frame_meta[fno] != metadata:
+                    raise ValueError(
+                        f"Frame {fno}: CSV rows disagree on timestamp, verified flag, source, or scene tag."
+                    )
+                frame_meta[fno] = metadata
                 grouped_boxes.setdefault(fno, [])
 
                 cls_name = row.get("class_name", "").strip()
@@ -319,7 +352,28 @@ class DetectionAnnotationStore:
                     y2 = int(float(row["y2"]))
                     box = AnnotatedBox(class_name=cls_name, bbox=[x1, y1, x2, y2])
                     box.validate()
+                    if any(existing_box.class_name == box.class_name and existing_box.bbox == box.bbox for existing_box in grouped_boxes[fno]):
+                        raise ValueError(f"Frame {fno}: duplicate {cls_name} bounding box in CSV.")
                     grouped_boxes[fno].append(box)
+
+        if not allow_destructive:
+            for existing_fno, existing in self.frames.items():
+                if not (existing.verified and existing.source == "manual"):
+                    continue
+                incoming = frame_meta.get(existing_fno)
+                incoming_boxes = grouped_boxes.get(existing_fno)
+                if incoming is None or not (incoming[1] and incoming[2] == "manual"):
+                    raise ValueError(
+                        f"Frame {existing_fno}: refusing to discard existing verified manual review. "
+                        "Restore the complete exported CSV or use an explicit destructive recovery workflow with a backup."
+                    )
+                existing_signature = sorted((box.class_name, tuple(box.bbox)) for box in existing.boxes)
+                incoming_signature = sorted((box.class_name, tuple(box.bbox)) for box in (incoming_boxes or []))
+                if incoming_signature != existing_signature:
+                    raise ValueError(
+                        f"Frame {existing_fno}: refusing to replace existing verified manual boxes without an explicit "
+                        "destructive recovery workflow and backup."
+                    )
 
         updated = 0
         for fno, boxes in grouped_boxes.items():
@@ -385,18 +439,73 @@ class DetectionAnnotationStore:
   <button onclick="nextFrame()">Next Frame &#9654;</button>
   <button id="btn-ball" class="active-cls" onclick="setClass('ball')">Class: BALL (Key 1)</button>
   <button id="btn-player" onclick="setClass('player')">Class: PLAYER (Key 2)</button>
+  <button onclick="setZoom(zoom - 0.25)">Zoom −</button>
+  <button onclick="setZoom(zoom + 0.25)">Zoom +</button>
+  <button onclick="setZoom(1)">100%</button>
   <button onclick="undoBox()">Undo Last Box (Z)</button>
   <button onclick="clearFrameBoxes()">Clear Frame</button>
   <label><input type="checkbox" id="chk-verified" onchange="toggleVerified(this.checked)"> Mark Frame Verified (Manual GT)</label>
+  <button onclick="saveLocalProgress()">Save Browser Progress</button>
+  <button onclick="restoreLocalProgress()">Restore Browser Progress</button>
+  <label>Import CSV <input id="csv-import" type="file" accept=".csv,text/csv" onchange="importCSV(event)"></label>
   <button class="primary" onclick="exportCSV()">Download detection_boxes.csv</button>
-  <span class="status">Dashed teal boxes are model suggestions only: inspect them, then redraw every accepted box. Save CSV to data/annotations/{self.match_id}/detection_boxes.csv</span>
+  <span id="review-status" class="status">Dashed teal boxes are model suggestions only: inspect them, then redraw every accepted box. Browser progress is saved locally after each edit; download CSV before moving browsers or devices.</span>
 </div>
 <div id="canvas-wrap"><canvas id="c"></canvas></div>
 <script>
 const frames = {frames_json};
-let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0;
+const storageKey = 'football-engineering-annotations:{self.match_id}:' + frames.map(f => f.frame_number).join('-');
+let idx = 0, currentClass = 'ball', dragging = false, startX = 0, startY = 0, zoom = 1;
 const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
 const img = new Image();
+
+function setStatus(message) {{ document.getElementById('review-status').textContent = message; }}
+function setCanvasDisplaySize() {{
+  canvas.style.width = `${{Math.round(canvas.width * zoom)}}px`;
+  canvas.style.height = `${{Math.round(canvas.height * zoom)}}px`;
+}}
+function setZoom(value) {{
+  zoom = Math.max(0.5, Math.min(4, Math.round(value * 100) / 100));
+  setCanvasDisplaySize();
+  setStatus(`Zoom ${{Math.round(zoom * 100)}}%. Coordinates remain in native image pixels.`);
+}}
+function pointerToImageCoordinates(event) {{
+  const rect = canvas.getBoundingClientRect();
+  return [
+    Math.round((event.clientX - rect.left) * canvas.width / rect.width),
+    Math.round((event.clientY - rect.top) * canvas.height / rect.height),
+  ];
+}}
+function progressPayload() {{
+  return frames.map(f => ({{
+    frame_number: f.frame_number,
+    boxes: f.boxes,
+    verified: !!f.verified,
+    source: f.source,
+  }}));
+}}
+function saveLocalProgress(quiet = false) {{
+  localStorage.setItem(storageKey, JSON.stringify(progressPayload()));
+  if (!quiet) setStatus('Browser progress saved. Download the CSV as the portable review record.');
+}}
+function restoreLocalProgress() {{
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) {{ setStatus('No browser progress exists for this exact review batch.'); return; }}
+  let saved;
+  try {{ saved = JSON.parse(raw); }} catch (_) {{ setStatus('Saved browser progress is unreadable; it was not applied.'); return; }}
+  if (!Array.isArray(saved) || saved.length !== frames.length) {{ setStatus('Saved browser progress belongs to another batch; it was not applied.'); return; }}
+  const byFrame = new Map(saved.map(item => [item.frame_number, item]));
+  if (frames.some(f => !byFrame.has(f.frame_number))) {{ setStatus('Saved browser progress has different frames; it was not applied.'); return; }}
+  if (!confirm('Restore browser-saved manual boxes and verification state? Current unsaved browser edits will be replaced.')) return;
+  for (const f of frames) {{
+    const savedFrame = byFrame.get(f.frame_number);
+    f.boxes = Array.isArray(savedFrame.boxes) ? savedFrame.boxes : [];
+    f.verified = !!savedFrame.verified;
+    f.source = savedFrame.source === 'manual' ? 'manual' : 'unlabelled';
+  }}
+  loadFrame(idx);
+  setStatus('Browser progress restored. Download CSV to make this review portable.');
+}}
 
 function loadFrame(i) {{
   if (!frames.length) return;
@@ -405,7 +514,7 @@ function loadFrame(i) {{
   const proposalCount = (f.model_proposals || []).length;
   document.getElementById('frame-info').textContent = `#${{idx+1}}/${{frames.length}} | Frame ${{f.frame_number}} (${{f.timestamp}}s) [${{f.scene_tag}}] | Manual: ${{f.boxes.length}} | Suggestions: ${{proposalCount}}`;
   document.getElementById('chk-verified').checked = !!f.verified;
-  img.onload = () => {{ canvas.width = img.width; canvas.height = img.height; render(); }};
+  img.onload = () => {{ canvas.width = img.width; canvas.height = img.height; setCanvasDisplaySize(); render(); }};
   img.src = f.image_rel_path;
 }}
 
@@ -441,28 +550,25 @@ function render(previewRect) {{
 }}
 
 canvas.addEventListener('mousedown', e => {{
-  const r = canvas.getBoundingClientRect();
-  startX = Math.round(e.clientX - r.left);
-  startY = Math.round(e.clientY - r.top);
+  [startX, startY] = pointerToImageCoordinates(e);
   dragging = true;
 }});
 canvas.addEventListener('mousemove', e => {{
   if (!dragging) return;
-  const r = canvas.getBoundingClientRect();
-  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const [cx, cy] = pointerToImageCoordinates(e);
   render([Math.min(startX, cx), Math.min(startY, cy), Math.max(startX, cx), Math.max(startY, cy)]);
 }});
 canvas.addEventListener('mouseup', e => {{
   if (!dragging) return;
   dragging = false;
-  const r = canvas.getBoundingClientRect();
-  const cx = Math.round(e.clientX - r.left), cy = Math.round(e.clientY - r.top);
+  const [cx, cy] = pointerToImageCoordinates(e);
   const x1 = Math.min(startX, cx), y1 = Math.min(startY, cy), x2 = Math.max(startX, cx), y2 = Math.max(startY, cy);
   if (x2 - x1 >= 4 && y2 - y1 >= 4) {{
     frames[idx].boxes.push({{ class_name: currentClass, bbox: [x1, y1, x2, y2] }});
     frames[idx].verified = true;
     frames[idx].source = 'manual';
     document.getElementById('chk-verified').checked = true;
+    saveLocalProgress(true);
   }}
   loadFrame(idx);
 }});
@@ -472,9 +578,12 @@ function setClass(c) {{
   document.getElementById('btn-ball').className = c === 'ball' ? 'active-cls' : '';
   document.getElementById('btn-player').className = c === 'player' ? 'active-cls' : '';
 }}
-function undoBox() {{ frames[idx].boxes.pop(); loadFrame(idx); }}
-function clearFrameBoxes() {{ frames[idx].boxes = []; loadFrame(idx); }}
-function toggleVerified(v) {{ frames[idx].verified = v; if (v) frames[idx].source = 'manual'; }}
+function undoBox() {{ if (frames[idx].boxes.length) {{ frames[idx].boxes.pop(); saveLocalProgress(true); }} loadFrame(idx); }}
+function clearFrameBoxes() {{
+  if (frames[idx].boxes.length && !confirm('Clear all manual boxes on this frame? Use this only after inspecting the frame again.')) return;
+  frames[idx].boxes = []; saveLocalProgress(true); loadFrame(idx);
+}}
+function toggleVerified(v) {{ frames[idx].verified = v; if (v) frames[idx].source = 'manual'; saveLocalProgress(true); }}
 function prevFrame() {{ loadFrame(idx - 1); }}
 function nextFrame() {{ loadFrame(idx + 1); }}
 window.addEventListener('keydown', e => {{
@@ -486,6 +595,7 @@ window.addEventListener('keydown', e => {{
 }});
 
 function exportCSV() {{
+  saveLocalProgress(true);
   const rows = ['frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source'];
   for (const f of frames) {{
     const src = f.verified ? 'manual' : f.source;
@@ -502,6 +612,40 @@ function exportCSV() {{
   a.href = URL.createObjectURL(blob);
   a.download = 'detection_boxes.csv';
   a.click();
+  setStatus('CSV downloaded. Replace detection_boxes.csv in this match folder, then run the training gate.');
+}}
+function importCSV(event) {{
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {{
+    const lines = String(reader.result).trim().split(/\r?\n/);
+    const expectedHeader = 'frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source';
+    if (!lines.length || lines[0] !== expectedHeader) {{ setStatus('CSV header is invalid; no progress was changed.'); return; }}
+    const pending = new Map();
+    for (const line of lines.slice(1)) {{
+      if (!line) continue;
+      const values = line.split(',');
+      if (values.length !== 10) {{ setStatus('CSV row is invalid; no progress was changed.'); return; }}
+      const [frameNumber, , , className, x1, y1, x2, y2, verified, source] = values;
+      const fno = Number(frameNumber);
+      const target = frames.find(f => f.frame_number === fno);
+      if (!target || !Number.isInteger(fno) || (source !== 'manual' && source !== 'unlabelled')) {{ setStatus('CSV contains an unknown frame or unsupported provenance; no progress was changed.'); return; }}
+      if (!pending.has(fno)) pending.set(fno, {{ boxes: [], verified: verified === 'true', source }});
+      const state = pending.get(fno);
+      if (state.verified !== (verified === 'true') || state.source !== source) {{ setStatus('CSV has inconsistent rows for one frame; no progress was changed.'); return; }}
+      if (className) {{
+        const box = [Number(x1), Number(y1), Number(x2), Number(y2)];
+        if (className !== 'ball' && className !== 'player' || !box.every(Number.isFinite) || box[2] <= box[0] || box[3] <= box[1]) {{ setStatus('CSV contains an invalid box; no progress was changed.'); return; }}
+        state.boxes.push({{ class_name: className, bbox: box }});
+      }}
+    }}
+    if (pending.size !== frames.length) {{ setStatus('CSV is incomplete for this review batch; no progress was changed.'); return; }}
+    if (!confirm('Import this complete CSV and replace current browser review state?')) return;
+    for (const f of frames) {{ const state = pending.get(f.frame_number); f.boxes = state.boxes; f.verified = state.verified; f.source = state.source; }}
+    saveLocalProgress(true); loadFrame(idx); setStatus('CSV imported into browser progress. Verify it visually, then download a fresh CSV.');
+  }};
+  reader.readAsText(file);
 }}
 loadFrame(0);
 </script>

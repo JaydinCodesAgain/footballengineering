@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "created_at_utc": "2026-11-23T12:14:54.445717+00:00",
+  "created_at_utc": "2026-11-23T13:35:30.857564+00:00",
   "purpose": "sprint3_5_first_football_specific_detector_training_review_batch",
   "review_status": "unreviewed_not_eligible_for_training",
   "sampling": {
     "method": "deterministic_uniform_5_to_95_percent_per_source_match",
-    "samples_per_match": 120,
-    "total_review_frames": 360,
+    "default_samples_per_match": 120,
+    "total_review_frames": 400,
     "adjacent_frame_leakage": "none_across_splits; sparse samples only within each source"
   },
   "label_policy": {
@@ -19,6 +19,7 @@
       "match_id": "chelsea_sunderland",
       "video_path": "27.mp4",
       "split": "train",
+      "samples": 120,
       "video_metadata": {
         "frame_count": 2930,
         "fps": 25.0,
@@ -36,6 +37,7 @@
       "match_id": "norway_wales",
       "video_path": "Norway vs Wales _ HIGHLIGHTS _ UEFA Nations League.mp4",
       "split": "train",
+      "samples": 120,
       "video_metadata": {
         "frame_count": 2953,
         "fps": 25.0,
@@ -53,6 +55,7 @@
       "match_id": "man_utd_4_4_aston_villa_highlights",
       "video_path": "data/Man Utd 4-4 Aston Villa _ Highlights.mp4",
       "split": "val",
+      "samples": 120,
       "video_metadata": {
         "frame_count": 3503,
         "fps": 25.0,
@@ -65,6 +68,24 @@
       "manual_verified_ball_boxes": 0,
       "review_status": "pending_human_review",
       "model_proposals": 163
+    },
+    {
+      "match_id": "soccertrack_132831_panorama_clip",
+      "video_path": "data/soccertrack_v2_external/132831/mot/clips/132831.mp4",
+      "split": "train",
+      "samples": 40,
+      "video_metadata": {
+        "frame_count": 5976,
+        "fps": 25.0,
+        "width": 3840,
+        "height": 1504
+      },
+      "annotation_root": "data/annotations/sprint3_5_ball_review/soccertrack_132831_panorama_clip",
+      "review_frames": 40,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0,
+      "review_status": "pending_human_review",
+      "model_proposals": 0
     }
   ],
   "final_test_split": {
@@ -80,7 +101,9 @@
     ]
   },
   "proposal_generation": {
-    "enabled": true,
+    "suggestions_present": true,
+    "total_preserved_suggestions": 561,
+    "latest_preparation_run_generated_suggestions": false,
     "model": "yolo11n.pt",
     "imgsz": 640,
     "confidence": 0.01,

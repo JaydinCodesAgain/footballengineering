@@ -45,10 +45,16 @@ augmentation:
 review_gate:
   min_verified_frames: 300
   min_positive_ball_boxes: 100
+  # Require positive active-ball labels in each role, not merely in aggregate.
+  # These 80/20 minima leave room for reviewed negative frames while making
+  # validation recall and precision estimable for this first experiment.
+  min_positive_ball_boxes_train: 80
+  min_positive_ball_boxes_val: 20
   required_splits:
     train:
       - chelsea_sunderland
       - norway_wales
+      - soccertrack_132831_panorama_clip
     val:
       - man_utd_4_4_aston_villa_highlights
   policy: manual_verified_only_match_disjoint
