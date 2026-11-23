@@ -1,0 +1,40 @@
+{
+  "match_id": "132831",
+  "asset_type": "SoccerTrack_v2_MOT_clip_plus_reconstructed_ball_trajectory",
+  "clip": {
+    "path": "data\\soccertrack_v2_external\\132831\\mot\\clips\\132831.mp4",
+    "fps": 25.0,
+    "frame_count": 5976,
+    "width": 3840,
+    "height": 1504,
+    "duration_seconds": 239.04,
+    "first_half_source_frame_start": 4575,
+    "first_half_source_frame_end_exclusive": 10551
+  },
+  "ball_npz": {
+    "path": "data\\soccertrack_v2_external\\132831\\ball\\132831_1st_ball.npz",
+    "arrays": [
+      "frame",
+      "status",
+      "x",
+      "y",
+      "y_flipped"
+    ],
+    "frame_count": 67775,
+    "frame_min": 1,
+    "frame_max": 67775,
+    "status_counts": {
+      "-1": 1,
+      "4": 67774
+    },
+    "clip_overlap_samples": 5976,
+    "pitch_coordinate_convention": "source coordinates centred at (0, 0); translated by (+52.5, +34.0) before projection",
+    "projected_points_inside_clip_fraction": 1.0
+  },
+  "fitness": {
+    "mot_tracking_evaluation": "eligible: clip has per-frame player boxes; keep its 22-player scope explicit",
+    "ball_detection_evaluation": "proxy-only: not eligible for independent precision/recall because NPZ positions are released trajectory coordinates, not visually verified image boxes",
+    "ball_detector_training": "blocked until ball boxes are independently visually verified and split match-disjointly",
+    "final_untouched_evaluation": "eligible only if this match remains excluded from model selection, threshold tuning, and visual review"
+  }
+}

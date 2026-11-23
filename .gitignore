@@ -15,6 +15,7 @@ env/
 *.mov
 *.mkv
 *.pt
+data/soccertrack_v2_external/
 *.onnx
 *.joblib
 

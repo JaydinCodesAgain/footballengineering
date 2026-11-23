@@ -1,0 +1,29 @@
+{
+  "match_id": "132831",
+  "protocol": {
+    "label_type": "reconstructed_ball_coordinate_proxy_not_independent_ground_truth",
+    "player_boxes": "released_MOT_ground_truth_to_isolate_motion_ablation",
+    "clip_start_source_frame": 4575,
+    "evaluated_clip_frames": 4,
+    "stride": 1,
+    "tolerance_px": 35.0
+  },
+  "full_player_mask_baseline": {
+    "frames_with_in_bounds_proxy": 4,
+    "frames_with_motion_proposal": 1,
+    "matched_proxy_frames": 0,
+    "motion_proposal_count": 3,
+    "unmatched_proxy_proposals": 3,
+    "proxy_recall": 0.0,
+    "proposals_per_frame": 0.75
+  },
+  "foot_zone_motion_recovery": {
+    "frames_with_in_bounds_proxy": 4,
+    "frames_with_motion_proposal": 1,
+    "matched_proxy_frames": 0,
+    "motion_proposal_count": 3,
+    "unmatched_proxy_proposals": 3,
+    "proxy_recall": 0.0,
+    "proposals_per_frame": 0.75
+  }
+}
