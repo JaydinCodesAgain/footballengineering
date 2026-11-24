@@ -394,6 +394,9 @@ class DetectionAnnotationStore:
             updated += 1
 
         self.save()
+        # Keep a fresh browser session aligned with imported work. Browser local
+        # storage remains a convenience, not the authoritative review record.
+        self.generate_html_annotator()
         return updated
 
     def get_verified_ground_truth(self) -> List[FrameAnnotation]:
@@ -619,7 +622,8 @@ function importCSV(event) {{
   if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {{
-    const lines = String(reader.result).trim().split(/\r?\n/);
+    // This double escape keeps the generated JavaScript CSV line-split regex valid.
+    const lines = String(reader.result).trim().split(/\\r?\\n/);
     const expectedHeader = 'frame_number,timestamp,scene_tag,class_name,x1,y1,x2,y2,verified,source';
     if (!lines.length || lines[0] !== expectedHeader) {{ setStatus('CSV header is invalid; no progress was changed.'); return; }}
     const pending = new Map();

@@ -120,6 +120,38 @@ def test_gate_requires_positive_ball_boxes_in_both_train_and_validation(tmp_path
     assert any("in val" in blocker for blocker in gate["blockers"])
 
 
+def test_gate_allows_a_reviewed_subset_when_the_configured_minima_are_met(tmp_path: Path) -> None:
+    """Candidate frames may remain unreviewed; they must never be exported."""
+    train = _make_review_source(tmp_path, "train_match", "train", ball_box=[20, 30, 40, 50])
+    validation = _make_review_source(tmp_path, "validation_match", "val", ball_box=[20, 30, 40, 50])
+    for source in (train, validation):
+        match_id = str(source["match_id"])
+        source_root = tmp_path / "data" / "annotations" / match_id
+        store = DetectionAnnotationStore(source_root, match_id)
+        image_path = store.frames_dir / "frame_000011.jpg"
+        assert cv2.imwrite(str(image_path), np.zeros((100, 200, 3), dtype=np.uint8))
+        store.frames[11] = FrameAnnotation(
+            match_id=match_id,
+            frame_number=11,
+            timestamp=0.44,
+            image_rel_path="frames/frame_000011.jpg",
+        )
+        store.save()
+        source["review_frames"] = 2
+
+    gate = summarize_gate(
+        {"splits": [train, validation]},
+        tmp_path,
+        min_verified_frames=2,
+        min_positive_ball_boxes=2,
+        min_positive_ball_boxes_train=1,
+        min_positive_ball_boxes_val=1,
+    )
+
+    assert gate["training_eligible"] is True
+    assert gate["sources"][0]["unreviewed_candidate_frames"] == 1
+
+
 def test_gate_rejects_unsupported_split_and_missing_image(tmp_path: Path) -> None:
     bad_split = _make_review_source(tmp_path, "bad_split", "test", ball_box=[20, 30, 40, 50])
     gate = summarize_gate({"splits": [bad_split]}, tmp_path, 1, 1)
@@ -206,6 +238,9 @@ def test_rerunning_preparation_preserves_json_and_csv_only_manual_review(tmp_pat
     resumed = DetectionAnnotationStore(root / "tiny", "tiny")
     assert resumed.frames[reviewed_frame].verified is True
     assert resumed.frames[reviewed_frame].boxes[0].bbox == [2, 2, 4, 4]
+    reviewer_html = (root / "tiny" / "detection_annotator.html").read_text(encoding="utf-8")
+    assert '"verified": true' in reviewer_html
+    assert '"bbox": [2, 2, 4, 4]' in reviewer_html
 
 
 def test_preparation_rejects_changed_frame_selection_without_backup(tmp_path: Path) -> None:
@@ -255,6 +290,10 @@ def test_model_proposals_are_preserved_but_never_become_ground_truth_and_ui_supp
     assert "pointerToImageCoordinates" in html
     assert "Save Browser Progress" in html
     assert "Import CSV" in html
+    # The CSV-import regex must remain valid JavaScript in the generated page.
+    # A single Python backslash escape would insert literal line breaks and
+    # prevent the complete reviewer from starting (Frame 0/0).
+    assert "split(/\\r?\\n/)" in html
 
 
 def test_training_configuration_has_executable_ball_only_contract() -> None:

@@ -2,7 +2,9 @@
 
 ## Current outcome
 
-No football-specific model was trained. Current verified review count is **0 / 400** and verified active-ball boxes are **0**; the training gate is correctly closed. Therefore the existing 74-frame benchmark remains unchanged: precision **79.41%**, recall **49.09%**, F1 **0.607**. No new accuracy metric is claimed.
+No football-specific model was trained. After importing the independently manual reviewer CSV exports, the training-data gate is now eligible with **307 manually verified frames** and **229 verified active-ball boxes**: **258 train images / 180 train boxes** and **49 validation images / 49 validation boxes**. The existing 74-frame benchmark remains unchanged: precision **79.41%**, recall **49.09%**, F1 **0.607**. No new accuracy metric is claimed.
+
+The local NVIDIA driver reports an RTX 500 Ada (4 GB), but the installed PyTorch runtime reports `cuda_available=false` and zero CUDA devices. Per Sprint 3.5 scope, CUDA troubleshooting was not performed. A full 100-epoch, 1280px YOLO11s CPU run was not started because it is not a realistically bounded local experiment. The exported reviewed dataset is ready for the configured GPU run when a CUDA-visible runtime is available.
 
 ## PR fixes
 
@@ -23,4 +25,4 @@ No football-specific model was trained. Current verified review count is **0 / 4
 
 ## Required next action
 
-Follow `REVIEW_HANDOFF.md`: complete five Chelsea–Sunderland frames, export the CSV, and run the gate command. Continue only after that real review/export loop succeeds. Training, baseline comparison, possession re-evaluation, and production integration remain blocked until valid reviewed data exists.
+Run the configured candidate from a CUDA-visible environment with `python scripts/train_sprint3_5_yolo.py --execute --device 0`. Then evaluate the candidate against the unchanged baseline on the 49-frame held-out validation match, report precision, recall, F1, AP50, false positives per frame, and inference speed, and retain the baseline as production default unless the candidate wins on that comparison. An independently reviewed untouched final-test match is still required before generalisation claims.

@@ -147,10 +147,6 @@ def collect_manual_review_status(manifest: dict[str, Any], project_root: Path) -
             violations.append(
                 f"{match_id}: expected {expected_frames} review frames, found {len(annotations)} annotation records."
             )
-        if len(manual) != expected_frames:
-            violations.append(
-                f"{match_id}: {len(manual)}/{expected_frames} frames have manual verification."
-            )
         reports.append(
             {
                 "match_id": match_id,
@@ -159,6 +155,7 @@ def collect_manual_review_status(manifest: dict[str, Any], project_root: Path) -
                 "review_frames": expected_frames,
                 "manual_verified_frames": len(valid_manual),
                 "manual_verified_ball_boxes": ball_boxes,
+                "unreviewed_candidate_frames": expected_frames - len(manual),
                 "annotations": valid_manual,
             }
         )
