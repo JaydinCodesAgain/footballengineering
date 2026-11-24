@@ -1,0 +1,54 @@
+# Bounded execution check for the reviewed Sprint 3.5 dataset when CUDA is not
+# visible to the active Python runtime. This is not the production candidate:
+# it preserves the 1280px small-object input, but limits optimisation to one
+# epoch so CPU runtime and the end-to-end training path are measured honestly.
+experiment_name: sprint3_5_yolo11s_football_ball_cpu_pilot
+base_model: yolo11s.pt
+dataset_yaml: data/sprint3_5_ball_yolo/dataset.yaml
+class_names:
+  - ball
+
+training:
+  imgsz: 1280
+  epochs: 1
+  patience: 1
+  batch: 1
+  device: cpu
+  workers: 0
+  seed: 42
+  deterministic: true
+  optimizer: auto
+  lr0: 0.001
+  lrf: 0.01
+  cos_lr: true
+  cache: false
+  pretrained: true
+
+augmentation:
+  hsv_h: 0.015
+  hsv_s: 0.55
+  hsv_v: 0.35
+  degrees: 2.0
+  translate: 0.05
+  scale: 0.30
+  shear: 0.0
+  perspective: 0.0
+  fliplr: 0.5
+  mosaic: 0.25
+  close_mosaic: 10
+  mixup: 0.0
+  copy_paste: 0.0
+
+review_gate:
+  min_verified_frames: 300
+  min_positive_ball_boxes: 100
+  min_positive_ball_boxes_train: 80
+  min_positive_ball_boxes_val: 20
+  required_splits:
+    train:
+      - chelsea_sunderland
+      - norway_wales
+      - soccertrack_132831_panorama_clip
+    val:
+      - man_utd_4_4_aston_villa_highlights
+  policy: manual_verified_only_match_disjoint

@@ -6,6 +6,8 @@ No football-specific model was trained. After importing the independently manual
 
 The local NVIDIA driver reports an RTX 500 Ada (4 GB), but the installed PyTorch runtime reports `cuda_available=false` and zero CUDA devices. Per Sprint 3.5 scope, CUDA troubleshooting was not performed. A full 100-epoch, 1280px YOLO11s CPU run was not started because it is not a realistically bounded local experiment. The exported reviewed dataset is ready for the configured GPU run when a CUDA-visible runtime is available.
 
+On 2026-11-24, a real CPU pilot was launched with `configs/sprint3_5_ball_training_cpu_pilot.yaml`: YOLO11s, 1280px input, batch 1, one requested epoch, 258 reviewed train images, and 49 reviewed validation images. It reached the first training batch on an Intel Core Ultra 7 155H CPU at **161.6 seconds per iteration**; Ultralytics projected **11 hours 32 minutes** for the single epoch. The process was manually interrupted during the backward pass. This is a measured compute blocker, not a model result: no completed checkpoint, validation metric, or accuracy claim was produced.
+
 ## PR fixes
 
 - Export now validates every reviewed box in image space before normalization: `0 <= x1 < x2 <= width` and `0 <= y1 < y2 <= height`. It rejects negative, reversed, zero-area, and out-of-image boxes with match and frame context; it never clips labels.

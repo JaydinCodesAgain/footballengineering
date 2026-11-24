@@ -311,3 +311,14 @@ def test_training_configuration_has_executable_ball_only_contract() -> None:
     assert kwargs["batch"] == 2
     assert kwargs["device"] == "cpu"
     assert kwargs["data"].endswith("data\\sprint3_5_ball_yolo\\dataset.yaml")
+
+
+def test_cpu_pilot_configuration_is_explicitly_bounded() -> None:
+    config_path = Path(__file__).resolve().parents[1] / "configs" / "sprint3_5_ball_training_cpu_pilot.yaml"
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    assert config["base_model"] == "yolo11s.pt"
+    assert config["class_names"] == ["ball"]
+    assert config["training"]["imgsz"] == 1280
+    assert config["training"]["epochs"] == 1
+    assert config["training"]["batch"] == 1
+    assert config["training"]["device"] == "cpu"
