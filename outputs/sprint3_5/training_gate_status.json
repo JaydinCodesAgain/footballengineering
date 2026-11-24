@@ -1,0 +1,57 @@
+{
+  "training_eligible": true,
+  "thresholds": {
+    "min_verified_frames": 300,
+    "min_positive_ball_boxes": 100,
+    "min_positive_ball_boxes_train": 80,
+    "min_positive_ball_boxes_val": 20
+  },
+  "totals": {
+    "manual_verified_frames": 307,
+    "manual_verified_ball_boxes": 229,
+    "manual_verified_ball_boxes_by_split": {
+      "val": 49,
+      "train": 180
+    }
+  },
+  "sources": [
+    {
+      "match_id": "chelsea_sunderland",
+      "split": "train",
+      "annotation_root": "C:\\Users\\jmorrison\\projects\\footballengineering\\data\\annotations\\sprint3_5_ball_review\\chelsea_sunderland",
+      "review_frames": 120,
+      "manual_verified_frames": 106,
+      "manual_verified_ball_boxes": 81,
+      "unreviewed_candidate_frames": 14
+    },
+    {
+      "match_id": "norway_wales",
+      "split": "train",
+      "annotation_root": "C:\\Users\\jmorrison\\projects\\footballengineering\\data\\annotations\\sprint3_5_ball_review\\norway_wales",
+      "review_frames": 120,
+      "manual_verified_frames": 120,
+      "manual_verified_ball_boxes": 67,
+      "unreviewed_candidate_frames": 0
+    },
+    {
+      "match_id": "man_utd_4_4_aston_villa_highlights",
+      "split": "val",
+      "annotation_root": "C:\\Users\\jmorrison\\projects\\footballengineering\\data\\annotations\\sprint3_5_ball_review\\man_utd_4_4_aston_villa_highlights",
+      "review_frames": 120,
+      "manual_verified_frames": 49,
+      "manual_verified_ball_boxes": 49,
+      "unreviewed_candidate_frames": 71
+    },
+    {
+      "match_id": "soccertrack_132831_panorama_clip",
+      "split": "train",
+      "annotation_root": "C:\\Users\\jmorrison\\projects\\footballengineering\\data\\annotations\\sprint3_5_ball_review\\soccertrack_132831_panorama_clip",
+      "review_frames": 40,
+      "manual_verified_frames": 32,
+      "manual_verified_ball_boxes": 32,
+      "unreviewed_candidate_frames": 8
+    }
+  ],
+  "blockers": [],
+  "training_command_when_eligible": "python scripts/train_sprint3_5_yolo.py --execute"
+}

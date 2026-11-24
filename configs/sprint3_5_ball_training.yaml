@@ -1,0 +1,60 @@
+# Proposed first football-only fine-tuning configuration.  It is intentionally
+# inert until `scripts/export_sprint3_5_yolo_dataset.py` accepts a reviewed,
+# match-disjoint batch and writes the referenced dataset YAML.
+experiment_name: sprint3_5_yolo11s_football_ball
+base_model: yolo11s.pt
+dataset_yaml: data/sprint3_5_ball_yolo/dataset.yaml
+class_names:
+  - ball
+
+# The baseline's tiled 1280px input is retained because footballs are often
+# only 5--20 pixels in the panoramic source imagery.
+training:
+  imgsz: 1280
+  epochs: 100
+  patience: 20
+  batch: 2
+  device: cpu
+  workers: 2
+  seed: 42
+  deterministic: true
+  optimizer: auto
+  lr0: 0.001
+  lrf: 0.01
+  cos_lr: true
+  cache: false
+  pretrained: true
+
+# Conservative augmentation avoids manufacturing implausible football scale
+# and motion artefacts while still varying illumination and geometry.
+augmentation:
+  hsv_h: 0.015
+  hsv_s: 0.55
+  hsv_v: 0.35
+  degrees: 2.0
+  translate: 0.05
+  scale: 0.30
+  shear: 0.0
+  perspective: 0.0
+  fliplr: 0.5
+  mosaic: 0.25
+  close_mosaic: 10
+  mixup: 0.0
+  copy_paste: 0.0
+
+review_gate:
+  min_verified_frames: 300
+  min_positive_ball_boxes: 100
+  # Require positive active-ball labels in each role, not merely in aggregate.
+  # These 80/20 minima leave room for reviewed negative frames while making
+  # validation recall and precision estimable for this first experiment.
+  min_positive_ball_boxes_train: 80
+  min_positive_ball_boxes_val: 20
+  required_splits:
+    train:
+      - chelsea_sunderland
+      - norway_wales
+      - soccertrack_132831_panorama_clip
+    val:
+      - man_utd_4_4_aston_villa_highlights
+  policy: manual_verified_only_match_disjoint

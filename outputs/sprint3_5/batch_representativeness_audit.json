@@ -1,0 +1,97 @@
+{
+  "purpose": "representativeness audit, not detector evaluation",
+  "total_review_frames": 400,
+  "image_dimensions_present": [
+    [
+      1280,
+      720
+    ],
+    [
+      3840,
+      1504
+    ]
+  ],
+  "panoramic_sources": [
+    "soccertrack_132831_panorama_clip"
+  ],
+  "limitations": [
+    "Three sources are 1280x720 highlight-style recordings; they do not establish fixed-camera grassroots generalisation.",
+    "The 4K SoccerTrack clip is previously inspected training-only context, not an untouched final test source.",
+    "Close-ups, replays, transitions, active play, lighting category, and small-ball prevalence are not inferred automatically.",
+    "No verified labels exist yet, so no category recall, hard-negative rate, or illumination-stratified ball metric is available."
+  ],
+  "sources": [
+    {
+      "match_id": "chelsea_sunderland",
+      "split": "train",
+      "review_frames": 120,
+      "image_dimensions": [
+        [
+          1280,
+          720
+        ]
+      ],
+      "unreadable_images": 0,
+      "mean_grayscale_luminance": 107.35,
+      "grayscale_luminance_stddev": 16.28,
+      "adjacent_sparse_pairs": 119,
+      "near_duplicate_candidates_dhash_le_5": 16,
+      "semantic_scene_status": "not_auto_classified; reviewer must reject close-ups, replays, and transitions",
+      "small_ball_status": "unavailable until manual ball boxes are reviewed"
+    },
+    {
+      "match_id": "norway_wales",
+      "split": "train",
+      "review_frames": 120,
+      "image_dimensions": [
+        [
+          1280,
+          720
+        ]
+      ],
+      "unreadable_images": 0,
+      "mean_grayscale_luminance": 96.97,
+      "grayscale_luminance_stddev": 25.93,
+      "adjacent_sparse_pairs": 119,
+      "near_duplicate_candidates_dhash_le_5": 12,
+      "semantic_scene_status": "not_auto_classified; reviewer must reject close-ups, replays, and transitions",
+      "small_ball_status": "unavailable until manual ball boxes are reviewed"
+    },
+    {
+      "match_id": "man_utd_4_4_aston_villa_highlights",
+      "split": "val",
+      "review_frames": 120,
+      "image_dimensions": [
+        [
+          1280,
+          720
+        ]
+      ],
+      "unreadable_images": 0,
+      "mean_grayscale_luminance": 102.78,
+      "grayscale_luminance_stddev": 27.95,
+      "adjacent_sparse_pairs": 119,
+      "near_duplicate_candidates_dhash_le_5": 16,
+      "semantic_scene_status": "not_auto_classified; reviewer must reject close-ups, replays, and transitions",
+      "small_ball_status": "unavailable until manual ball boxes are reviewed"
+    },
+    {
+      "match_id": "soccertrack_132831_panorama_clip",
+      "split": "train",
+      "review_frames": 40,
+      "image_dimensions": [
+        [
+          3840,
+          1504
+        ]
+      ],
+      "unreadable_images": 0,
+      "mean_grayscale_luminance": 107.52,
+      "grayscale_luminance_stddev": 2.42,
+      "adjacent_sparse_pairs": 39,
+      "near_duplicate_candidates_dhash_le_5": 39,
+      "semantic_scene_status": "not_auto_classified; reviewer must reject close-ups, replays, and transitions",
+      "small_ball_status": "unavailable until manual ball boxes are reviewed"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-11-23T13:35:30.857564+00:00",
+  "purpose": "sprint3_5_first_football_specific_detector_training_review_batch",
+  "review_status": "unreviewed_not_eligible_for_training",
+  "sampling": {
+    "method": "deterministic_uniform_5_to_95_percent_per_source_match",
+    "default_samples_per_match": 120,
+    "total_review_frames": 400,
+    "adjacent_frame_leakage": "none_across_splits; sparse samples only within each source"
+  },
+  "label_policy": {
+    "ground_truth": "manual boxes only; reviewer must inspect every frame including negatives",
+    "model_proposals": "dashed UI suggestions only; excluded from CSV ground truth and training export",
+    "soccertrack_reconstructed_ball_coordinates": "excluded; not observed bounding boxes"
+  },
+  "splits": [
+    {
+      "match_id": "chelsea_sunderland",
+      "video_path": "27.mp4",
+      "split": "train",
+      "samples": 120,
+      "video_metadata": {
+        "frame_count": 2930,
+        "fps": 25.0,
+        "width": 1280,
+        "height": 720
+      },
+      "annotation_root": "data/annotations/sprint3_5_ball_review/chelsea_sunderland",
+      "review_frames": 120,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0,
+      "review_status": "pending_human_review",
+      "model_proposals": 196
+    },
+    {
+      "match_id": "norway_wales",
+      "video_path": "Norway vs Wales _ HIGHLIGHTS _ UEFA Nations League.mp4",
+      "split": "train",
+      "samples": 120,
+      "video_metadata": {
+        "frame_count": 2953,
+        "fps": 25.0,
+        "width": 1280,
+        "height": 720
+      },
+      "annotation_root": "data/annotations/sprint3_5_ball_review/norway_wales",
+      "review_frames": 120,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0,
+      "review_status": "pending_human_review",
+      "model_proposals": 202
+    },
+    {
+      "match_id": "man_utd_4_4_aston_villa_highlights",
+      "video_path": "data/Man Utd 4-4 Aston Villa _ Highlights.mp4",
+      "split": "val",
+      "samples": 120,
+      "video_metadata": {
+        "frame_count": 3503,
+        "fps": 25.0,
+        "width": 1280,
+        "height": 720
+      },
+      "annotation_root": "data/annotations/sprint3_5_ball_review/man_utd_4_4_aston_villa_highlights",
+      "review_frames": 120,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0,
+      "review_status": "pending_human_review",
+      "model_proposals": 163
+    },
+    {
+      "match_id": "soccertrack_132831_panorama_clip",
+      "video_path": "data/soccertrack_v2_external/132831/mot/clips/132831.mp4",
+      "split": "train",
+      "samples": 40,
+      "video_metadata": {
+        "frame_count": 5976,
+        "fps": 25.0,
+        "width": 3840,
+        "height": 1504
+      },
+      "annotation_root": "data/annotations/sprint3_5_ball_review/soccertrack_132831_panorama_clip",
+      "review_frames": 40,
+      "manual_verified_frames": 0,
+      "manual_verified_ball_boxes": 0,
+      "review_status": "pending_human_review",
+      "model_proposals": 0
+    }
+  ],
+  "final_test_split": {
+    "status": "not_assigned",
+    "reason": "No locally available, uninspected source has independently reviewed boxes. A future match must be reserved before model selection."
+  },
+  "training_gate": {
+    "eligible": false,
+    "blockers": [
+      "0 manually verified review frames",
+      "0 manually verified football boxes",
+      "no independently reviewed final test source"
+    ]
+  },
+  "proposal_generation": {
+    "suggestions_present": true,
+    "total_preserved_suggestions": 561,
+    "latest_preparation_run_generated_suggestions": false,
+    "model": "yolo11n.pt",
+    "imgsz": 640,
+    "confidence": 0.01,
+    "max_per_frame": 3
+  }
+}
